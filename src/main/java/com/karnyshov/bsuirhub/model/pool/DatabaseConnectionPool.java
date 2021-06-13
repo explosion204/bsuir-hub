@@ -24,6 +24,8 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class DatabaseConnectionPool {
     private static final Logger logger = LogManager.getLogger();
@@ -45,6 +47,10 @@ public class DatabaseConnectionPool {
 
     private BlockingDeque<Connection> availableConnections;
     private Deque<Pair<Connection, Instant>> busyConnections;
+
+    // TODO: 6/13/2021 read about this mysterious field "fair"
+    private final Lock availableConnectionsDequeLock = new ReentrantLock(true);
+    private final Lock busyConnectionsDequeLock = new ReentrantLock(true);
 
     private DatabaseConnectionPool() {
         URL resource = getClass().getClassLoader().getResource(DB_PROPERTIES_NAME);
@@ -124,7 +130,7 @@ public class DatabaseConnectionPool {
         return instance.get();
     }
 
-    public Connection getConnection() throws DatabaseConnectionException {
+    public Connection acquireConnection() throws DatabaseConnectionException {
         Connection connection = null;
 
         try {
@@ -135,10 +141,14 @@ public class DatabaseConnectionPool {
                     : availableConnections.take();
 
             Instant usageStart = Instant.now();
+
+            busyConnectionsDequeLock.lock();
             busyConnections.offer(Pair.of(connection, usageStart));
         } catch (InterruptedException e) {
             logger.error("Caught an exception", e);
             Thread.currentThread().interrupt();
+        } finally {
+            busyConnectionsDequeLock.unlock();
         }
 
         return connection;
@@ -146,13 +156,21 @@ public class DatabaseConnectionPool {
 
     public void releaseConnection(Connection connection) {
         if (connection.getClass() == ProxyConnection.class) {
-            busyConnections.removeIf(pair -> pair.getLeft().equals(connection));
+            try {
+                busyConnectionsDequeLock.lock();
+                busyConnections.removeIf(pair -> pair.getLeft().equals(connection));
+            } finally {
+                busyConnectionsDequeLock.unlock();
+            }
 
             try {
+                availableConnectionsDequeLock.lock();
                 availableConnections.put(connection);
             } catch (InterruptedException e) {
                 logger.error("Caught an exception", e);
                 Thread.currentThread().interrupt();
+            } finally {
+                availableConnectionsDequeLock.unlock();
             }
         } else {
             logger.warn("Trying to release a connection not supposed to be released!");
@@ -160,6 +178,10 @@ public class DatabaseConnectionPool {
     }
 
     public void destroyPool() {
+        // this is action is terminating so finally block with guaranteed unlocks is not necessary
+        availableConnectionsDequeLock.lock();
+        busyConnectionsDequeLock.lock();
+
         for (int i = 0; i < poolMaxSize; i++) {
             try {
                 ProxyConnection connection = (ProxyConnection) availableConnections.take();
@@ -181,12 +203,25 @@ public class DatabaseConnectionPool {
                         logger.error("Failed to deregister driver: ", e);
                     }
                 });
+
+        availableConnectionsDequeLock.unlock();
+        busyConnectionsDequeLock.unlock();
     }
 
     private class PoolValidationTask extends TimerTask {
         @Override
         public void run() {
             // close connections that are in use longer than permitted
+            closeTimedOutConnections();
+
+            // validate pool size
+            validatePoolSize();
+
+            // free pool decreasing amount of available connections to lower threshold by one every time task executed
+            freePool();
+        }
+
+        private void closeTimedOutConnections() {
             for (Pair<Connection, Instant> pair : busyConnections) {
                 ProxyConnection connection = (ProxyConnection) pair.getLeft();
                 Instant usageStart = pair.getRight();
@@ -196,36 +231,55 @@ public class DatabaseConnectionPool {
                 if (usageDuration > connectionUsageTimeout) {
                     try {
                         // force leaked connection to be closed
+                        busyConnectionsDequeLock.lock();
                         connection.closeWrappedConnection();
                         busyConnections.removeIf(p -> p.getLeft().equals(connection));
                     } catch (SQLException e) {
                         logger.error("Unable to close connection in a proper way", e);
+                    } finally {
+                        busyConnectionsDequeLock.unlock();
                     }
                 }
             }
+        }
 
-            // validate pool size
-            while (availableConnections.size() + busyConnections.size() < poolMinSize) {
-                // add new available connections if a pool does not contain minimal required amount of connections
-                try {
-                    Connection newConnection = ConnectionFactory.createConnection();
-                    availableConnections.add(newConnection);
-                } catch (DatabaseConnectionException e) {
-                    logger.error("Caught an error trying to establish connection", e);
-                }
-            }
-
-            // free pool decreasing amount of available connections to lower threshold by one every time task executed
-            if (availableConnections.size() + busyConnections.size() > poolMinSize) {
-                ProxyConnection connection = (ProxyConnection) availableConnections.poll();
-
-                if (connection != null) {
+        private void validatePoolSize() {
+            availableConnectionsDequeLock.lock();
+            busyConnectionsDequeLock.lock();
+            try {
+                while (availableConnections.size() + busyConnections.size() < poolMinSize) {
+                    // add new available connections if a pool does not contain minimal required amount of connections
                     try {
-                        connection.closeWrappedConnection();
-                    } catch (SQLException e) {
-                        logger.error("Unable to close connection in a proper way", e);
+                        Connection newConnection = ConnectionFactory.createConnection();
+                        availableConnections.add(newConnection);
+                    } catch (DatabaseConnectionException e) {
+                        logger.error("Caught an error trying to establish connection", e);
                     }
                 }
+            } finally {
+                availableConnectionsDequeLock.unlock();
+                busyConnectionsDequeLock.unlock();
+            }
+        }
+
+        private void freePool() {
+            availableConnectionsDequeLock.lock();
+            busyConnectionsDequeLock.lock();
+            try {
+                if (availableConnections.size() + busyConnections.size() > poolMinSize) {
+                    ProxyConnection connection = (ProxyConnection) availableConnections.poll();
+
+                    if (connection != null) {
+                        try {
+                            connection.closeWrappedConnection();
+                        } catch (SQLException e) {
+                            logger.error("Unable to close connection in a proper way", e);
+                        }
+                    }
+                }
+            } finally {
+                availableConnectionsDequeLock.unlock();
+                busyConnectionsDequeLock.unlock();
             }
         }
     }
