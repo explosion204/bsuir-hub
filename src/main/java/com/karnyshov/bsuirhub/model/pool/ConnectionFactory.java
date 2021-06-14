@@ -4,11 +4,8 @@ import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,16 +22,8 @@ class ConnectionFactory {
     private static final Properties dbProperties = new Properties();
 
     static {
-        URL resource = ConnectionFactory.class.getClassLoader().getResource(DB_PROPERTIES_NAME);
-
-        if (resource == null) {
-            logger.fatal("Unable to read database properties");
-            throw new RuntimeException("Unable to read database properties");
-        }
-
-        String propertiesPath = new File(resource.getFile()).getAbsolutePath();
-
-        try (InputStream inputStream = new FileInputStream(propertiesPath)) {
+        ClassLoader classLoader = ConnectionFactory.class.getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream(DB_PROPERTIES_NAME)) {
             dbProperties.load(inputStream);
 
             // register driver

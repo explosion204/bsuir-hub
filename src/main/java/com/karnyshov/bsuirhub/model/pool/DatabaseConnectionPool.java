@@ -5,27 +5,18 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.Properties;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class DatabaseConnectionPool {
     private static final Logger logger = LogManager.getLogger();
@@ -46,24 +37,12 @@ public class DatabaseConnectionPool {
     private long connectionUsageTimeout;
 
     private BlockingDeque<Connection> availableConnections;
-    private Deque<Pair<Connection, Instant>> busyConnections;
+    private BlockingDeque<Pair<Connection, Instant>> busyConnections;
     private final Timer timer = new Timer(true);
 
-    // TODO: 6/13/2021 read about this mysterious field "fair"
-    private final Lock availableConnectionsDequeLock = new ReentrantLock(true);
-    private final Lock busyConnectionsDequeLock = new ReentrantLock(true);
-
     private DatabaseConnectionPool() {
-        URL resource = getClass().getClassLoader().getResource(DB_PROPERTIES_NAME);
-
-        if (resource == null) {
-            logger.fatal("Unable to read database properties");
-            throw new RuntimeException("Unable to read database properties");
-        }
-
-        String propertiesPath = new File(resource.getFile()).getAbsolutePath();
-
-        try (InputStream inputStream = new FileInputStream(propertiesPath)) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream(DB_PROPERTIES_NAME)) {
             Properties poolProperties = new Properties();
             poolProperties.load(inputStream);
 
@@ -90,7 +69,7 @@ public class DatabaseConnectionPool {
 
             // initialize pool
             availableConnections = new LinkedBlockingDeque<>(poolMaxSize);
-            busyConnections = new ArrayDeque<>(poolMaxSize);
+            busyConnections = new LinkedBlockingDeque<>(poolMaxSize);
 
             for (int i = 0; i < poolMinSize; i++) {
                 Connection connection = ConnectionFactory.createConnection();
@@ -117,18 +96,22 @@ public class DatabaseConnectionPool {
         }
 
         // schedule pool validation task
-        timer.schedule(new PoolValidationTask(), poolValidationDelay, poolValidationPeriod);
+        PoolValidationTask task = new PoolValidationTask(connectionUsageTimeout, availableConnections, busyConnections,
+                poolMinSize);
+        timer.schedule(task, poolValidationDelay, poolValidationPeriod);
     }
 
     public static DatabaseConnectionPool getInstance() {
         while (instance.get() == null) {
             if (instanceInitialized.compareAndSet(false, true)) {
                 instance.set(new DatabaseConnectionPool());
+                System.out.println("hello");
             }
         }
 
         return instance.get();
     }
+
 
     public Connection acquireConnection() throws DatabaseConnectionException {
         Connection connection = null;
@@ -136,19 +119,15 @@ public class DatabaseConnectionPool {
         try {
             // establish new connection if pool is not full
             // otherwise wait for released connections
-            connection = (availableConnections.size() < poolMaxSize)
+            connection = (availableConnections.size() + busyConnections.size() < poolMaxSize)
                     ? ConnectionFactory.createConnection()
                     : availableConnections.take();
 
             Instant usageStart = Instant.now();
-
-            busyConnectionsDequeLock.lock();
-            busyConnections.offer(Pair.of(connection, usageStart));
+            busyConnections.put(Pair.of(connection, usageStart));
         } catch (InterruptedException e) {
             logger.error("Caught an exception", e);
             Thread.currentThread().interrupt();
-        } finally {
-            busyConnectionsDequeLock.unlock();
         }
 
         return connection;
@@ -156,18 +135,13 @@ public class DatabaseConnectionPool {
 
     public void releaseConnection(Connection connection) {
         if (connection.getClass() == ProxyConnection.class) {
-            try {
-                busyConnectionsDequeLock.lock();
-                busyConnections.removeIf(pair -> pair.getLeft().equals(connection));
-            } finally {
-                busyConnectionsDequeLock.unlock();
-            }
+            busyConnections.removeIf(pair -> pair.getLeft().equals(connection));
 
             try {
-                availableConnectionsDequeLock.lock();
-                availableConnections.offer(connection);
-            } finally {
-                availableConnectionsDequeLock.unlock();
+                availableConnections.put(connection);
+            } catch (InterruptedException e) {
+                logger.error("Caught an exception", e);
+                Thread.currentThread().interrupt();
             }
         } else {
             logger.warn("Trying to release a connection not supposed to be released!");
@@ -175,10 +149,7 @@ public class DatabaseConnectionPool {
     }
 
     public void destroyPool() {
-        // this action is terminating so finally block with guaranteed unlocks is not necessary
         timer.cancel(); // cancel validation task
-        availableConnectionsDequeLock.lock();
-        busyConnectionsDequeLock.lock();
 
         for (int i = 0; i < poolMaxSize; i++) {
             try {
@@ -201,94 +172,5 @@ public class DatabaseConnectionPool {
                         logger.error("Failed to deregister driver: ", e);
                     }
                 });
-
-        availableConnectionsDequeLock.unlock();
-        busyConnectionsDequeLock.unlock();
-    }
-
-    private class PoolValidationTask extends TimerTask {
-        @Override
-        public void run() {
-            // validate pool size
-            validatePoolSize();
-
-            // close connections that are in use longer than permitted
-            closeTimedOutConnections();
-
-            // free pool decreasing amount of available connections to lower threshold by one every time task executed
-            freePool();
-        }
-
-        private void closeTimedOutConnections() {
-            for (Pair<Connection, Instant> pair : busyConnections) {
-                ProxyConnection connection = (ProxyConnection) pair.getLeft();
-                Instant usageStart = pair.getRight();
-                Instant currentTimestamp = Instant.now();
-                long usageDuration = Duration.between(usageStart, currentTimestamp).toMillis();
-
-                if (usageDuration > connectionUsageTimeout) {
-                    try {
-                        // force leaked connection to be closed
-                        availableConnectionsDequeLock.lock();
-                        busyConnectionsDequeLock.lock();
-
-                        connection.closeWrappedConnection();
-                        busyConnections.removeIf(p -> p.getLeft().equals(connection));
-
-                        Connection newConnection = ConnectionFactory.createConnection();
-                        availableConnections.offer(newConnection);
-                    } catch (SQLException e) {
-                        logger.error("Unable to close connection in a proper way", e);
-                    } catch (DatabaseConnectionException e) {
-                        logger.error("Caught an error trying to establish connection", e);
-                    } finally {
-                        busyConnectionsDequeLock.unlock();
-                        availableConnectionsDequeLock.unlock();
-                    }
-                }
-            }
-        }
-
-        private void validatePoolSize() {
-            // TODO: 6/13/2021 I wish I have known a non-thread-safe alternative to availableConnections.size().
-            //       This implicit double-locking is an eyesore
-            availableConnectionsDequeLock.lock();
-            busyConnectionsDequeLock.lock();
-            try {
-                while (availableConnections.size() + busyConnections.size() < poolMinSize) {
-                    // add new available connections if a pool does not contain minimal required amount of connections
-                    try {
-                        Connection newConnection = ConnectionFactory.createConnection();
-                        availableConnections.offer(newConnection);
-                    } catch (DatabaseConnectionException e) {
-                        logger.error("Caught an error trying to establish connection", e);
-                    }
-                }
-            } finally {
-                availableConnectionsDequeLock.unlock();
-                busyConnectionsDequeLock.unlock();
-            }
-        }
-
-        private void freePool() {
-            availableConnectionsDequeLock.lock();
-            busyConnectionsDequeLock.lock();
-            try {
-                if (availableConnections.size() + busyConnections.size() > poolMinSize) {
-                    ProxyConnection connection = (ProxyConnection) availableConnections.poll();
-
-                    if (connection != null) {
-                        try {
-                            connection.closeWrappedConnection();
-                        } catch (SQLException e) {
-                            logger.error("Unable to close connection in a proper way", e);
-                        }
-                    }
-                }
-            } finally {
-                availableConnectionsDequeLock.unlock();
-                busyConnectionsDequeLock.unlock();
-            }
-        }
     }
 }
