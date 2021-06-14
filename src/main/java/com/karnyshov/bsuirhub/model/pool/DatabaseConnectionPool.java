@@ -47,6 +47,7 @@ public class DatabaseConnectionPool {
 
     private BlockingDeque<Connection> availableConnections;
     private Deque<Pair<Connection, Instant>> busyConnections;
+    private final Timer timer = new Timer(true);
 
     // TODO: 6/13/2021 read about this mysterious field "fair"
     private final Lock availableConnectionsDequeLock = new ReentrantLock(true);
@@ -116,7 +117,6 @@ public class DatabaseConnectionPool {
         }
 
         // schedule pool validation task
-        Timer timer = new Timer(true);
         timer.schedule(new PoolValidationTask(), poolValidationDelay, poolValidationPeriod);
     }
 
@@ -165,10 +165,7 @@ public class DatabaseConnectionPool {
 
             try {
                 availableConnectionsDequeLock.lock();
-                availableConnections.put(connection);
-            } catch (InterruptedException e) {
-                logger.error("Caught an exception", e);
-                Thread.currentThread().interrupt();
+                availableConnections.offer(connection);
             } finally {
                 availableConnectionsDequeLock.unlock();
             }
@@ -178,7 +175,8 @@ public class DatabaseConnectionPool {
     }
 
     public void destroyPool() {
-        // this is action is terminating so finally block with guaranteed unlocks is not necessary
+        // this action is terminating so finally block with guaranteed unlocks is not necessary
+        timer.cancel(); // cancel validation task
         availableConnectionsDequeLock.lock();
         busyConnectionsDequeLock.lock();
 
@@ -211,11 +209,11 @@ public class DatabaseConnectionPool {
     private class PoolValidationTask extends TimerTask {
         @Override
         public void run() {
-            // close connections that are in use longer than permitted
-            closeTimedOutConnections();
-
             // validate pool size
             validatePoolSize();
+
+            // close connections that are in use longer than permitted
+            closeTimedOutConnections();
 
             // free pool decreasing amount of available connections to lower threshold by one every time task executed
             freePool();
@@ -231,19 +229,29 @@ public class DatabaseConnectionPool {
                 if (usageDuration > connectionUsageTimeout) {
                     try {
                         // force leaked connection to be closed
+                        availableConnectionsDequeLock.lock();
                         busyConnectionsDequeLock.lock();
+
                         connection.closeWrappedConnection();
                         busyConnections.removeIf(p -> p.getLeft().equals(connection));
+
+                        Connection newConnection = ConnectionFactory.createConnection();
+                        availableConnections.offer(newConnection);
                     } catch (SQLException e) {
                         logger.error("Unable to close connection in a proper way", e);
+                    } catch (DatabaseConnectionException e) {
+                        logger.error("Caught an error trying to establish connection", e);
                     } finally {
                         busyConnectionsDequeLock.unlock();
+                        availableConnectionsDequeLock.unlock();
                     }
                 }
             }
         }
 
         private void validatePoolSize() {
+            // TODO: 6/13/2021 I wish I have known a non-thread-safe alternative to availableConnections.size().
+            //       This implicit double-locking is an eyesore
             availableConnectionsDequeLock.lock();
             busyConnectionsDequeLock.lock();
             try {
@@ -251,7 +259,7 @@ public class DatabaseConnectionPool {
                     // add new available connections if a pool does not contain minimal required amount of connections
                     try {
                         Connection newConnection = ConnectionFactory.createConnection();
-                        availableConnections.add(newConnection);
+                        availableConnections.offer(newConnection);
                     } catch (DatabaseConnectionException e) {
                         logger.error("Caught an error trying to establish connection", e);
                     }
