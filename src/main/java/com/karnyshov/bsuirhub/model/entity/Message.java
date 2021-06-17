@@ -4,32 +4,32 @@ import java.util.Date;
 
 public class Message extends AbstractEntity {
     private String value;
-    private User sender;
-    private User receiver;
+    private long senderId;
+    private long receiverId;
     private Date date;
 
-    public Message(long entityId, String value, User sender, User receiver, Date date) {
+    public Message(long entityId, String value, long senderId, long receiverId, Date date) {
         super(entityId);
         this.value = value;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
         this.date = date;
     }
 
-    public Message(String value, User sender, User receiver, Date date) {
-        this(DEFAULT_ID, value, sender, receiver, date);
+    public Message(String value, long senderId, long receiverId, Date date) {
+        this(DEFAULT_ID, value, senderId, receiverId, date);
     }
 
     public String getValue() {
         return value;
     }
 
-    public User getSender() {
-        return sender;
+    public long getSenderId() {
+        return senderId;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public long getReceiverId() {
+        return receiverId;
     }
 
     public Date getDate() {
@@ -40,12 +40,12 @@ public class Message extends AbstractEntity {
         this.value = value;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceiverId(long receiverId) {
+        this.receiverId = receiverId;
     }
 
     public void setDate(Date date) {

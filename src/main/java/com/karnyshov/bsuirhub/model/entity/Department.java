@@ -3,22 +3,22 @@ package com.karnyshov.bsuirhub.model.entity;
 public class Department extends AbstractEntity {
     private String name;
     private String shortName;
-    private boolean isArchived;
-    private Faculty faculty;
+    private boolean archived;
+    private long facultyId;
     private String specialtyAlias;
 
-    public Department(long entityId, String name, String shortName, boolean isArchived, Faculty faculty,
-                String specialtyAlias) {
+    public Department(long entityId, String name, String shortName, boolean archived, long facultyId,
+                      String specialtyAlias) {
         super(entityId);
         this.name = name;
         this.shortName = shortName;
-        this.isArchived = isArchived;
-        this.faculty = faculty;
+        this.archived = archived;
+        this.facultyId = facultyId;
         this.specialtyAlias = specialtyAlias;
     }
 
-    public Department(String name, String shortName, boolean isArchived, Faculty faculty, String specialtyAlias) {
-        this(DEFAULT_ID, name, shortName, isArchived, faculty, specialtyAlias);
+    public Department(String name, String shortName, boolean archived, long facultyId, String specialtyAlias) {
+        this(DEFAULT_ID, name, shortName, archived, facultyId, specialtyAlias);
     }
 
     public String getName() {
@@ -30,11 +30,11 @@ public class Department extends AbstractEntity {
     }
 
     public boolean isArchived() {
-        return isArchived;
+        return archived;
     }
 
-    public Faculty getFaculty() {
-        return faculty;
+    public long getFacultyId() {
+        return facultyId;
     }
 
     public String getSpecialtyAlias() {
@@ -50,11 +50,11 @@ public class Department extends AbstractEntity {
     }
 
     public void setArchived(boolean archived) {
-        isArchived = archived;
+        this.archived = archived;
     }
 
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
+    public void setFacultyId(long facultyId) {
+        this.facultyId = facultyId;
     }
 
     public void setSpecialtyAlias(String specialtyAlias) {

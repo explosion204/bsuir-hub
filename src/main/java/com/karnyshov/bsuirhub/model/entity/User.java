@@ -12,14 +12,6 @@ public class User extends AbstractEntity {
     private String lastName;
     private String profilePicturePath;
 
-    public enum UserRole {
-        GUEST, STUDENT, TEACHER, ADMIN
-    }
-
-    public enum UserStatus {
-        NOT_CONFIRMED, CONFIRMED, DELETED, BLOCKED
-    }
-
     public User(long entityId, String login, String email, String passwordHash, String salt, UserRole userRole,
                 UserStatus userStatus, String firstName, String patronymic, String lastName,
                 String profilePicturePath) {

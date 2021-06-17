@@ -5,17 +5,17 @@ import java.util.Objects;
 public class Faculty extends AbstractEntity {
     private String name;
     private String shortName;
-    private boolean isArchived;
+    private boolean archived;
 
-    public Faculty(long entityId, String name, String shortName, boolean isArchived) {
+    public Faculty(long entityId, String name, String shortName, boolean archived) {
         super(entityId);
         this.name = name;
         this.shortName = shortName;
-        this.isArchived = isArchived;
+        this.archived = archived;
     }
 
-    public Faculty(String name, String shortName, boolean isArchived) {
-        this(DEFAULT_ID, name, shortName, isArchived);
+    public Faculty(String name, String shortName, boolean archived) {
+        this(DEFAULT_ID, name, shortName, archived);
     }
 
     public String getName() {
@@ -27,7 +27,7 @@ public class Faculty extends AbstractEntity {
     }
 
     public boolean isArchived() {
-        return isArchived;
+        return archived;
     }
 
     public void setName(String name) {
@@ -39,7 +39,7 @@ public class Faculty extends AbstractEntity {
     }
 
     public void setArchived(boolean archived) {
-        isArchived = archived;
+        this.archived = archived;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Faculty extends AbstractEntity {
         result = result * prime + super.hashCode();
         result = result * prime + name.hashCode();
         result = result * prime + shortName.hashCode();
-        result = result * prime + Boolean.hashCode(isArchived);
+        result = result * prime + Boolean.hashCode(archived);
 
         return result;
     }
@@ -67,7 +67,7 @@ public class Faculty extends AbstractEntity {
 
         Faculty faculty = (Faculty) obj;
         return super.equals(obj) && Objects.equals(name, faculty.name) && Objects.equals(shortName, faculty.shortName)
-                && isArchived == faculty.isArchived;
+                && archived == faculty.archived;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Faculty extends AbstractEntity {
         builder.append(super.toString()).append("): ");
         builder.append("name = ").append(name).append(", ");
         builder.append("short name = ").append(shortName).append(", ");
-        builder.append("is archived = ").append(isArchived);
+        builder.append("is archived = ").append(archived);
 
         return builder.toString();
     }

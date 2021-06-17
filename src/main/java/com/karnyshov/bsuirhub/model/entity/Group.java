@@ -1,53 +1,74 @@
 package com.karnyshov.bsuirhub.model.entity;
 
 public class Group extends AbstractEntity {
-    private Department department;
-    private User headman;
-    private User curator;
+    private long departmentId;
+    private long headmanId;
+    private long curatorId;
     private String groupNumber;
+    private int course;
+    boolean archived;
 
-    public Group(long entityId, Department department, User headman, User curator, String groupNumber) {
+    public Group(long entityId, long departmentId, long headmanId, long curatorId, String groupNumber, int course,
+                 boolean archived) {
         super(entityId);
-        this.department = department;
-        this.headman = headman;
-        this.curator = curator;
+        this.departmentId = departmentId;
+        this.headmanId = headmanId;
+        this.curatorId = curatorId;
         this.groupNumber = groupNumber;
+        this.course = course;
+        this.archived = archived;
     }
 
-    public Group(Department department, User headman, User curator, String groupNumber) {
-        this(DEFAULT_ID, department, headman, curator, groupNumber);
+    public Group(long departmentId, long headmanId, long curatorId, String groupNumber, int course, boolean archived) {
+        this(DEFAULT_ID, departmentId, headmanId, curatorId, groupNumber, course, archived);
     }
 
-    public Department getDepartment() {
-        return department;
+    public long getDepartmentId() {
+        return departmentId;
     }
 
-    public User getHeadman() {
-        return headman;
+    public long getHeadmanId() {
+        return headmanId;
     }
 
-    public User getCurator() {
-        return curator;
+    public long getCuratorId() {
+        return curatorId;
     }
 
     public String getGroupNumber() {
         return groupNumber;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public int getCourse() {
+        return course;
     }
 
-    public void setHeadman(User headman) {
-        this.headman = headman;
+    public boolean isArchived() {
+        return archived;
     }
 
-    public void setCurator(User curator) {
-        this.curator = curator;
+    public void setDepartmentId(long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public void setHeadmanId(long headmanId) {
+        this.headmanId = headmanId;
+    }
+
+    public void setCuratorId(long curatorId) {
+        this.curatorId = curatorId;
     }
 
     public void setGroupNumber(String groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    public void setCourse(int course) {
+        this.course = course;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     // TODO: 6/16/2021

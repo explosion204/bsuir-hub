@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-public class AbstractEntity {
+public abstract class AbstractEntity {
     public final static long DEFAULT_ID = 0;
     private final long entityId;
 

@@ -5,9 +5,9 @@ import java.util.Date;
 public class Grade extends AbstractEntity {
     private Value value;
     private boolean isExam;
-    private User teacher;
-    private User student;
-    private Subject subject;
+    private long teacherId;
+    private long studentId;
+    private long subjectId;
     private String comment;
     private Date date;
 
@@ -37,20 +37,20 @@ public class Grade extends AbstractEntity {
         }
     }
 
-    public Grade(long entityId, Value value, boolean isExam, User teacher, User student, Subject subject, String comment,
-                Date date) {
+    public Grade(long entityId, Value value, boolean isExam, long teacherId, long studentId, long subjectId,
+                 String comment, Date date) {
         super(entityId);
         this.value = value;
         this.isExam = isExam;
-        this.teacher = teacher;
-        this.student = student;
-        this.subject = subject;
+        this.teacherId = teacherId;
+        this.studentId = studentId;
+        this.subjectId = subjectId;
         this.comment = comment;
         this.date = date;
     }
 
-    public Grade(Value value, boolean isExam, User teacher, User student, Subject subject, String comment, Date date) {
-        this(DEFAULT_ID, value, isExam, teacher, student, subject, comment, date);
+    public Grade(Value value, boolean isExam, long teacherId, long studentId, long subjectId, String comment, Date date) {
+        this(DEFAULT_ID, value, isExam, teacherId, studentId, subjectId, comment, date);
     }
 
     public Value getValue() {
@@ -61,16 +61,16 @@ public class Grade extends AbstractEntity {
         return isExam;
     }
 
-    public User getTeacher() {
-        return teacher;
+    public long getTeacherId() {
+        return teacherId;
     }
 
-    public User getStudent() {
-        return student;
+    public long getStudentId() {
+        return studentId;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public long getSubjectId() {
+        return subjectId;
     }
 
     public String getComment() {
@@ -89,16 +89,16 @@ public class Grade extends AbstractEntity {
         isExam = exam;
     }
 
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
     }
 
-    public void setStudent(User student) {
-        this.student = student;
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjectId(long subjectId) {
+        this.subjectId = subjectId;
     }
 
     public void setComment(String comment) {
