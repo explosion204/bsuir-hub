@@ -9,37 +9,42 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.locks.Lock;
 
 class PoolValidationTask extends TimerTask {
     private static final Logger logger = LogManager.getLogger();
-    private final long connectionUsageTimeout;
-    private final int poolMinSize;
-    private final BlockingDeque<Connection> availableConnections;
-    private final BlockingDeque<Pair<Connection, Instant>> busyConnections;
-
-    PoolValidationTask(long connectionUsageTimeout, BlockingDeque<Connection> availableConnections,
-                BlockingDeque<Pair<Connection, Instant>> busyConnections, int poolMinSize) {
-        this.connectionUsageTimeout = connectionUsageTimeout;
-        this.availableConnections = availableConnections;
-        this.busyConnections = busyConnections;
-        this.poolMinSize = poolMinSize;
-    }
 
     @Override
     public void run() {
-        // validate pool size
-        validatePoolSize();
+        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
+        Lock connectionPoolLock = pool.getConnectionPoolLock();
+        Queue<Connection> availableConnections = pool.getAvailableConnections();
+        Queue<Pair<Connection, Instant>> busyConnections = pool.getBusyConnections();
+        long connectionUsageTimeout = pool.getConnectionUsageTimeout();
+        int poolMinSize = pool.getPoolMinSize();
 
-        // close connections that are in use longer than permitted
-        closeTimedOutConnections();
+        try {
+            connectionPoolLock.lock();
 
-        // free pool decreasing amount of available connections to lower threshold by one every time task executed
-        freePool();
+            // validate pool size
+            validatePoolSize(availableConnections, busyConnections, poolMinSize);
+
+            // close connections that are in use longer than permitted
+            closeTimedOutConnections(availableConnections, busyConnections, connectionUsageTimeout);
+
+            // free pool decreasing amount of available connections to lower threshold by one every time task executed
+            freePool(availableConnections, busyConnections, poolMinSize);
+        } finally {
+            connectionPoolLock.unlock();
+        }
     }
 
-    private void closeTimedOutConnections() {
+    private void closeTimedOutConnections(Queue<Connection> availableConnections,
+                Queue<Pair<Connection, Instant>> busyConnections, long connectionUsageTimeout) {
+
         for (Pair<Connection, Instant> pair : busyConnections) {
             ProxyConnection connection = (ProxyConnection) pair.getLeft();
             Instant usageStart = pair.getRight();
@@ -63,7 +68,9 @@ class PoolValidationTask extends TimerTask {
         }
     }
 
-    private void validatePoolSize() {
+    private void validatePoolSize(Queue<Connection> availableConnections,
+                Queue<Pair<Connection, Instant>> busyConnections, int poolMinSize) {
+
         while (availableConnections.size() + busyConnections.size() < poolMinSize) {
             // add new available connections if a pool does not contain minimal required amount of connections
             try {
@@ -75,7 +82,9 @@ class PoolValidationTask extends TimerTask {
         }
     }
 
-    private void freePool() {
+    private void freePool(Queue<Connection> availableConnections,
+                Queue<Pair<Connection, Instant>> busyConnections, int poolMinSize) {
+
         if (availableConnections.size() + busyConnections.size() > poolMinSize) {
             ProxyConnection connection = (ProxyConnection) availableConnections.poll();
 
