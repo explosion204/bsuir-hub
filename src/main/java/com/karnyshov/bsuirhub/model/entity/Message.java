@@ -8,16 +8,16 @@ public class Message extends AbstractEntity {
     private long receiverId;
     private Date date;
 
-    public Message(long entityId, String value, long senderId, long receiverId, Date date) {
-        super(entityId);
-        this.value = value;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.date = date;
+    private Message(MessageBuilder builder) {
+        super(builder);
+        this.value = builder.value;
+        this.senderId = builder.senderId;
+        this.receiverId = builder.receiverId;
+        this.date = builder.date;
     }
 
-    public Message(String value, long senderId, long receiverId, Date date) {
-        this(DEFAULT_ID, value, senderId, receiverId, date);
+    public static MessageBuilder builder() {
+        return new MessageBuilder();
     }
 
     public String getValue() {
@@ -36,24 +36,7 @@ public class Message extends AbstractEntity {
         return date;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public void setSenderId(long senderId) {
-        this.senderId = senderId;
-    }
-
-    public void setReceiverId(long receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     // TODO: 6/16/2021
-
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -67,5 +50,49 @@ public class Message extends AbstractEntity {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public static class MessageBuilder extends AbstractEntity.AbstractBuilder {
+        private String value;
+        private long senderId;
+        private long receiverId;
+        private Date date;
+
+        private MessageBuilder() {
+
+        }
+
+        public MessageBuilder setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public MessageBuilder setSenderId(long senderId) {
+            this.senderId = senderId;
+            return this;
+        }
+
+        public MessageBuilder setReceiverId(long receiverId) {
+            this.receiverId = receiverId;
+            return this;
+        }
+
+        public MessageBuilder setDate(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public MessageBuilder of(Message message) {
+            this.value = message.value;
+            this.senderId = message.senderId;
+            this.receiverId = message.receiverId;
+            this.date = message.date;
+            return this;
+        }
+
+        @Override
+        public Message build() {
+            return new Message(this);
+        }
     }
 }

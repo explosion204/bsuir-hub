@@ -1,11 +1,10 @@
 package com.karnyshov.bsuirhub.model.entity;
 
 public abstract class AbstractEntity {
-    public final static long DEFAULT_ID = 0;
-    private final long entityId;
+    private long entityId;
 
-    public AbstractEntity(long entityId) {
-        this.entityId = entityId;
+    protected AbstractEntity(AbstractBuilder builder) {
+        this.entityId = builder.entityId;
     }
 
     public long getEntityId() {
@@ -34,5 +33,21 @@ public abstract class AbstractEntity {
     @Override
     public String toString() {
         return "id = " + entityId;
+    }
+
+    public static abstract class AbstractBuilder {
+        private Long entityId;
+
+        public AbstractBuilder setEntityId(long entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        public AbstractBuilder of(AbstractEntity entity) {
+            this.entityId = entity.entityId;
+            return this;
+        }
+
+        public abstract AbstractEntity build();
     }
 }

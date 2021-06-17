@@ -7,15 +7,15 @@ public class Faculty extends AbstractEntity {
     private String shortName;
     private boolean archived;
 
-    public Faculty(long entityId, String name, String shortName, boolean archived) {
-        super(entityId);
-        this.name = name;
-        this.shortName = shortName;
-        this.archived = archived;
+    private Faculty(FacultyBuilder builder) {
+        super(builder);
+        this.name = builder.name;
+        this.shortName = builder.shortName;
+        this.archived = builder.archived;
     }
 
-    public Faculty(String name, String shortName, boolean archived) {
-        this(DEFAULT_ID, name, shortName, archived);
+    public static FacultyBuilder builder() {
+        return new FacultyBuilder();
     }
 
     public String getName() {
@@ -26,20 +26,8 @@ public class Faculty extends AbstractEntity {
         return shortName;
     }
 
-    public boolean isArchived() {
+    public boolean getArchived() {
         return archived;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public void setArchived(boolean archived) {
-        this.archived = archived;
     }
 
     @Override
@@ -79,5 +67,41 @@ public class Faculty extends AbstractEntity {
         builder.append("is archived = ").append(archived);
 
         return builder.toString();
+    }
+
+    public static class FacultyBuilder extends AbstractEntity.AbstractBuilder {
+        private String name;
+        private String shortName;
+        private boolean archived;
+
+        private FacultyBuilder() {
+        }
+
+        public FacultyBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public FacultyBuilder setShortName(String shortName) {
+            this.shortName = shortName;
+            return this;
+        }
+
+        public FacultyBuilder setArchived(boolean archived) {
+            this.archived = archived;
+            return this;
+        }
+
+        public FacultyBuilder of(Faculty faculty) {
+            this.name = faculty.name;
+            this.shortName = faculty.shortName;
+            this.archived = faculty.archived;
+            return this;
+        }
+
+        @Override
+        public Faculty build() {
+            return new Faculty(this);
+        }
     }
 }

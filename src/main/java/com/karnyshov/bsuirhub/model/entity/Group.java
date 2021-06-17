@@ -8,19 +8,35 @@ public class Group extends AbstractEntity {
     private int course;
     boolean archived;
 
-    public Group(long entityId, long departmentId, long headmanId, long curatorId, String groupNumber, int course,
-                 boolean archived) {
-        super(entityId);
-        this.departmentId = departmentId;
-        this.headmanId = headmanId;
-        this.curatorId = curatorId;
-        this.groupNumber = groupNumber;
-        this.course = course;
-        this.archived = archived;
+    private Group(GroupBuilder builder) {
+        super(builder);
+        this.departmentId = builder.departmentId;
+        this.headmanId = builder.headmanId;
+        this.curatorId = builder.curatorId;
+        this.groupNumber = builder.groupNumber;
+        this.course = builder.course;
+        this.archived = builder.archived;
     }
 
-    public Group(long departmentId, long headmanId, long curatorId, String groupNumber, int course, boolean archived) {
-        this(DEFAULT_ID, departmentId, headmanId, curatorId, groupNumber, course, archived);
+    public static GroupBuilder builder() {
+        return new GroupBuilder();
+    }
+
+
+    // TODO: 6/16/2021
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     public long getDepartmentId() {
@@ -47,44 +63,60 @@ public class Group extends AbstractEntity {
         return archived;
     }
 
-    public void setDepartmentId(long departmentId) {
-        this.departmentId = departmentId;
-    }
+    public static class GroupBuilder extends AbstractEntity.AbstractBuilder {
+        private long departmentId;
+        private long headmanId;
+        private long curatorId;
+        private String groupNumber;
+        private int course;
+        private boolean archived;
 
-    public void setHeadmanId(long headmanId) {
-        this.headmanId = headmanId;
-    }
+        private GroupBuilder() {
+        }
 
-    public void setCuratorId(long curatorId) {
-        this.curatorId = curatorId;
-    }
+        public GroupBuilder setDepartmentId(long departmentId) {
+            this.departmentId = departmentId;
+            return this;
+        }
 
-    public void setGroupNumber(String groupNumber) {
-        this.groupNumber = groupNumber;
-    }
+        public GroupBuilder setHeadmanId(long headmanId) {
+            this.headmanId = headmanId;
+            return this;
+        }
 
-    public void setCourse(int course) {
-        this.course = course;
-    }
+        public GroupBuilder setCuratorId(long curatorId) {
+            this.curatorId = curatorId;
+            return this;
+        }
 
-    public void setArchived(boolean archived) {
-        this.archived = archived;
-    }
+        public GroupBuilder setGroupNumber(String groupNumber) {
+            this.groupNumber = groupNumber;
+            return this;
+        }
 
-    // TODO: 6/16/2021
+        public GroupBuilder setCourse(int course) {
+            this.course = course;
+            return this;
+        }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+        public GroupBuilder setArchived(boolean archived) {
+            this.archived = archived;
+            return this;
+        }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
+        public GroupBuilder of(Group group) {
+            this.departmentId = group.departmentId;
+            this.headmanId = group.headmanId;
+            this.curatorId = group.curatorId;
+            this.groupNumber = group.groupNumber;
+            this.course = group.course;
+            this.archived = group.archived;
+            return this;
+        }
 
-    @Override
-    public String toString() {
-        return super.toString();
+        @Override
+        public Group build() {
+            return new Group(this);
+        }
     }
 }

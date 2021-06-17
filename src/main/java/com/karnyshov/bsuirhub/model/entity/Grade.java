@@ -11,6 +11,17 @@ public class Grade extends AbstractEntity {
     private String comment;
     private Date date;
 
+    private Grade(GradeBuilder builder) {
+        super(builder);
+        this.value = builder.value;
+        this.isExam = builder.isExam;
+        this.teacherId = builder.teacherId;
+        this.studentId = builder.studentId;
+        this.subjectId = builder.subjectId;
+        this.comment = builder.comment;
+        this.date = builder.date;
+    }
+
     public enum Value {
         ONE("1"),
         TWO("2"),
@@ -37,27 +48,15 @@ public class Grade extends AbstractEntity {
         }
     }
 
-    public Grade(long entityId, Value value, boolean isExam, long teacherId, long studentId, long subjectId,
-                 String comment, Date date) {
-        super(entityId);
-        this.value = value;
-        this.isExam = isExam;
-        this.teacherId = teacherId;
-        this.studentId = studentId;
-        this.subjectId = subjectId;
-        this.comment = comment;
-        this.date = date;
-    }
-
-    public Grade(Value value, boolean isExam, long teacherId, long studentId, long subjectId, String comment, Date date) {
-        this(DEFAULT_ID, value, isExam, teacherId, studentId, subjectId, comment, date);
+    public static GradeBuilder builder() {
+        return new GradeBuilder();
     }
 
     public Value getValue() {
         return value;
     }
 
-    public boolean isExam() {
+    public boolean getIsExam() {
         return isExam;
     }
 
@@ -81,34 +80,6 @@ public class Grade extends AbstractEntity {
         return date;
     }
 
-    public void setValue(Value value) {
-        this.value = value;
-    }
-
-    public void setExam(boolean exam) {
-        isExam = exam;
-    }
-
-    public void setTeacherId(long teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public void setStudentId(long studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setSubjectId(long subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     // TODO: 6/16/2021  
     @Override
     public int hashCode() {
@@ -123,5 +94,70 @@ public class Grade extends AbstractEntity {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public static class GradeBuilder extends AbstractEntity.AbstractBuilder {
+        private Value value;
+        private boolean isExam;
+        private long teacherId;
+        private long studentId;
+        private long subjectId;
+        private String comment;
+        private Date date;
+
+        private GradeBuilder() {
+
+        }
+
+        public GradeBuilder setValue(Value value) {
+            this.value = value;
+            return this;
+        }
+
+        public GradeBuilder setIsExam(boolean isExam) {
+            this.isExam = isExam;
+            return this;
+        }
+
+        public GradeBuilder setTeacherId(long teacherId) {
+            this.teacherId = teacherId;
+            return this;
+        }
+
+        public GradeBuilder setStudentId(long studentId) {
+            this.studentId = studentId;
+            return this;
+        }
+
+        public GradeBuilder setSubjectId(long subjectId) {
+            this.subjectId = subjectId;
+            return this;
+        }
+
+        public GradeBuilder setComment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
+        public GradeBuilder setDate(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public GradeBuilder of(Grade grade) {
+            this.value = grade.value;
+            this.isExam = grade.isExam;
+            this.teacherId = grade.teacherId;
+            this.studentId = grade.studentId;
+            this.subjectId = grade.subjectId;
+            this.comment = grade.comment;
+            this.date = grade.date;
+            return this;
+        }
+
+        @Override
+        public Grade build() {
+            return new Grade(this);
+        }
     }
 }

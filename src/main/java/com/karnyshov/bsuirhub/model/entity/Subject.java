@@ -4,14 +4,14 @@ public class Subject extends AbstractEntity {
     private String name;
     private String shortName;
 
-    public Subject(long entityId, String name, String shortName) {
-        super(entityId);
-        this.name = name;
-        this.shortName = shortName;
+    private Subject(SubjectBuilder builder) {
+        super(builder);
+        this.name = builder.name;
+        this.shortName = builder.shortName;
     }
 
-    public Subject(String name, String shortName) {
-        this(DEFAULT_ID, name, shortName);
+    public static SubjectBuilder builder() {
+        return new SubjectBuilder();
     }
 
     public String getName() {
@@ -22,16 +22,7 @@ public class Subject extends AbstractEntity {
         return shortName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     // TODO: 6/16/2021
-
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -45,5 +36,34 @@ public class Subject extends AbstractEntity {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public static class SubjectBuilder extends AbstractEntity.AbstractBuilder {
+        private String name;
+        private String shortName;
+
+        private SubjectBuilder() {
+        }
+
+        public SubjectBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public SubjectBuilder setShortName(String shortName) {
+            this.shortName = shortName;
+            return this;
+        }
+
+        public SubjectBuilder of(Subject subject) {
+            this.name = subject.name;
+            this.shortName = subject.shortName;
+            return this;
+        }
+
+        @Override
+        public Subject build() {
+            return new Subject(this);
+        }
     }
 }
