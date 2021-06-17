@@ -134,7 +134,7 @@ public class DatabaseConnectionPool {
     }
 
     public void releaseConnection(Connection connection) {
-        if (connection.getClass() == ProxyConnection.class) {
+        if (connection != null && connection.getClass() == ProxyConnection.class) {
             busyConnections.removeIf(pair -> pair.getLeft().equals(connection));
 
             try {
