@@ -36,6 +36,7 @@ public class DatabaseConnectionPool {
     private int poolValidationPeriod;
     private long connectionUsageTimeout;
 
+    // FIXME: 6/17/2021 locking
     private BlockingDeque<Connection> availableConnections;
     private BlockingDeque<Pair<Connection, Instant>> busyConnections;
     private final Timer timer = new Timer(true);
@@ -150,10 +151,11 @@ public class DatabaseConnectionPool {
 
     public void destroyPool() {
         timer.cancel(); // cancel validation task
+        int activeConnections = availableConnections.size() + busyConnections.size();
 
-        for (int i = 0; i < poolMaxSize; i++) {
+        for (int i = 0; i < activeConnections; i++) {
             try {
-                ProxyConnection connection = (ProxyConnection) availableConnections.take();
+                ProxyConnection connection = (ProxyConnection) availableConnections.take(); 
                 connection.closeWrappedConnection();
             } catch (InterruptedException e) {
                 logger.error("Caught an exception", e);
