@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao;
 
-public class TableColumn {
+public final class TableColumn {
+    // TODO: 6/17/2021 table names doc
     public static final String USER_ID = "id";
     public static final String USER_LOGIN = "login";
     public static final String USER_EMAIL = "email";
@@ -19,4 +20,8 @@ public class TableColumn {
     public static final String DEPARTMENT_IS_ARCHIVED = "is_archived";
     public static final String DEPARTMENT_FACULTY_ID = "id_faculty";
     public static final String DEPARTMENT_SPECIALTY_ALIAS = "specialty_alias";
+
+    private TableColumn() {
+
+    }
 }

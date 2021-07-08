@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SubjectDao {
-     List<Subject> selectAll() throws DaoException;
+     // List<Subject> selectAll() throws DaoException;
      Optional<Subject> selectById(long id) throws DaoException;
+     List<Subject> selectByDepartment(long departmentId) throws DaoException;
+     List<Subject> selectByName(String keyword) throws DaoException;
      void insert(Subject subject) throws DaoException;
      void update(Subject subject) throws DaoException;
-     boolean attachToTeacher(long subjectId, long teacherId);
-     boolean detachFromTeacher(long subjectId, long teacherId);
-     boolean attachToDepartment(long subjectId, long departmentId);
-     boolean detachFromDepartment(long subjectId, long departmentId);
 }

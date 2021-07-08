@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GroupDao {
-    List<Group> selectAll() throws DaoException;
+    // ok
     Optional<Group> selectById(long id) throws DaoException;
+    List<Group> selectByDepartment(long departmentId) throws DaoException;
+    List<Group> selectByDepartmentAndNumber(long departmentId, String keyword) throws DaoException;
     void insert(Group group) throws DaoException;
     void update(Group group) throws DaoException;
 }

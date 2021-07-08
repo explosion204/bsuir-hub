@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FacultyDao {
+    // ok
     List<Faculty> selectAll() throws DaoException;
     Optional<Faculty> selectById(long id) throws DaoException;
     void insert(Faculty faculty) throws DaoException;

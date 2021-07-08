@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GradeDao {
-    List<Grade> selectAll() throws DaoException;
+    // ok
     Optional<Grade> selectById(long id) throws DaoException;
+    List<Grade> selectByUserAndSubject(long userId, long subjectId) throws DaoException;
     void insert(Grade grade) throws DaoException;
     void update(Grade grade) throws DaoException;
     void delete(long id) throws DaoException;

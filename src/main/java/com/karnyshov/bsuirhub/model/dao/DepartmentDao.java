@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface DepartmentDao {
     List<Department> selectAll() throws DaoException;
     Optional<Department> selectById(long id) throws DaoException;
+    List<Department> selectByFaculty(long facultyId) throws DaoException;
     void insert(Department department) throws DaoException;
     void update(Department department) throws DaoException;
 }

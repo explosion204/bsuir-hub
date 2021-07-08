@@ -160,6 +160,11 @@ public class UserDaoImpl implements UserDao {
         return user != null ? Optional.of(user) : Optional.empty();
     }
 
+    @Override
+    public Optional<User> selectByLastName(String keyword) throws DaoException {
+        return Optional.empty(); // TODO: 7/8/2021  
+    }
+
     private void setupPreparedStatement(PreparedStatement statement, User user) throws SQLException {
         statement.setString(1, user.getLogin());
         statement.setString(2, user.getEmail());
@@ -174,22 +179,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     private User extractUser(ResultSet resultSet) throws SQLException {
-        long userId = resultSet.getLong(USER_ID);
-        String login = resultSet.getString(USER_LOGIN);
-        String email = resultSet.getString(USER_EMAIL);
-        String passwordHash = resultSet.getString(USER_PASSWORD_HASH);
-        String salt = resultSet.getString(USER_SALT);
-        String roleValue = resultSet.getString(USER_ROLE);
-        String statusValue = resultSet.getString(USER_STATUS);
-        String firstName = resultSet.getString(USER_FIRST_NAME);
-        String patronymic = resultSet.getString(USER_PATRONYMIC);
-        String lastName = resultSet.getString(USER_LAST_NAME);
-        String profilePicture = resultSet.getString(USER_PROFILE_PICTURE);
-
-        UserRole role = UserRole.valueOf(roleValue);
-        UserStatus status = UserStatus.valueOf(statusValue);
-
-        return new User(userId, login, email, passwordHash, salt, role, status, firstName, patronymic,
-                lastName, profilePicture);
+        return (User) User.builder()
+                .setLogin(resultSet.getString(USER_LOGIN))
+                .setEmail(resultSet.getString(USER_EMAIL))
+                .setPasswordHash(resultSet.getString(USER_PASSWORD_HASH))
+                .setSalt(resultSet.getString(USER_SALT))
+                .setUserRole(UserRole.valueOf(resultSet.getString(USER_ROLE)))
+                .setUserStatus(UserStatus.valueOf(resultSet.getString(USER_STATUS)))
+                .setFirstName(resultSet.getString(USER_FIRST_NAME))
+                .setPatronymic(resultSet.getString(USER_PATRONYMIC))
+                .setLastName(resultSet.getString(USER_LAST_NAME))
+                .setProfilePicturePath(resultSet.getString(USER_PROFILE_PICTURE))
+                .setEntityId(resultSet.getLong(USER_ID))
+                .build();
     }
 }
