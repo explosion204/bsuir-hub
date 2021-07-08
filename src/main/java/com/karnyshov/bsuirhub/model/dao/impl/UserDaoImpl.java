@@ -49,6 +49,16 @@ public class UserDaoImpl implements UserDao {
               "ON users.id_status = statuses.id " +
               "WHERE login = ?";
 
+    private static final String SELECT_USER_BY_LAST_NAME
+            = "SELECT users.id, login, email, password_hash, salt, roles.name as role, statuses.name as status, first_name, " +
+            "patronymic, last_name, profile_picture " +
+            "FROM users " +
+            "INNER JOIN roles " +
+            "ON users.id_role = roles.id " +
+            "INNER JOIN statuses " +
+            "ON users.id_status = statuses.id " +
+            "WHERE last_name = ?";
+
     private static final String INSERT_USER
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, first_name, patronymic, last_name, " +
               "profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -162,7 +172,23 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> selectByLastName(String keyword) throws DaoException {
-        return Optional.empty(); // TODO: 7/8/2021  
+        User user;
+        Connection connection = null;
+        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
+
+        try {
+            connection = pool.acquireConnection();
+            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LAST_NAME);
+            statement.setString(1, keyword);
+            ResultSet resultSet = statement.executeQuery();
+            user = resultSet.next() ? extractUser(resultSet) : null;
+        } catch (DatabaseConnectionException | SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            pool.releaseConnection(connection);
+        }
+
+        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     private void setupPreparedStatement(PreparedStatement statement, User user) throws SQLException {
