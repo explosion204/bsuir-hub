@@ -3,8 +3,7 @@ package com.karnyshov.bsuirhub.model.entity;
 public enum UserStatus {
     NOT_CONFIRMED(1),
     CONFIRMED(2),
-    DELETED(3),
-    BLOCKED(4);
+    DELETED(3);
 
     private final long statusId;
 
