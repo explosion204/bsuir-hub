@@ -7,6 +7,8 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +21,8 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 
+@Named
+@Singleton
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL_USERS
             = "SELECT users.id, login, email, password_hash, salt, roles.name as role, statuses.name as status, first_name, " +
@@ -27,7 +31,8 @@ public class UserDaoImpl implements UserDao {
               "INNER JOIN roles " +
               "ON users.id_role = roles.id " +
               "INNER JOIN statuses " +
-              "ON users.id_status = statuses.id;";
+              "ON users.id_status = statuses.id " +
+              "WHERE statuses.name <> 'DELETED';";
 
     private static final String SELECT_USER_BY_ID
             = "SELECT users.id, login, email, password_hash, salt, roles.name as role, statuses.name as status, first_name, " +

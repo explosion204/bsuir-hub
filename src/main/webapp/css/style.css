@@ -1,3 +1,13 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
 
 /* Circled profile picture */
 .profile-picture-holder {
@@ -43,4 +53,14 @@
 
 .messages-text {
     display: none;
+}
+
+#example_wrapper {
+    width: 100%;
+    margin: 20px;
+}
+
+.page-item.active .page-link, .emphasized-sidebar-item {
+    background-color: #827e7e !important;
+    border-color: #827e7e;
 }

@@ -1,9 +1,9 @@
 $(document).ready(function () {
-    adjustNav();
+    // adjustNav();
 });
 
 $(window).resize(function () {
-    adjustNav();
+    // adjustNav();
 })
 
 function adjustNav() {
