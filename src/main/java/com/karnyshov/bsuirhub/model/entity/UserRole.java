@@ -15,4 +15,6 @@ public enum UserRole {
     public long getRoleId() {
         return roleId;
     }
+
+
 }

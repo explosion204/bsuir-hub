@@ -5,9 +5,9 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.command.PagePath;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class GoToLoginPageCommand implements Command {
+public class GoToIndexPageCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request, String ... commandParams) {
-        return new CommandResult(PagePath.LOGIN_PAGE, CommandResult.RouteType.FORWARD);
+    public CommandResult execute(HttpServletRequest request, String... commandParams) {
+        return new CommandResult(PagePath.INDEX_PAGE, CommandResult.RouteType.FORWARD);
     }
 }

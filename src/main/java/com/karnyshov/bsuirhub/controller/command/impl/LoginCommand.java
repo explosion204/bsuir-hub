@@ -14,9 +14,9 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.PagePath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.*;
-import static com.karnyshov.bsuirhub.controller.RequestParameter.*;
-import static com.karnyshov.bsuirhub.controller.RequestAttribute.*;
-import static com.karnyshov.bsuirhub.controller.SessionAttribute.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -26,7 +26,7 @@ public class LoginCommand implements Command {
     private UserService userService;
 
     @Override
-    public CommandResult execute(HttpServletRequest request) {
+    public CommandResult execute(HttpServletRequest request, String ... commandParams) {
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         CommandResult result;

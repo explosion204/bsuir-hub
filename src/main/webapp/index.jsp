@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>BSUIRHub</title>
+    <jsp:include page="pages/shared/head.html" />
 </head>
 <body>
-    <p>TODO</p>
+    <jsp:include page="pages/shared/header.jsp" />
+    <jsp:include page="pages/shared/footer.html"/>
 </body>
 </html>
