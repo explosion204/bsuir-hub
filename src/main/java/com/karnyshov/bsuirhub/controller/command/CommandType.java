@@ -19,22 +19,22 @@ public enum CommandType {
         { command = CDI.current().select(LoginCommand.class).get(); }
     };
 
-    private String commandName;
+    private String action;
     private RequestMethod requestMethod;
     Command command;
 
-    CommandType(String commandName, RequestMethod requestMethod) {
-        this.commandName = commandName;
+    CommandType(String action, RequestMethod requestMethod) {
+        this.action = action;
         this.requestMethod = requestMethod;
     }
 
-    public static Command getCommand(String commandName, RequestMethod requestMethod) throws CommandException {
+    public static Command getCommand(String action, RequestMethod requestMethod) throws CommandException {
         for (CommandType commandType : CommandType.values()) {
-            if (commandType.commandName.equals(commandName) && commandType.requestMethod == requestMethod) {
+            if (commandType.action.equals(action) && commandType.requestMethod == requestMethod) {
                 return commandType.command;
             }
         }
 
-        throw new CommandException("Command '" + commandName + "/" + requestMethod.name() + "' not found");
+        throw new CommandException("Command '" + action + "/" + requestMethod.name() + "' not found");
     }
 }

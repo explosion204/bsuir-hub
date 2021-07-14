@@ -19,40 +19,40 @@ import java.util.Arrays;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 
 @WebServlet(
-        urlPatterns = { "/app" }
+        urlPatterns = { "/main" }
 )
 public class MainController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private static final String QUERY_PARAMS_DELIMITER = "/";
-    private static final String EMPTY_COMMAND_NAME = "";
+    private static final String EMPTY_ACTION = "";
+    private static final String PAGES_PATH = "/WEB-INF/pages/";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestMethod method = RequestMethod.valueOf(request.getMethod());
-        processRequest(request, response, method);
+        processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestMethod method = RequestMethod.valueOf(request.getMethod());
-        processRequest(request, response, method);
+        processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response, RequestMethod method)
+    private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RequestMethod method = RequestMethod.valueOf(request.getMethod());
         String url = (String) request.getAttribute(ORIGINAL_URL);
         String[] queryParams = url.split(QUERY_PARAMS_DELIMITER);
-        String commandName = queryParams.length != 0
+        String action = queryParams.length != 0
                 ? queryParams[1]
-                : EMPTY_COMMAND_NAME;
+                : EMPTY_ACTION;
         String[] commandParams = queryParams.length != 0
                 ? Arrays.copyOfRange(queryParams, 2, queryParams.length)
                 : new String[0];
 
         try {
-            Command command = CommandType.getCommand(commandName, method);
+            Command command = CommandType.getCommand(action, method);
             CommandResult commandResult = command.execute(request, commandParams);
 
             String routePath = commandResult.getRoutePath();
@@ -60,7 +60,7 @@ public class MainController extends HttpServlet {
 
             switch (routeType) {
                 case FORWARD:
-                    request.getRequestDispatcher(routePath).forward(request, response);
+                    request.getRequestDispatcher(PAGES_PATH + routePath).forward(request, response);
                     break;
                 case REDIRECT:
                     response.sendRedirect(routePath);
