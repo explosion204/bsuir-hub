@@ -64,3 +64,88 @@ footer {
     background-color: #827e7e !important;
     border-color: #827e7e;
 }
+
+/* login form */
+/* Changes caret in nav dropdown */
+.dropdown-toggle.dropdown-plus::after {
+    display: none;
+}
+
+.emphasized-nav-item {
+    border: #e9ecef 1px solid;
+    border-radius: 5px;
+}
+
+.emphasized-nav-item:hover {
+    background-color: #e9ecef;
+}
+
+.emphasized-logo-text {
+    background-color: #9c1510;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 10%;
+}
+
+.messages-icon {
+    font-size: 1.5em;
+    padding: 0.9em;
+    color: #cbcbcb;
+}
+
+.messages-icon:hover {
+    color: #827e7e;
+}
+
+.messages-text {
+    display: none;
+}
+
+#example_wrapper {
+    width: 100%;
+    margin: 20px;
+}
+
+.page-item.active .page-link, .emphasized-sidebar-item {
+    background-color: #827e7e !important;
+    border-color: #827e7e;
+}
+
+/* login form */
+.login-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.login-form {
+    padding: 5%;
+}
+
+.login-container form {
+    padding: 10%;
+}
+
+.btn-submit {
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form .btn-submit {
+    font-weight: 600;
+    color: #fff;
+    background-color: #827e7e;
+}
+
+.login-form .forget-pwd {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    box-shadow: none;
+}

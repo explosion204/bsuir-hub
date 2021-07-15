@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
@@ -30,29 +32,34 @@
                     <li class="nav-item me-auto">
                         <a href="#" class="nav-link" aria-current="page">About</a>
                     </li>
-                    <!--                        <li class="nav-item">-->
-                    <!--                            <a href="#" class="nav-link">-->
-                    <!--                                <i class="fas fa-comments messages-icon w-100"></i>-->
-                    <!--                                <p class="messages-text">Messages</p>-->
-                    <!--                            </a>-->
-                    <!--                        </li>-->
-                    <li class="nav-item emphasized-nav-item dropdown me-3">
-                        <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
-                           id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <p class="mt-auto mb-auto ms-1 me-3"><b>User</b></p>
-                            <p class="profile-picture-holder ms-auto mt-auto mb-auto">
-                                <img src="/static/images/profile.jpg">
-                            </p>
-                            <i class="fas fa-chevron-down ms-2 me-2"></i>
-                        </a>
 
-                        <ul class="dropdown-menu" aria-labelledby="accountDropdownMenu">
-                            <li><a href="#" class="dropdown-item">Profile</a></li>
-                            <li><a href="#" class="dropdown-item">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a href="#" class="dropdown-item">Log out</a></li>
-                        </ul>
-                    </li>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <li class="nav-item emphasized-nav-item dropdown me-3">
+                                <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
+                                   id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <p class="mt-auto mb-auto ms-1 me-3"><b>User</b></p>
+                                    <p class="profile-picture-holder ms-auto mt-auto mb-auto">
+                                        <img src="/static/images/profile.jpg">
+                                    </p>
+                                    <i class="fas fa-chevron-down ms-2 me-2"></i>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="accountDropdownMenu">
+                                    <li><a href="#" class="dropdown-item">Profile</a></li>
+                                    <li><a href="#" class="dropdown-item">Settings</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a href="#" class="dropdown-item">Log out</a></li>
+                                </ul>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="nav-item">
+                                <a href="#" class="btn btn-secondary">Login</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+
                 </ul>
             </div>
         </div>
