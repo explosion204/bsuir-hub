@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.io.IOException;
         urlPatterns = "/main",
         dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD }
 )
-public class SecurityFilter implements Filter {
+public class UserRoleFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -27,6 +26,8 @@ public class SecurityFilter implements Filter {
             session.setAttribute(SessionAttribute.USER, user);
         }
 
-        chain.doFilter(request, response);
+        if (chain != null) {
+            chain.doFilter(request, response);
+        }
     }
 }

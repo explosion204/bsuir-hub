@@ -25,6 +25,8 @@ public class UrlFilter implements Filter {
         httpRequest.setAttribute(ORIGINAL_URL, url);
         httpRequest.getRequestDispatcher(MAIN_CONTROLLER_URL).forward(httpRequest, httpResponse);
 
-        chain.doFilter(request, response);
+        if (chain != null) {
+            chain.doFilter(request, response);
+        }
     }
 }

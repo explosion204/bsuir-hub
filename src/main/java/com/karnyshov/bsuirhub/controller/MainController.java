@@ -47,13 +47,13 @@ public class MainController extends HttpServlet {
         String action = queryParams.length != 0
                 ? queryParams[1]
                 : EMPTY_ACTION;
-        String[] commandParams = queryParams.length != 0
+        String[] urlParams = queryParams.length != 0
                 ? Arrays.copyOfRange(queryParams, 2, queryParams.length)
                 : new String[0];
 
         try {
             Command command = CommandType.getCommand(action, method);
-            CommandResult commandResult = command.execute(request, commandParams);
+            CommandResult commandResult = command.execute(request, urlParams);
 
             String routePath = commandResult.getRoutePath();
             CommandResult.RouteType routeType = commandResult.getRouteType();
