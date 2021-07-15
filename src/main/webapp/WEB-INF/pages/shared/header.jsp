@@ -4,7 +4,7 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
-            <a href="#" class="navbar-brand">BSUIR <span class="emphasized-logo-text">HUB</span></a>
+            <a href="/" class="navbar-brand">BSUIR <span class="emphasized-logo-text">HUB</span></a>
             <button class="navbar-toggler" routeType="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
                     </li>
 
                     <c:choose>
-                        <c:when test="${not empty sessionScope.user}">
+                        <c:when test="${sessionScope.user.userRole.name() ne 'GUEST'}">
                             <li class="nav-item emphasized-nav-item dropdown me-3">
                                 <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
                                    id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,7 +55,7 @@
                         </c:when>
                         <c:otherwise>
                             <li class="nav-item">
-                                <a href="#" class="btn btn-secondary">Login</a>
+                                <a href="/login" class="btn btn-secondary">Login</a>
                             </li>
                         </c:otherwise>
                     </c:choose>

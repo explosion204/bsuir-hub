@@ -4,7 +4,9 @@ public abstract class AbstractEntity {
     private long entityId;
 
     protected AbstractEntity(AbstractBuilder builder) {
-        this.entityId = builder.entityId;
+        if (builder.entityId != null) {
+            this.entityId = builder.entityId;
+        }
     }
 
     public long getEntityId() {
