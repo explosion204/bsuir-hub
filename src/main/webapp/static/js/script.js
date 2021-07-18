@@ -47,7 +47,7 @@ function setLocale(locale) {
             'locale': locale
         },
         success: function () {
-            window.location.replace('/');
+            window.location.reload();
         }
     });
 }
