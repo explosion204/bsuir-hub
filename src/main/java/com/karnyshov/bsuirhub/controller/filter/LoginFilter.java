@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
 
         if (user != null && user.getUserRole() != UserRole.GUEST) {
             httpResponse.sendRedirect(ApplicationPath.INDEX_URL);
-        }
+        } // TODO: 7/18/2021  
 
         chain.doFilter(request, response);
     }

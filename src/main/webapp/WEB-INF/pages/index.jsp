@@ -5,6 +5,6 @@
 </head>
 <body>
     <jsp:include page="shared/header.jsp" />
-    <jsp:include page="shared/footer.html"/>
+    <jsp:include page="shared/footer.jsp"/>
 </body>
 </html>

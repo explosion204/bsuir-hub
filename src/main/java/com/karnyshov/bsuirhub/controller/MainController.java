@@ -55,15 +55,18 @@ public class MainController extends HttpServlet {
             Command command = CommandType.getCommand(action, method);
             CommandResult commandResult = command.execute(request, urlParams);
 
-            String routePath = commandResult.getRoutePath();
+            String resultDetail = commandResult.getDetail();
             CommandResult.RouteType routeType = commandResult.getRouteType();
 
             switch (routeType) {
                 case FORWARD:
-                    request.getRequestDispatcher(PAGES_PATH + routePath).forward(request, response);
+                    request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
                     break;
                 case REDIRECT:
-                    response.sendRedirect(routePath);
+                    response.sendRedirect(resultDetail);
+                    break;
+                case JSON:
+                    response.getWriter().write(resultDetail);
                     break;
                 default:
                     logger.error("Invalid route type: " + routeType.name());

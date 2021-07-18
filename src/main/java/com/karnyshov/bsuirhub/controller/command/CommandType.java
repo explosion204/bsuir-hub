@@ -1,9 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-import com.karnyshov.bsuirhub.controller.command.impl.GoToIndexPageCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.GoToLoginPageCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.LoginCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.LogoutCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.*;
 import com.karnyshov.bsuirhub.exception.CommandException;
 import jakarta.enterprise.inject.spi.CDI;
 
@@ -15,6 +12,11 @@ public enum CommandType {
     },
     GO_TO_LOGIN_PAGE_COMMAND("login", GET) {
         { command = CDI.current().select(GoToLoginPageCommand.class).get(); }
+    },
+
+
+    SET_LOCALE("set_locale", POST) {
+        { command = CDI.current().select(SetLocaleCommand.class).get(); }
     },
     LOGIN_COMMAND("login", POST) {
         { command = CDI.current().select(LoginCommand.class).get(); }

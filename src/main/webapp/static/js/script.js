@@ -1,7 +1,12 @@
+const LOCALE = 'locale';
+const DEFAULT_LOCALE = 'ru';
+
 $(document).ready(function () {
     // adjustNav();
     configureFormValidation();
 });
+
+configureFormValidation();
 
 $(window).resize(function () {
     // adjustNav();
@@ -30,4 +35,19 @@ function configureFormValidation() {
                 form.classList.add('was-validated')
             }, false)
         });
+}
+
+function setLocale(locale) {
+    sessionStorage.setItem(LOCALE, locale);
+
+    $.ajax({
+        method: 'POST',
+        url: '/set_locale',
+        data: {
+            'locale': locale
+        },
+        success: function () {
+            window.location.replace('/');
+        }
+    });
 }
