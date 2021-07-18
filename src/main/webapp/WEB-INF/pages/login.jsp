@@ -36,6 +36,6 @@
         </div>
     </div>
 
-    <jsp:include page="shared/footer.html"/>
+    <jsp:include page="shared/footer.jsp"/>
 </body>
 </html>

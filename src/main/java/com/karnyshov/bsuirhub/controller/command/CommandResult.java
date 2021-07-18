@@ -3,19 +3,20 @@ package com.karnyshov.bsuirhub.controller.command;
 public class CommandResult {
     public enum RouteType {
         FORWARD,
-        REDIRECT
+        REDIRECT,
+        JSON
     }
 
-    private String routePath;
+    private String detail;
     private RouteType routeType;
 
-    public CommandResult(String routePath, RouteType routeType) {
-        this.routePath = routePath;
+    public CommandResult(String detail, RouteType routeType) {
+        this.detail = detail;
         this.routeType = routeType;
     }
 
-    public String getRoutePath() {
-        return routePath;
+    public String getDetail() {
+        return detail;
     }
 
     public RouteType getRouteType() {
