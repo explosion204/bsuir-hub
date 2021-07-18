@@ -23,12 +23,10 @@ public class LoginFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
 
-        if (user.getUserRole() != UserRole.GUEST) {
+        if (user != null && user.getUserRole() != UserRole.GUEST) {
             httpResponse.sendRedirect(ApplicationPath.INDEX_URL);
         }
 
-        if (chain != null) {
-            chain.doFilter(request, response);
-        }
+        chain.doFilter(request, response);
     }
 }

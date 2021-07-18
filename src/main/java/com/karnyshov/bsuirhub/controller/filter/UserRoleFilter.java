@@ -26,8 +26,6 @@ public class UserRoleFilter implements Filter {
             session.setAttribute(SessionAttribute.USER, user);
         }
 
-        if (chain != null) {
-            chain.doFilter(request, response);
-        }
+        chain.doFilter(request, response);
     }
 }
