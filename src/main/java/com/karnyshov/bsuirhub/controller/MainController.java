@@ -67,10 +67,12 @@ public class MainController extends HttpServlet {
                     break;
                 default:
                     logger.error("Invalid route type: " + routeType.name());
-                    // TODO: 7/12/2021 error pages
+                    // TODO: 7/12/2021 error pages & logs
             }
         } catch (CommandException e) {
-            throw new RuntimeException(e); // TODO: 7/14/2021 remove RuntimeException and forward to error page
+            throw new RuntimeException(e); // TODO: 7/14/2021 remove RuntimeException and forward to error page & logs
         }
     }
+
+    // TODO: 7/15/2021 destroy pool in context listener
 }

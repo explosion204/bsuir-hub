@@ -3,6 +3,7 @@ package com.karnyshov.bsuirhub.controller.command;
 import com.karnyshov.bsuirhub.controller.command.impl.GoToIndexPageCommand;
 import com.karnyshov.bsuirhub.controller.command.impl.GoToLoginPageCommand;
 import com.karnyshov.bsuirhub.controller.command.impl.LoginCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.LogoutCommand;
 import com.karnyshov.bsuirhub.exception.CommandException;
 import jakarta.enterprise.inject.spi.CDI;
 
@@ -17,6 +18,9 @@ public enum CommandType {
     },
     LOGIN_COMMAND("login", POST) {
         { command = CDI.current().select(LoginCommand.class).get(); }
+    },
+    LOGOUT_COMMAND("logout", GET) {
+        { command = CDI.current().select(LogoutCommand.class).get(); }
     };
 
     private String action;

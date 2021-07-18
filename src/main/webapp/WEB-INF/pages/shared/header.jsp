@@ -38,7 +38,9 @@
                             <li class="nav-item emphasized-nav-item dropdown me-3">
                                 <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
                                    id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <p class="mt-auto mb-auto ms-1 me-3"><b>User</b></p>
+                                    <p class="mt-auto mb-auto ms-1 me-3"><b>
+                                        <jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text>
+                                    </b></p>
                                     <p class="profile-picture-holder ms-auto mt-auto mb-auto">
                                         <img src="/static/images/profile.jpg">
                                     </p>
@@ -49,7 +51,7 @@
                                     <li><a href="#" class="dropdown-item">Profile</a></li>
                                     <li><a href="#" class="dropdown-item">Settings</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a href="#" class="dropdown-item">Log out</a></li>
+                                    <li><a href="/logout" class="dropdown-item">Log out</a></li>
                                 </ul>
                             </li>
                         </c:when>

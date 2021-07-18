@@ -48,7 +48,7 @@ public class LoginCommand implements Command {
             Optional<User> user = userService.authenticate(login, password);
 
             if (user.isPresent()) {
-                request.getSession().setAttribute(USER, user.get());
+                session.setAttribute(USER, user.get());
                 result = new CommandResult(INDEX_URL, REDIRECT);
             } else {
                 request.setAttribute(LOGIN_ERROR, AUTH_ERROR_MESSAGE);

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user;
 
         try {
-            user = userDao.selectByLogin(login);
+             user = userDao.selectByLogin(login);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
