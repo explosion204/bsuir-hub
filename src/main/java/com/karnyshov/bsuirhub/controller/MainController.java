@@ -22,8 +22,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINA
 )
 public class MainController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-    private static final String QUERY_PARAMS_DELIMITER = "/";
-    private static final String EMPTY_ACTION = "";
     private static final String PAGES_PATH = "/WEB-INF/pages/";
 
     @Override

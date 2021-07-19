@@ -29,6 +29,7 @@
                         <div class="invalid-feedback"><fmt:message key="login.required" /></div>
                     </div>
                     <div class="form-group mb-3">
+                        <!-- TODO button is disabled after submitting invalid data -->
                         <input id="login-btn" type="submit" class="btn-submit" value="${login}" onsubmit="this.disabled = true;" />
                     </div>
                     <c:if test="${not empty login_error}">

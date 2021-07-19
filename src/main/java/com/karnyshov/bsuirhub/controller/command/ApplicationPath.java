@@ -8,10 +8,11 @@ public class ApplicationPath {
     public static final String INTERNAL_SERVER_ERROR_URL = "error/500";
 
     /* JSP for forwarding only */
-    public static final String INDEX_JSP = "index.jsp";
-    public static final String LOGIN_JSP = "login.jsp";
-    public static final String ERROR_NOT_FOUND_JSP = "errors/404.jsp";
-    public static final String ERROR_INTERNAL_SERVER_JSP = "errors/500.jsp";
+    public static final String INDEX_JSP = "common/index.jsp";
+    public static final String LOGIN_JSP = "common/login.jsp";
+    public static final String ERROR_NOT_FOUND_JSP = "common/errors/404.jsp";
+    public static final String ERROR_INTERNAL_SERVER_JSP = "common/errors/500.jsp";
+    public static final String ADMIN_USERS_JSP = "admin/users.jsp";
 
     private ApplicationPath() {
 
