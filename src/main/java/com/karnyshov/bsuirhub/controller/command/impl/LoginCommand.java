@@ -26,7 +26,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String AUTH_ERROR_MESSAGE = "Invalid login or password";
 
     @Inject
     private UserService userService;
@@ -51,7 +50,7 @@ public class LoginCommand implements Command {
                 session.setAttribute(USER, user.get());
                 result = new CommandResult(INDEX_URL, REDIRECT);
             } else {
-                request.setAttribute(LOGIN_ERROR, AUTH_ERROR_MESSAGE);
+                request.setAttribute(LOGIN_ERROR, true);
                 result = new CommandResult(LOGIN_JSP, FORWARD);
             }
         } catch (ServiceException e) {

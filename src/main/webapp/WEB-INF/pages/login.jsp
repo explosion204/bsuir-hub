@@ -1,5 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" />
+<fmt:setBundle basename="locale" />
+
+<c:set var="login_placeholder"><fmt:message key="login.login_placeholder" /></c:set>
+<c:set var="password_placeholder"><fmt:message key="login.password_placeholder" /></c:set>
+<c:set var="login"><fmt:message key="login.login" /></c:set>
 
 <html>
 <head>
@@ -13,23 +21,23 @@
             <div class="col-md-6 login-form">
                 <form class="needs-validation" method="post" action="/login" novalidate>
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control" placeholder="Login" name="login" required />
-                        <div class="invalid-feedback">This field is required</div>
+                        <input type="text" class="form-control" placeholder="${login_placeholder}" name="login" required />
+                        <div class="invalid-feedback"><fmt:message key="login.required" /></div>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password" required />
-                        <div class="invalid-feedback">This field is required</div>
+                        <input type="password" class="form-control" placeholder="${password_placeholder}" name="password" required />
+                        <div class="invalid-feedback"><fmt:message key="login.required" /></div>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="submit" class="btn-submit" value="Login" />
+                        <input type="submit" class="btn-submit" value="${login}" />
                     </div>
                     <c:if test="${not empty login_error}">
                         <div class="alert alert-danger" role="alert">
-                            <jsp:text>${login_error}</jsp:text>
+                            <fmt:message key="login.error" />
                         </div>
                     </c:if>
                     <div class="form-group">
-                        <a href="#" class="forget-pwd">Forgot Password?</a>
+                        <a href="#" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
                     </div>
                 </form>
             </div>

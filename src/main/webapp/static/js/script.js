@@ -6,8 +6,6 @@ $(document).ready(function () {
     configureFormValidation();
 });
 
-configureFormValidation();
-
 $(window).resize(function () {
     // adjustNav(); todo
 })
