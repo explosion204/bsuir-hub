@@ -16,9 +16,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.LOGIN_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOGIN;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PASSWORD;
@@ -52,11 +52,11 @@ public class LoginCommand implements Command {
                 result = new CommandResult(INDEX_URL, REDIRECT);
             } else {
                 request.setAttribute(LOGIN_ERROR, true);
-                result = new CommandResult(LOGIN_JSP, FORWARD);
+                result = new CommandResult(LOGIN_JSP, CommandResult.RouteType.FORWARD);
             }
         } catch (ServiceException e) {
             logger.error("An error occurred executing login command", e);
-            result = new CommandResult(ERROR_JSP, REDIRECT);
+            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
         return result;

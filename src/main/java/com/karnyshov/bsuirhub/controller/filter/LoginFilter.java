@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+
 @WebFilter(
         urlPatterns = "/login"
 )
@@ -21,10 +24,10 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
-        User user = (User) session.getAttribute(SessionAttribute.USER);
+        User user = (User) session.getAttribute(USER);
 
         if (user != null && user.getUserRole() != UserRole.GUEST) {
-            httpResponse.sendRedirect(ApplicationPath.INDEX_URL);
+            httpResponse.sendRedirect(INDEX_URL);
         } // TODO: 7/18/2021  
 
         chain.doFilter(request, response);

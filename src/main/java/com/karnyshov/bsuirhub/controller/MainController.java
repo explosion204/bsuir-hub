@@ -1,10 +1,6 @@
 package com.karnyshov.bsuirhub.controller;
 
-import com.karnyshov.bsuirhub.controller.command.Command;
-import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.CommandType;
-import com.karnyshov.bsuirhub.controller.command.RequestMethod;
-import com.karnyshov.bsuirhub.exception.CommandException;
+import com.karnyshov.bsuirhub.controller.command.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,9 +11,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUND_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 
 @WebServlet(
@@ -47,25 +44,30 @@ public class MainController extends HttpServlet {
         String url = (String) request.getAttribute(ORIGINAL_URL);
 
         List<String> commandParams = new ArrayList<>();
-        Command command = CommandType.parseCommand(url, method, commandParams);
-        CommandResult commandResult = command.execute(request, commandParams);
+        Optional<Command> command = CommandType.parseCommand(url, method, commandParams);
 
-        String resultDetail = commandResult.getDetail();
-        CommandResult.RouteType routeType = commandResult.getRouteType();
+        if (command.isPresent()) {
+            CommandResult commandResult = command.get().execute(request, commandParams);
 
-        switch (routeType) {
-            case FORWARD:
-                request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
-                break;
-            case REDIRECT:
-                response.sendRedirect(resultDetail);
-                break;
-            case JSON:
-                response.getWriter().write(resultDetail);
-                break;
-            default:
-                logger.error("Invalid route type: " + routeType.name());
-                // TODO: 7/12/2021 error pages & logs
+            String resultDetail = commandResult.getDetail();
+            CommandResult.RouteType routeType = commandResult.getRouteType();
+
+            switch (routeType) {
+                case FORWARD:
+                    request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
+                    break;
+                case REDIRECT:
+                    response.sendRedirect(resultDetail);
+                    break;
+                case JSON:
+                    response.getWriter().write(resultDetail);
+                    break;
+                default:
+                    logger.error("Invalid route type: " + routeType.name());
+                    // TODO: 7/12/2021 error pages & logs
+            }
+        } else {
+            response.sendRedirect(NOT_FOUND_ERROR_URL);
         }
     }
 
