@@ -64,7 +64,7 @@ public class MainController extends HttpServlet {
                     break;
                 default:
                     logger.error("Invalid route type: " + routeType.name());
-                    // TODO: 7/12/2021 error pages & logs
+                    response.sendRedirect(ApplicationPath.INTERNAL_SERVER_ERROR_URL);
             }
         } else {
             response.sendRedirect(NOT_FOUND_ERROR_URL);
