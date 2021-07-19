@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
@@ -31,7 +32,7 @@ public class LoginCommand implements Command {
     private UserService userService;
 
     @Override
-    public CommandResult execute(HttpServletRequest request, String ... urlParams) {
+    public CommandResult execute(HttpServletRequest request, List<String> commandParams) {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
 

@@ -14,7 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 
@@ -43,37 +45,27 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         RequestMethod method = RequestMethod.valueOf(request.getMethod());
         String url = (String) request.getAttribute(ORIGINAL_URL);
-        String[] queryParams = url.split(QUERY_PARAMS_DELIMITER);
-        String action = queryParams.length != 0
-                ? queryParams[1]
-                : EMPTY_ACTION;
-        String[] urlParams = queryParams.length != 0
-                ? Arrays.copyOfRange(queryParams, 2, queryParams.length)
-                : new String[0];
 
-        try {
-            Command command = CommandType.getCommand(action, method);
-            CommandResult commandResult = command.execute(request, urlParams);
+        List<String> commandParams = new ArrayList<>();
+        Command command = CommandType.parseCommand(url, method, commandParams);
+        CommandResult commandResult = command.execute(request, commandParams);
 
-            String resultDetail = commandResult.getDetail();
-            CommandResult.RouteType routeType = commandResult.getRouteType();
+        String resultDetail = commandResult.getDetail();
+        CommandResult.RouteType routeType = commandResult.getRouteType();
 
-            switch (routeType) {
-                case FORWARD:
-                    request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
-                    break;
-                case REDIRECT:
-                    response.sendRedirect(resultDetail);
-                    break;
-                case JSON:
-                    response.getWriter().write(resultDetail);
-                    break;
-                default:
-                    logger.error("Invalid route type: " + routeType.name());
-                    // TODO: 7/12/2021 error pages & logs
-            }
-        } catch (CommandException e) {
-            throw new RuntimeException(e); // TODO: 7/14/2021 remove RuntimeException and forward to error page & logs
+        switch (routeType) {
+            case FORWARD:
+                request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
+                break;
+            case REDIRECT:
+                response.sendRedirect(resultDetail);
+                break;
+            case JSON:
+                response.getWriter().write(resultDetail);
+                break;
+            default:
+                logger.error("Invalid route type: " + routeType.name());
+                // TODO: 7/12/2021 error pages & logs
         }
     }
 
