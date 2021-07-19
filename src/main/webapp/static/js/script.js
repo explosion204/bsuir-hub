@@ -1,14 +1,32 @@
 const LOCALE = 'locale';
 const DEFAULT_LOCALE = 'ru';
 
-$(document).ready(function () {
-    // adjustNav(); todo
+window.onload = function () {
     configureFormValidation();
-});
+    eventListeners();
+}
+
+// $(document).ready(function () {
+//     // adjustNav(); todo
+//     configureFormValidation();
+// });
 
 $(window).resize(function () {
     // adjustNav(); todo
 })
+
+function eventListeners() {
+    // $('#login-btn').submit(function () {
+    //    alert('kkk');
+    // });
+    // document.getElementById('login-btn').onsubmit = function () {
+    //     alert('kkk');
+    // }
+
+    document.forms.login.onsubmit = function () {
+        $('#login-btn').attr('disabled', 'disabled');
+    }
+}
 
 function adjustNav() {
     if ($(window).width() < 768) {

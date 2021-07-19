@@ -19,7 +19,7 @@
     <div class="container login-container mt-auto mb-auto">
         <div class="row justify-content-center">
             <div class="col-md-6 login-form">
-                <form class="needs-validation" method="post" action="/login" novalidate>
+                <form name="login" class="needs-validation" method="post" action="/login" novalidate>
                     <div class="form-group mb-3">
                         <input type="text" class="form-control" placeholder="${login_placeholder}" name="login" required />
                         <div class="invalid-feedback"><fmt:message key="login.required" /></div>
@@ -29,7 +29,7 @@
                         <div class="invalid-feedback"><fmt:message key="login.required" /></div>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="submit" class="btn-submit" value="${login}" />
+                        <input id="login-btn" type="submit" class="btn-submit" value="${login}" onsubmit="this.disabled = true;" />
                     </div>
                     <c:if test="${not empty login_error}">
                         <div class="alert alert-danger" role="alert">
