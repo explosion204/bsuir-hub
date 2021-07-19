@@ -30,7 +30,7 @@ public enum CommandType {
 
     private Set<Pattern> urlPatterns = new LinkedHashSet<>();
     private RequestMethod requestMethod;
-    Command command;
+    private Command command;
 
     CommandType(Class<? extends Command> commandClass, RequestMethod requestMethod, String ... urlPatterns) {
         command = CDI.current().select(commandClass).get();
