@@ -116,10 +116,11 @@ public class DatabaseConnectionPool {
 
             if (availableConnections.size() + busyConnections.size() < poolMaxSize) {
                 connection = ConnectionFactory.createConnection();
-            } else {
+            } else if (availableConnections.isEmpty()) {
                 hasAvailableConnections.await();
-                connection = availableConnections.remove();
             }
+
+            connection = availableConnections.remove();
 
             Instant usageStart = Instant.now();
             busyConnections.add(Pair.of(connection, usageStart));
