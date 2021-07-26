@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
@@ -28,11 +27,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 public class SaveUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONFIRMED_VALUE = "on";
-    private static final String EMPTY_EMAIL = "";
-    private static final String UNDERSCORE = "_";
-    private static final int FILE_UNIQUE_SEQUENCE_LENGTH = 8;
-    private static final String IMAGE_MIME_TYPE = "image/";
-    private static final String IMAGE_FILE_EXTENSION = ".jpg";
 
     @Inject
     private UserService userService;
@@ -56,6 +50,7 @@ public class SaveUserCommand implements Command {
         String patronymic = request.getParameter(PATRONYMIC);
         String lastName = request.getParameter(LAST_NAME);
         boolean confirmed = CONFIRMED_VALUE.equals(request.getParameter(CONFIRMED));
+        String profilePicturePath = request.getParameter(PROFILE_PICTURE_PATH);
 
         User user = User.builder()
                 .setLogin(login)
@@ -66,6 +61,7 @@ public class SaveUserCommand implements Command {
                 .setLastName(lastName)
                 // empty email -> always not confirmed
                 .setUserStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
+                .setProfilePicturePath(profilePicturePath)
                 .build();
 
         if (performValidation(request, user, idString, cachedEmail, cachedRole, password, confirmPassword)) {

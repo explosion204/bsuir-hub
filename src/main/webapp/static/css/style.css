@@ -9,6 +9,10 @@ footer {
     margin-top: auto;
 }
 
+img {
+    max-width: 100%;
+}
+
 /* Circled profile picture */
 .profile-picture-holder {
     border-radius: 50%;
@@ -18,6 +22,7 @@ footer {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    object-fit: none;
 }
 
 /* Changes caret in nav dropdown */

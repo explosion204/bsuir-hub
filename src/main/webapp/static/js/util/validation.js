@@ -19,3 +19,28 @@ function configureValidation(data) {
         })
     })
 }
+
+function isImage(file) {
+    let fileReader = new FileReader();
+    fileReader.onloadend = function (e) {
+        let array = (new Uint8Array(e.target.result)).subarray(0, 4);
+        let header = "";
+
+        for (let byte in array) {
+            header += byte.toString(16);
+        }
+
+        console.log(header);
+        switch (header) {
+            case "89504e47": // image/png
+            case "ffd8ffe0": // image/jpeg
+            case "ffd8ffe1":
+            case "ffd8ffe2":
+            case "ffd8ffe3":
+            case "ffd8ffe8":
+                return true;
+        }
+
+        return false;
+    }
+}

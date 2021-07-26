@@ -76,6 +76,4 @@ public class MainController extends HttpServlet {
             response.sendRedirect(NOT_FOUND_ERROR_URL);
         }
     }
-
-    // TODO: 7/15/2021 destroy pool in context listener
 }

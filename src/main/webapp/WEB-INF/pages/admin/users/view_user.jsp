@@ -20,19 +20,18 @@
             <h1 class="display-3">
                 <c:choose>
                     <c:when test="${new_entity_page}">
-                        <img src="/static/images/profile.jpg" class="rounded-circle">
-                        <!-- TODO: default picture -->
+                        <img src="/static/images/default_profile.jpg" class="rounded-circle">
                         New user
                     </c:when>
                     <c:otherwise>
                         <input hidden id="filePicker" name="profileImage" type="file">
                         <div id="uploadPicture" class="image-container">
-                            <img src="/static/images/profile/${target_user.profilePicturePath}" class="image rounded-circle">
+                            <img id="profileImage" src="/static/images/profile/${target_user.profilePicturePath}"
+                                 class="image rounded-circle">
                             <div class="overlay rounded-circle">
                                 <div class="image-text">Change profile picture</div>
                             </div>
                         </div>
-                        <!-- TODO: user picture -->
                         Edit user
                     </c:otherwise>
                 </c:choose>
@@ -178,6 +177,7 @@
                     <input type="file" name="profilePicture" class="form-control" accept=".jpg,.jpeg,.png"
                            id="pictureInput">
                 </div>
+                <input hidden type="text" name="profilePicturePath" value="${target_user.profilePicturePath}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <c:choose>
                         <c:when test="${target_user.userStatus.statusId eq 2}">

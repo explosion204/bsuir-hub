@@ -8,10 +8,10 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.UserDataValidator;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -69,19 +69,37 @@ public class UploadProfileImageCommand implements Command {
                     part.write(filePath);
                 }
 
-                User updatedTarget = User.builder()
-                        .of(target.get())
-                        .setProfilePicturePath(fileName)
-                        .build();
+                // validate file
+                boolean validationResult = UserDataValidator.validateProfileImage(filePath);
 
-                userService.update(updatedTarget);
+                if (validationResult) {
+                    // delete existing user profile image
+                    File currentProfileImage = new File(uploadPath + File.separator
+                            + target.get().getProfilePicturePath());
 
-                // success
-                // update target user session if exists
-                AuthenticatedSessionCollector.findSession(targetId).ifPresent(
-                        httpSession -> httpSession.setAttribute(USER, updatedTarget)
-                );
-                response.put(STATUS, true);
+                    if (currentProfileImage.exists()) {
+                        currentProfileImage.delete();
+                    }
+
+                    // update profile image path
+                    User updatedTarget = User.builder()
+                            .of(target.get())
+                            .setProfilePicturePath(fileName)
+                            .build();
+
+                    userService.update(updatedTarget);
+
+                    // success
+                    // update target user session if exists
+                    AuthenticatedSessionCollector.findSession(targetId).ifPresent(
+                            httpSession -> httpSession.setAttribute(USER, updatedTarget)
+                    );
+                } else {
+                    // delete file
+                    new File(filePath).delete();
+                }
+
+                response.put(STATUS, validationResult);
             } else {
                 logger.error("Invalid issuer (id = " + issuerId + ") or target (id = " + targetId + ")");
                 response.put(STATUS, false);

@@ -17,7 +17,7 @@
     right: 0;
     width: 150px;
     height: 150px;
-    opacity: 0;
+    opacity: 0.9;
     transition: .5s ease;
     background-color: #827e7e;
 }
