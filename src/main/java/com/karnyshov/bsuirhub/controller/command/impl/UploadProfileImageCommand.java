@@ -3,6 +3,7 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
+import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -10,6 +11,7 @@ import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,7 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.controller.command.AjaxAttributes.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.PROFILE_PICTURES_ROOT;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 public class UploadProfileImageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -72,7 +75,12 @@ public class UploadProfileImageCommand implements Command {
                         .build();
 
                 userService.update(updatedTarget);
-                // TODO: 7/26/2021 update session
+
+                // success
+                // update target user session if exists
+                AuthenticatedSessionCollector.findSession(targetId).ifPresent(
+                        httpSession -> httpSession.setAttribute(USER, updatedTarget)
+                );
                 response.put(STATUS, true);
             } else {
                 logger.error("Invalid issuer (id = " + issuerId + ") or target (id = " + targetId + ")");

@@ -354,9 +354,10 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
     }
 
     @Override
-    public void insert(User user) throws DaoException {
+    public long insert(User user) throws DaoException {
         Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
+
 
         try {
             connection = pool.acquireConnection();
@@ -373,6 +374,9 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
             statement.setString(10, user.getLastName());
             statement.setString(11, user.getProfilePicturePath());
             statement.execute();
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            return generatedKeys.next() ? generatedKeys.getLong(1) : 0;
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         } finally {

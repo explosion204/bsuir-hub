@@ -18,7 +18,7 @@ public interface UserService {
     boolean isLoginUnique(String login);
     boolean isEmailUnique(String email);
 
-    void create(User user, String password) throws ServiceException;
+    long create(User user, String password) throws ServiceException;
     void update(User user, String password) throws ServiceException;
     void update(User user) throws ServiceException;
     void delete(long id) throws ServiceException;

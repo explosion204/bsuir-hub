@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user, String password) throws ServiceException {
+    public long create(User user, String password) throws ServiceException {
         String salt = RandomStringUtils.random(SALT_LENGTH, true, true);
         String passwordHash = DigestUtils.sha256Hex(password + salt);
         user = User.builder()
@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         try {
-            userDao.insert(user);
+            return userDao.insert(user);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

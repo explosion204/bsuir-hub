@@ -23,7 +23,7 @@ public interface UserDao {
     void selectByLastName(int offset, int limit, String keyword, List<User> result) throws DaoException;
     long selectCountByLastName(String keyword) throws DaoException;
 
-    void insert(User user) throws DaoException; // TODO: 6/17/2021 return value
+    long insert(User user) throws DaoException; // TODO: 6/17/2021 return value
     void update(User user) throws DaoException;
     void delete(long id) throws DaoException;
 }

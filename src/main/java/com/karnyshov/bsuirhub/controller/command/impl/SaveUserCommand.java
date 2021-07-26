@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.controller.command.impl;
 
 import com.karnyshov.bsuirhub.controller.command.*;
+import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -15,14 +16,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.CACHED_EMAIL;
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.CACHED_ROLE;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
 public class SaveUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -70,18 +71,26 @@ public class SaveUserCommand implements Command {
         if (performValidation(request, user, idString, cachedEmail, cachedRole, password, confirmPassword)) {
             // data is valid
             try {
+                long entityId;
                 if (idString != null) {
                     // update user
+                    entityId = Long.parseLong(idString);
                     user = (User) User.builder()
                             .of(user)
-                            .setEntityId(Long.parseLong(idString))
+                            .setEntityId(entityId)
                             .build();
 
                     userService.update(user, password);
                 } else {
                     // create user
-                    userService.create(user, password);
+                    entityId = userService.create(user, password);
                 }
+
+                // success
+                // update target user session if exists
+                User updatedUser = user; // effectively final variable
+                AuthenticatedSessionCollector.findSession(entityId).ifPresent(
+                        targetSession -> targetSession.setAttribute(USER, updatedUser));
 
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);
             } catch (ServiceException | NumberFormatException e) {
