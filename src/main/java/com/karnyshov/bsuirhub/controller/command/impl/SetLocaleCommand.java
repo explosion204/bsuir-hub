@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.controller.command.RequestParameter;
 import com.karnyshov.bsuirhub.controller.command.SessionAttribute;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.List;
 
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 
@@ -14,7 +13,7 @@ public class SetLocaleCommand implements Command {
     private static final String JSON_RESULT = "";
 
     @Override
-    public CommandResult execute(HttpServletRequest request, List<String> commandParams) {
+    public CommandResult execute(HttpServletRequest request) {
         String locale = request.getParameter(RequestParameter.LOCALE);
         request.getSession().setAttribute(SessionAttribute.LOCALE, locale);
 

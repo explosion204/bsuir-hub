@@ -5,11 +5,10 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.command.ApplicationPath;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.List;
 
 public class GoToIndexPageCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request, List<String> commandParams) {
+    public CommandResult execute(HttpServletRequest request) {
         return new CommandResult(ApplicationPath.INDEX_JSP, CommandResult.RouteType.FORWARD);
     }
 }

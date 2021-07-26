@@ -93,6 +93,7 @@ public class Faculty extends AbstractEntity {
         }
 
         public FacultyBuilder of(Faculty faculty) {
+            super.of(faculty);
             this.name = faculty.name;
             this.shortName = faculty.shortName;
             this.archived = faculty.archived;

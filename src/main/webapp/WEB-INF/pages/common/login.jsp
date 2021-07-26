@@ -12,6 +12,8 @@
 <html>
 <head>
     <jsp:include page="shared/head.html" />
+    <script src="/static/js/util/validation.js"></script>
+    <script src="/static/js/common/login.js"></script>
 </head>
 <body>
     <jsp:include page="shared/header.jsp" />
@@ -19,7 +21,7 @@
     <div class="container login-container mt-auto mb-auto">
         <div class="row justify-content-center">
             <div class="col-md-6 login-form">
-                <form name="login" class="needs-validation" method="post" action="/login" novalidate>
+                <form id="login" class="needs-validation" method="post" action="/login" novalidate>
                     <div class="form-group mb-3">
                         <input type="text" class="form-control" placeholder="${login_placeholder}" name="login" required />
                         <div class="invalid-feedback"><fmt:message key="login.required" /></div>
@@ -30,9 +32,9 @@
                     </div>
                     <div class="form-group mb-3">
                         <!-- TODO button is disabled after submitting invalid data -->
-                        <input id="login-btn" type="submit" class="btn-submit" value="${login}" onsubmit="this.disabled = true;" />
+                        <input id="loginButton" type="submit" class="btn-submit" value="${login}" disabled />
                     </div>
-                    <c:if test="${not empty login_error}">
+                    <c:if test="${not empty auth_error}">
                         <div class="alert alert-danger" role="alert">
                             <fmt:message key="login.error" />
                         </div>

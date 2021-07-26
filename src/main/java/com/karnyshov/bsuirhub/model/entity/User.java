@@ -7,6 +7,7 @@ public class User extends AbstractEntity {
     private String salt;
     private UserRole userRole;
     private UserStatus userStatus;
+    private long groupId;
     private String firstName;
     private String patronymic;
     private String lastName;
@@ -20,6 +21,7 @@ public class User extends AbstractEntity {
         this.salt = builder.salt;
         this.userRole = builder.userRole;
         this.userStatus = builder.userStatus;
+        this.groupId = builder.groupId;
         this.firstName = builder.firstName;
         this.patronymic = builder.patronymic;
         this.lastName = builder.lastName;
@@ -52,6 +54,10 @@ public class User extends AbstractEntity {
 
     public UserStatus getUserStatus() {
         return userStatus;
+    }
+
+    public long getGroupId() {
+        return groupId;
     }
 
     public String getFirstName() {
@@ -93,6 +99,7 @@ public class User extends AbstractEntity {
         private String salt;
         private UserRole userRole;
         private UserStatus userStatus;
+        private long groupId;
         private String firstName;
         private String patronymic;
         private String lastName;
@@ -127,6 +134,11 @@ public class User extends AbstractEntity {
             return this;
         }
 
+        public UserBuilder setGroupId(long groupId) {
+            this.groupId = groupId;
+            return this;
+        }
+
         public UserBuilder setUserStatus(UserStatus userStatus) {
             this.userStatus = userStatus;
             return this;
@@ -153,12 +165,14 @@ public class User extends AbstractEntity {
         }
 
         public UserBuilder of(User user) {
+            super.of(user);
             this.login = user.login;
             this.email = user.email;
             this.passwordHash = user.passwordHash;
             this.salt = user.salt;
             this.userRole = user.userRole;
             this.userStatus = user.userStatus;
+            this.groupId = user.groupId;
             this.firstName = user.firstName;
             this.patronymic = user.patronymic;
             this.lastName = user.lastName;

@@ -7,8 +7,9 @@ public final class TableColumn {
     public static final String USER_EMAIL = "email";
     public static final String USER_PASSWORD_HASH = "password_hash";
     public static final String USER_SALT = "salt";
-    public static final String USER_ROLE = "role";
-    public static final String USER_STATUS = "status";
+    public static final String USER_ROLE_ID = "id_role";
+    public static final String USER_STATUS_ID = "id_status";
+    public static final String USER_GROUP_ID = "id_group";
     public static final String USER_FIRST_NAME = "first_name";
     public static final String USER_PATRONYMIC = "patronymic";
     public static final String USER_LAST_NAME = "last_name";

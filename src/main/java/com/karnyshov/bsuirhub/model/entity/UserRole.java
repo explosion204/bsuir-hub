@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Arrays;
+
 public enum UserRole {
     GUEST(0),
     STUDENT(1),
@@ -16,5 +18,14 @@ public enum UserRole {
         return roleId;
     }
 
+    public static UserRole parseRole(long roleId) {
+        return Arrays.stream(UserRole.values())
+                .filter(role -> role.roleId == roleId)
+                .findFirst()
+                .orElse(GUEST);
+    }
 
+    public static UserRole parseRole(String roleId) {
+        return parseRole(Long.parseLong(roleId));
+    }
 }

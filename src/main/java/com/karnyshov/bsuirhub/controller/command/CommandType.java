@@ -4,31 +4,33 @@ import com.karnyshov.bsuirhub.controller.command.impl.*;
 import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestMethod.*;
 
 public enum CommandType {
     /* AJAX AREA */
-    SET_LOCALE(SetLocaleCommand.class, POST,"/set_locale"),
+    // FIXME: 7/25/2021 api is exposed to everyone
+    SET_LOCALE(SetLocaleCommand.class, POST,"/api/set_locale"),
+    GET_USERS(GetUsersCommand.class, GET, "/api/get_users"),
+    UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/api/upload_profile_image"),
 
     /* COMMON AREA */
     GO_TO_INDEX_PAGE(GoToIndexPageCommand.class, GET, "/"),
-    GO_TO_LOGIN_PAGE(GoToLoginPageCommand.class, GET, "/login"),
+    GO_TO_LOGIN_PAGE(GoToLoginPageCommand.class, GET, "/login", "/login/"),
     GO_TO_NOT_FOUND_PAGE(GoToNotFoundPageCommand.class, GET, "/error/404"),
     GO_TO_INTERNAL_SERVER_ERROR_PAGE(GoToInternalErrorPage.class, GET, "/error/500"),
     LOGIN(LoginCommand.class, POST, "/login"),
-    LOGOUT(LogoutCommand.class, GET, "/logout"),
+    LOGOUT(LogoutCommand.class, GET, "/logout", "/logout/"),
 
     /* ADMIN AREA */
-    GO_TO_USERS_INDEX_ADMIN_PAGE(GoToAdminUsersPageCommand.class, GET, "/admin/users", "/admin");
-    // GO_TO_NEW_USER_ADMIN_PAGE(null, GET, "/admin/users/new"),  // TODO: 7/20/2021
-    // GO_TO_EDIT_USER_ADMIN_PAGE_COMMAND(null, GET, "/admin/users/(\\d{1,19})"), // TODO: 7/20/2021
-    // SAVE_USER(null, POST,"/admin/users/save"), // TODO: 7/20/2021
-    // DELETE_USER(null, GET, "/admin/users/delete/(\\d{1,19})"); // TODO: 7/20/2021
+    GO_TO_USERS_INDEX_PAGE(GoToUsersPageCommand.class, GET, "/admin/users", "/admin/users/", "/admin", "/admin/"),
+    GO_TO_NEW_USER_PAGE_COMMAND(GoToNewUserPageCommand.class, GET, "/admin/users/new", "/admin/users/new/"),
+    GO_TO_EDIT_USER_PAGE_COMMAND(GoToEditUserPageCommand.class, GET, "/admin/users/edit"),
+    SAVE_USER(SaveUserCommand.class, POST,"/admin/users/new", "/admin/users/edit"),
+    DELETE_USER(DeleteUserCommand.class, POST, "/admin/users/delete");
 
-    private Set<Pattern> urlPatterns = new LinkedHashSet<>();
+    private List<Pattern> urlPatterns = new ArrayList<>();
     private RequestMethod requestMethod;
     private Command command;
 
@@ -40,7 +42,7 @@ public enum CommandType {
         this.requestMethod = requestMethod;
     }
 
-    public static Optional<Command> parseCommand(String url, RequestMethod requestMethod, List<String> parsedParams) {
+    public static Optional<Command> getCommand(String url, RequestMethod requestMethod) {
         for (CommandType commandType : CommandType.values()) {
             Optional<Pattern> pattern = commandType.urlPatterns
                     .stream()
@@ -48,14 +50,6 @@ public enum CommandType {
                     .findFirst();
 
             if (pattern.isPresent()) {
-                Matcher matcher = pattern.get().matcher(url);
-
-                if (matcher.find()) {
-                    for (int i = 1; i <= matcher.groupCount(); i++) {
-                        parsedParams.add(matcher.group(i));
-                    }
-                }
-
                 return Optional.of(commandType.command);
             }
         }

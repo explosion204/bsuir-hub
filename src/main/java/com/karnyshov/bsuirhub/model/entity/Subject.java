@@ -56,6 +56,7 @@ public class Subject extends AbstractEntity {
         }
 
         public SubjectBuilder of(Subject subject) {
+            super.of(subject);
             this.name = subject.name;
             this.shortName = subject.shortName;
             return this;

@@ -1,7 +1,5 @@
 package com.karnyshov.bsuirhub.controller.filter;
 
-import com.karnyshov.bsuirhub.controller.command.ApplicationPath;
-import com.karnyshov.bsuirhub.controller.command.SessionAttribute;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import jakarta.servlet.*;

@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Arrays;
+
 public enum UserStatus {
     NOT_CONFIRMED(1),
     CONFIRMED(2),
@@ -13,5 +15,12 @@ public enum UserStatus {
 
     public long getStatusId() {
         return statusId;
+    }
+
+    public static UserStatus parseStatus(long statusId) {
+        return Arrays.stream(UserStatus.values())
+                .filter(status -> status.statusId == statusId)
+                .findFirst()
+                .orElse(NOT_CONFIRMED);
     }
 }

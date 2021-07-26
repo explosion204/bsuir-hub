@@ -105,6 +105,7 @@ public class Group extends AbstractEntity {
         }
 
         public GroupBuilder of(Group group) {
+            super.of(group);
             this.departmentId = group.departmentId;
             this.headmanId = group.headmanId;
             this.curatorId = group.curatorId;

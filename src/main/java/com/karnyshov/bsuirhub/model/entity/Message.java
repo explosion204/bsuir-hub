@@ -83,6 +83,7 @@ public class Message extends AbstractEntity {
         }
 
         public MessageBuilder of(Message message) {
+            super.of(message);
             this.value = message.value;
             this.senderId = message.senderId;
             this.receiverId = message.receiverId;

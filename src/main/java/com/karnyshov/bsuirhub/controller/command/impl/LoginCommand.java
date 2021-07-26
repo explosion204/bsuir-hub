@@ -13,13 +13,12 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.LOGIN_ERROR;
+import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.AUTH_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOGIN;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PASSWORD;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
@@ -32,7 +31,7 @@ public class LoginCommand implements Command {
     private UserService userService;
 
     @Override
-    public CommandResult execute(HttpServletRequest request, List<String> commandParams) {
+    public CommandResult execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
 
@@ -51,8 +50,8 @@ public class LoginCommand implements Command {
                 session.setAttribute(USER, user.get());
                 result = new CommandResult(INDEX_URL, REDIRECT);
             } else {
-                request.setAttribute(LOGIN_ERROR, true);
-                result = new CommandResult(LOGIN_JSP, CommandResult.RouteType.FORWARD);
+                request.setAttribute(AUTH_ERROR, true);
+                result = new CommandResult(LOGIN_JSP, FORWARD);
             }
         } catch (ServiceException e) {
             logger.error("An error occurred executing login command", e);

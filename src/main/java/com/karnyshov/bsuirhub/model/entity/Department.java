@@ -92,6 +92,7 @@ public class Department extends AbstractEntity {
         }
 
         public DepartmentBuilder of(Department department) {
+            super.of(department);
             this.name = department.name;
             this.shortName = department.shortName;
             this.archived = department.archived;

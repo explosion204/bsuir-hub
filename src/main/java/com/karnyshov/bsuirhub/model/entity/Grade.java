@@ -145,6 +145,7 @@ public class Grade extends AbstractEntity {
         }
 
         public GradeBuilder of(Grade grade) {
+            super.of(grade);
             this.value = grade.value;
             this.isExam = grade.isExam;
             this.teacherId = grade.teacherId;

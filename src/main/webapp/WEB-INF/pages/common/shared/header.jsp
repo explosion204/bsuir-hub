@@ -46,7 +46,7 @@
                                         <jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text>
                                     </b></p>
                                     <p class="profile-picture-holder ms-auto mt-auto mb-auto">
-                                        <img src="/static/images/profile.jpg">
+                                        <img src="/static/images/profile/${sessionScope.user.profilePicturePath}">
                                     </p>
                                     <i class="fas fa-chevron-down ms-2 me-2"></i>
                                 </a>

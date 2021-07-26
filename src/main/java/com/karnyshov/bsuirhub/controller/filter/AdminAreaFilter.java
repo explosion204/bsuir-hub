@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebFilter(
         urlPatterns = "/admin/*"
-)
+) // TODO: 7/20/2021 enable filter
 public class AdminAreaFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -23,7 +23,7 @@ public class AdminAreaFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
 
-        if (user != null && user.getUserRole() != UserRole.ADMIN) {
+        if (user == null || user.getUserRole() != UserRole.ADMIN) {
             httpResponse.sendRedirect(ApplicationPath.NOT_FOUND_ERROR_URL);
         }
 
