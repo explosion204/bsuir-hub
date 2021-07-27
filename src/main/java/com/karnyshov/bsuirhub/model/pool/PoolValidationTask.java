@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Queue;
 import java.util.TimerTask;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.locks.Lock;
 
 class PoolValidationTask extends TimerTask {

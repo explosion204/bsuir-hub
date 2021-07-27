@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxAttributes.*;
+import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PAGINATION_LENGTH;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PAGINATION_START;
@@ -49,8 +49,8 @@ public class GetUsersCommand implements Command {
                 }
                 
                 response.put(STATUS, true);
-            } catch (ServiceException | NumberFormatException e) {
-                logger.error("An error occurred executing get_users command", e);
+            } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
+                logger.error("An error occurred executing 'get users' command", e);
                 response.put(STATUS, false);
             }
 

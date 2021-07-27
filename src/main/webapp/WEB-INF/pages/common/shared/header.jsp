@@ -53,7 +53,7 @@
 
                                 <ul class="dropdown-menu" aria-labelledby="accountDropdownMenu">
                                     <li><a href="#" class="dropdown-item"><fmt:message key="header.profile" /></a></li>
-                                    <li><a href="#" class="dropdown-item"><fmt:message key="header.settings" /></a></li>
+                                    <li><a href="/settings" class="dropdown-item"><fmt:message key="header.settings" /></a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a href="/logout" class="dropdown-item"><fmt:message key="header.logout" /></a></li>
                                 </ul>

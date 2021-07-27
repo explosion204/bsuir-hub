@@ -361,7 +361,7 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
 
         try {
             connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(INSERT);
+            PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPasswordHash());

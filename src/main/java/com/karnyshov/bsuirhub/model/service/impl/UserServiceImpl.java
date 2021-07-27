@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         try {
             int offset = 0;
             int limit = 1;
-            userDao.selectByLogin(0, 1, login, result);
+            userDao.selectByLogin(offset, limit, login, result);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -121,8 +121,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changePassword(long id, String newPassword) throws ServiceException {
+        try {
+            User user = userDao.selectById(id)
+                    .orElseThrow(() -> new ServiceException("Unable to find user with id " + id));
+
+            String salt = RandomStringUtils.random(SALT_LENGTH, true, true);
+            String passwordHash = DigestUtils.sha256Hex(newPassword + salt);
+
+            User updatedUser = User.builder().of(user)
+                    .setPasswordHash(passwordHash)
+                    .setSalt(salt)
+                    .build();
+
+            userDao.update(updatedUser);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public boolean isLoginUnique(String login) {
-        Optional<User> user;
+        Optional<User> user; // TODO: 7/27/2021 caching
 
         try {
             user = userDao.selectByLogin(login);
@@ -136,7 +156,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailUnique(String email) {
-        Optional<User> user;
+        Optional<User> user; // TODO: 7/27/2021 caching
 
         try {
             user = userDao.selectByEmail(email);

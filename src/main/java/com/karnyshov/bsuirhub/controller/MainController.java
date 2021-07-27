@@ -18,7 +18,7 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUN
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 
 @WebServlet(
-        urlPatterns = { "/main" }
+        urlPatterns = { "/controller" }
 )
 @MultipartConfig(
         fileSizeThreshold = 1024, // 1 kb
@@ -50,7 +50,7 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         RequestMethod method = RequestMethod.valueOf(request.getMethod());
         String url = (String) request.getAttribute(ORIGINAL_URL);
-        Optional<Command> command = CommandType.getCommand(url, method);
+        Optional<Command> command = CommandProvider.getCommand(url, method);
 
         if (command.isPresent()) {
             CommandResult commandResult = command.get().execute(request);

@@ -16,12 +16,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.AUTH_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOGIN;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PASSWORD;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.AUTH_ERROR;
 
 
 public class LoginCommand implements Command {
@@ -50,11 +49,11 @@ public class LoginCommand implements Command {
                 session.setAttribute(USER, user.get());
                 result = new CommandResult(INDEX_URL, REDIRECT);
             } else {
-                request.setAttribute(AUTH_ERROR, true);
-                result = new CommandResult(LOGIN_JSP, FORWARD);
+                session.setAttribute(AUTH_ERROR, true);
+                result = new CommandResult(LOGIN_URL, REDIRECT);
             }
         } catch (ServiceException e) {
-            logger.error("An error occurred executing login command", e);
+            logger.error("An error occurred executing 'login' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 

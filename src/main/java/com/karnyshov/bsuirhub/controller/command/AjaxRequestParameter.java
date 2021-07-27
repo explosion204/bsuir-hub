@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-public class AjaxAttributes {
+public class AjaxRequestParameter {
     public static final String STATUS = "status";
     public static final String REQUEST_TYPE = "requestType";
 
@@ -11,10 +11,9 @@ public class AjaxAttributes {
     public static final String SEARCH_VALUE = "search[value]";
     public static final String FILTER_CRITERIA = "filterCriteria";
 
-    public static final String ISSUER_ID = "issuerId";
     public static final String TARGET_ID = "targetId";
 
-    private AjaxAttributes() {
+    private AjaxRequestParameter() {
 
     }
 }

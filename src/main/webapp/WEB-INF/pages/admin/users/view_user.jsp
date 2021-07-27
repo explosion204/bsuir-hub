@@ -4,7 +4,10 @@
 <html>
 <head>
     <jsp:include page="../shared/head.html" />
+    <link href="/static/css/profile_image.css" rel="stylesheet">
+    <script src="/static/lib/imageTools/imageTools.js"></script>
     <script src="/static/js/util/validation.js"></script>
+    <script src="/static/js/util/upload.js"></script>
     <script src="/static/js/admin/users/view_user.js"></script>
 </head>
 <body>
@@ -13,7 +16,6 @@
 
     <!-- for AJAX purposes -->
     <input hidden id="targetId" value="${id}">
-    <input hidden id="issuerId" value="${sessionScope.user.entityId}">
 
     <div class="admin-main-area w-100 h-auto">
         <div class="container">
@@ -43,9 +45,25 @@
                 <form id="userForm" action="/admin/users/new" method="post" enctype="multipart/form-data">
             </c:when>
             <c:otherwise>
-                <form id="userForm" action="/admin/users/edit?id=${id}" method="post" enctype="multipart/form-data">
+                <form id="userForm" action="/admin/users/edit" method="post" enctype="multipart/form-data">
             </c:otherwise>
         </c:choose>
+                <c:if test="${success}">
+                    <div class="alert alert-success" role="alert">
+                        User successfully updated
+                    </div>
+                </c:if>
+
+                <c:if test="${invalid_login}">
+                    <div class="alert alert-danger" role="alert">
+                        Invalid login
+                    </div>
+                </c:if>
+                <c:if test="${not_unique_login}">
+                    <div class="alert alert-danger" role="alert">
+                        Not unique login
+                    </div>
+                </c:if>
                 <c:if test="${invalid_email}">
                     <div class="alert alert-danger" role="alert">
                         Invalid email
@@ -87,6 +105,7 @@
                     </div>
                 </c:if>
 
+                <input hidden type="text" name="id" value="${target_user.entityId}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="loginInput">Login</label>
                     <input type="text" name="login" class="form-control" pattern="[0-9a-zA-Z]{8,20}"
@@ -171,11 +190,6 @@
                     <div class="invalid-feedback">
                         Last name must have 1 - 50 alphabetic characters
                     </div>
-                </div>
-                <div class="form-group me-5 ms-5 mb-2">
-                    <label for="pictureInput">Profile picture</label>
-                    <input type="file" name="profilePicture" class="form-control" accept=".jpg,.jpeg,.png"
-                           id="pictureInput">
                 </div>
                 <input hidden type="text" name="profilePicturePath" value="${target_user.profilePicturePath}">
                 <div class="form-group me-5 ms-5 mb-2">

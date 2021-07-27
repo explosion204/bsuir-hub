@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
+import com.karnyshov.bsuirhub.controller.validator.DataValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.validator.UserDataValidator;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxAttributes.*;
+import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.PROFILE_PICTURES_ROOT;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
@@ -38,12 +38,16 @@ public class UploadProfileImageCommand implements Command {
     @Inject
     private UserService userService;
 
+    @Inject
+    private DataValidator validator;
+
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            long issuerId = Long.parseLong(request.getParameter(ISSUER_ID));
+            User user = (User) request.getSession().getAttribute(USER);
+            long issuerId = user.getEntityId();
             long targetId = Long.parseLong(request.getParameter(TARGET_ID));
 
             String uploadPath = request.getServletContext().getRealPath(PROFILE_PICTURES_ROOT);
@@ -70,7 +74,7 @@ public class UploadProfileImageCommand implements Command {
                 }
 
                 // validate file
-                boolean validationResult = UserDataValidator.validateProfileImage(filePath);
+                boolean validationResult = validator.validateProfileImage(filePath);
 
                 if (validationResult) {
                     // delete existing user profile image
@@ -104,7 +108,7 @@ public class UploadProfileImageCommand implements Command {
                 logger.error("Invalid issuer (id = " + issuerId + ") or target (id = " + targetId + ")");
                 response.put(STATUS, false);
             }
-        } catch (NumberFormatException | ServiceException | IOException | ServletException e) {
+        } catch (NumberFormatException | ServiceException | IOException | ServletException | NullPointerException e) {
             logger.error("An error occurred executing 'upload profile image' command", e);
             response.put(STATUS, false);
         }

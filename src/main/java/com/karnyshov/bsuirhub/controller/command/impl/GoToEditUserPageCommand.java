@@ -21,8 +21,7 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENT
 
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_USER;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.CACHED_EMAIL;
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.CACHED_ROLE;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
 public class GoToEditUserPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

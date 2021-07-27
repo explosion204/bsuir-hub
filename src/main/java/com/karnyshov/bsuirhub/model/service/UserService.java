@@ -15,6 +15,8 @@ public interface UserService {
     long filter(int page, int pageSize, UserFilterCriteria criteria, String keyword, List<User> result) throws ServiceException;
     long filter(int page, int pageSize, List<User> result) throws ServiceException;
 
+    void changePassword(long id, String newPassword) throws ServiceException;
+
     boolean isLoginUnique(String login);
     boolean isEmailUnique(String email);
 
