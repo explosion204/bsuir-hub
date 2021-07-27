@@ -1,0 +1,37 @@
+.login-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.login-form {
+    padding: 5%;
+}
+
+.login-container form {
+    padding: 10%;
+}
+
+.btn-submit {
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+}
+
+.login-form .btn-submit {
+    font-weight: 600;
+    color: #fff;
+    background-color: #827e7e;
+}
+
+.login-form .forget-pwd {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    box-shadow: none;
+}

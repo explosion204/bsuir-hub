@@ -1,0 +1,48 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Circled profile picture */
+.profile-picture-holder {
+    border-radius: 50%;
+    height: 2.5em;
+    width: 2.5em;
+    overflow: hidden;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: none;
+}
+
+/* Changes caret in nav dropdown */
+.dropdown-toggle.dropdown-plus::after {
+    display: none;
+}
+
+.emphasized-nav-item {
+    border: #e9ecef 1px solid;
+    border-radius: 5px;
+}
+
+.emphasized-nav-item:hover {
+    background-color: #e9ecef;
+}
+
+.emphasized-logo-text {
+    background-color: #9c1510;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 10%;
+}
+
