@@ -20,6 +20,12 @@ dependencies {
     implementation group: 'org.apache.tika', name: 'tika-core', version: '2.0.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-gson:0.11.2'
+
+
+
 
     implementation group: 'io.undertow', name: 'undertow-core', version: '2.2.9.Final'
     compileOnly group: 'jakarta.platform', name: 'jakarta.jakartaee-api', version: '9.1.0'

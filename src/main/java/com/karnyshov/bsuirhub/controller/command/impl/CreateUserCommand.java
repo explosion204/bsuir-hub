@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,11 +18,12 @@ import org.apache.logging.log4j.Logger;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PROFILE_PICTURE_PATH;
 
+@Named
 public class CreateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONFIRMED_VALUE = "on";
+    private static final String DEFAULT_PROFILE_IMAGE_PATH = "default_profile.jpg";
 
     @Inject
     private UserService userService;
@@ -42,7 +44,6 @@ public class CreateUserCommand implements Command {
         String patronymic = request.getParameter(PATRONYMIC);
         String lastName = request.getParameter(LAST_NAME);
         boolean confirmed = CONFIRMED_VALUE.equals(request.getParameter(CONFIRMED));
-        String profilePicturePath = request.getParameter(PROFILE_PICTURE_PATH);
 
         User user = User.builder()
                 .setLogin(login)
@@ -53,7 +54,7 @@ public class CreateUserCommand implements Command {
                 .setLastName(lastName)
                 // empty email -> always not confirmed
                 .setUserStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
-                .setProfilePicturePath(profilePicturePath)
+                .setProfilePicturePath(DEFAULT_PROFILE_IMAGE_PATH)
                 .build();
 
         if (validator.validateUser(request, user, password, confirmPassword)) {

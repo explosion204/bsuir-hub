@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,7 +25,6 @@ import java.util.regex.Pattern;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 
 @Named
-@Singleton
 public class DataValidator {
     private static final Logger logger = LogManager.getLogger();
 
@@ -170,6 +168,23 @@ public class DataValidator {
                 || StringUtils.equals(password, confirmPassword);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(PASSWORDS_DO_NOT_MATCH, !minorValidationResult);
+
+        return mainValidationResult;
+    }
+
+    public boolean validateEmail(HttpServletRequest request, String email) {
+        HttpSession session = request.getSession();
+
+        boolean mainValidationResult;
+        boolean minorValidationResult;
+
+        minorValidationResult = StringUtils.isBlank(email) || Pattern.matches(VALID_EMAIL_REGEX, email);
+        mainValidationResult = minorValidationResult;
+        session.setAttribute(INVALID_EMAIL, !minorValidationResult);
+
+        minorValidationResult = StringUtils.isBlank(email) || userService.isEmailUnique(email);
+        mainValidationResult &= minorValidationResult;
+        session.setAttribute(NOT_UNIQUE_EMAIL, !minorValidationResult);
 
         return mainValidationResult;
     }

@@ -2,8 +2,9 @@ $(document).ready(function () {
     const INITIAL_EMAIL = "initialEmail";
 
     configureValidation([['emailForm', 'changeEmailButton'], ['passwordForm', 'changePasswordButton']]);
-    $('#profileImage').on('error', function () {
-        this.src = '/static/images/default_profile.jpg';
+
+    $('#emailForm').submit(function () {
+        $('#changeEmailButton').attr('disabled', true);
     });
 
     let emailInput = $('#emailInput');

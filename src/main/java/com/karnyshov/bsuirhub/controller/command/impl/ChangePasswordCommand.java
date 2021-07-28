@@ -7,17 +7,19 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_CHANGE_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL_SERVER_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.SETTINGS_URL;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
+@Named
 public class ChangePasswordCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
@@ -42,7 +44,7 @@ public class ChangePasswordCommand implements Command {
             if (validator.validatePasswordChange(request, targetId, currentPassword, password, confirmPassword)) {
                 // data is valid
                 userService.changePassword(targetId, password);
-                request.getSession().setAttribute(SUCCESS, true);
+                request.getSession().setAttribute(PASSWORD_CHANGE_SUCCESS, true);
             }
 
             result = new CommandResult(SETTINGS_URL, REDIRECT);

@@ -4,11 +4,11 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.entity.User;
+import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 
 @Named
-@Singleton // TODO: 7/23/2021 check singleton
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
     private static final int SALT_LENGTH = 16;
@@ -121,7 +120,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(long id, String newPassword) throws ServiceException {
+    public User changePassword(long id, String newPassword) throws ServiceException {
         try {
             User user = userDao.selectById(id)
                     .orElseThrow(() -> new ServiceException("Unable to find user with id " + id));
@@ -135,6 +134,25 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             userDao.update(updatedUser);
+            return updatedUser;
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public User changeEmail(long id, String newEmail) throws ServiceException {
+        try {
+            User user = userDao.selectById(id)
+                    .orElseThrow(() -> new ServiceException("Unable to find user with id " + id));
+
+            User updatedUser = User.builder().of(user)
+                    .setEmail(newEmail)
+                    .setUserStatus(UserStatus.NOT_CONFIRMED)
+                    .build();
+
+            userDao.update(updatedUser);
+            return updatedUser;
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

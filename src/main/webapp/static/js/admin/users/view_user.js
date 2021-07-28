@@ -16,10 +16,6 @@ $(document).ready(function () {
         );
     })
 
-    $('#profileImage').on('error', function () {
-        this.src = '/static/images/default_profile.jpg';
-    });
-
     $('#uploadPicture').click(function () {
        $('#filePicker').trigger('click');
     });

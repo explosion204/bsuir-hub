@@ -24,6 +24,8 @@ public enum CommandProvider {
     LOGIN(LoginCommand.class, POST, "/login"),
     LOGOUT(LogoutCommand.class, GET, "/logout", "/logout/"),
     CHANGE_PASSWORD(ChangePasswordCommand.class, POST, "/settings/change_password"),
+    CHANGE_EMAIL(ChangeEmailCommand.class, POST, "/settings/change_email"),
+    CONFIRM_EMAIL(ConfirmEmailCommand.class, GET, "/confirm_email"),
 
     /* ADMIN AREA */
     GO_TO_USERS_INDEX_PAGE(GoToUsersPageCommand.class, GET, "/admin/users", "/admin/users/", "/admin", "/admin/"),

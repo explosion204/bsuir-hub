@@ -28,7 +28,26 @@
             </div>
         </div>
 
-        <form id="emailForm">
+        <c:if test="${email_change_success}">
+            <div class="alert alert-success mt-2" role="alert">
+                Confirmation email sent
+            </div>
+        </c:if>
+
+
+        <c:if test="${invalid_email}">
+            <div class="alert alert-danger" role="alert">
+                Invalid email
+            </div>
+        </c:if>
+
+        <c:if test="${not_unique_email}">
+            <div class="alert alert-danger" role="alert">
+                Not unique email
+            </div>
+        </c:if>
+
+        <form id="emailForm" method="post" action="/settings/change_email">
             <div class="form-group mb-2 mt-2">
                 <label for="emailInput">Email
                     <c:choose>
@@ -41,7 +60,7 @@
                     </c:choose>
                 </label>
                 <input type="email" name="email" class="bg-light form-control" maxlength="50" id="emailInput"
-                        value="${sessionScope.user.email}">
+                        value="${sessionScope.user.email}" required>
                 <div class="invalid-feedback">
                     Invalid email
                 </div>
@@ -51,7 +70,7 @@
             </div>
         </form>
 
-        <c:if test="${success}">
+        <c:if test="${password_change_success}">
             <div class="alert alert-success mt-2" role="alert">
                 Password successfully changed
             </div>
@@ -60,6 +79,18 @@
         <c:if test="${invalid_current_password}">
             <div class="alert alert-danger mt-2" role="alert">
                 Invalid current password
+            </div>
+        </c:if>
+
+        <c:if test="${invalid_password}">
+            <div class="alert alert-danger" role="alert">
+                Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
+            </div>
+        </c:if>
+
+        <c:if test="${passwords_do_not_match}">
+            <div class="alert alert-danger" role="alert">
+                Passwords do not match
             </div>
         </c:if>
 

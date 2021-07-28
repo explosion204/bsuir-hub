@@ -3,9 +3,10 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.command.ApplicationPath;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
-
+@Named
 public class GoToIndexPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {

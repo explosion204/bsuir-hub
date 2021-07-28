@@ -48,7 +48,7 @@
                 <form id="userForm" action="/admin/users/edit" method="post" enctype="multipart/form-data">
             </c:otherwise>
         </c:choose>
-                <c:if test="${success}">
+                <c:if test="${entity_update_success}">
                     <div class="alert alert-success" role="alert">
                         User successfully updated
                     </div>

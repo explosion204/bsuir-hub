@@ -7,6 +7,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,7 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
+@Named
 public class DeleteUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

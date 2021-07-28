@@ -38,7 +38,7 @@
                     </li>
 
                     <c:choose>
-                        <c:when test="${sessionScope.user.userRole.name() ne 'GUEST'}">
+                        <c:when test="${sessionScope.user.userRole.roleId ne 0}">
                             <li class="nav-item emphasized-nav-item dropdown me-3">
                                 <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
                                    id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +46,7 @@
                                         <jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text>
                                     </b></p>
                                     <p class="profile-picture-holder ms-auto mt-auto mb-auto">
-                                        <img src="/static/images/profile/${sessionScope.user.profilePicturePath}">
+                                        <img id="profileImage" src="/static/images/profile/${sessionScope.user.profilePicturePath}">
                                     </p>
                                     <i class="fas fa-chevron-down ms-2 me-2"></i>
                                 </a>

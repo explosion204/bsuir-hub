@@ -34,8 +34,14 @@ public class UrlFilter implements Filter {
         HttpSession session = request.getSession();
 
         // operation success
-        request.setAttribute(SUCCESS, session.getAttribute(SUCCESS));
-        session.removeAttribute(SUCCESS);
+        request.setAttribute(ENTITY_UPDATE_SUCCESS, session.getAttribute(ENTITY_UPDATE_SUCCESS));
+        request.setAttribute(EMAIL_CHANGE_SUCCESS, session.getAttribute(EMAIL_CHANGE_SUCCESS));
+        request.setAttribute(PASSWORD_CHANGE_SUCCESS, session.getAttribute(PASSWORD_CHANGE_SUCCESS));
+        request.setAttribute(EMAIL_CONFIRMATION_SUCCESS, session.getAttribute(EMAIL_CONFIRMATION_SUCCESS));
+
+        session.removeAttribute(ENTITY_UPDATE_SUCCESS);
+        session.removeAttribute(EMAIL_CHANGE_SUCCESS);
+        session.removeAttribute(PASSWORD_CHANGE_SUCCESS);
 
         // auth error
         request.setAttribute(AUTH_ERROR, session.getAttribute(AUTH_ERROR));

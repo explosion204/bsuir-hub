@@ -5,6 +5,7 @@ public class ApplicationPath {
     public static final String INDEX_URL = "/";
     public static final String LOGIN_URL = "/login";
     public static final String SETTINGS_URL = "/settings";
+    public static final String CONFIRM_EMAIL_URL = "/confirm_email?token=";
     public static final String ADMIN_USERS_URL = "/admin/users";
     public static final String ADMIN_NEW_USER_URL = "/admin/users/new";
     public static final String ADMIN_EDIT_USER_URL = "/admin/users/edit?id=";

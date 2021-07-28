@@ -10,22 +10,25 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PROFILE_PICTURE_PATH;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
+@Named
 public class UpdateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONFIRMED_VALUE = "on";
+    private static final String DEFAULT_PROFILE_IMAGE_PATH = "default_profile.jpg";
 
     @Inject
     private UserService userService;
@@ -60,8 +63,8 @@ public class UpdateUserCommand implements Command {
                 .setPatronymic(patronymic)
                 .setLastName(lastName)
                 // empty email -> always not confirmed
-                .setUserStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
-                .setProfilePicturePath(profilePicturePath)
+                .setUserStatus(confirmed && StringUtils.isNotBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
+                .setProfilePicturePath(StringUtils.isNotBlank(profilePicturePath) ? profilePicturePath : DEFAULT_PROFILE_IMAGE_PATH)
                 .build();
 
         if (validator.validateUser(request, user, idString, cachedEmail, cachedRole, password, confirmPassword)) {
@@ -77,10 +80,12 @@ public class UpdateUserCommand implements Command {
 
                 // success
                 // update target user session if exists
+                // this command can be executed only by administrator, so we have to update session this way
+                // because it belongs to another user
                 AuthenticatedSessionCollector.findSession(entityId).ifPresent(
                         targetSession -> targetSession.setAttribute(USER, updatedUser));
 
-                session.setAttribute(SUCCESS, true);
+                session.setAttribute(ENTITY_UPDATE_SUCCESS, true);
                 result = new CommandResult(ADMIN_EDIT_USER_URL + idString, REDIRECT);
             } catch (ServiceException | NumberFormatException e) {
                 logger.error("An error occurred executing 'update user' command", e);

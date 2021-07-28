@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 
 import java.sql.*;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 
 @Named
-@Singleton
 public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
     private static final String SELECT_ALL
             = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +

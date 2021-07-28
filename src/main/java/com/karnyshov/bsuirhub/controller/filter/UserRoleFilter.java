@@ -12,7 +12,7 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.GUEST;
 
 @WebFilter(
-        urlPatterns = "/main",
+        urlPatterns = "/controller",
         dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD }
 )
 public class UserRoleFilter implements Filter {
