@@ -6,10 +6,15 @@ import com.karnyshov.bsuirhub.model.entity.Department;
 import java.util.List;
 import java.util.Optional;
 
-public interface DepartmentDao {
-    List<Department> selectAll() throws DaoException;
+public interface DepartmentDao extends BaseDao<Department> {
     Optional<Department> selectById(long id) throws DaoException;
-    List<Department> selectByFaculty(long facultyId) throws DaoException;
-    void insert(Department department) throws DaoException;
-    void update(Department department) throws DaoException;
+
+    void selectByName(int offset, int limit, String keyword, List<Department> result) throws DaoException;
+    long selectCountByName(String keyword);
+
+    void selectByShortName(int offset, int limit, String keyword, List<Department> result) throws DaoException;
+    long selectCountByShortName(String keyword);
+
+    void selectByFaculty(int offset, int limit, long facultyId, List<Department> result) throws DaoException;
+    void selectCountByFaculty(long facultyId) throws DaoException;
 }

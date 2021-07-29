@@ -6,11 +6,7 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 import java.util.List;
 import java.util.Optional;
 
-public interface SubjectDao {
-     // List<Subject> selectAll() throws DaoException;
-     Optional<Subject> selectById(long id) throws DaoException;
-     List<Subject> selectByDepartment(long departmentId) throws DaoException;
-     List<Subject> selectByName(String keyword) throws DaoException;
-     void insert(Subject subject) throws DaoException;
-     void update(Subject subject) throws DaoException;
+public interface SubjectDao extends BaseDao<Subject> {
+     void selectByName(int offset, int limit, String keyword, List<Subject> result) throws DaoException;
+     long selectCountByName(String keyword) throws DaoException;
 }

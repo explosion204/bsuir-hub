@@ -24,9 +24,6 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-gson:0.11.2'
 
-
-
-
     implementation group: 'io.undertow', name: 'undertow-core', version: '2.2.9.Final'
     compileOnly group: 'jakarta.platform', name: 'jakarta.jakartaee-api', version: '9.1.0'
     implementation group: 'jstl', name: 'jstl', version: '1.2'

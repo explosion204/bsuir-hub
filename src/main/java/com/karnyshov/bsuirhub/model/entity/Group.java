@@ -4,7 +4,7 @@ public class Group extends AbstractEntity {
     private long departmentId;
     private long headmanId;
     private long curatorId;
-    private String groupNumber;
+    private String groupName;
     private int course;
     boolean archived;
 
@@ -13,7 +13,7 @@ public class Group extends AbstractEntity {
         this.departmentId = builder.departmentId;
         this.headmanId = builder.headmanId;
         this.curatorId = builder.curatorId;
-        this.groupNumber = builder.groupNumber;
+        this.groupName = builder.groupName;
         this.course = builder.course;
         this.archived = builder.archived;
     }
@@ -51,8 +51,8 @@ public class Group extends AbstractEntity {
         return curatorId;
     }
 
-    public String getGroupNumber() {
-        return groupNumber;
+    public String getGroupName() {
+        return groupName;
     }
 
     public int getCourse() {
@@ -67,7 +67,7 @@ public class Group extends AbstractEntity {
         private long departmentId;
         private long headmanId;
         private long curatorId;
-        private String groupNumber;
+        private String groupName;
         private int course;
         private boolean archived;
 
@@ -89,8 +89,8 @@ public class Group extends AbstractEntity {
             return this;
         }
 
-        public GroupBuilder setGroupNumber(String groupNumber) {
-            this.groupNumber = groupNumber;
+        public GroupBuilder setGroupName(String groupName) {
+            this.groupName = groupName;
             return this;
         }
 
@@ -109,7 +109,7 @@ public class Group extends AbstractEntity {
             this.departmentId = group.departmentId;
             this.headmanId = group.headmanId;
             this.curatorId = group.curatorId;
-            this.groupNumber = group.groupNumber;
+            this.groupName = group.groupName;
             this.course = group.course;
             this.archived = group.archived;
             return this;

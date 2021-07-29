@@ -6,11 +6,14 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import java.util.List;
 import java.util.Optional;
 
-public interface GroupDao {
-    // ok
-    Optional<Group> selectById(long id) throws DaoException;
-    List<Group> selectByDepartment(long departmentId) throws DaoException;
-    List<Group> selectByDepartmentAndNumber(long departmentId, String keyword) throws DaoException;
-    void insert(Group group) throws DaoException;
-    void update(Group group) throws DaoException;
+public interface GroupDao extends BaseDao<Group> {
+    void selectByName(int offset, int limit, String keyword, List<Group> result) throws DaoException;
+    long selectCountByName(String keyword) throws DaoException;
+
+    void selectByFaculty(int offset, int limit, long facultyId, List<Group> result) throws DaoException;
+    long selectCountByFaculty(long facultyId) throws DaoException;
+
+    void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result)
+            throws DaoException;
+    long selectCountByFacultyAndDepartment(long facultyId, long departmentId);
 }
