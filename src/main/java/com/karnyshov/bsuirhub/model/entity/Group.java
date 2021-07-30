@@ -4,18 +4,14 @@ public class Group extends AbstractEntity {
     private long departmentId;
     private long headmanId;
     private long curatorId;
-    private String groupName;
-    private int course;
-    boolean archived;
+    private String name;
 
     private Group(GroupBuilder builder) {
         super(builder);
         this.departmentId = builder.departmentId;
         this.headmanId = builder.headmanId;
         this.curatorId = builder.curatorId;
-        this.groupName = builder.groupName;
-        this.course = builder.course;
-        this.archived = builder.archived;
+        this.name = builder.name;
     }
 
     public static GroupBuilder builder() {
@@ -51,25 +47,15 @@ public class Group extends AbstractEntity {
         return curatorId;
     }
 
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public int getCourse() {
-        return course;
-    }
-
-    public boolean isArchived() {
-        return archived;
+    public String getName() {
+        return name;
     }
 
     public static class GroupBuilder extends AbstractEntity.AbstractBuilder {
         private long departmentId;
         private long headmanId;
         private long curatorId;
-        private String groupName;
-        private int course;
-        private boolean archived;
+        private String name;
 
         private GroupBuilder() {
         }
@@ -89,18 +75,8 @@ public class Group extends AbstractEntity {
             return this;
         }
 
-        public GroupBuilder setGroupName(String groupName) {
-            this.groupName = groupName;
-            return this;
-        }
-
-        public GroupBuilder setCourse(int course) {
-            this.course = course;
-            return this;
-        }
-
-        public GroupBuilder setArchived(boolean archived) {
-            this.archived = archived;
+        public GroupBuilder setName(String name) {
+            this.name = name;
             return this;
         }
 
@@ -109,9 +85,7 @@ public class Group extends AbstractEntity {
             this.departmentId = group.departmentId;
             this.headmanId = group.headmanId;
             this.curatorId = group.curatorId;
-            this.groupName = group.groupName;
-            this.course = group.course;
-            this.archived = group.archived;
+            this.name = group.name;
             return this;
         }
 
