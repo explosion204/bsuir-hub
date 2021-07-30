@@ -3,10 +3,13 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
+import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
+import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.sql.*;
@@ -106,340 +109,109 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
               "SET id_status = 3 " +
               "WHERE id = ?;";
 
+    @Inject
+    private ResultSetMapper<User> userMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
+
     @Override
     public void selectAll(int offset, int limit, List<User> result) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
-            statement.setInt(1, limit);
-            statement.setInt(2, offset);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = extractUser(resultSet);
-                result.add(user);
-            }
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        QueryExecutor.executeSelect(userMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        long totalCount;
-
-        try {
-            connection = pool.acquireConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SELECT_TOTAL_COUNT);
-            resultSet.next();
-            totalCount = resultSet.getLong(1);
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return totalCount;
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<User> selectById(long id) throws DaoException {
-        User user;
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID);
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            user = resultSet.next() ? extractUser(resultSet) : null;
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return user != null ? Optional.of(user) : Optional.empty();
+        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public Optional<User> selectByLogin(String login) throws DaoException {
-        User user;
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN);
-            statement.setString(1, login);
-            ResultSet resultSet = statement.executeQuery();
-            user = resultSet.next() ? extractUser(resultSet) : null;
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return user != null ? Optional.of(user) : Optional.empty();
+        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_LOGIN, login);
     }
 
     @Override
     public void selectByLogin(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_MULTIPLE_BY_LOGIN);
-            statement.setString(1, keyword);
-            statement.setInt(2, limit);
-            statement.setInt(3, offset);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = extractUser(resultSet);
-                result.add(user);
-            }
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_LOGIN, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByLogin(String keyword) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        long result;
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_COUNT_BY_LOGIN);
-            statement.setString(1, keyword);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            result = resultSet.getLong(1);
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return result;
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_LOGIN, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LOGIN query"));
     }
 
     @Override
     public Optional<User> selectByEmail(String email) throws DaoException {
-        User user;
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL);
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            user = resultSet.next() ? extractUser(resultSet) : null;
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return user != null ? Optional.of(user) : Optional.empty();
+        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_EMAIL, email);
     }
 
     @Override
     public void selectByEmail(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_MULTIPLE_BY_EMAIL);
-            statement.setString(1, keyword);
-            statement.setInt(2, limit);
-            statement.setInt(3, offset);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = extractUser(resultSet);
-                result.add(user);
-            }
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_EMAIL, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByEmail(String keyword) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        long result;
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_COUNT_BY_EMAIL);
-            statement.setString(1, keyword);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            result = resultSet.getLong(1);
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return result;
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_EMAIL, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_EMAIL query"));
     }
 
     @Override
     public void selectByLastName(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_MULTIPLE_BY_LAST_NAME);
-            statement.setString(1, keyword);
-            statement.setInt(2, limit);
-            statement.setInt(3, offset);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = extractUser(resultSet);
-                result.add(user);
-            }
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_LAST_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByLastName(String keyword) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        long result;
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_COUNT_BY_LAST_NAME);
-            statement.setString(1, keyword);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            result = resultSet.getLong(1);
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-
-        return result;
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_LAST_NAME, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LAST_NAME query"));
     }
 
     @Override
     public long insert(User user) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, user.getLogin());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPasswordHash());
-            statement.setString(4, user.getSalt());
-            statement.setLong(5, user.getUserRole().getRoleId());
-            statement.setLong(6, user.getUserStatus().getStatusId());
-            statement.setLong(7, user.getGroupId());
-            statement.setString(8, user.getFirstName());
-            statement.setString(9, user.getPatronymic());
-            statement.setString(10, user.getLastName());
-            statement.setString(11, user.getProfilePicturePath());
-            statement.execute();
-
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            return generatedKeys.next() ? generatedKeys.getLong(1) : 0;
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        return QueryExecutor.executeInsert(
+                INSERT,
+                user.getLogin(),
+                user.getEmail(),
+                user.getPasswordHash(),
+                user.getSalt(),
+                user.getUserRole().getRoleId(),
+                user.getUserStatus().getStatusId(),
+                user.getGroupId(),
+                user.getFirstName(),
+                user.getPatronymic(),
+                user.getLastName(),
+                user.getProfilePicturePath()
+        );
     }
 
     @Override
     public void update(User user) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE);
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPasswordHash());
-            statement.setString(3, user.getSalt());
-            statement.setLong(4, user.getUserRole().getRoleId());
-            statement.setLong(5, user.getUserStatus().getStatusId());
-            statement.setLong(6, user.getGroupId());
-            statement.setString(7, user.getFirstName());
-            statement.setString(8, user.getPatronymic());
-            statement.setString(9, user.getLastName());
-            statement.setString(10, user.getProfilePicturePath());
-            statement.setLong(11, user.getEntityId());
-            statement.execute();
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
+        QueryExecutor.executeUpdateOrDelete(
+                UPDATE,
+                user.getEmail(),
+                user.getPasswordHash(),
+                user.getSalt(),
+                user.getUserRole().getRoleId(),
+                user.getUserStatus().getStatusId(),
+                user.getGroupId(),
+                user.getFirstName(),
+                user.getPatronymic(),
+                user.getLastName(),
+                user.getProfilePicturePath(),
+                user.getEntityId()
+        );
     }
 
     @Override
     public void delete(long id) throws DaoException {
-        Connection connection = null;
-        DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(DELETE);
-            statement.setLong(1, id);
-            statement.execute();
-        } catch (DatabaseConnectionException | SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
-        }
-    }
-
-    private User extractUser(ResultSet resultSet) throws SQLException {
-        return (User) User.builder()
-                .setLogin(resultSet.getString(USER_LOGIN))
-                .setEmail(resultSet.getString(USER_EMAIL))
-                .setPasswordHash(resultSet.getString(USER_PASSWORD_HASH))
-                .setSalt(resultSet.getString(USER_SALT))
-                .setUserRole(UserRole.parseRole(resultSet.getLong(USER_ROLE_ID)))
-                .setUserStatus(UserStatus.parseStatus(resultSet.getLong(USER_STATUS_ID)))
-                .setGroupId(resultSet.getLong(USER_GROUP_ID))
-                .setFirstName(resultSet.getString(USER_FIRST_NAME))
-                .setPatronymic(resultSet.getString(USER_PATRONYMIC))
-                .setLastName(resultSet.getString(USER_LAST_NAME))
-                .setProfilePicturePath(resultSet.getString(USER_PROFILE_PICTURE))
-                .setEntityId(resultSet.getLong(USER_ID))
-                .build();
+        QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }
