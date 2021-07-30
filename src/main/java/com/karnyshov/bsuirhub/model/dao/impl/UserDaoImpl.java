@@ -18,7 +18,7 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 @Named
 public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
     private static final String SELECT_ALL
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE id_status <> 3 " +
@@ -32,19 +32,19 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
               "WHERE id_status <> 3;";
 
     private static final String SELECT_BY_ID
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE users.id = ?;";
 
     private static final String SELECT_BY_LOGIN
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE login = ? AND id_status <> 3;";
 
     private static final String SELECT_MULTIPLE_BY_LOGIN
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE login LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +
@@ -58,13 +58,13 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
               "WHERE login LIKE CONCAT('%', ?, '%') AND id_status <> 3;";
 
     private static final String SELECT_BY_EMAIL
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE email = ? AND id_status <> 3;";
 
     private static final String SELECT_MULTIPLE_BY_EMAIL
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE email LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +
@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
               "WHERE email LIKE CONCAT('%', ?, '%') AND id_status <> 3;";
 
     private static final String SELECT_MULTIPLE_BY_LAST_NAME
-            = "SELECT users.id, login, email, password_hash, salt, id_role, id_status, " +
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
               "WHERE last_name LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +

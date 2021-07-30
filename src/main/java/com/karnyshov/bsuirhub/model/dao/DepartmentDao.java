@@ -10,10 +10,10 @@ public interface DepartmentDao extends BaseDao<Department> {
     Optional<Department> selectById(long id) throws DaoException;
 
     void selectByName(int offset, int limit, String keyword, List<Department> result) throws DaoException;
-    long selectCountByName(String keyword);
+    long selectCountByName(String keyword) throws DaoException;
 
     void selectByShortName(int offset, int limit, String keyword, List<Department> result) throws DaoException;
-    long selectCountByShortName(String keyword);
+    long selectCountByShortName(String keyword) throws DaoException;
 
     void selectByFaculty(int offset, int limit, long facultyId, List<Department> result) throws DaoException;
     void selectCountByFaculty(long facultyId) throws DaoException;
