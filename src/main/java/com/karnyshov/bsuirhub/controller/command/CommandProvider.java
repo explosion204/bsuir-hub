@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.controller.command.impl.*;
 import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestMethod.*;
 
@@ -35,26 +34,24 @@ public enum CommandProvider {
     UPDATE_USER(UpdateUserCommand.class, POST, "/admin/users/edit"),
     DELETE_USER(DeleteUserCommand.class, POST, "/admin/users/delete");
 
-    private List<Pattern> urlPatterns = new ArrayList<>();
+    private List<String> urlPatterns;
     private RequestMethod requestMethod;
     private Command command;
 
     CommandProvider(Class<? extends Command> commandClass, RequestMethod requestMethod, String ... urlPatterns) {
         command = CDI.current().select(commandClass).get();
-        Arrays.stream(urlPatterns).forEach(
-                pattern -> this.urlPatterns.add(Pattern.compile(pattern))
-        );
+        this.urlPatterns = Arrays.asList(urlPatterns);
         this.requestMethod = requestMethod;
     }
 
     public static Optional<Command> getCommand(String url, RequestMethod requestMethod) {
         for (CommandProvider commandType : CommandProvider.values()) {
-            Optional<Pattern> pattern = commandType.urlPatterns
+            Optional<String> urlMatch = commandType.urlPatterns
                     .stream()
-                    .filter(p -> Pattern.matches(p.pattern(), url) && commandType.requestMethod == requestMethod)
-                    .findFirst();
+                    .filter(p -> p.equals(url) && commandType.requestMethod == requestMethod)
+                    .findAny();
 
-            if (pattern.isPresent()) {
+            if (urlMatch.isPresent()) {
                 return Optional.of(commandType.command);
             }
         }
