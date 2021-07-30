@@ -1,25 +1,19 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
-import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
-import com.karnyshov.bsuirhub.model.entity.UserRole;
-import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 
 @Named
-public class UserDaoImpl implements UserDao { // TODO: 7/23/2021 boilerplate ?
+public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +

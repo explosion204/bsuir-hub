@@ -2,24 +2,20 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.CommentDao;
+import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
+import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Comment;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 @Named
 public class CommentDaoImpl implements CommentDao {
-    private static final String SELECT_ALL
-            = "SELECT id, id_grade, id_user, text " +
-              "FROM comments " +
-              "ORDER BY id " +
-              "LIMIT ? " +
-              "OFFSET ?;";
-
-    private static final String SELECT_TOTAL_COUNT
-            = "SELECT COUNT(id) " +
-              "FROM comments;";
+    private static final Logger logger = LogManager.getLogger();
 
     private static final String SELECT_BY_ID
             = "SELECT id, id_grade, id_user, text " +
@@ -29,7 +25,9 @@ public class CommentDaoImpl implements CommentDao {
     private static final String SELECT_BY_GRADE
             = "SELECT id, id_grade, id_user, text " +
               "FROM comments " +
-              "WHERE id_grade = ?;";
+              "WHERE id_grade = ? " +
+              "LIMIT ? " +
+              "OFFSET ?";
 
     private static final String SELECT_COUNT_BY_GRADE
             = "SELECT COUNT(id) " +
@@ -49,43 +47,63 @@ public class CommentDaoImpl implements CommentDao {
               "WHERE id = ?;";
 
 
+    @Inject
+    private ResultSetMapper<Comment> commentMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
+
     @Override
     public void selectAll(int offset, int limit, List<Comment> result) throws DaoException {
-        // TODO: 7/30/2021
+        logger.error("Implementation of CommentDao does not support selectAll operation");
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectAll operation");
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        return 0; // TODO: 7/30/2021
+        logger.error("Implementation of CommentDao does not support selectTotalCount operation");
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectTotalCount operation");
     }
 
     @Override
     public Optional<Comment> selectById(long id) throws DaoException {
-        return Optional.empty(); // TODO: 7/30/2021
+        return QueryExecutor.executeSelectForSingleResult(commentMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByGrade(int offset, int limit, long gradeId, List<Comment> result) throws DaoException {
-        // TODO: 7/30/2021
+        QueryExecutor.executeSelect(commentMapper, SELECT_BY_GRADE, result, limit, offset, gradeId);
     }
 
     @Override
-    public void selectCountByGrade(long gradeId) throws DaoException {
-        // TODO: 7/30/2021
+    public long selectCountByGrade(long gradeId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GRADE, gradeId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GRADE query"));
     }
 
     @Override
-    public long insert(Comment entity) throws DaoException {
-        return 0; // TODO: 7/30/2021
+    public long insert(Comment comment) throws DaoException {
+        return QueryExecutor.executeInsert(
+                INSERT,
+                comment.getGradeId(),
+                comment.getUserId(),
+                comment.getText()
+        );
     }
 
     @Override
-    public void update(Comment entity) throws DaoException {
-        // TODO: 7/30/2021
+    public void update(Comment comment) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(
+                UPDATE,
+                comment.getGradeId(),
+                comment.getUserId(),
+                comment.getText(),
+                comment.getEntityId()
+        );
     }
 
     @Override
     public void delete(long id) throws DaoException {
-        // TODO: 7/30/2021
+        QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

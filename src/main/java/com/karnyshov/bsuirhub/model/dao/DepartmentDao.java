@@ -16,5 +16,5 @@ public interface DepartmentDao extends BaseDao<Department> {
     long selectCountByShortName(String keyword) throws DaoException;
 
     void selectByFaculty(int offset, int limit, long facultyId, List<Department> result) throws DaoException;
-    void selectCountByFaculty(long facultyId) throws DaoException;
+    long selectCountByFaculty(long facultyId) throws DaoException;
 }

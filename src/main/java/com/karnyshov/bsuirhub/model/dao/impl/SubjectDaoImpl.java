@@ -2,7 +2,10 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.SubjectDao;
+import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
+import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Subject;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -53,11 +56,11 @@ public class SubjectDaoImpl implements SubjectDao {
               "WHERE short_name LIKE CONCAT('%', ?, '%') AND is_archived = 0;";
 
     private static final String INSERT
-            = "INSERT subjects (name, short_name, is_archived) VALUES (?, ?, ?);";
+            = "INSERT subjects (name, short_name, is_archived) VALUES (?, ?, 0);";
 
     private static final String UPDATE
             = "UPDATE subjects " +
-              "SET name = ?, short_name = ?, is_archived = ? " +
+              "SET name = ?, short_name = ? " +
               "WHERE id = ?;";
 
     private static final String DELETE
@@ -65,54 +68,73 @@ public class SubjectDaoImpl implements SubjectDao {
               "SET is_archived = 1 " +
               "WHERE id = ?;";
 
+    @Inject
+    private ResultSetMapper<Subject> subjectMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
+
 
     @Override
     public void selectAll(int offset, int limit, List<Subject> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(subjectMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<Subject> selectById(long id) throws DaoException {
-        return Optional.empty(); // TODO: 7/29/2021  
-    }
-
-    @Override
-    public long insert(Subject entity) throws DaoException {
-        return 0; // TODO: 7/29/2021  
-    }
-
-    @Override
-    public void update(Subject entity) throws DaoException {
-        // TODO: 7/29/2021  
-    }
-
-    @Override
-    public void delete(long id) throws DaoException {
-        // TODO: 7/29/2021  
+        return QueryExecutor.executeSelectForSingleResult(subjectMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByName(int offset, int limit, String keyword, List<Subject> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(subjectMapper, SELECT_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByName(String keyword) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
     @Override
     public void selectByShortName(int offset, int limit, String keyword, List<Subject> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(subjectMapper, SELECT_BY_SHORT_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByShortName(String keyword) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
+
+    }
+
+    @Override
+    public long insert(Subject subject) throws DaoException {
+        return QueryExecutor.executeInsert(
+                INSERT,
+                subject.getName(),
+                subject.getShortName()
+        );
+    }
+
+    @Override
+    public void update(Subject subject) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(
+                UPDATE,
+                subject.getName(),
+                subject.getShortName(),
+                subject.getEntityId()
+        );
+    }
+
+    @Override
+    public void delete(long id) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

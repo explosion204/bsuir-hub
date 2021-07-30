@@ -2,14 +2,21 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
+import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
+import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Grade;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 @Named
 public class GradeDaoImpl implements GradeDao {
+    private static final Logger logger = LogManager.getLogger();
+
     private static final String SELECT_BY_ID
             = "SELECT id, value, id_teacher, id_student, id_subject, date, is_exam " +
               "FROM grades " +
@@ -18,7 +25,10 @@ public class GradeDaoImpl implements GradeDao {
     private static final String SELECT_BY_STUDENT_AND_SUBJECT
             = "SELECT id, value, id_teacher, id_student, id_subject, date, is_exam " +
               "FROM grades " +
-              "WHERE id_student = ? AND id_subject = ?;";
+              "WHERE id_student = ? AND id_subject = ? " +
+              "ORDER BY id " +
+              "LIMIT ? " +
+              "OFFSET ?;";
 
     private static final String SELECT_COUNT_BY_STUDENT_AND_SUBJECT
             = "SELECT COUNT(id) " +
@@ -37,43 +47,72 @@ public class GradeDaoImpl implements GradeDao {
             = "DELETE FROM grades " +
               "WHERE id = ?;";
 
+    @Inject
+    private ResultSetMapper<Grade> gradeMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
+
     @Override
     public void selectAll(int offset, int limit, List<Grade> result) throws DaoException {
-        // TODO: 7/29/2021  
+        logger.error("Implementation of GradeDao does not support selectAll operation");
+        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectAll operation");
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        logger.error("Implementation of GradeDao does not support selectTotalCount operation");
+        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectTotalCount operation");
     }
 
     @Override
     public Optional<Grade> selectById(long id) throws DaoException {
-        return Optional.empty(); // TODO: 7/29/2021  
+        return QueryExecutor.executeSelectForSingleResult(gradeMapper, SELECT_BY_ID, id);
     }
 
     @Override
-    public void selectByStudentAndSubject(int offset, int limit, long userId, long subjectId, List<Grade> result) throws DaoException {
-        // TODO: 7/29/2021  
+    public void selectByStudentAndSubject(int offset, int limit, long studentId, long subjectId, List<Grade> result)
+                throws DaoException {
+        QueryExecutor.executeSelect(gradeMapper, SELECT_BY_STUDENT_AND_SUBJECT, result, studentId, subjectId, limit,
+                offset);
     }
 
     @Override
-    public long selectCountByStudentAndSubject(long userId, long subjectId) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+    public long selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_STUDENT_AND_SUBJECT,
+                studentId, subjectId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_STUDENT_AND_SUBJECT query"));
     }
 
     @Override
-    public long insert(Grade entity) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+    public long insert(Grade grade) throws DaoException {
+        return QueryExecutor.executeInsert(
+                INSERT,
+                grade.getValue().name(),
+                grade.getTeacherId(),
+                grade.getStudentId(),
+                grade.getSubjectId(),
+                grade.getDate(),
+                grade.getIsExam()
+        );
     }
 
     @Override
-    public void update(Grade entity) throws DaoException {
-        // TODO: 7/29/2021  
+    public void update(Grade grade) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(
+                UPDATE,
+                grade.getValue().name(),
+                grade.getTeacherId(),
+                grade.getStudentId(),
+                grade.getSubjectId(),
+                grade.getDate(),
+                grade.getIsExam(),
+                grade.getEntityId()
+        );
     }
 
     @Override
     public void delete(long id) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

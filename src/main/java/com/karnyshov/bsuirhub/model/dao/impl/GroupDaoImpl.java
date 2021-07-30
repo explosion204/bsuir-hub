@@ -2,9 +2,11 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
+import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
+import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Group;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,28 +73,6 @@ public class GroupDaoImpl implements GroupDao {
               "INNER JOIN departments " +
               "ON departments.id = id_department AND departments.id_faculty = ? " +
               "WHERE id_department = ?;";
-
-    private static final String SELECT_TEACHERS_SUBJECTS_RELATION_BY_ID
-            = "SELECT id, id_teacher, id_subject " +
-              "FROM groups_teachers_subjects " +
-              "WHERE id = ?";
-
-    private static final String SELECT_TEACHERS_SUBJECTS_RELATION_BY_GROUP
-            = "SELECT id, id_teacher, id_subject " +
-              "FROM groups_teachers_subjects " +
-              "WHERE id_group = ?";
-
-    private static final String INSERT_TEACHERS_SUBJECTS_RELATION
-            = "INSERT groups_teachers_subjects (id_teacher, id_subject, id_group) VALUES (?, ?, ?);";
-
-    private static final String UPDATE_TEACHERS_SUBJECTS_RELATION
-            = "UPDATE groups_teachers_subjects " +
-              "SET id_teacher = ?, id_subject = ? " +
-              "WHERE id = ?";
-
-    private static final String DELETE_TEACHERS_SUBJECTS_RELATION
-            = "DELETE FROM groups_teachers_subjects " +
-              "WHERE id = ?;";
     
     private static final String INSERT
             = "INSERT groups (name, id_department, id_headman, id_curator) VALUES (?, ?, ?, ?);";
@@ -106,88 +86,89 @@ public class GroupDaoImpl implements GroupDao {
             = "DELETE FROM groups " +
               "WHERE id = ?;";
 
+    @Inject
+    private ResultSetMapper<Group> groupMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
+
     @Override
     public void selectAll(int offset, int limit, List<Group> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(groupMapper, SELECT_ALL, result);
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<Group> selectById(long id) throws DaoException {
-        return Optional.empty(); // TODO: 7/29/2021  
+        return QueryExecutor.executeSelectForSingleResult(groupMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByName(int offset, int limit, String keyword, List<Group> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(groupMapper, SELECT_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public long selectCountByName(String keyword) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
     @Override
     public void selectByFaculty(int offset, int limit, long facultyId, List<Group> result) throws DaoException {
-        // TODO: 7/29/2021  
+        QueryExecutor.executeSelect(groupMapper, SELECT_BY_FACULTY, result, facultyId, limit, offset);
     }
 
     @Override
     public long selectCountByFaculty(long facultyId) throws DaoException {
-        return 0; // TODO: 7/29/2021  
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_FACULTY, facultyId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY query"));
     }
 
     @Override
-    public void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result) throws DaoException {
-        // TODO: 7/29/2021  
+    public void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result)
+                throws DaoException {
+        QueryExecutor.executeSelect(groupMapper, SELECT_BY_FACULTY_AND_DEPARTMENT, result, facultyId, departmentId,
+                limit, offset);
     }
 
     @Override
-    public long selectCountByFacultyAndDepartment(long facultyId, long departmentId) {
-        return 0; // TODO: 7/29/2021  
+    public long selectCountByFacultyAndDepartment(long facultyId, long departmentId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT,
+                facultyId, departmentId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT query"));
     }
 
     @Override
-    public void selectTeachersSubjectsRelationByGroup(long groupId, List<Pair<Long, Long>> result) throws DaoException {
-        // TODO: 7/29/2021
+    public long insert(Group group) throws DaoException {
+        return QueryExecutor.executeInsert(
+                INSERT,
+                group.getName(),
+                group.getDepartmentId(),
+                group.getHeadmanId(),
+                group.getCuratorId()
+        );
     }
 
     @Override
-    public Optional<Pair<Long, Long>> selectTeachersAndSubjectRelationById(long relationId) throws DaoException {
-        return Optional.empty(); // TODO: 7/29/2021
-    }
-
-    @Override
-    public void insertTeachersSubjectsRelation(long groupId, long teacherId, long subjectId) throws DaoException {
-        // TODO: 7/29/2021
-    }
-
-    @Override
-    public void updateTeachersSubjectRelation(long relationId, long teacherId, long subjectId) throws DaoException {
-        // TODO: 7/29/2021
-    }
-
-    @Override
-    public void deleteTeachersSubjectRelation(long relationId) throws DaoException {
-        // TODO: 7/29/2021
-    }
-
-    @Override
-    public long insert(Group entity) throws DaoException {
-        return 0; // TODO: 7/29/2021  
-    }
-
-    @Override
-    public void update(Group entity) throws DaoException {
-        // TODO: 7/29/2021  
+    public void update(Group group) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(
+                UPDATE,
+                group.getName(),
+                group.getDepartmentId(),
+                group.getHeadmanId(),
+                group.getCuratorId(),
+                group.getEntityId()
+        );
     }
 
     @Override
     public void delete(long id) throws DaoException {
-        // TODO: 7/29/2021
+        QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CommentDao extends BaseDao<Comment> {
     void selectByGrade(int offset, int limit, long gradeId, List<Comment> result) throws DaoException;
-    void selectCountByGrade(long gradeId) throws DaoException;
+    long selectCountByGrade(long gradeId) throws DaoException;
 }

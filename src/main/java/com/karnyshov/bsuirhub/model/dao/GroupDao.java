@@ -18,10 +18,4 @@ public interface GroupDao extends BaseDao<Group> {
     void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result)
             throws DaoException;
     long selectCountByFacultyAndDepartment(long facultyId, long departmentId) throws DaoException;
-
-    Optional<Pair<Long, Long>> selectTeachersAndSubjectRelationById(long relationId) throws DaoException;
-    void selectTeachersSubjectsRelationByGroup(long groupId, List<Pair<Long, Long>> result) throws DaoException;
-    void insertTeachersSubjectsRelation(long groupId, long teacherId, long subjectId) throws DaoException;
-    void updateTeachersSubjectRelation(long relationId, long teacherId, long subjectId) throws DaoException;
-    void deleteTeachersSubjectRelation(long relationId) throws DaoException;
 }
