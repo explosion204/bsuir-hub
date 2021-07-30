@@ -8,7 +8,6 @@ public class Grade extends AbstractEntity {
     private long teacherId;
     private long studentId;
     private long subjectId;
-    private String comment;
     private Date date;
 
     private Grade(GradeBuilder builder) {
@@ -18,7 +17,6 @@ public class Grade extends AbstractEntity {
         this.teacherId = builder.teacherId;
         this.studentId = builder.studentId;
         this.subjectId = builder.subjectId;
-        this.comment = builder.comment;
         this.date = builder.date;
     }
 
@@ -33,8 +31,8 @@ public class Grade extends AbstractEntity {
         EIGHT("8"),
         NINE("9"),
         TEN("10"),
-        PASSED("Passed"), // TODO: 6/16/2021 locale
-        NOT_PASSED("Not Passed"); // TODO: 6/16/2021 locale
+        PASSED("passed"),
+        NOT_PASSED("not_passed");
 
         private final String value;
 
@@ -70,10 +68,6 @@ public class Grade extends AbstractEntity {
 
     public long getSubjectId() {
         return subjectId;
-    }
-
-    public String getComment() {
-        return comment;
     }
 
     public Date getDate() {
@@ -151,7 +145,6 @@ public class Grade extends AbstractEntity {
             this.teacherId = grade.teacherId;
             this.studentId = grade.studentId;
             this.subjectId = grade.subjectId;
-            this.comment = grade.comment;
             this.date = grade.date;
             return this;
         }
