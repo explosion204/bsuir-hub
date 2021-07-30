@@ -16,10 +16,11 @@ public class QueryExecutor {
                 throws DaoException {
         Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
+        PreparedStatement statement;
 
         try {
             connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement = connection.prepareStatement(sqlQuery);
             initPreparedStatement(statement, params);
             ResultSet resultSet = statement.executeQuery();
 
@@ -27,6 +28,8 @@ public class QueryExecutor {
                 T mappedObject = mapper.map(resultSet);
                 result.add(mappedObject);
             }
+
+            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -48,6 +51,8 @@ public class QueryExecutor {
 
             resultSet.next();
             mappedObject = mapper.map(resultSet);
+
+            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -68,7 +73,10 @@ public class QueryExecutor {
             statement.execute();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            return generatedKeys.next() ? generatedKeys.getLong(1) : 0;
+            long generatedKey = generatedKeys.next() ? generatedKeys.getLong(1) : 0;
+            statement.close();
+
+            return generatedKey;
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         } finally {
@@ -85,6 +93,7 @@ public class QueryExecutor {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             initPreparedStatement(statement, params);
             statement.execute();
+            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         } finally {
