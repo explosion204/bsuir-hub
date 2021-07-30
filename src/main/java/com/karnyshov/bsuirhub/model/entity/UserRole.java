@@ -28,4 +28,9 @@ public enum UserRole {
     public static UserRole parseRole(String roleId) {
         return parseRole(Long.parseLong(roleId));
     }
+
+    @Override
+    public String toString() {
+        return name() + "/" + roleId;
+    }
 }

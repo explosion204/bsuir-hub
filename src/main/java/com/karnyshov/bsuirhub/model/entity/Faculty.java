@@ -33,12 +33,11 @@ public class Faculty extends AbstractEntity {
     @Override
     public int hashCode() {
         int prime = 31;
-        int result = 1;
+        int result = prime + super.hashCode();
 
-        result = result * prime + super.hashCode();
-        result = result * prime + name.hashCode();
-        result = result * prime + shortName.hashCode();
-        result = result * prime + Boolean.hashCode(archived);
+        result = prime * result + name.hashCode();
+        result = prime * result + shortName.hashCode();
+        result = prime * result + Boolean.hashCode(archived);
 
         return result;
     }
@@ -54,7 +53,7 @@ public class Faculty extends AbstractEntity {
         }
 
         Faculty faculty = (Faculty) obj;
-        return super.equals(obj) && Objects.equals(name, faculty.name) && Objects.equals(shortName, faculty.shortName)
+        return super.equals(faculty) && Objects.equals(name, faculty.name) && Objects.equals(shortName, faculty.shortName)
                 && archived == faculty.archived;
     }
 

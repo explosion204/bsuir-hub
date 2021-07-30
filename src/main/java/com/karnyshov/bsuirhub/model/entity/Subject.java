@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Objects;
+
 public class Subject extends AbstractEntity {
     private String name;
     private String shortName;
@@ -22,20 +24,40 @@ public class Subject extends AbstractEntity {
         return shortName;
     }
 
-    // TODO: 6/16/2021
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + (name != null ? name.hashCode() : 0);
+        result = prime * result + (shortName != null ? shortName.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Subject subject = (Subject) obj;
+        return super.equals(subject) && Objects.equals(subject.name, name)
+                && Objects.equals(subject.shortName, shortName);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        StringBuilder builder = new StringBuilder("Subject (");
+        builder.append(super.toString()).append("): ");
+        builder.append("name = ").append(name).append(", ");
+        builder.append("short name = ").append(shortName);
+
+        return builder.toString();
     }
 
     public static class SubjectBuilder extends AbstractEntity.AbstractBuilder {

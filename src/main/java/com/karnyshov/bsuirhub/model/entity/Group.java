@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Objects;
+
 public class Group extends AbstractEntity {
     private long departmentId;
     private long headmanId;
@@ -18,23 +20,6 @@ public class Group extends AbstractEntity {
         return new GroupBuilder();
     }
 
-
-    // TODO: 6/16/2021
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public long getDepartmentId() {
         return departmentId;
     }
@@ -49,6 +34,46 @@ public class Group extends AbstractEntity {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + Long.hashCode(departmentId);
+        result = prime * result + Long.hashCode(headmanId);
+        result = prime * result + Long.hashCode(curatorId);
+        result = prime * result + (name != null ? name.hashCode() : 0);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Group group = (Group) obj;
+        return super.equals(obj) && group.departmentId == departmentId && group.headmanId == headmanId
+                && group.curatorId == curatorId && Objects.equals(group.name, name);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Group (");
+        builder.append(super.toString()).append("): ");
+        builder.append("department id = ").append(departmentId).append(", ");
+        builder.append("headman id = ").append(headmanId).append(", ");
+        builder.append("curator id = ").append(curatorId).append(", ");
+        builder.append("name = ").append(name);
+
+        return builder.toString();
     }
 
     public static class GroupBuilder extends AbstractEntity.AbstractBuilder {

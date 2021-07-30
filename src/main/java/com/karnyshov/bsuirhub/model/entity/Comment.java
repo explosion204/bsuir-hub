@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Objects;
+
 public class Comment extends AbstractEntity {
     private long gradeId;
     private long userId;
@@ -30,17 +32,40 @@ public class Comment extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return super.hashCode(); // TODO: 7/29/2021
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + Long.hashCode(gradeId);
+        result = prime * result + Long.hashCode(userId);
+        result = prime * result + (text != null ? text.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); // TODO: 7/29/2021
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Comment comment = (Comment) obj;
+        return super.equals(comment) && comment.gradeId == gradeId && comment.userId == userId
+                && Objects.equals(comment.text, text);
     }
 
     @Override
     public String toString() {
-        return super.toString(); // TODO: 7/29/2021
+        StringBuilder builder = new StringBuilder("Comment (");
+        builder.append(super.toString()).append("): ");
+        builder.append("grade id = ").append(gradeId).append(", ");
+        builder.append("user id = ").append(userId).append(", ");
+        builder.append("text = ").append(text);
+
+        return builder.toString();
     }
 
     public static class CommentBuilder extends AbstractEntity.AbstractBuilder {

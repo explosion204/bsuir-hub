@@ -23,4 +23,9 @@ public enum UserStatus {
                 .findFirst()
                 .orElse(NOT_CONFIRMED);
     }
+
+    @Override
+    public String toString() {
+        return name() + "/" + statusId;
+    }
 }

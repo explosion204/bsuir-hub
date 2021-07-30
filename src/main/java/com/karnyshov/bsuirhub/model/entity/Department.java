@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Objects;
+
 public class Department extends AbstractEntity {
     private String name;
     private String shortName;
@@ -20,6 +22,10 @@ public class Department extends AbstractEntity {
         return new DepartmentBuilder();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getShortName() {
         return shortName;
     }
@@ -36,24 +42,47 @@ public class Department extends AbstractEntity {
         return specialtyAlias;
     }
 
-    // TODO: 6/16/2021
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + (name != null ? name.hashCode() : 0);
+        result = prime * result + (shortName != null ? shortName.hashCode() : 0);
+        result = prime * result + Boolean.hashCode(archived);
+        result = prime * result + Long.hashCode(facultyId);
+        result = prime * result + (specialtyAlias != null ? specialtyAlias.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Department department = (Department) obj;
+        return super.equals(department) && Objects.equals(department.name, name)
+                && Objects.equals(department.shortName, shortName) && department.archived == archived
+                && department.facultyId == facultyId && Objects.equals(department.specialtyAlias, specialtyAlias);
     }
 
     @Override
     public String toString() {
-        return super.toString();
-    }
+        StringBuilder builder = new StringBuilder("Department (");
+        builder.append(super.toString()).append("): ");
+        builder.append("name = ").append(name).append(", ");
+        builder.append("short name = ").append(shortName).append(", ");
+        builder.append("is archived = ").append(archived).append(", ");
+        builder.append("faculty id = ").append(facultyId).append(", ");
+        builder.append("specialty alias = ").append(specialtyAlias);
 
-    public String getName() {
-        return name;
+        return builder.toString();
     }
 
     public static class DepartmentBuilder extends AbstractEntity.AbstractBuilder {

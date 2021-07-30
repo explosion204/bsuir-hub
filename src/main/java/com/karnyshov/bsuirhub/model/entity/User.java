@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.util.Objects;
+
 public class User extends AbstractEntity {
     private String login;
     private String email;
@@ -76,20 +78,62 @@ public class User extends AbstractEntity {
         return profilePicturePath;
     }
 
-    // TODO: 6/16/2021
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + (login != null ? login.hashCode() : 0);
+        result = prime * result + (email != null ? email.hashCode() : 0);
+        result = prime * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+        result = prime * result + (salt != null ? salt.hashCode() : 0);
+        result = prime * result + (userRole != null ? userRole.hashCode() : 0);
+        result = prime * result + (userStatus != null ? userStatus.hashCode() : 0);
+        result = prime * result + Long.hashCode(groupId);
+        result = prime * result + (firstName != null ? firstName.hashCode() : 0);
+        result = prime * result + (patronymic != null ? patronymic.hashCode() : 0);
+        result = prime * result + (lastName != null ? lastName.hashCode() : 0);
+        result = prime * result + (profilePicturePath != null ? profilePicturePath.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        User user = (User) obj;
+        return super.equals(user) && Objects.equals(user.login, login) && Objects.equals(user.email, email)
+                && Objects.equals(user.passwordHash, passwordHash) && Objects.equals(user.salt, salt)
+                && Objects.equals(user.userRole, userRole) && Objects.equals(user.userStatus, userStatus)
+                && user.groupId == groupId && Objects.equals(user.firstName, firstName)
+                && Objects.equals(user.patronymic, patronymic) && Objects.equals(user.lastName, lastName)
+                && Objects.equals(user.profilePicturePath, profilePicturePath);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        StringBuilder builder = new StringBuilder("GroupTeacherSubject (");
+        builder.append(super.toString()).append("): ");
+        builder.append("login = ").append(login).append(", ");
+        builder.append("email = ").append(email).append(", ");
+        builder.append("password hash = ").append(passwordHash).append(", ");
+        builder.append("salt = ").append(salt).append(", ");
+        builder.append("user role = ").append(userRole).append(", ");
+        builder.append("user status = ").append(userStatus).append(", ");
+        builder.append("group id = ").append(groupId).append(", ");
+        builder.append("first name = ").append(firstName).append(", ");
+        builder.append("patronymic = ").append(patronymic).append(", ");
+        builder.append("last name = ").append(lastName).append(", ");
+        builder.append("profile picture path = ").append(profilePicturePath);
+
+        return builder.toString();
     }
 
     public static class UserBuilder extends AbstractEntity.AbstractBuilder {

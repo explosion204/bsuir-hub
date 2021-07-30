@@ -28,6 +28,44 @@ public class GroupTeacherSubject extends AbstractEntity {
         return subjectId;
     }
 
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = prime + super.hashCode();
+
+        result = prime * result + Long.hashCode(groupId);
+        result = prime * result + Long.hashCode(teacherId);
+        result = prime * result + Long.hashCode(subjectId);
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        GroupTeacherSubject entity = (GroupTeacherSubject) obj;
+        return super.equals(entity) && entity.groupId == groupId && entity.teacherId == teacherId
+                && entity.subjectId == subjectId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("GroupTeacherSubject (");
+        builder.append(super.toString()).append("): ");
+        builder.append("group id = ").append(groupId).append(", ");
+        builder.append("teacher id = ").append(teacherId).append(", ");
+        builder.append("subject id = ").append(subjectId);
+
+        return builder.toString();
+    }
+
     public static class GroupTeacherSubjectBuilder extends AbstractEntity.AbstractBuilder {
         private long groupId;
         private long teacherId;
