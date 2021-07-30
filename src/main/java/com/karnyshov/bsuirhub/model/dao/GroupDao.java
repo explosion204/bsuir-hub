@@ -12,10 +12,7 @@ public interface GroupDao extends BaseDao<Group> {
     void selectByName(int offset, int limit, String keyword, List<Group> result) throws DaoException;
     long selectCountByName(String keyword) throws DaoException;
 
-    void selectByFaculty(int offset, int limit, long facultyId, List<Group> result) throws DaoException;
-    long selectCountByFaculty(long facultyId) throws DaoException;
-
-    void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result)
+    void selectByDepartment(int offset, int limit, long departmentId, List<Group> result)
             throws DaoException;
-    long selectCountByFacultyAndDepartment(long facultyId, long departmentId) throws DaoException;
+    long selectCountByDepartment(long departmentId) throws DaoException;
 }

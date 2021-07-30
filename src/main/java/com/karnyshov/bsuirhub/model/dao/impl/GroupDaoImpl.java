@@ -42,32 +42,15 @@ public class GroupDaoImpl implements GroupDao {
               "FROM groups " +
               "WHERE name LIKE CONCAT('%', ?, '%');";
 
-    private static final String SELECT_BY_FACULTY
+    private static final String SELECT_BY_DEPARTMENT
             = "SELECT groups.id, groups.name, id_department, id_headman, id_curator " +
               "FROM groups " +
-              "INNER JOIN departments " +
-              "ON departments.id = id_department AND departments.id_faculty = ? " +
-              "ORDER BY id " +
-              "LIMIT ? " +
-              "OFFSET ?;";
-
-    private static final String SELECT_COUNT_BY_FACULTY
-            = "SELECT COUNT(groups.id) " +
-              "FROM groups " +
-              "INNER JOIN departments " +
-              "ON departments.id = id_department AND departments.id_faculty = ?";
-
-    private static final String SELECT_BY_FACULTY_AND_DEPARTMENT
-            = "SELECT groups.id, groups.name, id_department, id_headman, id_curator " +
-              "FROM groups " +
-              "INNER JOIN departments " +
-              "ON departments.id = id_department AND departments.id_faculty = ? " +
               "WHERE id_department = ? " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
 
-    private static final String SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT
+    private static final String SELECT_COUNT_BY_DEPARTMENT
             = "SELECT COUNT(groups.id) " +
               "FROM groups " +
               "INNER JOIN departments " +
@@ -120,27 +103,16 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public void selectByFaculty(int offset, int limit, long facultyId, List<Group> result) throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_BY_FACULTY, result, facultyId, limit, offset);
-    }
-
-    @Override
-    public long selectCountByFaculty(long facultyId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_FACULTY, facultyId);
-        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY query"));
-    }
-
-    @Override
-    public void selectByFacultyAndDepartment(int offset, int limit, long facultyId, long departmentId, List<Group> result)
+    public void selectByDepartment(int offset, int limit, long departmentId, List<Group> result)
                 throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_BY_FACULTY_AND_DEPARTMENT, result, facultyId, departmentId,
+        QueryExecutor.executeSelect(groupMapper, SELECT_BY_DEPARTMENT, result, departmentId,
                 limit, offset);
     }
 
     @Override
-    public long selectCountByFacultyAndDepartment(long facultyId, long departmentId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT,
-                facultyId, departmentId);
+    public long selectCountByDepartment(long departmentId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_DEPARTMENT,
+                departmentId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT query"));
     }
 
