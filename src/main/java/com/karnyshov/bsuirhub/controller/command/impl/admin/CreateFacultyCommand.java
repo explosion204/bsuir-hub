@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.DataValidator;
+import com.karnyshov.bsuirhub.controller.validator.FacultyValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
@@ -24,7 +24,7 @@ public class CreateFacultyCommand implements Command {
     private FacultyService facultyService;
 
     @Inject
-    private DataValidator validator;
+    private FacultyValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -50,7 +50,7 @@ public class CreateFacultyCommand implements Command {
             }
         } else {
             // data is not valid
-            result = new CommandResult(ADMIN_NEW_USER_URL, REDIRECT);
+            result = new CommandResult(ADMIN_NEW_FACULTY_URL, REDIRECT);
         }
 
         return result;

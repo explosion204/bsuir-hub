@@ -11,7 +11,7 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 
 @Named
 public class SetLocaleCommand implements Command {
-    private static final String JSON_RESULT = "";
+    private static final String JSON_RESULT = ""; // TODO: 8/1/2021 status
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

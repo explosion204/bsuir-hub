@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.DataValidator;
+import com.karnyshov.bsuirhub.controller.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
@@ -41,7 +41,7 @@ public class ChangeEmailCommand implements Command {
     private MailService mailService;
 
     @Inject
-    private DataValidator validator;
+    private UserValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

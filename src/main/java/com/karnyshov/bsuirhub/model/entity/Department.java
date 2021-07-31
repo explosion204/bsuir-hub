@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Department extends AbstractEntity {
     private String name;
     private String shortName;
-    private boolean archived;
+    private transient boolean archived;
     private long facultyId;
     private String specialtyAlias;
 

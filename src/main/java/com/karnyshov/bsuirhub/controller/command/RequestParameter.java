@@ -18,9 +18,8 @@ public class RequestParameter {
     public static final String CONFIRMATION_TOKEN = "token";
     public static final String NAME = "name";
     public static final String SHORT_NAME = "shortName";
-
-    public static final String PAGINATION_START = "start";
-    public static final String PAGINATION_LENGTH = "length";
+    public static final String SPECIALTY_ALIAS = "specialtyAlias";
+    public static final String FACULTY_ID = "facultyId";
 
     private RequestParameter() {
 

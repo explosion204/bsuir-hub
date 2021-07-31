@@ -13,7 +13,7 @@
             <a href="/admin/faculties" class="nav-link link-dark">Faculties</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link link-dark">Category</a>
+            <a href="/admin/departments" class="nav-link link-dark">Departments</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link link-dark">Category</a>
@@ -38,9 +38,3 @@
         </ul>
     </div>
 </div>
-
-<script>
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-</script>

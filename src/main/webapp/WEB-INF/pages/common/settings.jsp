@@ -51,7 +51,7 @@
             <div class="form-group mb-2 mt-2">
                 <label for="emailInput">Email
                     <c:choose>
-                        <c:when test="${sessionScope.user.userStatus.statusId eq 1}">
+                        <c:when test="${sessionScope.user.status.statusId eq 1}">
                     <span class="text-danger">(not confirmed)</span>
                         </c:when>
                         <c:otherwise>

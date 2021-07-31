@@ -23,7 +23,7 @@ public class UserRoleFilter implements Filter {
         User user = (User) session.getAttribute(USER);
 
         if (user == null) {
-            user = User.builder().setUserRole(GUEST).build();
+            user = User.builder().setRole(GUEST).build();
             session.setAttribute(USER, user);
         }
 

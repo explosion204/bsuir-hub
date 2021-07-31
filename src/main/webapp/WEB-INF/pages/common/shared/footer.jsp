@@ -24,11 +24,7 @@
 </footer>
 
 
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-
+<script>
     <c:if test="${empty sessionScope.locale}">
         let localeName = sessionStorage.getItem(LOCALE);
         if (!localeName) {
@@ -38,4 +34,4 @@
 
         setLocale(localeName);
     </c:if>
-    </script>
+</script>

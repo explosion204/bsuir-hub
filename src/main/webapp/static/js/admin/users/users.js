@@ -20,8 +20,8 @@ $(document).ready(function() {
             { data: 'entityId' },
             { data: 'login' },
             { data: 'email' },
-            { data: 'userRole' },
-            { data: 'userStatus' },
+            { data: 'role' },
+            { data: 'status' },
             { data: 'firstName' },
             { data: 'patronymic' },
             { data: 'lastName' },
@@ -48,35 +48,28 @@ $(document).ready(function() {
 
     $("div.toolbar").html(`
             <div class="input-group mb-3">
-                <button id="createButton" type="button" class="btn btn-secondary">Create user</button>
+                <button id="createButton" type="button" class="btn btn-secondary create-button">Create</button>
                 <select id="searchCriteria" class="form-select">
                     <option disabled>Search criteria</option>
                     <option value="LOGIN">Login</option>
                     <option value="EMAIL">Email</option>
                     <option value="LAST_NAME">Last name</option>
                 </select>
-                <input id="searchInput" type="text" class="form-control w-50" placeholder="Start typing...">
-                <button id="searchButton" type="button" class="btn btn-secondary">Search</button>
-                <button id="clearButton" type="button" class="btn btn-secondary me-2">Clear</button>
+                <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
             </div>
         `
     );
 
-    $('#searchInput').keyup(function(e) {
+    $('#searchCriteria').select2({
+        minimumResultsForSearch: -1,
+        theme: 'bootstrap',
+        width: '10%'
+    });
+
+    $('#searchInput').keyup(delay(function () {
         let searchValue = $('#searchInput').val();
-        if ((e.key === 'Enter' || e.keyCode === 13) && searchValue !== '') {
-            table.search(searchValue).draw();
-        }
-    });
-
-    $('#searchButton').click(function () {
-        table.search($('#searchInput').val()).draw();
-    });
-
-    $('#clearButton').click(function () {
-        $('#searchInput').val('');
-        table.search('').draw();
-    });
+        table.search(searchValue).draw();
+    }, 250));
 
     $('#createButton').click(function () {
         window.location.href = '/admin/users/new';

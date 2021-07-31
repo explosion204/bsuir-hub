@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Faculty extends AbstractEntity {
     private String name;
     private String shortName;
-    private boolean archived;
+    private transient boolean archived;
 
     private Faculty(FacultyBuilder builder) {
         super(builder);

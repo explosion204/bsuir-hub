@@ -91,7 +91,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Department> result) throws DaoException {
-        QueryExecutor.executeSelect(departmentMapper, SELECT_ALL, result);
+        QueryExecutor.executeSelect(departmentMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override

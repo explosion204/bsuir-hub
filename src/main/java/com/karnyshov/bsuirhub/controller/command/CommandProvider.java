@@ -2,10 +2,7 @@ package com.karnyshov.bsuirhub.controller.command;
 
 import com.karnyshov.bsuirhub.controller.command.impl.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.*;
-import com.karnyshov.bsuirhub.controller.command.impl.ajax.GetFacultiesCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.ajax.GetUsersCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.ajax.SetLocaleCommand;
-import com.karnyshov.bsuirhub.controller.command.impl.ajax.UploadProfileImageCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.ajax.*;
 import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.*;
@@ -18,6 +15,7 @@ public enum CommandProvider {
     SET_LOCALE(SetLocaleCommand.class, POST,"/ajax/set_locale"),
     GET_USERS(GetUsersCommand.class, GET, "/ajax/get_users"),
     GET_FACULTIES(GetFacultiesCommand.class, GET, "/ajax/get_faculties"),
+    GET_DEPARTMENTS(GetDepartmentsCommand.class, GET, "/ajax/get_departments"),
     UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/ajax/upload_profile_image"),
 
     /* COMMON AREA */
@@ -45,7 +43,14 @@ public enum CommandProvider {
     GO_TO_EDIT_FACULTY_PAGE(GoToEditFacultyPageCommand.class, GET, "/admin/faculties/edit"),
     CREATE_FACULTY(CreateFacultyCommand.class, POST, "/admin/faculties/new"),
     UPDATE_FACULTY(UpdateFacultyCommand.class, POST, "/admin/faculties/edit"),
-    DELETE_FACULTY(DeleteFacultyCommand.class, POST, "/admin/faculties/delete");
+    DELETE_FACULTY(DeleteFacultyCommand.class, POST, "/admin/faculties/delete"),
+
+    GO_TO_DEPARTMENTS_PAGE(GoToDepartmentsPageCommand.class, GET, "/admin/departments", "/admin/departments/"),
+    GO_TO_NEW_DEPARTMENT_PAGE(GoToNewDepartmentPageCommand.class, GET, "/admin/departments/new", "/admin/departments/new/"),
+    GO_TO_EDIT_DEPARTMENT_PAGE(GoToEditDepartmentPageCommand.class, GET, "/admin/departments/edit"),
+    CREATE_DEPARTMENT(CreateDepartmentCommand.class, POST, "/admin/departments/new"),
+    UPDATE_DEPARTMENT(UpdateDepartmentCommand.class, POST, "/admin/departments/edit"),
+    DELETE_DEPARTMENT(DeleteDepartmentCommand.class, POST, "/admin/departments/delete");
 
     private List<String> urlPatterns;
     private RequestMethod requestMethod;

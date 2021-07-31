@@ -1,14 +1,16 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 public class User extends AbstractEntity {
     private String login;
     private String email;
-    private String passwordHash;
-    private String salt;
-    private UserRole userRole;
-    private UserStatus userStatus;
+    private transient String passwordHash;
+    private transient String salt;
+    private UserRole role;
+    private UserStatus status;
     private long groupId;
     private String firstName;
     private String patronymic;
@@ -21,8 +23,8 @@ public class User extends AbstractEntity {
         this.email = builder.email;
         this.passwordHash = builder.passwordHash;
         this.salt = builder.salt;
-        this.userRole = builder.userRole;
-        this.userStatus = builder.userStatus;
+        this.role = builder.role;
+        this.status = builder.status;
         this.groupId = builder.groupId;
         this.firstName = builder.firstName;
         this.patronymic = builder.patronymic;
@@ -50,12 +52,12 @@ public class User extends AbstractEntity {
         return salt;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public UserRole getRole() {
+        return role;
     }
 
-    public UserStatus getUserStatus() {
-        return userStatus;
+    public UserStatus getStatus() {
+        return status;
     }
 
     public long getGroupId() {
@@ -87,8 +89,8 @@ public class User extends AbstractEntity {
         result = prime * result + (email != null ? email.hashCode() : 0);
         result = prime * result + (passwordHash != null ? passwordHash.hashCode() : 0);
         result = prime * result + (salt != null ? salt.hashCode() : 0);
-        result = prime * result + (userRole != null ? userRole.hashCode() : 0);
-        result = prime * result + (userStatus != null ? userStatus.hashCode() : 0);
+        result = prime * result + (role != null ? role.hashCode() : 0);
+        result = prime * result + (status != null ? status.hashCode() : 0);
         result = prime * result + Long.hashCode(groupId);
         result = prime * result + (firstName != null ? firstName.hashCode() : 0);
         result = prime * result + (patronymic != null ? patronymic.hashCode() : 0);
@@ -111,7 +113,7 @@ public class User extends AbstractEntity {
         User user = (User) obj;
         return super.equals(user) && Objects.equals(user.login, login) && Objects.equals(user.email, email)
                 && Objects.equals(user.passwordHash, passwordHash) && Objects.equals(user.salt, salt)
-                && Objects.equals(user.userRole, userRole) && Objects.equals(user.userStatus, userStatus)
+                && Objects.equals(user.role, role) && Objects.equals(user.status, status)
                 && user.groupId == groupId && Objects.equals(user.firstName, firstName)
                 && Objects.equals(user.patronymic, patronymic) && Objects.equals(user.lastName, lastName)
                 && Objects.equals(user.profilePicturePath, profilePicturePath);
@@ -119,14 +121,14 @@ public class User extends AbstractEntity {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("GroupTeacherSubject (");
+        StringBuilder builder = new StringBuilder("User (");
         builder.append(super.toString()).append("): ");
         builder.append("login = ").append(login).append(", ");
         builder.append("email = ").append(email).append(", ");
         builder.append("password hash = ").append(passwordHash).append(", ");
         builder.append("salt = ").append(salt).append(", ");
-        builder.append("user role = ").append(userRole).append(", ");
-        builder.append("user status = ").append(userStatus).append(", ");
+        builder.append("user role = ").append(role).append(", ");
+        builder.append("user status = ").append(status).append(", ");
         builder.append("group id = ").append(groupId).append(", ");
         builder.append("first name = ").append(firstName).append(", ");
         builder.append("patronymic = ").append(patronymic).append(", ");
@@ -141,8 +143,8 @@ public class User extends AbstractEntity {
         private String email;
         private String passwordHash;
         private String salt;
-        private UserRole userRole;
-        private UserStatus userStatus;
+        private UserRole role;
+        private UserStatus status;
         private long groupId;
         private String firstName;
         private String patronymic;
@@ -173,8 +175,8 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public UserBuilder setUserRole(UserRole userRole) {
-            this.userRole = userRole;
+        public UserBuilder setRole(UserRole role) {
+            this.role = role;
             return this;
         }
 
@@ -183,8 +185,8 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public UserBuilder setUserStatus(UserStatus userStatus) {
-            this.userStatus = userStatus;
+        public UserBuilder setStatus(UserStatus status) {
+            this.status = status;
             return this;
         }
 
@@ -214,8 +216,8 @@ public class User extends AbstractEntity {
             this.email = user.email;
             this.passwordHash = user.passwordHash;
             this.salt = user.salt;
-            this.userRole = user.userRole;
-            this.userStatus = user.userStatus;
+            this.role = user.role;
+            this.status = user.status;
             this.groupId = user.groupId;
             this.firstName = user.firstName;
             this.patronymic = user.patronymic;

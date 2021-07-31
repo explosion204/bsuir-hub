@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.DataValidator;
+import com.karnyshov.bsuirhub.controller.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -29,7 +29,7 @@ public class CreateUserCommand implements Command {
     private UserService userService;
 
     @Inject
-    private DataValidator validator;
+    private UserValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -48,12 +48,12 @@ public class CreateUserCommand implements Command {
         User user = User.builder()
                 .setLogin(login)
                 .setEmail(email)
-                .setUserRole(role)
+                .setRole(role)
                 .setFirstName(firstName)
                 .setPatronymic(patronymic)
                 .setLastName(lastName)
                 // empty email -> always not confirmed
-                .setUserStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
+                .setStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
                 .setProfilePicturePath(DEFAULT_PROFILE_IMAGE_PATH)
                 .build();
 

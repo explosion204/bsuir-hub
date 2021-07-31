@@ -77,7 +77,7 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Group> result) throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_ALL, result);
+        QueryExecutor.executeSelect(groupMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override

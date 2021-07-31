@@ -24,7 +24,7 @@ public class LoginPageAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(USER);
 
-        if (user != null && user.getUserRole() != UserRole.GUEST) {
+        if (user != null && user.getRole() != UserRole.GUEST) {
             httpResponse.sendRedirect(INDEX_URL);
         } else {
             chain.doFilter(request, response);

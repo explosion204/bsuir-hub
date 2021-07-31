@@ -26,7 +26,7 @@ public class SettingsPageAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(USER);
 
-        if (user == null || user.getUserRole() == UserRole.GUEST) {
+        if (user == null || user.getRole() == UserRole.GUEST) {
             httpResponse.sendRedirect(LOGIN_URL);
         } else {
             chain.doFilter(request, response);

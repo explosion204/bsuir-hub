@@ -149,12 +149,12 @@
                     <label for="roleSelect">Role</label>
                     <select class="form-control" name="role" id="roleSelect">
                         <c:choose>
-                            <c:when test="${target_entity.userRole.roleId eq 3}">
+                            <c:when test="${target_entity.role.roleId eq 3}">
                                 <option value="1" disabled>Student</option>
                                 <option value="2" disabled>Teacher</option>
                                 <option value="3" selected readonly>Admin</option>
                             </c:when>
-                            <c:when test="${target_entity.userRole.roleId eq 1}">
+                            <c:when test="${target_entity.role.roleId eq 1}">
                                 <option value="1" selected>Student</option>
                                 <option value="2">Teacher</option>
                                 <option value="3" disabled>Admin</option>
@@ -194,7 +194,7 @@
                 <input hidden type="text" name="profilePicturePath" value="${target_entity.profilePicturePath}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <c:choose>
-                        <c:when test="${target_entity.userStatus.statusId eq 2}">
+                        <c:when test="${target_entity.status.statusId eq 2}">
                             <input class="form-check-input" name="confirmed" type="checkbox" id="confirmedCheckbox" checked>
                         </c:when>
                         <c:otherwise>

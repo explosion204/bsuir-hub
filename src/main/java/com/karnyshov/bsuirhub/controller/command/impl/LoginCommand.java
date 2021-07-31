@@ -35,7 +35,7 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
 
-        if (sessionUser.getUserRole() != UserRole.GUEST) {
+        if (sessionUser.getRole() != UserRole.GUEST) {
             return new CommandResult(INDEX_URL, REDIRECT);
         }
 

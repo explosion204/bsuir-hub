@@ -53,9 +53,9 @@ public class ConfirmEmailCommand implements Command {
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();
 
-                    if (StringUtils.equals(email, user.getEmail()) && user.getUserStatus() != CONFIRMED) {
+                    if (StringUtils.equals(email, user.getEmail()) && user.getStatus() != CONFIRMED) {
                         User updatedUser = User.builder().of(user)
-                                .setUserStatus(CONFIRMED)
+                                .setStatus(CONFIRMED)
                                 .build();
                         userService.update(updatedUser);
                         success = true;

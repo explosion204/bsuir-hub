@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
-import com.karnyshov.bsuirhub.controller.validator.DataValidator;
+import com.karnyshov.bsuirhub.controller.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -41,11 +41,12 @@ public class UploadProfileImageCommand implements Command {
     private UserService userService;
 
     @Inject
-    private DataValidator validator;
+    private UserValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
+        boolean status = true;
 
         try {
             User user = (User) request.getSession().getAttribute(USER);
@@ -65,7 +66,7 @@ public class UploadProfileImageCommand implements Command {
             // administrator can change everyone's profile image
             // other users can change only their own profile images
             if (issuer.isPresent() && target.isPresent() && (issuerId == targetId
-                    || issuer.get().getUserRole() == UserRole.ADMIN)) {
+                    || issuer.get().getRole() == UserRole.ADMIN)) {
 
                 String fileName = RandomStringUtils.random(FILE_UNIQUE_SEQUENCE_LENGTH, true, true) + UNDERSCORE
                         + targetId + IMAGE_FILE_EXTENSION;
@@ -110,13 +111,14 @@ public class UploadProfileImageCommand implements Command {
                 response.put(STATUS, validationResult);
             } else {
                 logger.error("Invalid issuer (id = " + issuerId + ") or target (id = " + targetId + ")");
-                response.put(STATUS, false);
+                status = false;
             }
         } catch (NumberFormatException | ServiceException | IOException | ServletException | NullPointerException e) {
             logger.error("An error occurred executing 'upload profile image' command", e);
-            response.put(STATUS, false);
+            status = false;
         }
 
+        response.put(STATUS, status);
         return new CommandResult(new Gson().toJson(response), JSON);
     }
 }

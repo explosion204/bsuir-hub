@@ -27,9 +27,9 @@ public class StudyPagesAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(USER);
         
-        if (user == null || user.getUserRole() == GUEST) {
+        if (user == null || user.getRole() == GUEST) {
             httpResponse.sendRedirect(LOGIN_URL);
-        } else if (user.getUserStatus() == NOT_CONFIRMED) {
+        } else if (user.getStatus() == NOT_CONFIRMED) {
             httpResponse.sendRedirect(SETTINGS_URL);
         } else {
             chain.doFilter(request, response);

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Subject extends AbstractEntity {
     private String name;
-    private String shortName;
+    private transient String shortName;
 
     private Subject(SubjectBuilder builder) {
         super(builder);

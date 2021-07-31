@@ -38,7 +38,7 @@
                     </li>
 
                     <c:choose>
-                        <c:when test="${sessionScope.user.userRole.roleId ne 0}">
+                        <c:when test="${sessionScope.user.role.roleId ne 0}">
                             <li class="nav-item emphasized-nav-item dropdown me-3">
                                 <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
                                    id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">

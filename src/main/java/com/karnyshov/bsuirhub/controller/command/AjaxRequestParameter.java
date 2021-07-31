@@ -10,6 +10,13 @@ public class AjaxRequestParameter {
     public static final String DATA = "data";
     public static final String SEARCH_VALUE = "search[value]";
     public static final String FILTER_CRITERIA = "filterCriteria";
+    public static final String PAGINATION_START = "start";
+    public static final String PAGINATION_LENGTH = "length";
+
+    public static final String TERM = "term";
+    public static final String PAGE = "page";
+    public static final String PAGE_SIZE = "pageSize";
+    public static final String RESULTS = "results";
 
     public static final String TARGET_ID = "targetId";
 

@@ -45,7 +45,7 @@ public class GoToEditUserPageCommand implements Command {
 
                 HttpSession session = request.getSession();
                 session.setAttribute(CACHED_EMAIL, user.get().getEmail());
-                session.setAttribute(CACHED_ROLE, user.get().getUserRole());
+                session.setAttribute(CACHED_ROLE, user.get().getRole());
 
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_USER_JSP, FORWARD);

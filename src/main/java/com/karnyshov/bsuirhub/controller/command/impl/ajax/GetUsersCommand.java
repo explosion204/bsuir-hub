@@ -17,27 +17,23 @@ import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PAGINATION_LENGTH;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PAGINATION_START;
 
 @Named
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final Gson gson = new Gson();
 
     @Inject
     private UserService userService;
-
-    private enum RequestType {
-        JQUERY_DATATABLE, JQUERY_SELECT
-    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
         String typeValue = request.getParameter(REQUEST_TYPE);
         Map<String, Object> response = new HashMap<>();
+        boolean status = true;
         
         if (typeValue != null) {
-            RequestType issuer = RequestType.valueOf(typeValue.toUpperCase());
+            AjaxRequestType issuer = AjaxRequestType.valueOf(typeValue.toUpperCase());
             
             try {
                 switch (issuer) {
@@ -48,19 +44,20 @@ public class GetUsersCommand implements Command {
                         processSelectRequest(request, response);
                         // TODO: 7/22/2021
                         break;
+                    default:
+                        status = false;
                 }
-                
-                response.put(STATUS, true);
             } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
                 logger.error("An error occurred executing 'get users' command", e);
-                response.put(STATUS, false);
+                status = false;
             }
 
         } else {
-            response.put(STATUS, false);
+            status = false;
         }
-        
-        return new CommandResult(new Gson().toJson(response), JSON);
+
+        response.put(STATUS, status);
+        return new CommandResult(gson.toJson(response), JSON);
     }
     
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response) 

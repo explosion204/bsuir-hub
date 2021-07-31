@@ -38,7 +38,7 @@ public class DeleteUserCommand implements Command {
 
             // prevent user from deleting himself or another administrator
             if (issuer.getEntityId() != entityId || (targetUser.isPresent()
-                    && targetUser.get().getUserRole() != UserRole.ADMIN)) {
+                    && targetUser.get().getRole() != UserRole.ADMIN)) {
 
                 userService.delete(entityId);
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);

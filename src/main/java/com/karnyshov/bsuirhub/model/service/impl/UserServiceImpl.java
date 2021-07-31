@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
             User updatedUser = User.builder().of(user)
                     .setEmail(newEmail)
-                    .setUserStatus(UserStatus.NOT_CONFIRMED)
+                    .setStatus(UserStatus.NOT_CONFIRMED)
                     .build();
 
             userDao.update(updatedUser);

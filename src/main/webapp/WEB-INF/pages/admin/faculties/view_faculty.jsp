@@ -36,7 +36,7 @@
                 </c:if>
                 <c:if test="${invalid_name}">
                     <div class="alert alert-danger" role="alert">
-                        Faculty name must have 1 - 50 alphabetic characters
+                        Faculty name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
                     </div>
                 </c:if>
                 <c:if test="${invalid_short_name}">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="shortNameInput">Short name</label>
-                    <input type="text" name="shortName" class="form-control" maxlength="50"
+                    <input type="text" name="shortName" class="form-control"
                            pattern="[0-9a-zA-Zа-яА-Я]{1,15}"
                            id="shortNameInput" value="${target_entity.shortName}" required>
                     <div class="invalid-feedback">
