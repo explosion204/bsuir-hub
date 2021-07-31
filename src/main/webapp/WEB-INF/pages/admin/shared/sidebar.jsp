@@ -10,7 +10,7 @@
             <a href="/admin/users" class="nav-link link-dark" aria-current="page">Users</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link link-dark">Category</a>
+            <a href="/admin/faculties" class="nav-link link-dark">Faculties</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link link-dark">Category</a>

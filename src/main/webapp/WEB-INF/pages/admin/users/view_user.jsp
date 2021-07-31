@@ -22,13 +22,13 @@
             <h1 class="display-3">
                 <c:choose>
                     <c:when test="${new_entity_page}">
-                        <img src="/static/images/default_profile.jpg" class="rounded-circle">
+                        <img src="/static/images/profile/default_profile.jpg" class="rounded-circle">
                         New user
                     </c:when>
                     <c:otherwise>
                         <input hidden id="filePicker" name="profileImage" type="file">
                         <div id="uploadPicture" class="image-container">
-                            <img id="profileImage" src="/static/images/profile/${target_user.profilePicturePath}"
+                            <img id="profileImage" src="/static/images/profile/${target_entity.profilePicturePath}"
                                  class="image rounded-circle">
                             <div class="overlay rounded-circle">
                                 <div class="image-text">Change profile picture</div>
@@ -105,18 +105,18 @@
                     </div>
                 </c:if>
 
-                <input hidden type="text" name="id" value="${target_user.entityId}">
+                <input hidden type="text" name="id" value="${target_entity.entityId}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="loginInput">Login</label>
                     <input type="text" name="login" class="form-control" pattern="[0-9a-zA-Z]{8,20}"
-                           id="loginInput" value="${target_user.login}"
+                           id="loginInput" value="${target_entity.login}"
                            <c:if test="${not new_entity_page}">readonly</c:if>
                     >
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="emailInput">Email</label>
                     <input type="email" name="email" class="form-control" maxlength="50" id="emailInput"
-                           value="${target_user.email}"
+                           value="${target_entity.email}"
                            placeholder="Leave it empty if you do not want set email (WARNING: user will be considered as not confirmed)"
                     >
                     <div class="invalid-feedback">
@@ -149,12 +149,12 @@
                     <label for="roleSelect">Role</label>
                     <select class="form-control" name="role" id="roleSelect">
                         <c:choose>
-                            <c:when test="${target_user.userRole.roleId eq 3}">
+                            <c:when test="${target_entity.userRole.roleId eq 3}">
                                 <option value="1" disabled>Student</option>
                                 <option value="2" disabled>Teacher</option>
                                 <option value="3" selected readonly>Admin</option>
                             </c:when>
-                            <c:when test="${target_user.userRole.roleId eq 1}">
+                            <c:when test="${target_entity.userRole.roleId eq 1}">
                                 <option value="1" selected>Student</option>
                                 <option value="2">Teacher</option>
                                 <option value="3" disabled>Admin</option>
@@ -170,7 +170,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="firstNameInput">First name</label>
                     <input type="text" name="firstName" class="form-control" pattern="[a-zA-Zа-яА-Я]{1,50}"
-                           id="firstNameInput" value="${target_user.firstName}" required>
+                           id="firstNameInput" value="${target_entity.firstName}" required>
                     <div class="invalid-feedback">
                         First name must have 1 - 50 alphabetic characters
                     </div>
@@ -178,7 +178,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="patornymicInput">Patronymic</label>
                     <input type="text" name="patronymic" class="form-control" pattern="[0-9a-zA-Zа-яА-Я]{1,50}"
-                           id="patornymicInput" value="${target_user.patronymic}" required>
+                           id="patornymicInput" value="${target_entity.patronymic}" required>
                     <div class="invalid-feedback">
                         Patronymic must have 1 - 50 alphabetic characters
                     </div>
@@ -186,15 +186,15 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="lastNameInput">Last name</label>
                     <input type="text" name="lastName" class="form-control" pattern="[0-9a-zA-Zа-яА-Я]{1,50}"
-                           id="lastNameInput" value="${target_user.lastName}" required>
+                           id="lastNameInput" value="${target_entity.lastName}" required>
                     <div class="invalid-feedback">
                         Last name must have 1 - 50 alphabetic characters
                     </div>
                 </div>
-                <input hidden type="text" name="profilePicturePath" value="${target_user.profilePicturePath}">
+                <input hidden type="text" name="profilePicturePath" value="${target_entity.profilePicturePath}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <c:choose>
-                        <c:when test="${target_user.userStatus.statusId eq 2}">
+                        <c:when test="${target_entity.userStatus.statusId eq 2}">
                             <input class="form-check-input" name="confirmed" type="checkbox" id="confirmedCheckbox" checked>
                         </c:when>
                         <c:otherwise>

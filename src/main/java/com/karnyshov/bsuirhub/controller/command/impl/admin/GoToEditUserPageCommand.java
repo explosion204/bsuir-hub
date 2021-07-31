@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl;
+package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
@@ -20,7 +20,7 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENTITY_PAGE;
 
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_USER;
+import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_ENTITY;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
@@ -40,7 +40,7 @@ public class GoToEditUserPageCommand implements Command {
             Optional<User> user = userService.findById(entityId);
 
             if (user.isPresent()) {
-                request.setAttribute(TARGET_USER, user.get());
+                request.setAttribute(TARGET_ENTITY, user.get());
                 request.setAttribute(RequestAttribute.ENTITY_ID, user.get().getEntityId());
 
                 HttpSession session = request.getSession();

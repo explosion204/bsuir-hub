@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    setActiveNavItem(1);
+    setActiveNavItem(2);
 
     let table = $('#dataTable').DataTable({
         dom: '<"toolbar">rtip',
@@ -10,7 +10,7 @@ $(document).ready(function() {
         serverSide: true,
         ordering: false,
         ajax: {
-            url: '/ajax/get_users',
+            url: '/ajax/get_faculties',
             data: function (d) {
                 d.requestType = "jquery_datatable";
                 d.filterCriteria = $('#searchCriteria').val();
@@ -18,29 +18,15 @@ $(document).ready(function() {
         },
         columns: [
             { data: 'entityId' },
-            { data: 'login' },
-            { data: 'email' },
-            { data: 'userRole' },
-            { data: 'userStatus' },
-            { data: 'firstName' },
-            { data: 'patronymic' },
-            { data: 'lastName' },
+            { data: 'name' },
+            { data: 'shortName' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    let issuerId = Number.parseInt($("#issuerId").val());
-
-                    if (issuerId === row.entityId || row.userRole === 'ADMIN') {
-                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">Edit</a>' +
-                            '<form style="display: inline" method="post" action="/admin/users/delete?id=' + row.entityId + '">' +
-                            '   <input class="btn btn-secondary" type="submit" value="Delete" disabled>' +
-                            '</span>'
-                    } else {
-                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">Edit</a>' +
-                            '<form style="display: inline" method="post" action="/admin/users/delete?id=' + row.entityId + '">' +
-                            '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
-                            '</span>'
-                    }
+                    return '<a class="btn btn-secondary me-2" href="/admin/faculties/edit?id=' + row.entityId + '">Edit</a>' +
+                    '<form style="display: inline" method="post" action="/admin/faculties/delete?id=' + row.entityId + '">' +
+                    '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
+                    '</span>'
                 }
             }
         ]
@@ -48,12 +34,11 @@ $(document).ready(function() {
 
     $("div.toolbar").html(`
             <div class="input-group mb-3">
-                <button id="createButton" type="button" class="btn btn-secondary">Create user</button>
+                <button id="createButton" type="button" class="btn btn-secondary">Create faculty</button>
                 <select id="searchCriteria" class="form-select">
                     <option disabled>Search criteria</option>
-                    <option value="LOGIN">Login</option>
-                    <option value="EMAIL">Email</option>
-                    <option value="LAST_NAME">Last name</option>
+                    <option value="NAME">Name</option>
+                    <option value="SHORT_NAME">Short name</option>
                 </select>
                 <input id="searchInput" type="text" class="form-control w-50" placeholder="Start typing...">
                 <button id="searchButton" type="button" class="btn btn-secondary">Search</button>
@@ -79,6 +64,6 @@ $(document).ready(function() {
     });
 
     $('#createButton').click(function () {
-        window.location.href = '/admin/users/new';
+        window.location.href = '/admin/faculties/new';
     });
 });

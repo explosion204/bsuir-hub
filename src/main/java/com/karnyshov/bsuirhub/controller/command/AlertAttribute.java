@@ -20,6 +20,9 @@ public class AlertAttribute {
     public static final String INVALID_PATRONYMIC = "invalid_patronymic";
     public static final String INVALID_LAST_NAME = "invalid_last_name";
 
+    public static final String INVALID_NAME = "invalid_name";
+    public static final String INVALID_SHORT_NAME = "invalid_short_name";
+
     private AlertAttribute() {
 
     }

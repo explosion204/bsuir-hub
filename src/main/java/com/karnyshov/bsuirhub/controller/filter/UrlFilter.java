@@ -59,6 +59,8 @@ public class UrlFilter implements Filter {
         request.setAttribute(INVALID_FIRST_NAME, session.getAttribute(INVALID_FIRST_NAME));
         request.setAttribute(INVALID_PATRONYMIC, session.getAttribute(INVALID_PATRONYMIC));
         request.setAttribute(INVALID_LAST_NAME, session.getAttribute(INVALID_LAST_NAME));
+        request.setAttribute(INVALID_NAME, session.getAttribute(INVALID_NAME));
+        request.setAttribute(INVALID_SHORT_NAME, session.getAttribute(INVALID_SHORT_NAME));
 
         session.removeAttribute(INVALID_ROLE);
         session.removeAttribute(INVALID_LOGIN);
@@ -71,5 +73,7 @@ public class UrlFilter implements Filter {
         session.removeAttribute(INVALID_FIRST_NAME);
         session.removeAttribute(INVALID_PATRONYMIC);
         session.removeAttribute(INVALID_LAST_NAME);
+        session.removeAttribute(INVALID_NAME);
+        session.removeAttribute(INVALID_SHORT_NAME);
     }
 }

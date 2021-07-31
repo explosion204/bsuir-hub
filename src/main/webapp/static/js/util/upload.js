@@ -50,7 +50,7 @@ function uploadProfileImage(targetId) {
                     formData.append('file', blob);
                     formData.append('targetId', targetId);
                     $.ajax({
-                        url: '/api/upload_profile_image',
+                        url: '/ajax/upload_profile_image',
                         method: 'POST',
                         data: formData,
                         contentType: false,

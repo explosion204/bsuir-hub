@@ -19,7 +19,6 @@ public class FacultyMapper implements ResultSetMapper<Faculty> {
             return (Faculty) Faculty.builder()
                     .setName(resultSet.getString(FACULTY_NAME))
                     .setShortName(resultSet.getString(FACULTY_SHORT_NAME))
-                    .setArchived(resultSet.getBoolean(FACULTY_IS_ARCHIVED))
                     .setEntityId(resultSet.getLong(FACULTY_ID))
                     .build();
         } catch (SQLException e) {

@@ -6,7 +6,7 @@ function setLocale(locale) {
 
     $.ajax({
         method: 'POST',
-        url: '/api/set_locale',
+        url: '/ajax/set_locale',
         data: {
             'locale': locale
         },

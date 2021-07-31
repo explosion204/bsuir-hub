@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.controller.validator;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
+import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
@@ -31,7 +32,9 @@ public class DataValidator {
     private static final String VALID_LOGIN_REGEX = "^\\p{Alnum}{8,20}$";
     private static final String VALID_EMAIL_REGEX = "^[\\p{Alnum}._]+@[\\p{Alnum}._]+$";
     private static final String VALID_PASSWORD_REGEX = "^(?=.*\\w)(?=.*\\d)[\\p{Alnum}]{8,32}$";
-    private static final String VALID_NAME = "\\p{L}{1,50}";
+    private static final String VALID_NO_SPACE_NAME = "^\\p{L}{1,50}$";
+    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s]{1,50}(?<!\\s)$";
+    private static final String VALID_SHORT_NAME = "^\\p{L}{1,15}$";
 
     @Inject
     private UserService userService;
@@ -111,15 +114,15 @@ public class DataValidator {
         mainValidationResult &= minorValidationResult;
         session.setAttribute(PASSWORDS_DO_NOT_MATCH, !minorValidationResult);
 
-        minorValidationResult = Pattern.matches(VALID_NAME, firstName);
+        minorValidationResult = Pattern.matches(VALID_NO_SPACE_NAME, firstName);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_FIRST_NAME, !minorValidationResult);
 
-        minorValidationResult = Pattern.matches(VALID_NAME, patronymic);
+        minorValidationResult = Pattern.matches(VALID_NO_SPACE_NAME, patronymic);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_PATRONYMIC, !minorValidationResult);
 
-        minorValidationResult = Pattern.matches(VALID_NAME, lastName);
+        minorValidationResult = Pattern.matches(VALID_NO_SPACE_NAME, lastName);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_LAST_NAME, !minorValidationResult);
 
@@ -159,13 +162,11 @@ public class DataValidator {
         mainValidationResult = minorValidationResult;
         session.setAttribute(INVALID_CURRENT_PASSWORD, !minorValidationResult);
 
-        minorValidationResult = StringUtils.isBlank(password)
-                || Pattern.matches(VALID_PASSWORD_REGEX, password);
+        minorValidationResult = Pattern.matches(VALID_PASSWORD_REGEX, password);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_PASSWORD, !minorValidationResult);
 
-        minorValidationResult = StringUtils.isBlank(password)
-                || StringUtils.equals(password, confirmPassword);
+        minorValidationResult = StringUtils.equals(password, confirmPassword);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(PASSWORDS_DO_NOT_MATCH, !minorValidationResult);
 
@@ -178,13 +179,33 @@ public class DataValidator {
         boolean mainValidationResult;
         boolean minorValidationResult;
 
-        minorValidationResult = StringUtils.isBlank(email) || Pattern.matches(VALID_EMAIL_REGEX, email);
+        minorValidationResult = Pattern.matches(VALID_EMAIL_REGEX, email);
         mainValidationResult = minorValidationResult;
         session.setAttribute(INVALID_EMAIL, !minorValidationResult);
 
-        minorValidationResult = StringUtils.isBlank(email) || userService.isEmailUnique(email);
+        minorValidationResult = userService.isEmailUnique(email);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(NOT_UNIQUE_EMAIL, !minorValidationResult);
+
+        return mainValidationResult;
+    }
+
+    public boolean validateFaculty(HttpServletRequest request, Faculty faculty) {
+        HttpSession session = request.getSession();
+
+        boolean mainValidationResult;
+        boolean minorValidationResult;
+
+        String name = faculty.getName();
+        String shortName = faculty.getShortName();
+
+        minorValidationResult = Pattern.matches(VALID_NAME, name);
+        mainValidationResult = minorValidationResult;
+        session.setAttribute(INVALID_NAME, !minorValidationResult);
+
+        minorValidationResult = Pattern.matches(VALID_SHORT_NAME, shortName);
+        mainValidationResult &= minorValidationResult;
+        session.setAttribute(INVALID_SHORT_NAME, !minorValidationResult);
 
         return mainValidationResult;
     }

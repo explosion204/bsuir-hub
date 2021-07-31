@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl;
+package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
@@ -62,7 +62,7 @@ public class CreateUserCommand implements Command {
             try {
                 userService.create(user, password);
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);
-            } catch (ServiceException | NumberFormatException e) {
+            } catch (ServiceException e) {
                 logger.error("An error occurred executing 'create user' command", e);
                 result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
             }

@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl;
+package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
