@@ -12,7 +12,7 @@ import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.INVALID_S
 
 @Named
 public class FacultyValidator {
-    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s]{1,50}(?<!\\s)$";
+    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s,]{1,50}(?<!\\s)$";
     private static final String VALID_SHORT_NAME = "^\\p{L}{1,15}$";
 
     public boolean validateFaculty(HttpServletRequest request, Faculty faculty) {

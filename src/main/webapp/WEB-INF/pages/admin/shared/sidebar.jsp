@@ -18,6 +18,9 @@
         <li class="nav-item">
             <a href="/admin/groups" class="nav-link link-dark">Groups</a>
         </li>
+        <li class="nav-item">
+            <a href="/admin/subjects" class="nav-link link-dark">Subjects</a>
+        </li>
     </ul>
     <hr>
     <div class="dropdown">

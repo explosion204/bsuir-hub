@@ -4,6 +4,7 @@ import com.karnyshov.bsuirhub.controller.command.impl.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.department.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.faculty.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.group.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.subject.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.user.*;
 import com.karnyshov.bsuirhub.controller.command.impl.ajax.*;
 import jakarta.enterprise.inject.spi.CDI;
@@ -20,6 +21,7 @@ public enum CommandProvider {
     GET_FACULTIES(GetFacultiesCommand.class, GET, "/ajax/get_faculties"),
     GET_DEPARTMENTS(GetDepartmentsCommand.class, GET, "/ajax/get_departments"),
     GET_GROUPS(GetGroupsCommand.class, GET, "/ajax/get_groups"),
+    GET_SUBJECTS(GetSubjectsCommand.class, GET, "/ajax/get_subjects"),
     UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/ajax/upload_profile_image"),
 
     /* COMMON AREA */
@@ -61,7 +63,14 @@ public enum CommandProvider {
     GO_TO_EDIT_GROUP_PAGE(GoToEditGroupPageCommand.class, GET, "/admin/groups/edit"),
     CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new"),
     UPDATE_GROUP(UpdateGroupCommand.class, POST, "/admin/groups/edit"),
-    DELETE_GROUP(DeleteGroupCommand.class, POST, "/admin/groups/delete");
+    DELETE_GROUP(DeleteGroupCommand.class, POST, "/admin/groups/delete"),
+
+    GO_TO_SUBJECTS_PAGE(GoToSubjectsPageCommand.class, GET, "/admin/subjects", "/admin/subjects/"),
+    GO_TO_NEW_SUBJECT_PAGE(GoToNewSubjectPageCommand.class, GET, "/admin/subjects/new", "/admin/subjects/new/"),
+    GO_TO_EDIT_SUBJECT_PAGE(GoToEditSubjectPageCommand.class, GET, "/admin/subjects/edit"),
+    CREATE_SUBJECT(CreateSubjectCommand.class, POST, "/admin/subjects/new"),
+    UPDATE_SUBJECT(UpdateSubjectCommand.class, POST, "/admin/subjects/edit"),
+    DELETE_SUBJECT(DeleteSubjectCommand.class, POST, "/admin/subjects/delete");
 
     private List<String> urlPatterns;
     private RequestMethod requestMethod;

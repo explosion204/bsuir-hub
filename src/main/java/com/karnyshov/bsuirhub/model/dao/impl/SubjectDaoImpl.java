@@ -16,13 +16,15 @@ public class SubjectDaoImpl implements SubjectDao {
     private static final String SELECT_ALL
             = "SELECT id, name, short_name, is_archived " +
               "FROM subjects " +
+              "WHERE is_archived = 0 " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
 
     private static final String SELECT_TOTAL_COUNT
             = "SELECT COUNT(id) " +
-              "FROM subjects;";
+              "FROM subjects " +
+              "WHERE is_archived = 0;";
 
     private static final String SELECT_BY_ID
             = "SELECT id, name, short_name, is_archived " +

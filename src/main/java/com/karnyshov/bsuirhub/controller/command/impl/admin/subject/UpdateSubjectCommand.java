@@ -1,11 +1,11 @@
-package com.karnyshov.bsuirhub.controller.command.impl.admin.faculty;
+package com.karnyshov.bsuirhub.controller.command.impl.admin.subject;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.FacultyValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.SubjectValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
-import com.karnyshov.bsuirhub.model.service.FacultyService;
+import com.karnyshov.bsuirhub.model.entity.Subject;
+import com.karnyshov.bsuirhub.model.service.SubjectService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,14 +18,14 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
 @Named
-public class UpdateFacultyCommand implements Command {
+public class UpdateSubjectCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject
-    private FacultyService facultyService;
+    private SubjectService subjectService;
 
     @Inject
-    private FacultyValidator validator;
+    private SubjectValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -35,33 +35,33 @@ public class UpdateFacultyCommand implements Command {
         String name = request.getParameter(NAME);
         String shortName = request.getParameter(SHORT_NAME);
 
-        Faculty faculty = Faculty.builder()
+        Subject subject = Subject.builder()
                 .setName(name)
                 .setShortName(shortName)
                 .setArchived(false)
                 .build();
 
-        if (validator.validateFaculty(request, faculty)) {
+        if (validator.validateSubject(request, subject)) {
             // data is valid
             try {
                 long entityId = Long.parseLong(idString);
-                Faculty updatedFaculty = (Faculty) Faculty.builder()
-                        .of(faculty)
+                Subject updatedSubject = (Subject) Subject.builder()
+                        .of(subject)
                         .setEntityId(entityId)
                         .build();
 
-                facultyService.update(updatedFaculty);
+                subjectService.update(updatedSubject);
 
                 // success
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
-                result = new CommandResult(ADMIN_EDIT_FACULTY_URL + idString, REDIRECT);
+                result = new CommandResult(ADMIN_EDIT_SUBJECT_URL + idString, REDIRECT);
             } catch (ServiceException | NumberFormatException e) {
-                logger.error("An error occurred executing 'update faculty' command", e);
+                logger.error("An error occurred executing 'update subject' command", e);
                 result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
             }
         } else {
             // data is not valid
-            result = new CommandResult(ADMIN_EDIT_FACULTY_URL + idString, REDIRECT);
+            result = new CommandResult(ADMIN_EDIT_SUBJECT_URL + idString, REDIRECT);
         }
 
         return result;
