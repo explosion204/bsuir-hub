@@ -17,6 +17,9 @@ public class AjaxRequestParameter {
     public static final String PAGE = "page";
     public static final String PAGE_SIZE = "pageSize";
     public static final String RESULTS = "results";
+    public static final String PAGINATION_MORE = "paginationMore";
+    public static final String IS_STUDENT = "isStudent";
+    public static final String GROUP_ID = "groupId";
 
     public static final String TARGET_ID = "targetId";
 

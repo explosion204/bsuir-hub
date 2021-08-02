@@ -32,7 +32,7 @@ $(document).ready(function () {
                 return {
                     results: mappedData,
                     pagination: {
-                        more: (params.page * 10) < data.recordsFiltered
+                        more: data.paginationMore
                     }
                 }
             }

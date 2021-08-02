@@ -7,6 +7,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENT
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_ENTITY;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
+@Named
 public class GoToEditFacultyPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

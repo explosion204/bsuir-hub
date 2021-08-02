@@ -15,6 +15,9 @@ public class ApplicationPath {
     public static final String ADMIN_DEPARTMENTS_URL = "/admin/departments";
     public static final String ADMIN_NEW_DEPARTMENT_URL = "/admin/departments/new";
     public static final String ADMIN_EDIT_DEPARTMENT_URL = "/admin/departments/edit?id=";
+    public static final String ADMIN_GROUPS_URL = "/admin/groups";
+    public static final String ADMIN_NEW_GROUP_URL = "/admin/groups/new";
+    public static final String ADMIN_EDIT_GROUP_URL = "/admin/groups/edit?=";
     public static final String NOT_FOUND_ERROR_URL = "/error/404";
     public static final String INTERNAL_SERVER_ERROR_URL = "/error/500";
 
@@ -30,6 +33,8 @@ public class ApplicationPath {
     public static final String ADMIN_VIEW_FACULTY_JSP = "admin/faculties/view_faculty.jsp";
     public static final String ADMIN_DEPARTMENTS_JSP = "admin/departments/departments.jsp";
     public static final String ADMIN_VIEW_DEPARTMENT_JSP = "admin/departments/view_department.jsp";
+    public static final String ADMIN_GROUPS_JSP = "/admin/groups/groups.jsp";
+    public static final String ADMIN_VIEW_GROUP_JSP = "/admin/groups/view_group.jsp";
 
     /* DIRECTORIES */
     public static final String PROFILE_PICTURES_ROOT = "static/images/profile";

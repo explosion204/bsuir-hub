@@ -12,6 +12,7 @@ public interface GroupService {
     long filter(int page, int pageSize, GroupFilterCriteria criteria, String keyword, List<Group> result)
             throws ServiceException;
     long filter(int page, int pageSize, List<Group> result) throws ServiceException;
+    boolean isNameUnique(String name);
     long create(Group group) throws ServiceException;
     void update(Group group) throws ServiceException;
     void delete(long id) throws ServiceException;

@@ -104,12 +104,22 @@ public class UserServiceImpl implements UserService {
                     userDao.selectByLastName(offset, pageSize, keyword, result);
                     totalUsers = userDao.selectCountByLastName(keyword);
                     break;
+                case ROLE:
+                    long roleId = Long.parseLong(keyword);
+                    userDao.selectByRole(offset, pageSize, roleId, result);
+                    totalUsers = userDao.selectCountByRole(roleId);
+                    break;
+                case GROUP:
+                    long groupId = Long.parseLong(keyword);
+                    userDao.selectByGroup(offset, pageSize, groupId, result);
+                    totalUsers = userDao.selectCountByGroup(groupId);
+                    break;
                 default:
                     throw new ServiceException("Invalid criteria: " + criteria);
             }
 
             return totalUsers;
-        } catch (DaoException e) {
+        } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e);
         }
     }

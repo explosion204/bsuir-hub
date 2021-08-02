@@ -15,23 +15,30 @@ import java.util.Optional;
 public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_ALL
             = "SELECT id, name, id_department, id_headman, id_curator " +
-              "FROM groups " +
+              "FROM `groups` " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
 
     private static final String SELECT_TOTAL_COUNT
             = "SELECT COUNT(id) " +
-              "FROM groups;";
+              "FROM `groups`;";
 
     private static final String SELECT_BY_ID
             = "SELECT id, name, id_department, id_headman, id_curator " +
-              "FROM groups " +
+              "FROM `groups` " +
               "WHERE id = ?;";
+
 
     private static final String SELECT_BY_NAME
             = "SELECT id, name, id_department, id_headman, id_curator " +
-              "FROM groups " +
+              "FROM `groups` " +
+              "WHERE name = ?;";
+
+
+    private static final String SELECT_MULTIPLE_BY_NAME
+            = "SELECT id, name, id_department, id_headman, id_curator " +
+              "FROM `groups` " +
               "WHERE name LIKE CONCAT('%', ?, '%') " +
               "ORDER BY id " +
               "LIMIT ? " +
@@ -39,12 +46,12 @@ public class GroupDaoImpl implements GroupDao {
 
     private static final String SELECT_COUNT_BY_NAME
             = "SELECT COUNT(id) " +
-              "FROM groups " +
+              "FROM `groups` " +
               "WHERE name LIKE CONCAT('%', ?, '%');";
 
     private static final String SELECT_BY_DEPARTMENT
             = "SELECT groups.id, groups.name, id_department, id_headman, id_curator " +
-              "FROM groups " +
+              "FROM `groups` " +
               "WHERE id_department = ? " +
               "ORDER BY id " +
               "LIMIT ? " +
@@ -52,21 +59,19 @@ public class GroupDaoImpl implements GroupDao {
 
     private static final String SELECT_COUNT_BY_DEPARTMENT
             = "SELECT COUNT(groups.id) " +
-              "FROM groups " +
-              "INNER JOIN departments " +
-              "ON departments.id = id_department AND departments.id_faculty = ? " +
+              "FROM `groups` " +
               "WHERE id_department = ?;";
     
     private static final String INSERT
-            = "INSERT groups (name, id_department, id_headman, id_curator) VALUES (?, ?, ?, ?);";
+            = "INSERT `groups` (name, id_department, id_headman, id_curator) VALUES (?, ?, ?, ?);";
 
     private static final String UPDATE
-            = "UPDATE groups " +
+            = "UPDATE `groups` " +
               "SET name = ?, id_department = ?, id_headman = ?, id_curator = ? " +
               "WHERE id = ?;";
 
     private static final String DELETE
-            = "DELETE FROM groups " +
+            = "DELETE FROM `groups` " +
               "WHERE id = ?;";
 
     @Inject
@@ -92,8 +97,13 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
+    public Optional<Group> selectByName(String name) throws DaoException {
+        return QueryExecutor.executeSelectForSingleResult(groupMapper, SELECT_BY_NAME, name);
+    }
+
+    @Override
     public void selectByName(int offset, int limit, String keyword, List<Group> result) throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_BY_NAME, result, keyword, limit, offset);
+        QueryExecutor.executeSelect(groupMapper, SELECT_MULTIPLE_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
@@ -118,22 +128,24 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public long insert(Group group) throws DaoException {
+        long headmanId = group.getHeadmanId();
         return QueryExecutor.executeInsert(
                 INSERT,
                 group.getName(),
                 group.getDepartmentId(),
-                group.getHeadmanId(),
+                headmanId != 0 ? headmanId : null, // null for default long value
                 group.getCuratorId()
         );
     }
 
     @Override
     public void update(Group group) throws DaoException {
+        long headmanId = group.getHeadmanId();
         QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 group.getName(),
                 group.getDepartmentId(),
-                group.getHeadmanId(),
+                headmanId != 0 ? headmanId : null, // null for default long value
                 group.getCuratorId(),
                 group.getEntityId()
         );

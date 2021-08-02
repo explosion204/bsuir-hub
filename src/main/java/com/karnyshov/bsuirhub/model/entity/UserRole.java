@@ -1,36 +1,36 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-import java.util.Arrays;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public enum UserRole {
-    GUEST(0),
-    STUDENT(1),
-    TEACHER(2),
-    ADMIN(3);
+    GUEST,
+    STUDENT,
+    TEACHER,
+    ADMIN;
 
-    private final long roleId;
+    private static final Logger logger = LogManager.getLogger();
 
-    UserRole(long roleId) {
-        this.roleId = roleId;
-    }
-
-    public long getRoleId() {
-        return roleId;
-    }
-
-    public static UserRole parseRole(long roleId) {
-        return Arrays.stream(UserRole.values())
-                .filter(role -> role.roleId == roleId)
-                .findFirst()
-                .orElse(GUEST);
+    public static UserRole parseRole(int roleId) {
+        try {
+            return UserRole.values()[roleId];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            logger.error("An error occurred trying to parse roleId: " + roleId);
+            return UserRole.GUEST;
+        }
     }
 
     public static UserRole parseRole(String roleId) {
-        return parseRole(Long.parseLong(roleId));
+        try {
+            return parseRole(Integer.parseInt(roleId));
+        } catch (NumberFormatException e) {
+            logger.error("An error occurred trying to parse roleId: " + roleId);
+            return UserRole.GUEST;
+        }
     }
 
     @Override
     public String toString() {
-        return name() + "/" + roleId;
+        return name() + "/" + ordinal();
     }
 }

@@ -86,10 +86,10 @@ public class GetFacultiesCommand implements Command {
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
 
-        List<Faculty> faculties = new ArrayList<>();
+        List<Faculty> faculties = new LinkedList<>();
         long recordsFetched = facultyService.filter(page, pageSize, FacultyFilterCriteria.NAME,
                 searchValue, faculties);
         response.put(RESULTS, faculties);
-        response.put(RECORDS_FILTERED, recordsFetched);
+        response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
     }
 }

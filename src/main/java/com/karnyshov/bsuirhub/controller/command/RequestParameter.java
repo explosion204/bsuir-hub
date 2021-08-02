@@ -20,6 +20,9 @@ public class RequestParameter {
     public static final String SHORT_NAME = "shortName";
     public static final String SPECIALTY_ALIAS = "specialtyAlias";
     public static final String FACULTY_ID = "facultyId";
+    public static final String DEPARTMENT_ID = "departmentId";
+    public static final String CURATOR_ID = "curatorId";
+    public static final String HEADMAN_ID = "headmanId";
 
     private RequestParameter() {
 

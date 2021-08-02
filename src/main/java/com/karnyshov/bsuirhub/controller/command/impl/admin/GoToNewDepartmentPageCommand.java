@@ -2,12 +2,14 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.ADMIN_VIEW_DEPARTMENT_JSP;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENTITY_PAGE;
 
+@Named
 public class GoToNewDepartmentPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {

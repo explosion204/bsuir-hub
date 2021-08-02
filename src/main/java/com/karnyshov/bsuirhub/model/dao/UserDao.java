@@ -17,4 +17,10 @@ public interface UserDao extends BaseDao<User> {
 
     void selectByLastName(int offset, int limit, String keyword, List<User> result) throws DaoException;
     long selectCountByLastName(String keyword) throws DaoException;
+
+    void selectByRole(int offset, int limit, long roleId, List<User> result) throws DaoException;
+    long selectCountByRole(long roleId) throws DaoException;
+
+    void selectByGroup(int offset, int limit, long groupId, List<User> result) throws DaoException;
+    long selectCountByGroup(long groupId) throws DaoException;
 }

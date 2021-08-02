@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GradeDao extends BaseDao<Grade> {
     void selectByStudentAndSubject(int offset, int limit, long studentId, long subjectId, List<Grade> result)

@@ -7,6 +7,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,7 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.FACULTY_ID;
 
+@Named
 public class UpdateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

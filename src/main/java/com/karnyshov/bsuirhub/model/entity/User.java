@@ -1,7 +1,5 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-import com.google.gson.annotations.Expose;
-
 import java.util.Objects;
 
 public class User extends AbstractEntity {

@@ -16,6 +16,7 @@ public enum CommandProvider {
     GET_USERS(GetUsersCommand.class, GET, "/ajax/get_users"),
     GET_FACULTIES(GetFacultiesCommand.class, GET, "/ajax/get_faculties"),
     GET_DEPARTMENTS(GetDepartmentsCommand.class, GET, "/ajax/get_departments"),
+    GET_GROUPS(GetGroupsCommand.class, GET, "/ajax/get_groups"),
     UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/ajax/upload_profile_image"),
 
     /* COMMON AREA */
@@ -50,7 +51,11 @@ public enum CommandProvider {
     GO_TO_EDIT_DEPARTMENT_PAGE(GoToEditDepartmentPageCommand.class, GET, "/admin/departments/edit"),
     CREATE_DEPARTMENT(CreateDepartmentCommand.class, POST, "/admin/departments/new"),
     UPDATE_DEPARTMENT(UpdateDepartmentCommand.class, POST, "/admin/departments/edit"),
-    DELETE_DEPARTMENT(DeleteDepartmentCommand.class, POST, "/admin/departments/delete");
+    DELETE_DEPARTMENT(DeleteDepartmentCommand.class, POST, "/admin/departments/delete"),
+
+    GO_TO_GROUPS_PAGE(GoToGroupsPageCommand.class, GET, "/admin/groups", "/admin/groups/"),
+    GO_TO_NEW_GROUP_PAGE(GoToNewGroupPageCommand.class, GET, "/admin/groups/new", "/admin/groups/new/"),
+    CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new");
 
     private List<String> urlPatterns;
     private RequestMethod requestMethod;

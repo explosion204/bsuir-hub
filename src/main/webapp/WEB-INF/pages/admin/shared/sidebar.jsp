@@ -16,10 +16,7 @@
             <a href="/admin/departments" class="nav-link link-dark">Departments</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link link-dark">Category</a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link link-dark">Category</a>
+            <a href="/admin/groups" class="nav-link link-dark">Groups</a>
         </li>
     </ul>
     <hr>

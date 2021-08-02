@@ -8,6 +8,8 @@ import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,8 @@ import static com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria.
 
 @Named
 public class GroupServiceImpl implements GroupService {
+    private static final Logger logger = LogManager.getLogger();
+
     @Inject
     private GroupDao groupDao;
 
@@ -61,6 +65,20 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public long filter(int page, int pageSize, List<Group> result) throws ServiceException {
         return filter(page, pageSize, NONE, null, result);
+    }
+
+    @Override
+    public boolean isNameUnique(String name) {
+        Optional<Group> group;
+
+        try {
+            group = groupDao.selectByName(name);
+        } catch (DaoException e) {
+            logger.error("Something went wrong (UserService.isLoginUnique)", e);
+            return false;
+        }
+
+        return group.isEmpty();
     }
 
     @Override

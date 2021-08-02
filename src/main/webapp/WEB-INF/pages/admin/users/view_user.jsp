@@ -149,12 +149,12 @@
                     <label for="roleSelect">Role</label>
                     <select class="form-control" name="role" id="roleSelect">
                         <c:choose>
-                            <c:when test="${target_entity.role.roleId eq 3}">
+                            <c:when test="${target_entity.role.ordinal() eq 3}">
                                 <option value="1" disabled>Student</option>
                                 <option value="2" disabled>Teacher</option>
                                 <option value="3" selected readonly>Admin</option>
                             </c:when>
-                            <c:when test="${target_entity.role.roleId eq 1}">
+                            <c:when test="${target_entity.role.ordinal() eq 1}">
                                 <option value="1" selected>Student</option>
                                 <option value="2">Teacher</option>
                                 <option value="3" disabled>Admin</option>

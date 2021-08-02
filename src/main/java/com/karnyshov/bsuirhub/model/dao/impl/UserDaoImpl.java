@@ -88,6 +88,34 @@ public class UserDaoImpl implements UserDao {
               "FROM users " +
               "WHERE last_name LIKE CONCAT('%', ?, '%') AND id_status <> 3;";
 
+    private static final String SELECT_MULTIPLE_BY_ROLE
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
+              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "FROM users " +
+              "WHERE id_role = ? AND id_status <> 3 " +
+              "ORDER BY id " +
+              "LIMIT ? " +
+              "OFFSET ?;";
+
+    private static final String SELECT_COUNT_BY_ROLE
+            = "SELECT COUNT(id) " +
+              "FROM users " +
+              "WHERE id_role = ? AND id_status <> 3;";
+
+    private static final String SELECT_MULTIPLE_BY_GROUP
+            = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
+              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "FROM users " +
+              "WHERE id_group = ? AND id_status = 1 AND id_status <> 3 " +
+              "ORDER BY id " +
+              "LIMIT ? " +
+              "OFFSET ?;";
+
+    private static final String SELECT_COUNT_BY_GROUP
+            = "SELECT COUNT(id) " +
+              "FROM users " +
+              "WHERE id_group = ? AND id_status = 1 AND id_status <> 3;";
+
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +
               "last_name, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -169,16 +197,39 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void selectByRole(int offset, int limit, long roleId, List<User> result) throws DaoException {
+        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_ROLE, result, roleId, limit, offset);
+    }
+
+    @Override
+    public long selectCountByRole(long roleId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_ROLE, roleId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_ROLE query"));
+    }
+
+    @Override
+    public void selectByGroup(int offset, int limit, long groupId, List<User> result) throws DaoException {
+        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_GROUP, result, groupId, limit, offset);
+    }
+
+    @Override
+    public long selectCountByGroup(long groupId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GROUP, groupId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP query"));
+    }
+
+    @Override
     public long insert(User user) throws DaoException {
+        long groupId = user.getGroupId();
         return QueryExecutor.executeInsert(
                 INSERT,
                 user.getLogin(),
                 user.getEmail(),
                 user.getPasswordHash(),
                 user.getSalt(),
-                user.getRole().getRoleId(),
+                user.getRole().ordinal(),
                 user.getStatus().getStatusId(),
-                user.getGroupId(),
+                groupId != 0 ? groupId : null, // null for default long value
                 user.getFirstName(),
                 user.getPatronymic(),
                 user.getLastName(),
@@ -188,14 +239,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) throws DaoException {
+        long groupId = user.getGroupId();
         QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 user.getEmail(),
                 user.getPasswordHash(),
                 user.getSalt(),
-                user.getRole().getRoleId(),
+                user.getRole().ordinal(),
                 user.getStatus().getStatusId(),
-                user.getGroupId(),
+                groupId != 0 ? groupId : null, // null for default long value
                 user.getFirstName(),
                 user.getPatronymic(),
                 user.getLastName(),

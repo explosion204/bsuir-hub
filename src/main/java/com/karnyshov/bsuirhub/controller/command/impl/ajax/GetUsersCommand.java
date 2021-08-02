@@ -10,13 +10,16 @@ import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
+import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 
 @Named
 public class GetUsersCommand implements Command {
@@ -42,7 +45,6 @@ public class GetUsersCommand implements Command {
                         break;
                     case JQUERY_SELECT:
                         processSelectRequest(request, response);
-                        // TODO: 7/22/2021
                         break;
                     default:
                         status = false;
@@ -83,7 +85,41 @@ public class GetUsersCommand implements Command {
         response.put(DATA, users);
     }
 
-    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) {
+    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) throws ServiceException {
+        String searchValue = request.getParameter(TERM);
+        int page = Integer.parseInt(request.getParameter(PAGE));
+        int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        boolean isStudent = Boolean.parseBoolean(request.getParameter(IS_STUDENT));
+        String groupIdString = request.getParameter(GROUP_ID);
 
+        List<User> users;
+        long recordsFetched;
+
+        if (isStudent) {
+            // get all students for requested group
+            users = new LinkedList<>();
+            // to determine if pagination is required we use amount of fetched records BEFORE filtering by last name
+            recordsFetched = userService.filter(page, pageSize, UserFilterCriteria.GROUP, groupIdString, users);
+            // filter by last name
+            users = users.stream().filter(u -> StringUtils.containsIgnoreCase(u.getLastName(), searchValue))
+                    .collect(Collectors.toList());
+        } else {
+            List<User> admins = new LinkedList<>();
+            List<User> teachers = new LinkedList<>();
+
+            // fetch teachers
+            recordsFetched = userService.filter(page, pageSize, UserFilterCriteria.ROLE,
+                    String.valueOf(TEACHER.ordinal()), teachers);
+
+            // fetch admins
+            recordsFetched += userService.filter(page, pageSize, UserFilterCriteria.ROLE,
+                    String.valueOf(ADMIN.ordinal()), admins);
+
+            teachers.addAll(admins);
+            users = teachers;
+        }
+
+        response.put(RESULTS, users);
+        response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
     }
 }

@@ -8,10 +8,13 @@ import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
+import com.karnyshov.bsuirhub.model.entity.Group;
+import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
-import com.karnyshov.bsuirhub.model.service.FacultyService;
+import com.karnyshov.bsuirhub.model.service.GroupService;
+import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
+import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,21 +24,29 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
+import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.RECORDS_FILTERED;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 
 @Named
-public class GetDepartmentsCommand implements Command {
+public class GetGroupsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
-    private static final String FACULTY_ID_PROPERTY = "facultyId";
-    private static final String FACULTY_NAME_PROPERTY = "facultyName";
+    private static final String DEPARTMENT_ID_PROPERTY = "departmentId";
+    private static final String DEPARTMENT_NAME_PROPERTY = "departmentName";
+    private static final String CURATOR_ID_PROPERTY = "curatorId";
+    private static final String CURATOR_LAST_NAME_PROPERTY = "curatorLastName";
+    private static final String HEADMAN_ID_PROPERTY = "headmanId";
+    private static final String HEADMAN_LAST_NAME_PROPERTY = "headmanLastName";
     private static final String EMPTY_VALUE = "";
+
+    @Inject
+    private GroupService groupService;
 
     @Inject
     private DepartmentService departmentService;
 
     @Inject
-    private FacultyService facultyService;
+    private UserService userService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -58,7 +69,7 @@ public class GetDepartmentsCommand implements Command {
                         status = false;
                 }
             } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
-                logger.error("An error occurred executing 'get departments' command", e);
+                logger.error("An error occurred executing 'get groups' command", e);
                 status = false;
             }
 
@@ -81,22 +92,36 @@ public class GetDepartmentsCommand implements Command {
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
         String searchValue = request.getParameter(SEARCH_VALUE);
 
-        List<Department> departments = new LinkedList<>();
+        List<Group> groups = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? departmentService.filter(page, length, DepartmentFilterCriteria.valueOf(searchCriteria), searchValue, departments)
-                : departmentService.filter(page, length, departments);
+                ? groupService.filter(page, length, GroupFilterCriteria.valueOf(searchCriteria), searchValue, groups)
+                : groupService.filter(page, length, groups);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
         response.put(RECORDS_FILTERED, recordsFetched);
 
-        JsonArray objects = gson.toJsonTree(departments).getAsJsonArray();
+        JsonArray objects = gson.toJsonTree(groups).getAsJsonArray();
         for (JsonElement object : objects) {
             JsonObject jsonObject = object.getAsJsonObject();
-            long facultyId = jsonObject.get(FACULTY_ID_PROPERTY).getAsLong();
-            Optional<Faculty> faculty = facultyService.findById(facultyId);
-            jsonObject.addProperty(FACULTY_NAME_PROPERTY, faculty.isPresent() ? faculty.get().getName() : EMPTY_VALUE);
+            long departmentId = jsonObject.get(DEPARTMENT_ID_PROPERTY).getAsLong();
+            long curatorId = jsonObject.get(CURATOR_ID_PROPERTY).getAsLong();
+            long headmanId = jsonObject.get(HEADMAN_ID_PROPERTY).getAsLong();
+
+            Optional<Department> department = departmentService.findById(departmentId);
+            Optional<User> curator = userService.findById(curatorId);
+            Optional<User> headman = userService.findById(headmanId);
+
+            jsonObject.addProperty(DEPARTMENT_NAME_PROPERTY, department.isPresent()
+                    ? department.get().getName()
+                    : EMPTY_VALUE);
+            jsonObject.addProperty(CURATOR_LAST_NAME_PROPERTY, curator.isPresent()
+                    ? curator.get().getLastName()
+                    : EMPTY_VALUE);
+            jsonObject.addProperty(HEADMAN_LAST_NAME_PROPERTY, headman.isPresent()
+                    ? headman.get().getLastName()
+                    : EMPTY_VALUE);
         }
 
         response.put(DATA, objects);
@@ -111,6 +136,6 @@ public class GetDepartmentsCommand implements Command {
         long recordsFetched = departmentService.filter(page, pageSize, DepartmentFilterCriteria.NAME,
                 searchValue, departments);
         response.put(RESULTS, departments);
-        response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
+        response.put(RECORDS_FILTERED, recordsFetched);
     }
 }

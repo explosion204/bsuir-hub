@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    setActiveNavItem(3);
+    setActiveNavItem(4);
 
     let table = $('#dataTable').DataTable({
         dom: '<"toolbar">rtip',
@@ -10,7 +10,7 @@ $(document).ready(function() {
         serverSide: true,
         ordering: false,
         ajax: {
-            url: '/ajax/get_departments',
+            url: '/ajax/get_groups',
             data: function (d) {
                 d.requestType = "jquery_datatable";
                 d.filterCriteria = $('#searchCriteria').val();
@@ -19,20 +19,32 @@ $(document).ready(function() {
         columns: [
             { data: 'entityId' },
             { data: 'name' },
-            { data: 'shortName' },
-            { data: 'specialtyAlias' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="link-secondary" href="/admin/faculties/edit?id=' + row.facultyId + '">'
-                            + row.facultyName + '</a>'
+                    return '<a class="link-secondary" href="/admin/departments/edit?id=' + row.departmentId + '">'
+                            + row.departmentName + '</a>'
                 }
             },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="btn btn-secondary me-2" href="/admin/departments/edit?id=' + row.entityId + '">Edit</a>' +
-                    '<form style="display: inline" method="post" action="/admin/departments/delete?id=' + row.entityId + '">' +
+                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.headmanId + '">'
+                        + row.headmanLastName + '</a>'
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.curatorId + '">'
+                        + row.curatorLastName + '</a>'
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return '<a class="btn btn-secondary me-2" href="/admin/groups/edit?id=' + row.entityId + '">Edit</a>' +
+                    '<form style="display: inline" method="post" action="/admin/groups/delete?id=' + row.entityId + '">' +
                     '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
                     '</span>'
                 }
@@ -46,8 +58,7 @@ $(document).ready(function() {
                 <select id="searchCriteria" class="form-select">
                     <option disabled>Search criteria</option>
                     <option value="NAME">Name</option>
-                    <option value="SHORT_NAME">Short name</option>
-                    <option value="FACULTY">Faculty</option>
+                    <option value="DEPARTMENT">Department</option>
                 </select>
                 <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
                 <select id="searchSelect"></select>
@@ -68,7 +79,7 @@ $(document).ready(function() {
     });
 
     searchCriteria.on('select2:select', function (e) {
-        if (e.params.data.id === 'FACULTY') {
+        if (e.params.data.id === 'DEPARTMENT') {
             searchInput.hide();
             searchSelect.show();
             searchSelect.select2({
@@ -76,9 +87,9 @@ $(document).ready(function() {
                 width: '65%',
                 ajax: {
                     delay: 250,
-                    url: '/ajax/get_faculties',
+                    url: '/ajax/get_departments',
                     data: function (params) {
-                      return {
+                        return {
                           term: params.term || '',
                           page: params.page || 1,
                           pageSize: 10,
@@ -124,6 +135,6 @@ $(document).ready(function() {
     });
 
     $('#createButton').click(function () {
-        window.location.href = '/admin/departments/new';
+        window.location.href = '/admin/groups/new';
     });
 });

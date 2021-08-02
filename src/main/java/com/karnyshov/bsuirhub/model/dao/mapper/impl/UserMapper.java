@@ -23,7 +23,7 @@ public class UserMapper implements ResultSetMapper<User> {
                     .setEmail(resultSet.getString(USER_EMAIL))
                     .setPasswordHash(resultSet.getString(USER_PASSWORD_HASH))
                     .setSalt(resultSet.getString(USER_SALT))
-                    .setRole(UserRole.parseRole(resultSet.getLong(USER_ROLE_ID)))
+                    .setRole(UserRole.parseRole(resultSet.getInt(USER_ROLE_ID)))
                     .setStatus(UserStatus.parseStatus(resultSet.getLong(USER_STATUS_ID)))
                     .setGroupId(resultSet.getLong(USER_GROUP_ID))
                     .setFirstName(resultSet.getString(USER_FIRST_NAME))

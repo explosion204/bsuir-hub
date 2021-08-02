@@ -4,8 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.sql.*;
 import java.util.List;
@@ -41,7 +39,7 @@ public class QueryExecutor {
                 Object ... params) throws DaoException {
         Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        T mappedObject;
+        T mappedObject = null;
 
         try {
             connection = pool.acquireConnection();
@@ -49,8 +47,9 @@ public class QueryExecutor {
             initPreparedStatement(statement, params);
             ResultSet resultSet = statement.executeQuery();
 
-            resultSet.next();
-            mappedObject = mapper.map(resultSet);
+            if (resultSet.next()) {
+                mappedObject = mapper.map(resultSet);
+            }
 
             statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
@@ -105,7 +104,11 @@ public class QueryExecutor {
         int i = 1;
 
         for (Object parameter : params) {
-            statement.setObject(i++, parameter);
+            if (parameter != null) {
+                statement.setObject(i++, parameter);
+            } else {
+                statement.setNull(i++, Types.NULL);
+            }
         }
     }
 }

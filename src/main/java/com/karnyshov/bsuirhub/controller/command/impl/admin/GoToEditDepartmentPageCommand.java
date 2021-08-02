@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +23,7 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
+@Named
 public class GoToEditDepartmentPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
