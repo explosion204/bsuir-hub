@@ -9,6 +9,7 @@ $(document).ready(function () {
     $('#facultySelect').select2({
         theme: 'bootstrap',
         width: '100%',
+        maximumInputLength: 50,
         ajax: {
             delay: 250,
             url: '/ajax/get_faculties',

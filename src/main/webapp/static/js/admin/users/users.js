@@ -58,7 +58,7 @@ $(document).ready(function() {
                         <option value="GROUP">Group</option>
                     </optgroup>
                 </select>
-                <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
+                <input id="searchInput" maxlength="50" type="text" class="form-control w-50" placeholder="Search">
                 <select id="searchSelect"></select>
             </div>
         `
@@ -79,7 +79,6 @@ $(document).ready(function() {
     searchCriteria.on('select2:select', function (e) {
         if (searchSelect.data('select2')) {
             searchSelect.html(''); // clear
-            // table.search(searchInput.val()).draw(); // reset search results
             searchSelect.select2('destroy');
         }
 
@@ -102,6 +101,7 @@ $(document).ready(function() {
             searchSelect.select2({
                 theme: 'bootstrap',
                 width: '65%',
+                maximumInputLength: 20,
                 ajax: {
                     delay: 250,
                     url: '/ajax/get_groups',

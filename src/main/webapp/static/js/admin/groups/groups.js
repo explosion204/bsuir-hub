@@ -60,7 +60,7 @@ $(document).ready(function() {
                     <option value="NAME">Name</option>
                     <option value="DEPARTMENT">Department</option>
                 </select>
-                <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
+                <input id="searchInput" maxlength="20" type="text" class="form-control w-50" placeholder="Search">
                 <select id="searchSelect"></select>
             </div>
         `
@@ -85,6 +85,7 @@ $(document).ready(function() {
             searchSelect.select2({
                 theme: 'bootstrap',
                 width: '65%',
+                maximumInputLength: 50,
                 ajax: {
                     delay: 250,
                     url: '/ajax/get_departments',

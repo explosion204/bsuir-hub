@@ -40,7 +40,7 @@ $(document).ready(function() {
                     <option value="NAME">Name</option>
                     <option value="SHORT_NAME">Short name</option>
                 </select>
-                <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
+                <input id="searchInput" maxlength="50" type="text" class="form-control w-50" placeholder="Search">
             </div>
         `
     );

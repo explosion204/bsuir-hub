@@ -36,6 +36,7 @@ $(document).ready(function () {
             groupSelect.select2({
                 theme: 'bootstrap',
                 width: '100%',
+                maximumInputLength: 20,
                 ajax: {
                     delay: 250,
                     url: '/ajax/get_groups',

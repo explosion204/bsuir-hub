@@ -11,6 +11,7 @@ $(document).ready(function () {
     $('#departmentSelect').select2({
         theme: 'bootstrap',
         width: '100%',
+        maximumInputLength: 50,
         ajax: {
             delay: 250,
             url: '/ajax/get_departments',
@@ -44,6 +45,7 @@ $(document).ready(function () {
     $('#headmanSelect').select2({
         theme: 'bootstrap',
         width: '100%',
+        maximumInputLength: 50,
         ajax: {
             delay: 250,
             url: '/ajax/get_users',
@@ -82,6 +84,7 @@ $(document).ready(function () {
         ajax: {
             delay: 250,
             url: '/ajax/get_users',
+            maximumInputLength: 50,
             data: function (params) {
                 return {
                     term: params.term || '',
