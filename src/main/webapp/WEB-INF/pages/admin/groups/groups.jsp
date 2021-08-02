@@ -41,6 +41,6 @@
 
 <script>
     function confirmDelete() {
-        return confirm("Attention, you're trying to delete department. Are you sure?");
+        return confirm("Attention, you're trying to delete group. Are you sure?");
     }
 </script>

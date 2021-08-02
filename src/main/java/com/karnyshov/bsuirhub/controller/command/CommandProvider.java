@@ -1,7 +1,10 @@
 package com.karnyshov.bsuirhub.controller.command;
 
 import com.karnyshov.bsuirhub.controller.command.impl.*;
-import com.karnyshov.bsuirhub.controller.command.impl.admin.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.department.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.faculty.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.group.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.user.*;
 import com.karnyshov.bsuirhub.controller.command.impl.ajax.*;
 import jakarta.enterprise.inject.spi.CDI;
 
@@ -57,7 +60,8 @@ public enum CommandProvider {
     GO_TO_NEW_GROUP_PAGE(GoToNewGroupPageCommand.class, GET, "/admin/groups/new", "/admin/groups/new/"),
     GO_TO_EDIT_GROUP_PAGE(GoToEditGroupPageCommand.class, GET, "/admin/groups/edit"),
     CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new"),
-    UPDATE_GROUP(UpdateGroupCommand.class, POST, "/admin/groups/edit");
+    UPDATE_GROUP(UpdateGroupCommand.class, POST, "/admin/groups/edit"),
+    DELETE_GROUP(DeleteGroupCommand.class, POST, "/admin/groups/delete");
 
     private List<String> urlPatterns;
     private RequestMethod requestMethod;

@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl.admin;
+package com.karnyshov.bsuirhub.controller.command.impl.admin.faculty;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;

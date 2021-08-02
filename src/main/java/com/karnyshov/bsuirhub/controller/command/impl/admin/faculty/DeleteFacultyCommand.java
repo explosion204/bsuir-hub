@@ -1,9 +1,9 @@
-package com.karnyshov.bsuirhub.controller.command.impl.admin;
+package com.karnyshov.bsuirhub.controller.command.impl.admin.faculty;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
+import com.karnyshov.bsuirhub.model.service.FacultyService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +15,11 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
 @Named
-public class DeleteDepartmentCommand implements Command {
+public class DeleteFacultyCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject
-    private DepartmentService departmentService;
+    private FacultyService facultyService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -28,12 +28,12 @@ public class DeleteDepartmentCommand implements Command {
 
         try {
             long entityId = Long.parseLong(idString);
-            departmentService.delete(entityId);
-            result = new CommandResult(ADMIN_DEPARTMENTS_URL, REDIRECT);
+            facultyService.delete(entityId);
+            result = new CommandResult(ADMIN_FACULTIES_URL, REDIRECT);
         } catch (NumberFormatException e) {
             result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
         } catch (ServiceException e) {
-            logger.error("An error occurred executing 'delete department' command", e);
+            logger.error("An error occurred executing 'delete faculty' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 

@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl.admin;
+package com.karnyshov.bsuirhub.controller.command.impl.admin.department;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
@@ -12,24 +12,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.FACULTY_ID;
 
 @Named
-public class CreateDepartmentCommand implements Command {
+public class UpdateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject
     private DepartmentService departmentService;
 
     @Inject
-    private DepartmentValidator validator;
+    private DepartmentValidator departmentValidator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
 
+        String idString = request.getParameter(ENTITY_ID);
         String name = request.getParameter(NAME);
         String shortName = request.getParameter(SHORT_NAME);
         String specialtyAlias = request.getParameter(SPECIALTY_ALIAS);
@@ -44,16 +47,21 @@ public class CreateDepartmentCommand implements Command {
                     .setArchived(false)
                     .build();
 
-            if (validator.validateDepartment(request, department)) {
+            if (departmentValidator.validateDepartment(request, department)) {
                 // data is valid
-                departmentService.create(department);
-                result = new CommandResult(ADMIN_DEPARTMENTS_URL, REDIRECT);
-            } else {
-                // data is not valid
-                result = new CommandResult(ADMIN_NEW_DEPARTMENT_URL, REDIRECT);
+                long entityId = Long.parseLong(idString);
+                Department updatedDepartment = (Department) Department.builder()
+                        .of(department)
+                        .setEntityId(entityId)
+                        .build();
+
+                departmentService.update(updatedDepartment);
+                request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
             }
-        } catch (ServiceException | NumberFormatException e) {
-            logger.error("An error occurred executing 'create department' command", e);
+
+            result = new CommandResult(ADMIN_EDIT_DEPARTMENT_URL + idString, REDIRECT);
+        } catch (ServiceException e) {
+            logger.error("An error occurred executing 'update department' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
