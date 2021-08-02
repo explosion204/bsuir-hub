@@ -20,6 +20,7 @@ public class DepartmentMapper implements ResultSetMapper<Department> {
                     .setShortName(resultSet.getString(DEPARTMENT_SHORT_NAME))
                     .setFacultyId(resultSet.getLong(DEPARTMENT_FACULTY_ID))
                     .setSpecialtyAlias(resultSet.getString(DEPARTMENT_SPECIALTY_ALIAS))
+                    .setArchived(resultSet.getBoolean(DEPARTMENT_IS_ARCHIVED))
                     .setEntityId(resultSet.getLong(DEPARTMENT_ID))
                     .build();
         } catch (SQLException e) {

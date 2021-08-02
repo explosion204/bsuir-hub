@@ -17,7 +17,7 @@ public class ApplicationPath {
     public static final String ADMIN_EDIT_DEPARTMENT_URL = "/admin/departments/edit?id=";
     public static final String ADMIN_GROUPS_URL = "/admin/groups";
     public static final String ADMIN_NEW_GROUP_URL = "/admin/groups/new";
-    public static final String ADMIN_EDIT_GROUP_URL = "/admin/groups/edit?=";
+    public static final String ADMIN_EDIT_GROUP_URL = "/admin/groups/edit?id=";
     public static final String NOT_FOUND_ERROR_URL = "/error/404";
     public static final String INTERNAL_SERVER_ERROR_URL = "/error/500";
 

@@ -13,7 +13,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -132,10 +131,9 @@ public class GetGroupsCommand implements Command {
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
 
-        List<Department> departments = new LinkedList<>();
-        long recordsFetched = departmentService.filter(page, pageSize, DepartmentFilterCriteria.NAME,
-                searchValue, departments);
-        response.put(RESULTS, departments);
+        List<Group> groups = new LinkedList<>();
+        long recordsFetched = groupService.filter(page, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
+        response.put(RESULTS, groups);
         response.put(RECORDS_FILTERED, recordsFetched);
     }
 }

@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.DepartmentValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.DepartmentValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
@@ -61,7 +61,7 @@ public class UpdateDepartmentCommand implements Command {
 
             result = new CommandResult(ADMIN_EDIT_DEPARTMENT_URL + idString, REDIRECT);
         } catch (ServiceException e) {
-            logger.error("An error occurred executing 'create department' command", e);
+            logger.error("An error occurred executing 'update department' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 

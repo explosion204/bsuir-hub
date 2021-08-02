@@ -23,10 +23,10 @@
         <hr>
         <c:choose>
             <c:when test="${new_entity_page}">
-                <form id="groupForm" action="/admin/groups/new" method="post">
+                <form id="groupForm" action="/admin/groups/new" method="post" novalidate>
             </c:when>
             <c:otherwise>
-                <form id="groupForm" action="/admin/groups/edit?id=${target_entity.entityId}" method="post">
+                <form id="groupForm" action="/admin/groups/edit?id=${target_entity.entityId}" method="post" novalidate>
             </c:otherwise>
         </c:choose>
                 <c:if test="${entity_update_success}">
@@ -36,7 +36,12 @@
                 </c:if>
                 <c:if test="${invalid_name}">
                     <div class="alert alert-danger" role="alert">
-                        Group name must have 1 - 20 alphabetic characters
+                        Group name must have 1 - 20 alphanumeric characters
+                    </div>
+                </c:if>
+                <c:if test="${not_unique_name}">
+                    <div class="alert alert-danger" role="alert">
+                        Not unique name
                     </div>
                 </c:if>
 
@@ -47,14 +52,14 @@
                            pattern="[0-9a-zA-Zа-яА-Я]{1,20}"
                            id="nameInput" value="${target_entity.name}" required>
                     <div class="invalid-feedback">
-                        Group name must have 1 - 20 alphabetic characters
+                        Group name must have 1 - 20 alphanumeric characters
                     </div>
                 </div>
 
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="departmentSelect">Department</label>
                     <select name="departmentId" id="departmentSelect">
-                        <option value="${department_id}">${department_name}</option>
+                        <option value="${target_entity.departmentId}">${department_name}</option>
                     </select>
                 </div>
 
@@ -62,7 +67,7 @@
                     <div class="form-group me-5 ms-5 mb-2">
                         <label for="headmanSelect">Headman</label>
                         <select name="headmanId" id="headmanSelect">
-                            <option value="${headman_id}">${headman_name}</option>
+                            <option value="${target_entity.headmanId}" selected>${headman_last_name}</option>
                         </select>
                     </div>
                 </c:if>
@@ -70,7 +75,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="curatorSelect">Curator</label>
                     <select name="curatorId" id="curatorSelect" required>
-                        <option value="${curator_id}">${curator_name}</option>
+                        <option value="${target_entity.curatorId}">${curator_last_name}</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"

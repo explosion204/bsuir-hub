@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.DepartmentValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.DepartmentValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;

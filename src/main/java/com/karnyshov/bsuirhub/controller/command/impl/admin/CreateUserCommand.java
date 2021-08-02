@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.validator.UserValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -44,31 +44,38 @@ public class CreateUserCommand implements Command {
         String patronymic = request.getParameter(PATRONYMIC);
         String lastName = request.getParameter(LAST_NAME);
         boolean confirmed = CONFIRMED_VALUE.equals(request.getParameter(CONFIRMED));
+        String groupIdString = request.getParameter(GROUP_ID);
 
-        User user = User.builder()
-                .setLogin(login)
-                .setEmail(email)
-                .setRole(role)
-                .setFirstName(firstName)
-                .setPatronymic(patronymic)
-                .setLastName(lastName)
-                // empty email -> always not confirmed
-                .setStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
-                .setProfilePicturePath(DEFAULT_PROFILE_IMAGE_PATH)
-                .build();
+        try {
+            // when role is not STUDENT, we set groupId to default value
+            long groupId = role == UserRole.STUDENT && StringUtils.isNotBlank(groupIdString)
+                    ? Long.parseLong(groupIdString)
+                    : 0; // default value
 
-        if (validator.validateUser(request, user, password, confirmPassword)) {
-            // data is valid
-            try {
+            User user = User.builder()
+                    .setLogin(login)
+                    .setEmail(email)
+                    .setRole(role)
+                    .setFirstName(firstName)
+                    .setPatronymic(patronymic)
+                    .setLastName(lastName)
+                    .setGroupId(groupId)
+                    // empty email -> always not confirmed
+                    .setStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
+                    .setProfilePicturePath(DEFAULT_PROFILE_IMAGE_PATH)
+                    .build();
+
+            if (validator.validateUser(request, user, password, confirmPassword, false, false, false)) {
+                // data is valid
                 userService.create(user, password);
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);
-            } catch (ServiceException e) {
-                logger.error("An error occurred executing 'create user' command", e);
-                result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            } else {
+                // data is not valid
+                result = new CommandResult(ADMIN_NEW_USER_URL, REDIRECT);
             }
-        } else {
-            // data is not valid
-            result = new CommandResult(ADMIN_NEW_USER_URL, REDIRECT);
+        } catch (ServiceException | NumberFormatException e) {
+            logger.error("An error occurred executing 'create user' command", e);
+            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
         return result;

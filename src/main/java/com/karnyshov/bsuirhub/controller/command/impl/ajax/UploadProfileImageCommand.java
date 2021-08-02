@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
-import com.karnyshov.bsuirhub.controller.validator.UserValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;

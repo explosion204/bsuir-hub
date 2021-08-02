@@ -162,9 +162,15 @@
                             <c:otherwise>
                                 <option value="1">Student</option>
                                 <option value="2" selected>Teacher</option>
-                                <option value="3" disabled></option>
+                                <option value="3" disabled>Admin</option>
                             </c:otherwise>
                         </c:choose>
+                    </select>
+                </div>
+                <div class="form-group me-5 ms-5 mb-2" id="groupSelectBlock">
+                    <label for="groupSelect">Group</label>
+                    <select class="form-control" name="groupId" id="groupSelect">
+                        <option value="${target_entity.groupId}">${group_name}</option>
                     </select>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
@@ -177,7 +183,7 @@
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="patornymicInput">Patronymic</label>
-                    <input type="text" name="patronymic" class="form-control" pattern="[0-9a-zA-Zа-яА-Я]{1,50}"
+                    <input type="text" name="patronymic" class="form-control" pattern="[a-zA-Zа-яА-Я]{1,50}"
                            id="patornymicInput" value="${target_entity.patronymic}" required>
                     <div class="invalid-feedback">
                         Patronymic must have 1 - 50 alphabetic characters
@@ -185,7 +191,7 @@
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="lastNameInput">Last name</label>
-                    <input type="text" name="lastName" class="form-control" pattern="[0-9a-zA-Zа-яА-Я]{1,50}"
+                    <input type="text" name="lastName" class="form-control" pattern="[a-zA-Zа-яА-Я]{1,50}"
                            id="lastNameInput" value="${target_entity.lastName}" required>
                     <div class="invalid-feedback">
                         Last name must have 1 - 50 alphabetic characters

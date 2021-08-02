@@ -89,13 +89,13 @@ public class GetUsersCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
-        boolean isStudent = Boolean.parseBoolean(request.getParameter(IS_STUDENT));
+        boolean fetchStudents = Boolean.parseBoolean(request.getParameter(FETCH_STUDENTS));
         String groupIdString = request.getParameter(GROUP_ID);
 
         List<User> users;
         long recordsFetched;
 
-        if (isStudent) {
+        if (fetchStudents) {
             // get all students for requested group
             users = new LinkedList<>();
             // to determine if pagination is required we use amount of fetched records BEFORE filtering by last name

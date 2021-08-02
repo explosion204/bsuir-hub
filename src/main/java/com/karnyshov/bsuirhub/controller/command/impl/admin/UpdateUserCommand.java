@@ -3,7 +3,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
-import com.karnyshov.bsuirhub.controller.validator.UserValidator;
+import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -44,16 +44,17 @@ public class UpdateUserCommand implements Command {
         String idString = request.getParameter(ENTITY_ID);
         String login = request.getParameter(LOGIN);
         String email = request.getParameter(EMAIL);
-        String cachedEmail = (String) session.getAttribute(CACHED_EMAIL);
+        String previousEmail = (String) session.getAttribute(PREVIOUS_EMAIL);
         String password = request.getParameter(PASSWORD);
         String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
         UserRole role = UserRole.parseRole(request.getParameter(ROLE));
-        UserRole cachedRole = (UserRole) session.getAttribute(CACHED_ROLE);
+        UserRole previousRole = (UserRole) session.getAttribute(PREVIOUS_ROLE);
         String firstName = request.getParameter(FIRST_NAME);
         String patronymic = request.getParameter(PATRONYMIC);
         String lastName = request.getParameter(LAST_NAME);
         boolean confirmed = CONFIRMED_VALUE.equals(request.getParameter(CONFIRMED));
         String profilePicturePath = request.getParameter(PROFILE_PICTURE_PATH);
+        String groupIdString = request.getParameter(GROUP_ID);
 
         User user = User.builder()
                 .setLogin(login)
@@ -67,12 +68,21 @@ public class UpdateUserCommand implements Command {
                 .setProfilePicturePath(StringUtils.isNotBlank(profilePicturePath) ? profilePicturePath : DEFAULT_PROFILE_IMAGE_PATH)
                 .build();
 
-        if (validator.validateUser(request, user, idString, cachedEmail, cachedRole, password, confirmPassword)) {
-            // data is valid
-            try {
-                long entityId = Long.parseLong(idString);
+        try {
+            long entityId = Long.parseLong(idString);
+            boolean roleNotChanged = role == previousRole;
+            boolean emailNotChanged = StringUtils.equals(email, previousEmail);
+
+            if (validator.validateUser(request, user, password, confirmPassword, roleNotChanged, emailNotChanged, true)) {
+
+                // when role is not STUDENT, we disassociate user with current group (setting NULL in database)
+                long groupId = role == UserRole.STUDENT && StringUtils.isNotBlank(groupIdString)
+                        ? Long.parseLong(groupIdString)
+                        : 0; // default value
+
                 User updatedUser = (User) User.builder()
                         .of(user)
+                        .setGroupId(groupId)
                         .setEntityId(entityId)
                         .build();
 
@@ -86,19 +96,17 @@ public class UpdateUserCommand implements Command {
                         targetSession -> targetSession.setAttribute(USER, updatedUser));
 
                 session.setAttribute(ENTITY_UPDATE_SUCCESS, true);
-                result = new CommandResult(ADMIN_EDIT_USER_URL + idString, REDIRECT);
-            } catch (ServiceException | NumberFormatException e) {
-                logger.error("An error occurred executing 'update user' command", e);
-                result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
             }
-        } else {
-            // data is not valid
+
             result = new CommandResult(ADMIN_EDIT_USER_URL + idString, REDIRECT);
+        } catch (ServiceException | NumberFormatException e) {
+            logger.error("An error occurred executing 'update user' command", e);
+            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
         // clean up cached values
-        session.removeAttribute(CACHED_EMAIL);
-        session.removeAttribute(CACHED_ROLE);
+        session.removeAttribute(PREVIOUS_EMAIL);
+        session.removeAttribute(PREVIOUS_ROLE);
         return result;
     }
 }

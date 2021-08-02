@@ -18,6 +18,7 @@ public class SubjectMapper implements ResultSetMapper<Subject> {
             return (Subject) Subject.builder()
                     .setName(resultSet.getString(SUBJECT_NAME))
                     .setShortName(resultSet.getString(SUBJECT_SHORT_NAME))
+                    .setArchived(resultSet.getBoolean(SUBJECT_IS_ARCHIVED))
                     .setEntityId(resultSet.getLong(SUBJECT_ID))
                     .build();
         } catch (SQLException e) {

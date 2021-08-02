@@ -74,7 +74,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             group = groupDao.selectByName(name);
         } catch (DaoException e) {
-            logger.error("Something went wrong (UserService.isLoginUnique)", e);
+            logger.error("Something went wrong (GroupService.isNameUnique)", e);
             return false;
         }
 

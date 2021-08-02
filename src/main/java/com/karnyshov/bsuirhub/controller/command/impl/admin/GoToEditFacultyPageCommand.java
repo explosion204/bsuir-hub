@@ -36,7 +36,7 @@ public class GoToEditFacultyPageCommand implements Command {
             long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
             Optional<Faculty> faculty = facultyService.findById(entityId);
 
-            if (faculty.isPresent()) {
+            if (faculty.isPresent() && !faculty.get().getArchived()) {
                 request.setAttribute(TARGET_ENTITY, faculty.get());
                 request.setAttribute(RequestAttribute.ENTITY_ID, faculty.get().getEntityId());
                 request.setAttribute(NEW_ENTITY_PAGE, false);

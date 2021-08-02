@@ -106,7 +106,7 @@ public class UserDaoImpl implements UserDao {
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
               "id_group, first_name, patronymic, last_name, profile_picture " +
               "FROM users " +
-              "WHERE id_group = ? AND id_status = 1 AND id_status <> 3 " +
+              "WHERE id_group = ? AND id_role = 1 AND id_status <> 3 " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
     private static final String SELECT_COUNT_BY_GROUP
             = "SELECT COUNT(id) " +
               "FROM users " +
-              "WHERE id_group = ? AND id_status = 1 AND id_status <> 3;";
+              "WHERE id_group = ? AND id_role = 1 AND id_status <> 3;";
 
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +

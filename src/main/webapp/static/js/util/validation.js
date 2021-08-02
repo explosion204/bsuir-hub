@@ -16,13 +16,6 @@ function configureValidation(data) {
 function performValidation(form, inputs, input, submitId) {
     form.addClass('was-validated');
 
-    if (inputs.every(input => input.checkValidity())) {
-        console.log(input);
-        console.log('valid');
-        $(`#${submitId}`).attr('disabled', false);
-    } else {
-        console.log(input);
-        console.log('invalid');
-        $(`#${submitId}`).attr('disabled', true);
-    }
+    let validity = inputs.every(input => input.checkValidity());
+    $(`#${submitId}`).attr('disabled', !validity);
 }

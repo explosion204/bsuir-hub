@@ -55,14 +55,11 @@ $(document).ready(function() {
                         <option value="EMAIL">Email</option>
                         <option value="LAST_NAME">Last name</option>
                         <option value="ROLE">Role</option>
+                        <option value="GROUP">Group</option>
                     </optgroup>
                 </select>
                 <input id="searchInput" type="text" class="form-control w-50" placeholder="Search">
-                <select id="searchSelect">
-                    <option value="3">Admin</option>
-                    <option value="2">Teacher</option>
-                    <option value="1">Student</option>
-                </select>
+                <select id="searchSelect"></select>
             </div>
         `
     );
@@ -80,17 +77,63 @@ $(document).ready(function() {
     });
 
     searchCriteria.on('select2:select', function (e) {
+        if (searchSelect.data('select2')) {
+            searchSelect.html(''); // clear
+            // table.search(searchInput.val()).draw(); // reset search results
+            searchSelect.select2('destroy');
+        }
+
         if (e.params.data.id === 'ROLE') {
             searchInput.hide();
             searchSelect.show();
             searchSelect.select2({
                 theme: 'bootstrap',
                 width: '65%',
+                data: [
+                    { id: '3', text: 'Admin' },
+                    { id: '2', text: 'Teacher' },
+                    { id: '1', text: 'Student' }
+                ]
             });
             searchSelect.trigger('select2:select');
+        } else if (e.params.data.id === 'GROUP') {
+            searchInput.hide();
+            searchSelect.show();
+            searchSelect.select2({
+                theme: 'bootstrap',
+                width: '65%',
+                ajax: {
+                    delay: 250,
+                    url: '/ajax/get_groups',
+                    data: function (params) {
+                        return {
+                            term: params.term || '',
+                            page: params.page || 1,
+                            pageSize: 10,
+                            requestType: 'jquery_select'
+                        }
+                    },
+                    processResults: function (data, params) {
+                        data = JSON.parse(data);
+                        let mappedData = $.map(data.results, function (item) {
+                            item.id = item.entityId;
+                            item.text = item.name;
+                            return item;
+                        });
+                        params.page = params.page || 1;
+
+                        return {
+                            results: mappedData,
+                            pagination: {
+                                more: data.paginationMore
+                            }
+                        }
+                    }
+                }
+
+            });
         } else {
             table.search(searchInput.val()).draw(); // reset search results
-            searchSelect.select2('destroy'); // destroy
             searchSelect.hide();
             searchInput.show();
         }

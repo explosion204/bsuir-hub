@@ -15,7 +15,7 @@ import java.util.Optional;
 @Named
 public class FacultyDaoImpl implements FacultyDao {
     private static final String SELECT_ALL
-            = "SELECT id, name, short_name " +
+            = "SELECT id, name, short_name, is_archived " +
               "FROM faculties " +
               "WHERE is_archived = 0 " +
               "ORDER BY id " +
@@ -28,12 +28,12 @@ public class FacultyDaoImpl implements FacultyDao {
               "WHERE is_archived = 0;";
 
     private static final String SELECT_BY_ID
-            = "SELECT id, name, short_name " +
+            = "SELECT id, name, short_name, is_archived " +
               "FROM faculties " +
               "WHERE id = ?;";
 
     private static final String SELECT_BY_NAME
-            = "SELECT id, name, short_name " +
+            = "SELECT id, name, short_name, is_archived " +
               "FROM faculties " +
               "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0 " +
               "ORDER BY id " +
@@ -46,7 +46,7 @@ public class FacultyDaoImpl implements FacultyDao {
               "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0;";
 
     private static final String SELECT_BY_SHORT_NAME
-            = "SELECT id, name, short_name " +
+            = "SELECT id, name, short_name, is_archived " +
             "FROM faculties " +
             "WHERE short_name LIKE CONCAT('%', ?, '%') AND is_archived = 0 " +
             "ORDER BY id " +

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Subject extends AbstractEntity {
     private String name;
     private transient String shortName;
+    private boolean archived;
 
     private Subject(SubjectBuilder builder) {
         super(builder);
@@ -24,6 +25,10 @@ public class Subject extends AbstractEntity {
         return shortName;
     }
 
+    public boolean getArchived() {
+        return archived;
+    }
+
     @Override
     public int hashCode() {
         int prime = 31;
@@ -31,6 +36,7 @@ public class Subject extends AbstractEntity {
 
         result = prime * result + (name != null ? name.hashCode() : 0);
         result = prime * result + (shortName != null ? shortName.hashCode() : 0);
+        result = prime * result + Boolean.hashCode(archived);
 
         return result;
     }
@@ -55,6 +61,7 @@ public class Subject extends AbstractEntity {
         StringBuilder builder = new StringBuilder("Subject (");
         builder.append(super.toString()).append("): ");
         builder.append("name = ").append(name).append(", ");
+        builder.append("is archived = ").append(archived).append(", ");
         builder.append("short name = ").append(shortName);
 
         return builder.toString();
@@ -63,6 +70,7 @@ public class Subject extends AbstractEntity {
     public static class SubjectBuilder extends AbstractEntity.AbstractBuilder {
         private String name;
         private String shortName;
+        private boolean archived;
 
         private SubjectBuilder() {
         }
@@ -77,10 +85,16 @@ public class Subject extends AbstractEntity {
             return this;
         }
 
+        public SubjectBuilder setArchived(boolean archived) {
+            this.archived = archived;
+            return this;
+        }
+
         public SubjectBuilder of(Subject subject) {
             super.of(subject);
             this.name = subject.name;
             this.shortName = subject.shortName;
+            this.archived = subject.archived;
             return this;
         }
 

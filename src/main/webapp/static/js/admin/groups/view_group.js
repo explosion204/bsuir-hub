@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    setActiveNavItem(2);
+    setActiveNavItem(4);
     configureValidation([['groupForm', 'saveButton']]);
 
     $('#groupForm').submit(function () {
@@ -53,7 +53,7 @@ $(document).ready(function () {
                     page: params.page || 1,
                     pageSize: 10,
                     requestType: 'jquery_select',
-                    isStudent: true,
+                    fetchStudents: true,
                     groupId: groupId
                 }
             },
@@ -88,7 +88,7 @@ $(document).ready(function () {
                     page: params.page || 1,
                     pageSize: 10,
                     requestType: 'jquery_select',
-                    isStudent: false,
+                    fetchStudents: false,
                     groupId: groupId
                 }
             },

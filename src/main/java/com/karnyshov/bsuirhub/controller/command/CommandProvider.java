@@ -55,7 +55,9 @@ public enum CommandProvider {
 
     GO_TO_GROUPS_PAGE(GoToGroupsPageCommand.class, GET, "/admin/groups", "/admin/groups/"),
     GO_TO_NEW_GROUP_PAGE(GoToNewGroupPageCommand.class, GET, "/admin/groups/new", "/admin/groups/new/"),
-    CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new");
+    GO_TO_EDIT_GROUP_PAGE(GoToEditGroupPageCommand.class, GET, "/admin/groups/edit"),
+    CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new"),
+    UPDATE_GROUP(UpdateGroupCommand.class, POST, "/admin/groups/edit");
 
     private List<String> urlPatterns;
     private RequestMethod requestMethod;

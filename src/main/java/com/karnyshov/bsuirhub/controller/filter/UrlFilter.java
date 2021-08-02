@@ -61,6 +61,7 @@ public class UrlFilter implements Filter {
         request.setAttribute(INVALID_LAST_NAME, session.getAttribute(INVALID_LAST_NAME));
         request.setAttribute(INVALID_NAME, session.getAttribute(INVALID_NAME));
         request.setAttribute(INVALID_SHORT_NAME, session.getAttribute(INVALID_SHORT_NAME));
+        request.setAttribute(NOT_UNIQUE_NAME, session.getAttribute(NOT_UNIQUE_NAME));
 
         session.removeAttribute(INVALID_ROLE);
         session.removeAttribute(INVALID_LOGIN);
@@ -75,5 +76,6 @@ public class UrlFilter implements Filter {
         session.removeAttribute(INVALID_LAST_NAME);
         session.removeAttribute(INVALID_NAME);
         session.removeAttribute(INVALID_SHORT_NAME);
+        session.removeAttribute(NOT_UNIQUE_NAME);
     }
 }

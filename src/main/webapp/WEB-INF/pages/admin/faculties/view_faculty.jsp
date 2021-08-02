@@ -49,7 +49,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="nameInput">Name</label>
                     <input type="text" name="name" class="form-control"
-                           pattern="(?=[0-9a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я\s]{1,50})(?<=[0-9a-zA-Zа-яА-Я])"
+                           pattern="(?=[a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
                            id="nameInput" value="${target_entity.name}" required>
                     <div class="invalid-feedback">
                         Faculty name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
@@ -58,7 +58,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="shortNameInput">Short name</label>
                     <input type="text" name="shortName" class="form-control"
-                           pattern="[0-9a-zA-Zа-яА-Я]{1,15}"
+                           pattern="[a-zA-Zа-яА-Я]{1,15}"
                            id="shortNameInput" value="${target_entity.shortName}" required>
                     <div class="invalid-feedback">
                         Faculty short name must have 1 - 15 alphabetic characters

@@ -15,6 +15,7 @@ public class RequestParameter {
     public static final String LAST_NAME = "lastName";
     public static final String CONFIRMED = "confirmed";
     public static final String PROFILE_PICTURE_PATH = "profilePicturePath";
+    public static final String GROUP_ID = "groupId";
     public static final String CONFIRMATION_TOKEN = "token";
     public static final String NAME = "name";
     public static final String SHORT_NAME = "shortName";

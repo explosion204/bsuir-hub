@@ -14,7 +14,7 @@ import java.util.Optional;
 @Named
 public class DepartmentDaoImpl implements DepartmentDao {
     private static final String SELECT_ALL
-            = "SELECT id, name, short_name, id_faculty, specialty_alias " +
+            = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +
               "FROM departments " +
               "WHERE is_archived = 0 " +
               "ORDER BY id " +
@@ -27,12 +27,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
               "WHERE is_archived = 0;";
 
     private static final String SELECT_BY_ID
-            = "SELECT id, name, short_name, id_faculty, specialty_alias " +
+            = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +
               "FROM departments " +
               "WHERE id = ?;";
 
     private static final String SELECT_BY_NAME
-            = "SELECT id, name, short_name, id_faculty, specialty_alias " +
+            = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +
               "FROM departments " +
               "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0 " +
               "ORDER BY id " +
@@ -45,7 +45,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
               "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0;";
 
     private static final String SELECT_BY_SHORT_NAME
-            = "SELECT id, name, short_name, id_faculty, specialty_alias " +
+            = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +
               "FROM departments " +
               "WHERE short_name LIKE CONCAT('%', ?, '%') AND is_archived = 0 " +
               "ORDER BY id " +
@@ -58,7 +58,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
               "WHERE short_name LIKE CONCAT('%', ?, '%') AND is_archived = 0;";
 
     private static final String SELECT_BY_FACULTY
-            = "SELECT id, name, short_name, id_faculty, specialty_alias " +
+            = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +
               "FROM departments " +
               "WHERE id_faculty = ? AND is_archived = 0 " +
               "ORDER BY id " +

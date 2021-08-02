@@ -4,7 +4,10 @@ import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.command.RequestAttribute;
 import com.karnyshov.bsuirhub.exception.ServiceException;
+import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.entity.User;
+import com.karnyshov.bsuirhub.model.entity.UserStatus;
+import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,9 +21,8 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENTITY_PAGE;
 
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_ENTITY;
+import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
@@ -31,6 +33,9 @@ public class GoToEditUserPageCommand implements Command {
     @Inject
     private UserService userService;
 
+    @Inject
+    private GroupService groupService;
+
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
@@ -39,13 +44,17 @@ public class GoToEditUserPageCommand implements Command {
             long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
             Optional<User> user = userService.findById(entityId);
 
-            if (user.isPresent()) {
+            if (user.isPresent() && user.get().getStatus() != UserStatus.DELETED) {
+                long groupId = user.get().getGroupId();
+                Optional<Group> group = groupService.findById(groupId);
+                group.ifPresent(value -> request.setAttribute(GROUP_NAME, value.getName()));
+
                 request.setAttribute(TARGET_ENTITY, user.get());
                 request.setAttribute(RequestAttribute.ENTITY_ID, user.get().getEntityId());
 
                 HttpSession session = request.getSession();
-                session.setAttribute(CACHED_EMAIL, user.get().getEmail());
-                session.setAttribute(CACHED_ROLE, user.get().getRole());
+                session.setAttribute(PREVIOUS_EMAIL, user.get().getEmail());
+                session.setAttribute(PREVIOUS_ROLE, user.get().getRole());
 
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_USER_JSP, FORWARD);

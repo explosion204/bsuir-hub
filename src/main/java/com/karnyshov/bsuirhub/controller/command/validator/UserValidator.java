@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.validator;
+package com.karnyshov.bsuirhub.controller.command.validator;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
@@ -18,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -62,8 +61,9 @@ public class UserValidator {
         }
     }
 
-    public boolean validateUser(HttpServletRequest request, User user, String idString, String cachedEmail,
-                                UserRole cachedRole, String password, String confirmPassword) {
+    public boolean validateUser(HttpServletRequest request, User user, String password, String confirmPassword,
+                boolean roleNotChanged, boolean emailNotChanged, boolean forUpdate) {
+
         HttpSession session = request.getSession();
 
         boolean mainValidationResult;
@@ -76,7 +76,8 @@ public class UserValidator {
         String lastName = user.getLastName();
 
         // this makes impossible to grant administrator role without direct access to database
-        minorValidationResult = role == cachedRole || role != UserRole.ADMIN;
+        // this check is skipped if role is not changed
+        minorValidationResult = roleNotChanged || role != UserRole.ADMIN;
         mainValidationResult = minorValidationResult;
         session.setAttribute(INVALID_ROLE, !minorValidationResult);
 
@@ -84,28 +85,32 @@ public class UserValidator {
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_LOGIN, !minorValidationResult);
 
-        // update user -> ignore login uniqueness validation because dao ignores login anyways
-        minorValidationResult = idString != null || userService.isLoginUnique(login);
+        // forUpdate == true -> ignore login uniqueness validation because dao ignores login anyways
+        minorValidationResult = forUpdate || userService.isLoginUnique(login);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(NOT_UNIQUE_LOGIN, !minorValidationResult);
 
+        // blank email is valid but cannot be confirmed
         minorValidationResult = StringUtils.isBlank(email) || Pattern.matches(VALID_EMAIL_REGEX, email);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_EMAIL, !minorValidationResult);
 
-        // update user -> ignore email uniqueness validation if email is not changed or empty
-        minorValidationResult = idString != null && Objects.equals(email, cachedEmail) || StringUtils.isBlank(email)
+        // forUpdate == true -> ignore email uniqueness validation if email is not changed or empty
+        minorValidationResult = forUpdate && emailNotChanged || StringUtils.isBlank(email)
                 || userService.isEmailUnique(email);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(NOT_UNIQUE_EMAIL, !minorValidationResult);
 
-        // password validation is ignored (case - update user leaving password fields empty)
-        minorValidationResult = idString != null && StringUtils.isBlank(password)
+        // forUpdate == true && user leaves password fields empty ->
+        // password validation is ignored but password is not going be changed
+        minorValidationResult = forUpdate && StringUtils.isBlank(password)
                 || Pattern.matches(VALID_PASSWORD_REGEX, password);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(INVALID_PASSWORD, !minorValidationResult);
 
-        minorValidationResult = idString != null && StringUtils.isBlank(password)
+        // forUpdate == true && user leaves password fields empty ->
+        // password validation is ignored but password is not going be changed
+        minorValidationResult = forUpdate && StringUtils.isBlank(password)
                 || StringUtils.equals(password, confirmPassword);
         mainValidationResult &= minorValidationResult;
         session.setAttribute(PASSWORDS_DO_NOT_MATCH, !minorValidationResult);
@@ -123,10 +128,6 @@ public class UserValidator {
         session.setAttribute(INVALID_LAST_NAME, !minorValidationResult);
 
         return mainValidationResult;
-    }
-
-    public boolean validateUser(HttpServletRequest request, User user, String password, String confirmPassword) {
-        return validateUser(request, user, null, null, null, password, confirmPassword);
     }
 
     public boolean validatePasswordChange(HttpServletRequest request, long userId, String currentPassword,

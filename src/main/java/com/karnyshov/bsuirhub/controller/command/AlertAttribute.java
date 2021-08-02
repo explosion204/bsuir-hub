@@ -23,6 +23,7 @@ public class AlertAttribute {
     public static final String INVALID_NAME = "invalid_name";
     public static final String INVALID_SHORT_NAME = "invalid_short_name";
     public static final String INVALID_SPECIALTY_ALIAS = "invalid_specialty_alias";
+    public static final String NOT_UNIQUE_NAME = "not_unique_name";
 
     private AlertAttribute() {
 
