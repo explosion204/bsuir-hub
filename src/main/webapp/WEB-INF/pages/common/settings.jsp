@@ -105,7 +105,7 @@
                 <input type="password" name="password" class="bg-light form-control" maxlength="50" id="passwordInput"
                        pattern="(?=.*\w)(?=.*\d)[0-9a-zA-Z]{8,32}" required>
                 <div class="invalid-feedback">
-                    Password must contain 8 - 32 alphanumeric characters (letters and digits are reqiuired both)
+                    Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
                 </div>
             </div>
             <div class="form-group mb-2 mt-2">

@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
+import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.LOCALE;
 
 @WebFilter(
         urlPatterns = "/*"
@@ -38,10 +39,12 @@ public class UrlFilter implements Filter {
         request.setAttribute(EMAIL_CHANGE_SUCCESS, session.getAttribute(EMAIL_CHANGE_SUCCESS));
         request.setAttribute(PASSWORD_CHANGE_SUCCESS, session.getAttribute(PASSWORD_CHANGE_SUCCESS));
         request.setAttribute(EMAIL_CONFIRMATION_SUCCESS, session.getAttribute(EMAIL_CONFIRMATION_SUCCESS));
+        request.setAttribute(PASSWORD_RESET_LINK_SENT, session.getAttribute(PASSWORD_RESET_LINK_SENT));
 
         session.removeAttribute(ENTITY_UPDATE_SUCCESS);
         session.removeAttribute(EMAIL_CHANGE_SUCCESS);
         session.removeAttribute(PASSWORD_CHANGE_SUCCESS);
+        session.removeAttribute(PASSWORD_RESET_LINK_SENT);
 
         // auth error
         request.setAttribute(AUTH_ERROR, session.getAttribute(AUTH_ERROR));

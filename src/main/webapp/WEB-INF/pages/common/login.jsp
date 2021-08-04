@@ -22,6 +22,12 @@
     <div class="container login-container mt-auto mb-auto">
         <div class="row justify-content-center">
             <div class="col-md-6 login-form">
+                <c:if test="${password_change_success}">
+                    <div class="alert alert-success mt-2" role="alert">
+                        Password successfully changed
+                    </div>
+                </c:if>
+
                 <form id="login" class="needs-validation" method="post" action="/login" novalidate>
                     <div class="form-group mb-3">
                         <input type="text" class="form-control" placeholder="${login_placeholder}" name="login" required />
@@ -41,7 +47,7 @@
                         </div>
                     </c:if>
                     <div class="form-group">
-                        <a href="#" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
+                        <a href="/forgot_password" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
                     </div>
                 </form>
             </div>

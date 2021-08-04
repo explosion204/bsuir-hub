@@ -131,7 +131,7 @@ public class UserValidator {
     }
 
     public boolean validatePasswordChange(HttpServletRequest request, long userId, String currentPassword,
-                                          String password, String confirmPassword) {
+                                          String password, String confirmPassword, boolean resetPassword) {
         HttpSession session = request.getSession();
 
         boolean mainValidationResult;
@@ -154,7 +154,7 @@ public class UserValidator {
         String currentPasswordHash = targetUser.get().getPasswordHash();
         String currentSalt = targetUser.get().getSalt();
 
-        minorValidationResult = StringUtils.equals(currentPasswordHash,
+        minorValidationResult = resetPassword || StringUtils.equals(currentPasswordHash,
                 DigestUtils.sha256Hex(currentPassword + currentSalt));
         mainValidationResult = minorValidationResult;
         session.setAttribute(INVALID_CURRENT_PASSWORD, !minorValidationResult);

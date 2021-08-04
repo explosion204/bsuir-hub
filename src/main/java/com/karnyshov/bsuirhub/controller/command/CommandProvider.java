@@ -30,14 +30,18 @@ public enum CommandProvider {
     /* COMMON AREA */
     GO_TO_INDEX_PAGE(GoToIndexPageCommand.class, GET, "/"),
     GO_TO_LOGIN_PAGE(GoToLoginPageCommand.class, GET, "/login", "/login/"),
+    GO_TO_FORGOT_PASSWORD_PAGE(GoToForgotPasswordPageCommand.class, GET, "/forgot_password"),
+    GO_TO_RESET_PASSWORD_PAGE(GoToResetPasswordPageCommand.class, GET, "/reset_password"),
     GO_TO_SETTINGS_PAGE(GoToSettingsPageCommand.class, GET, "/settings", "/settings/"),
     GO_TO_NOT_FOUND_PAGE(GoToNotFoundPageCommand.class, GET, "/error/404"),
     GO_TO_INTERNAL_SERVER_ERROR_PAGE(GoToInternalErrorPage.class, GET, "/error/500"),
     LOGIN(LoginCommand.class, POST, "/login"),
+    SEND_RESET_PASSWORD_LINK(SendResetPasswordLinkCommand.class, POST, "/send_reset_password_link"),
     LOGOUT(LogoutCommand.class, GET, "/logout", "/logout/"),
     CHANGE_PASSWORD(ChangePasswordCommand.class, POST, "/settings/change_password"),
     CHANGE_EMAIL(ChangeEmailCommand.class, POST, "/settings/change_email"),
     CONFIRM_EMAIL(ConfirmEmailCommand.class, GET, "/confirm_email"),
+    RESET_PASSWORD(ResetPasswordCommand.class, POST, "/reset_password"),
 
     /* ADMIN AREA */
     GO_TO_USERS_PAGE(GoToUsersPageCommand.class, GET, "/admin/users", "/admin/users/", "/admin", "/admin/"),

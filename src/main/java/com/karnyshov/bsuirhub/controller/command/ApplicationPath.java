@@ -4,8 +4,10 @@ public class ApplicationPath {
     /* PURE URLS */
     public static final String INDEX_URL = "/";
     public static final String LOGIN_URL = "/login";
+    public static final String FORGOT_PASSWORD_URL = "/forgot_password";
     public static final String SETTINGS_URL = "/settings";
     public static final String CONFIRM_EMAIL_URL = "/confirm_email?token=";
+    public static final String RESET_PASSWORD_URL = "/reset_password?token=";
     public static final String ADMIN_USERS_URL = "/admin/users";
     public static final String ADMIN_NEW_USER_URL = "/admin/users/new";
     public static final String ADMIN_EDIT_USER_URL = "/admin/users/edit?id=";
@@ -27,6 +29,8 @@ public class ApplicationPath {
     /* JSP for forwarding only */
     public static final String INDEX_JSP = "common/index.jsp";
     public static final String LOGIN_JSP = "common/login.jsp";
+    public static final String FORGOT_PASSWORD_JSP = "common/forgot_password.jsp";
+    public static final String RESET_PASSWORD_JSP = "common/reset_password.jsp";
     public static final String SETTINGS_JSP = "common/settings.jsp";
     public static final String ERROR_NOT_FOUND_JSP = "common/errors/404.jsp";
     public static final String ERROR_INTERNAL_SERVER_JSP = "common/errors/500.jsp";
