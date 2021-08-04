@@ -17,6 +17,7 @@ import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
 @Named
 public class GetFacultiesCommand implements Command {
@@ -36,6 +37,9 @@ public class GetFacultiesCommand implements Command {
 
             try {
                 switch (issuer) {
+                    case FETCH_BY_ID:
+                        processFetchByIdRequest(request, response);
+                        break;
                     case JQUERY_DATATABLE:
                         processDatatableRequest(request, response);
                         break;
@@ -45,7 +49,7 @@ public class GetFacultiesCommand implements Command {
                     default:
                         status = false;
                 }
-            } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
+            } catch (ServiceException | IllegalArgumentException e) {
                 logger.error("An error occurred executing 'get faculties' command", e);
                 status = false;
             }
@@ -91,5 +95,13 @@ public class GetFacultiesCommand implements Command {
                 searchValue, faculties);
         response.put(RESULTS, faculties);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
+    }
+
+    private void processFetchByIdRequest(HttpServletRequest request, Map<String, Object> response)
+            throws ServiceException {
+        long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
+        Optional<Faculty> faculty = facultyService.findById(entityId);
+        faculty.ifPresent(value -> response.put(ENTITY, value));
+        response.put(ENTITY, faculty.orElse(null));
     }
 }

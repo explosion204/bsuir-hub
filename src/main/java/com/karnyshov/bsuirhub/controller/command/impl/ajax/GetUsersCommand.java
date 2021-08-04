@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 
 @Named
@@ -40,6 +41,9 @@ public class GetUsersCommand implements Command {
             
             try {
                 switch (issuer) {
+                    case FETCH_BY_ID:
+                        processFetchByIdRequest(request, response);
+                        break;
                     case JQUERY_DATATABLE:
                         processDatatableRequest(request, response);
                         break;
@@ -49,7 +53,7 @@ public class GetUsersCommand implements Command {
                     default:
                         status = false;
                 }
-            } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
+            } catch (ServiceException | IllegalArgumentException e) {
                 logger.error("An error occurred executing 'get users' command", e);
                 status = false;
             }
@@ -121,5 +125,13 @@ public class GetUsersCommand implements Command {
 
         response.put(RESULTS, users);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
+    }
+
+    private void processFetchByIdRequest(HttpServletRequest request, Map<String, Object> response)
+            throws ServiceException {
+        long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
+        Optional<User> user = userService.findById(entityId);
+        user.ifPresent(value -> response.put(ENTITY, value));
+        response.put(ENTITY, user.orElse(null));
     }
 }

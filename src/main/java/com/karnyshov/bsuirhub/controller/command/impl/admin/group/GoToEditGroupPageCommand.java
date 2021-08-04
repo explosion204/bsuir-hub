@@ -3,18 +3,18 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.group;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import com.karnyshov.bsuirhub.model.entity.User;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
+import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
 import com.karnyshov.bsuirhub.model.service.GroupService;
-import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -34,10 +34,7 @@ public class GoToEditGroupPageCommand implements Command {
     private GroupService groupService;
 
     @Inject
-    private DepartmentService departmentService;
-
-    @Inject
-    private UserService userService;
+    private StudyAssignmentService studyAssignmentService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -48,17 +45,9 @@ public class GoToEditGroupPageCommand implements Command {
             Optional<Group> group = groupService.findById(entityId);
 
             if (group.isPresent()) {
-                long departmentId = group.get().getDepartmentId();
-                long headmanId = group.get().getHeadmanId();
-                long curatorId = group.get().getCuratorId();
-
-                Optional<Department> department = departmentService.findById(departmentId);
-                Optional<User> headman = userService.findById(headmanId);
-                Optional<User> curator = userService.findById(curatorId);
-
-                department.ifPresent(value -> request.setAttribute(DEPARTMENT_NAME, value.getName()));
-                headman.ifPresent(value -> request.setAttribute(HEADMAN_LAST_NAME, value.getLastName()));
-                curator.ifPresent(value -> request.setAttribute(CURATOR_LAST_NAME, value.getLastName()));
+                List<StudyAssignment> assignments = new LinkedList<>();
+                studyAssignmentService.findByGroup(group.get().getEntityId(), assignments);
+                request.setAttribute(STUDY_ASSIGNMENTS, assignments);
 
                 request.setAttribute(TARGET_ENTITY, group.get());
                 request.getSession().setAttribute(PREVIOUS_NAME, group.get().getName());

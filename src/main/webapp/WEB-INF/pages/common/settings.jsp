@@ -9,11 +9,8 @@
     <script src="/static/js/util/upload.js"></script>
     <script src="/static/js/common/settings.js"></script>
 </head>
-<body>
+<body data-user-id="${sessionScope.user.entityId}">
     <jsp:include page="shared/header.jsp" />
-
-    <!-- for AJAX purposes -->
-    <input hidden id="userId" value="${sessionScope.user.entityId}">
 
     <div class="wrapper bg-white mt-sm-5">
         <h4 class="pb-4 border-bottom">Account settings</h4>

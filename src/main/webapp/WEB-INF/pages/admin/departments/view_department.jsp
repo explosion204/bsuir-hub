@@ -8,11 +8,10 @@
     <script src="/static/js/admin/departments/view_department.js"></script>
 </head>
 <body>
-<main class="d-flex flex-row h-100">
-    <jsp:include page="../shared/sidebar.jsp" />
+<main class="d-flex flex-row h-100"
+      data-faculty-id="${target_entity.facultyId}">
 
-    <!-- for AJAX purposes -->
-    <input hidden id="facultyId" value="${target_entity.facultyId}">
+    <jsp:include page="../shared/sidebar.jsp" />
 
     <div class="admin-main-area w-100 h-auto">
         <div class="container">
@@ -83,9 +82,7 @@
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="facultySelect">Faculty</label>
-                    <select name="facultyId" id="facultySelect" required>
-                        <option value="${target_entity.facultyId}">${faculty_name}</option>
-                    </select>
+                    <select name="facultyId" id="facultySelect" required></select>
                 </div>
                 <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
                         <c:if test="${new_entity_page}">disabled</c:if>

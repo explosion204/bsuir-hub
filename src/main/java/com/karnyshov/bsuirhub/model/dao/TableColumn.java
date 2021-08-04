@@ -72,12 +72,12 @@ public final class TableColumn {
     public static final String COMMENT_TEXT = "text";
 
     /*
-    * TABLE groups_teachers_subjects
+    * TABLE study_assignments
     * */
-    public static final String GTS_ID = "id";
-    public static final String GTS_TEACHER_ID = "id_teacher";
-    public static final String GTS_SUBJECT_ID = "id_subject";
-    public static final String GTS_GROUP_ID = "id_group";
+    public static final String STUDY_ASSIGNMENT_ID = "id";
+    public static final String STUDY_ASSIGNMENT_TEACHER_ID = "id_teacher";
+    public static final String STUDY_ASSIGNMENT_SUBJECT_ID = "id_subject";
+    public static final String STUDY_ASSIGNMENT_GROUP_ID = "id_group";
 
     private TableColumn() {
 

@@ -13,14 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.PAGINATION_MORE;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
 @Named
 public class GetSubjectsCommand implements Command {
@@ -40,6 +38,9 @@ public class GetSubjectsCommand implements Command {
 
             try {
                 switch (issuer) {
+                    case FETCH_BY_ID:
+                        processFetchByIdRequest(request, response);
+                        break;
                     case JQUERY_DATATABLE:
                         processDatatableRequest(request, response);
                         break;
@@ -49,7 +50,7 @@ public class GetSubjectsCommand implements Command {
                     default:
                         status = false;
                 }
-            } catch (ServiceException | NumberFormatException | EnumConstantNotPresentException e) {
+            } catch (ServiceException | IllegalArgumentException e) {
                 logger.error("An error occurred executing 'get subjects' command", e);
                 status = false;
             }
@@ -94,5 +95,13 @@ public class GetSubjectsCommand implements Command {
         long recordsFetched = subjectService.filter(page, pageSize, SubjectFilterCriteria.NAME, searchValue, subjects);
         response.put(RESULTS, subjects);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
+    }
+
+    private void processFetchByIdRequest(HttpServletRequest request, Map<String, Object> response)
+            throws ServiceException {
+        long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
+        Optional<Subject> subject = subjectService.findById(entityId);
+        subject.ifPresent(value -> response.put(ENTITY, subject));
+        response.put(ENTITY, subject.orElse(null));
     }
 }

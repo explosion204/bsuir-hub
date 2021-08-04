@@ -19,7 +19,12 @@ public class AjaxRequestParameter {
     public static final String RESULTS = "results";
     public static final String PAGINATION_MORE = "paginationMore";
     public static final String FETCH_STUDENTS = "fetchStudents";
+    public static final String ASSIGNMENT_ID = "assignmentId";
     public static final String GROUP_ID = "groupId";
+    public static final String TEACHER_ID = "teacherId";
+    public static final String SUBJECT_ID = "subjectId";
+
+    public static final String ENTITY = "entity";
 
     public static final String TARGET_ID = "targetId";
 

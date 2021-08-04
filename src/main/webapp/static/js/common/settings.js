@@ -26,7 +26,7 @@ $(document).ready(function () {
     });
 
     $('#filePicker').change(function () {
-        let userId = $('#userId').val();
+        let userId = $('body').data('user-id');
         uploadProfileImage.call(this, userId);
     });
 });

@@ -28,7 +28,7 @@ $(document).ready(function() {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    let issuerId = Number.parseInt($("#issuerId").val());
+                    let issuerId = Number.parseInt($('main').data('issuer-id'));
 
                     if (issuerId === row.entityId || row.userRole === 'ADMIN') {
                         return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">Edit</a>' +

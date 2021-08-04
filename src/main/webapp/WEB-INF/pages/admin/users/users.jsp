@@ -8,9 +8,8 @@
     <script src="/static/js/admin/users/users.js"></script>
 </head>
 <body>
-<main class="d-flex flex-row h-100">
+<main class="d-flex flex-row h-100" data-issuer-id="${sessionScope.user.entityId}">
     <jsp:include page="../shared/sidebar.jsp" />
-    <input hidden id="issuerId" value="${sessionScope.user.entityId}">
 
     <table id="dataTable" class="table table-striped table-borderless table-hover">
         <thead>

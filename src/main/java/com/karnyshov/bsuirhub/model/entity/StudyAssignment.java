@@ -1,19 +1,19 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-public class GroupTeacherSubject extends AbstractEntity {
+public class StudyAssignment extends AbstractEntity {
     private long groupId;
     private long teacherId;
     private long subjectId;
 
-    private GroupTeacherSubject(GroupTeacherSubjectBuilder builder) {
+    private StudyAssignment(StudyAssignmentBuilder builder) {
         super(builder);
         this.groupId = builder.groupId;
         this.teacherId = builder.teacherId;
         this.subjectId = builder.subjectId;
     }
 
-    public static GroupTeacherSubjectBuilder builder() {
-        return new GroupTeacherSubjectBuilder();
+    public static StudyAssignmentBuilder builder() {
+        return new StudyAssignmentBuilder();
     }
 
     public long getGroupId() {
@@ -50,14 +50,14 @@ public class GroupTeacherSubject extends AbstractEntity {
             return false;
         }
 
-        GroupTeacherSubject entity = (GroupTeacherSubject) obj;
+        StudyAssignment entity = (StudyAssignment) obj;
         return super.equals(entity) && entity.groupId == groupId && entity.teacherId == teacherId
                 && entity.subjectId == subjectId;
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("GroupTeacherSubject (");
+        StringBuilder builder = new StringBuilder("StudyAssignment (");
         builder.append(super.toString()).append("): ");
         builder.append("group id = ").append(groupId).append(", ");
         builder.append("teacher id = ").append(teacherId).append(", ");
@@ -66,30 +66,30 @@ public class GroupTeacherSubject extends AbstractEntity {
         return builder.toString();
     }
 
-    public static class GroupTeacherSubjectBuilder extends AbstractEntity.AbstractBuilder {
+    public static class StudyAssignmentBuilder extends AbstractEntity.AbstractBuilder {
         private long groupId;
         private long teacherId;
         private long subjectId;
 
-        private GroupTeacherSubjectBuilder() {
+        private StudyAssignmentBuilder() {
         }
 
-        public GroupTeacherSubjectBuilder setGroupId(long groupId) {
+        public StudyAssignmentBuilder setGroupId(long groupId) {
             this.groupId = groupId;
             return this;
         }
 
-        public GroupTeacherSubjectBuilder setTeacherId(long teacherId) {
+        public StudyAssignmentBuilder setTeacherId(long teacherId) {
             this.teacherId = teacherId;
             return this;
         }
 
-        public GroupTeacherSubjectBuilder setSubjectId(long subjectId) {
+        public StudyAssignmentBuilder setSubjectId(long subjectId) {
             this.subjectId = subjectId;
             return this;
         }
 
-        public GroupTeacherSubjectBuilder of(GroupTeacherSubject entity) {
+        public StudyAssignmentBuilder of(StudyAssignment entity) {
             super.of(entity);
             this.groupId = entity.groupId;
             this.teacherId = entity.teacherId;
@@ -97,8 +97,8 @@ public class GroupTeacherSubject extends AbstractEntity {
             return this;
         }
 
-        public GroupTeacherSubject build() {
-            return new GroupTeacherSubject(this);
+        public StudyAssignment build() {
+            return new StudyAssignment(this);
         }
     }
 }

@@ -23,6 +23,9 @@ public enum CommandProvider {
     GET_GROUPS(GetGroupsCommand.class, GET, "/ajax/get_groups"),
     GET_SUBJECTS(GetSubjectsCommand.class, GET, "/ajax/get_subjects"),
     UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/ajax/upload_profile_image"),
+    CREATE_ASSIGNMENT(CreateStudyAssignmentCommand.class, POST, "/admin/ajax/create_study_assignment"),
+    UPDATE_ASSIGNMENT(UpdateStudyAssignmentCommand.class, POST, "/admin/ajax/update_study_assignment"),
+    DELETE_ASSIGNMENT(DeleteStudyAssignmentCommand.class, POST, "/admin/ajax/delete_study_assignment"),
 
     /* COMMON AREA */
     GO_TO_INDEX_PAGE(GoToIndexPageCommand.class, GET, "/"),

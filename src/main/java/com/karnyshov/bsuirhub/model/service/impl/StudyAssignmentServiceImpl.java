@@ -2,9 +2,9 @@ package com.karnyshov.bsuirhub.model.service.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.dao.GroupTeacherSubjectDao;
-import com.karnyshov.bsuirhub.model.entity.GroupTeacherSubject;
-import com.karnyshov.bsuirhub.model.service.GroupTeacherSubjectService;
+import com.karnyshov.bsuirhub.model.dao.StudyAssignmentDao;
+import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
+import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -12,41 +12,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Named
-public class GroupTeacherSubjectServiceImpl implements GroupTeacherSubjectService {
+public class StudyAssignmentServiceImpl implements StudyAssignmentService {
     @Inject
-    private GroupTeacherSubjectDao entityDao;
+    private StudyAssignmentDao studyAssignmentDao;
 
     @Override
-    public Optional<GroupTeacherSubject> findById(long id) throws ServiceException {
+    public Optional<StudyAssignment> findById(long id) throws ServiceException {
         try {
-            return entityDao.selectById(id);
+            return studyAssignmentDao.selectById(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void findByGroup(long groupId, List<GroupTeacherSubject> result) throws ServiceException {
+    public void findByGroup(long groupId, List<StudyAssignment> result) throws ServiceException {
         try {
-            entityDao.selectByGroup(groupId, result);
+            studyAssignmentDao.selectByGroup(groupId, result);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public long create(GroupTeacherSubject entity) throws ServiceException {
+    public long create(StudyAssignment studyAssignment) throws ServiceException {
         try {
-            return entityDao.insert(entity);
+            return studyAssignmentDao.insert(studyAssignment);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void update(GroupTeacherSubject entity) throws ServiceException {
+    public void update(StudyAssignment studyAssignment) throws ServiceException {
         try {
-            entityDao.update(entity);
+            studyAssignmentDao.update(studyAssignment);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -55,7 +55,7 @@ public class GroupTeacherSubjectServiceImpl implements GroupTeacherSubjectServic
     @Override
     public void delete(long id) throws ServiceException {
         try {
-            entityDao.delete(id);
+            studyAssignmentDao.delete(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

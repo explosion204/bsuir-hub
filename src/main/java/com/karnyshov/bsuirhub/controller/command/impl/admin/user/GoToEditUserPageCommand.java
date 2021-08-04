@@ -4,10 +4,8 @@ import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.controller.command.RequestAttribute;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
-import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -33,9 +31,6 @@ public class GoToEditUserPageCommand implements Command {
     @Inject
     private UserService userService;
 
-    @Inject
-    private GroupService groupService;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
@@ -45,10 +40,6 @@ public class GoToEditUserPageCommand implements Command {
             Optional<User> user = userService.findById(entityId);
 
             if (user.isPresent() && user.get().getStatus() != UserStatus.DELETED) {
-                long groupId = user.get().getGroupId();
-                Optional<Group> group = groupService.findById(groupId);
-                group.ifPresent(value -> request.setAttribute(GROUP_NAME, value.getName()));
-
                 request.setAttribute(TARGET_ENTITY, user.get());
                 request.setAttribute(RequestAttribute.ENTITY_ID, user.get().getEntityId());
 

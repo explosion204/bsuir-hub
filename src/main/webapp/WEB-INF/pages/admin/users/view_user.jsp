@@ -11,11 +11,8 @@
     <script src="/static/js/admin/users/view_user.js"></script>
 </head>
 <body>
-<main class="d-flex flex-row h-100">
+<main class="d-flex flex-row h-100" data-group-id="${target_entity.groupId}">
     <jsp:include page="../shared/sidebar.jsp" />
-
-    <!-- for AJAX purposes -->
-    <input hidden id="targetId" value="${id}">
 
     <div class="admin-main-area w-100 h-auto">
         <div class="container">
@@ -105,7 +102,7 @@
                     </div>
                 </c:if>
 
-                <input hidden type="text" name="id" value="${target_entity.entityId}">
+                <input hidden id="targetId" type="text" name="id" value="${target_entity.entityId}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="loginInput">Login</label>
                     <input type="text" name="login" class="form-control" pattern="[0-9a-zA-Z]{8,20}"
@@ -139,7 +136,6 @@
                     <input type="password" name="confirmPassword" class="form-control" id="confirmPasswordInput"
                             <c:if test="${new_entity_page}">required</c:if>
                             placeholder=<c:if test="${not new_entity_page}">"Leave it empty if you do not want to change password"</c:if>
-
                     >
                     <div class="invalid-feedback">
                         Passwords do not match
@@ -169,9 +165,7 @@
                 </div>
                 <div class="form-group me-5 ms-5 mb-2" id="groupSelectBlock">
                     <label for="groupSelect">Group</label>
-                    <select class="form-control" name="groupId" id="groupSelect">
-                        <option value="${target_entity.groupId}">${group_name}</option>
-                    </select>
+                    <select class="form-control" name="groupId" id="groupSelect"></select>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="firstNameInput">First name</label>

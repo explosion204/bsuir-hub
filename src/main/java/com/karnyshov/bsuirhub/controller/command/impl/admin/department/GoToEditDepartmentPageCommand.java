@@ -4,9 +4,7 @@ import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
-import com.karnyshov.bsuirhub.model.service.FacultyService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,9 +27,6 @@ public class GoToEditDepartmentPageCommand implements Command {
     @Inject
     private DepartmentService departmentService;
 
-    @Inject
-    private FacultyService facultyService;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
@@ -41,12 +36,7 @@ public class GoToEditDepartmentPageCommand implements Command {
             Optional<Department> department = departmentService.findById(entityId);
 
             if (department.isPresent() && !department.get().isArchived()) {
-                long facultyId = department.get().getFacultyId();
-                Optional<Faculty> faculty = facultyService.findById(facultyId);
-
                 request.setAttribute(TARGET_ENTITY, department.get());
-
-                faculty.ifPresent(value -> request.setAttribute(FACULTY_NAME, value.getName()));
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_DEPARTMENT_JSP, FORWARD);
             } else {
