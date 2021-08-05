@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.controller.command.validator.SubjectValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,7 +55,11 @@ public class UpdateSubjectCommand implements Command {
 
                 // success
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
-                result = new CommandResult(ADMIN_EDIT_SUBJECT_URL + idString, REDIRECT);
+                String url = new UrlStringBuilder(ADMIN_EDIT_SUBJECT_URL)
+                        .addParam(ENTITY_ID, idString)
+                        .build();
+
+                result = new CommandResult(url, REDIRECT);
             } catch (ServiceException | NumberFormatException e) {
                 logger.error("An error occurred executing 'update subject' command", e);
                 result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);

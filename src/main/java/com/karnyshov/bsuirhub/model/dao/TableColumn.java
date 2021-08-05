@@ -15,7 +15,7 @@ public final class TableColumn {
     public static final String USER_FIRST_NAME = "first_name";
     public static final String USER_PATRONYMIC = "patronymic";
     public static final String USER_LAST_NAME = "last_name";
-    public static final String USER_PROFILE_PICTURE = "profile_picture";
+    public static final String USER_PROFILE_IMAGE = "profile_image";
 
     /*
     * TABLE faculties

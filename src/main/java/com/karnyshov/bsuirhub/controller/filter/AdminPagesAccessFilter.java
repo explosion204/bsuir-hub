@@ -24,7 +24,7 @@ public class AdminPagesAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
 
-        if (user == null || user.getUserRole() != UserRole.ADMIN) {
+        if (user == null || user.getRole() != UserRole.ADMIN) {
             httpResponse.sendRedirect(ApplicationPath.NOT_FOUND_ERROR_URL);
         } else {
             chain.doFilter(request, response);

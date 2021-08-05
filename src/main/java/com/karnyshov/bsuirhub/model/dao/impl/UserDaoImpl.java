@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE id_status <> 3 " +
               "ORDER BY id " +
@@ -30,19 +30,19 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_BY_ID
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE users.id = ?;";
 
     private static final String SELECT_BY_LOGIN
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE login = ? AND id_status <> 3;";
 
     private static final String SELECT_MULTIPLE_BY_LOGIN
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE login LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +
               "ORDER BY id " +
@@ -56,13 +56,13 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_BY_EMAIL
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE email = ? AND id_status <> 3;";
 
     private static final String SELECT_MULTIPLE_BY_EMAIL
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE email LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +
               "ORDER BY id " +
@@ -76,7 +76,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_MULTIPLE_BY_LAST_NAME
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE last_name LIKE CONCAT('%', ?, '%') AND id_status <> 3 " +
               "ORDER BY id " +
@@ -90,7 +90,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_MULTIPLE_BY_ROLE
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE id_role = ? AND id_status <> 3 " +
               "ORDER BY id " +
@@ -104,7 +104,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_MULTIPLE_BY_GROUP
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +
-              "id_group, first_name, patronymic, last_name, profile_picture " +
+              "id_group, first_name, patronymic, last_name, profile_image " +
               "FROM users " +
               "WHERE id_group = ? AND id_role = 1 AND id_status <> 3 " +
               "ORDER BY id " +
@@ -118,12 +118,12 @@ public class UserDaoImpl implements UserDao {
 
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +
-              "last_name, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              "last_name, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     private static final String UPDATE
             = "UPDATE users " +
               "SET email = ?, password_hash = ?, salt = ?, id_role = ?, id_status = ?, id_group = ?, first_name = ?, " +
-              "patronymic = ?, last_name = ?, profile_picture = ? " +
+              "patronymic = ?, last_name = ?, profile_image = ? " +
               "WHERE id = ?;";
 
     private static final String DELETE
@@ -233,7 +233,7 @@ public class UserDaoImpl implements UserDao {
                 user.getFirstName(),
                 user.getPatronymic(),
                 user.getLastName(),
-                user.getProfilePicturePath()
+                user.getProfileImageName()
         );
     }
 
@@ -251,7 +251,7 @@ public class UserDaoImpl implements UserDao {
                 user.getFirstName(),
                 user.getPatronymic(),
                 user.getLastName(),
-                user.getProfilePicturePath(),
+                user.getProfileImageName(),
                 user.getEntityId()
         );
     }

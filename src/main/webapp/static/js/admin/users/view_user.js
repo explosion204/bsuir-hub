@@ -77,19 +77,8 @@ $(document).ready(function () {
 
     roleSelect.trigger('change');
 
-    $.ajax({
-        method: 'GET',
-        url: '/ajax/get_groups',
-        data: {
-            id: $('main').data('group-id'),
-            requestType: 'fetch_by_id'
-        },
-        success: function (response) {
-            let data = JSON.parse(response);
-            if (data.status && data.entity) {
-                let option = new Option(data.entity.name, data.entity.entityId);
-                groupSelect.append(option).trigger('change');
-            }
-        }
+    fetchGroup($('main').data('group-id'), function (data) {
+        let option = new Option(data.entity.name, data.entity.entityId);
+        groupSelect.append(option).trigger('change');
     });
 })

@@ -9,6 +9,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ordering: false,
+        drawCallback: function () { onDataLoaded(table); },
         ajax: {
             url: '/ajax/get_departments',
             data: function (d) {
@@ -24,8 +25,7 @@ $(document).ready(function() {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="link-secondary" href="/admin/faculties/edit?id=' + row.facultyId + '">'
-                            + row.facultyName + '</a>'
+                    return '<a class="link-secondary" href="/admin/faculties/edit?id=' + row.facultyId + '"></a>'
                 }
             },
             {
@@ -128,3 +128,13 @@ $(document).ready(function() {
         window.location.href = '/admin/departments/new';
     });
 });
+
+function onDataLoaded(table) {
+    table.rows().data().each(function (value, index) {
+        fetchFaculty(value.facultyId, function (data) {
+            let facultyName = data.entity.shortName;
+            let cell = table.cell(index, 4).node();
+            $(cell).find('a').text(facultyName);
+        });
+    })
+}

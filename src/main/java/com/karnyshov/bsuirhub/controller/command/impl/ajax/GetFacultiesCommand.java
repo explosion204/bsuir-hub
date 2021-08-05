@@ -75,7 +75,8 @@ public class GetFacultiesCommand implements Command {
         List<Faculty> faculties = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? facultyService.filter(page, length, FacultyFilterCriteria.valueOf(searchCriteria), searchValue, faculties)
+                ? facultyService.filter(page, length, FacultyFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                        searchValue, faculties)
                 : facultyService.filter(page, length, faculties);
 
         response.put(DRAW, draw);

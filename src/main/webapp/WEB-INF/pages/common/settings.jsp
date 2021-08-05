@@ -12,10 +12,10 @@
 <body data-user-id="${sessionScope.user.entityId}">
     <jsp:include page="shared/header.jsp" />
 
-    <div class="wrapper bg-white mt-sm-5">
+    <div class="wrapper bg-white w-100">
         <h4 class="pb-4 border-bottom">Account settings</h4>
         <div class="d-flex py-3 border-bottom">
-            <img id="profileImage" src="/static/images/profile/${sessionScope.user.profilePicturePath}"
+            <img id="profileImage" src="/static/images/profile/${sessionScope.user.profileImageName}"
                  class="img rounded-circle" alt="">
             <div class="ms-4" id="img-section">
                 <b>Profile Image</b>

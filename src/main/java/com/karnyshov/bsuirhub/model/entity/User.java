@@ -13,7 +13,7 @@ public class User extends AbstractEntity {
     private String firstName;
     private String patronymic;
     private String lastName;
-    private String profilePicturePath;
+    private String profileImageName;
 
     private User(UserBuilder builder) {
         super(builder);
@@ -27,7 +27,7 @@ public class User extends AbstractEntity {
         this.firstName = builder.firstName;
         this.patronymic = builder.patronymic;
         this.lastName = builder.lastName;
-        this.profilePicturePath = builder.profilePicturePath;
+        this.profileImageName = builder.profileImageName;
     }
 
     public static UserBuilder builder() {
@@ -74,8 +74,8 @@ public class User extends AbstractEntity {
         return lastName;
     }
 
-    public String getProfilePicturePath() {
-        return profilePicturePath;
+    public String getProfileImageName() {
+        return profileImageName;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class User extends AbstractEntity {
         result = prime * result + (firstName != null ? firstName.hashCode() : 0);
         result = prime * result + (patronymic != null ? patronymic.hashCode() : 0);
         result = prime * result + (lastName != null ? lastName.hashCode() : 0);
-        result = prime * result + (profilePicturePath != null ? profilePicturePath.hashCode() : 0);
+        result = prime * result + (profileImageName != null ? profileImageName.hashCode() : 0);
 
         return result;
     }
@@ -114,7 +114,7 @@ public class User extends AbstractEntity {
                 && Objects.equals(user.role, role) && Objects.equals(user.status, status)
                 && user.groupId == groupId && Objects.equals(user.firstName, firstName)
                 && Objects.equals(user.patronymic, patronymic) && Objects.equals(user.lastName, lastName)
-                && Objects.equals(user.profilePicturePath, profilePicturePath);
+                && Objects.equals(user.profileImageName, profileImageName);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class User extends AbstractEntity {
         builder.append("first name = ").append(firstName).append(", ");
         builder.append("patronymic = ").append(patronymic).append(", ");
         builder.append("last name = ").append(lastName).append(", ");
-        builder.append("profile picture path = ").append(profilePicturePath);
+        builder.append("profile picture path = ").append(profileImageName);
 
         return builder.toString();
     }
@@ -147,7 +147,7 @@ public class User extends AbstractEntity {
         private String firstName;
         private String patronymic;
         private String lastName;
-        private String profilePicturePath;
+        private String profileImageName;
 
         private UserBuilder() {
 
@@ -203,8 +203,8 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public UserBuilder setProfilePicturePath(String profilePicturePath) {
-            this.profilePicturePath = profilePicturePath;
+        public UserBuilder setProfileImageName(String profileImageName) {
+            this.profileImageName = profileImageName;
             return this;
         }
 
@@ -220,7 +220,7 @@ public class User extends AbstractEntity {
             this.firstName = user.firstName;
             this.patronymic = user.patronymic;
             this.lastName = user.lastName;
-            this.profilePicturePath = user.profilePicturePath;
+            this.profileImageName = user.profileImageName;
             return this;
         }
 

@@ -27,6 +27,20 @@ public class StudyAssignmentDaoImpl implements StudyAssignmentDao {
               "FROM study_assignments " +
               "WHERE id_group = ?";
 
+    private static final String SELECT_DISTINCT_BY_TEACHER
+            = "SELECT id, id_teacher, id_subject, id_group " +
+              "FROM study_assignments " +
+              "WHERE id_teacher = ? " +
+              "GROUP BY id_teacher, id_subject, id_group " +
+              "LIMIT ? " +
+              "OFFSET ?;";
+
+    private static final String SELECT_DISTINCT_COUNT_BY_TEACHER
+            = "SELECT DISTINCT COUNT(id) OVER() " +
+              "FROM study_assignments " +
+              "WHERE id_teacher = ? " +
+              "GROUP BY id_teacher, id_subject, id_group;";
+
     private static final String INSERT
             = "INSERT study_assignments (id_teacher, id_subject, id_group) VALUES (?, ?, ?);";
 
@@ -40,7 +54,10 @@ public class StudyAssignmentDaoImpl implements StudyAssignmentDao {
               "WHERE id = ?;";
 
     @Inject
-    private ResultSetMapper<StudyAssignment> relationMapper;
+    private ResultSetMapper<StudyAssignment> assignmentMapper;
+
+    @Inject
+    private ResultSetMapper<Long> longMapper;
 
     @Override
     public void selectAll(int offset, int limit, List<StudyAssignment> result) throws DaoException {
@@ -57,12 +74,25 @@ public class StudyAssignmentDaoImpl implements StudyAssignmentDao {
 
     @Override
     public Optional<StudyAssignment> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(relationMapper, SELECT_BY_ID, id);
+        return QueryExecutor.executeSelectForSingleResult(assignmentMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByGroup(long groupId, List<StudyAssignment> result) throws DaoException {
-        QueryExecutor.executeSelect(relationMapper, SELECT_BY_GROUP, result, groupId);
+        QueryExecutor.executeSelect(assignmentMapper, SELECT_BY_GROUP, result, groupId);
+    }
+
+    @Override
+    public void selectDistinctByTeacher(int offset, int limit, long teacherId, List<StudyAssignment> result)
+            throws DaoException {
+        QueryExecutor.executeSelect(assignmentMapper, SELECT_DISTINCT_BY_TEACHER, result, teacherId, limit, offset);
+    }
+
+    @Override
+    public long selectDistinctCountByTeacher(long teacherId) throws DaoException {
+        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_DISTINCT_COUNT_BY_TEACHER,
+                teacherId);
+        return result.orElseThrow(() -> new DaoException("Error while executing SELECT_DISTINCT_COUNT_BY_TEACHER query"));
     }
 
     @Override

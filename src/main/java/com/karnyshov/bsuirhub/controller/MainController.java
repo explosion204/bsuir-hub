@@ -50,7 +50,7 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         RequestMethod method = RequestMethod.valueOf(request.getMethod());
         String url = (String) request.getAttribute(ORIGINAL_URL);
-        Optional<Command> command = CommandProvider.getCommand(url, method);
+        Optional<Command> command = CommandProvider.getInstance().getCommand(url, method);
 
         if (command.isPresent()) {
             CommandResult commandResult = command.get().execute(request);

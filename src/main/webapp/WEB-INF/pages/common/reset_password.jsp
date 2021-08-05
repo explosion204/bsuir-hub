@@ -30,7 +30,7 @@
     </c:if>
 
     <h4 class="pb-2">Reset password</h4>
-    <form id="resetPasswordForm" method="post" action="/reset_password">
+    <form id="resetPasswordForm" method="post" action="/login/reset_password">
         <div class="form-group mb-2 mt-2">
             <label for="passwordInput">New password</label>
             <input type="password" name="password" class="bg-light form-control" maxlength="50" id="passwordInput"

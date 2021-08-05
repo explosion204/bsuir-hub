@@ -196,20 +196,9 @@ function initializeSubjectSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        $.ajax({
-            method: 'GET',
-            url: '/ajax/get_subjects',
-            data: {
-                id: initialId,
-                requestType: 'fetch_by_id'
-            },
-            success: function (response) {
-                let data = JSON.parse(response);
-                if (data.status && data.entity) {
-                    let option = new Option(data.entity.name, data.entity.entityId);
-                    select.append(option).trigger('change');
-                }
-            }
+        fetchSubject(initialId, function (data) {
+            let option = new Option(data.entity.name, data.entity.entityId);
+            select.append(option).trigger('change');
         });
     }
 }
@@ -235,7 +224,7 @@ function initializeTeacherSelect(select, width, initialId) {
                 data = JSON.parse(data);
                 let mappedData = $.map(data.results, function (item) {
                     item.id = item.entityId;
-                    item.text = item.lastName;
+                    item.text = item.lastName + ' ' + item.firstName + ' ' + item.patronymic;
                     return item;
                 });
                 params.page = params.page || 1;
@@ -251,20 +240,10 @@ function initializeTeacherSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        $.ajax({
-            method: 'GET',
-            url: '/ajax/get_users',
-            data: {
-                id: initialId,
-                requestType: 'fetch_by_id'
-            },
-            success: function (response) {
-                let data = JSON.parse(response);
-                if (data.status && data.entity) {
-                    let option = new Option(data.entity.lastName, data.entity.entityId);
-                    select.append(option).trigger('change');
-                }
-            }
+        fetchUser(initialId, function (data) {
+            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+            let option = new Option(name, data.entity.entityId);
+            select.append(option).trigger('change');
         });
     }
 }
@@ -291,7 +270,8 @@ function initializeStudentSelect(select, width, initialId) {
                 data = JSON.parse(data);
                 let mappedData = $.map(data.results, function (item) {
                     item.id = item.entityId;
-                    item.text = item.lastName;
+                    item.text = item.lastName + ' ' + item.firstName + ' ' + item.patronymic;
+                    console.log(item.patronymic);
                     return item;
                 });
                 params.page = params.page || 1;
@@ -307,20 +287,10 @@ function initializeStudentSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        $.ajax({
-            method: 'GET',
-            url: '/ajax/get_users',
-            data: {
-                id: initialId,
-                requestType: 'fetch_by_id'
-            },
-            success: function (response) {
-                let data = JSON.parse(response);
-                if (data.status && data.entity) {
-                    let option = new Option(data.entity.lastName, data.entity.entityId);
-                    select.append(option).trigger('change');
-                }
-            }
+        fetchUser(initialId, function (data) {
+            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+            let option = new Option(name, data.entity.entityId);
+            select.append(option).trigger('change');
         });
     }
 }
@@ -361,20 +331,9 @@ function initializeDepartmentSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        $.ajax({
-            method: 'GET',
-            url: '/ajax/get_departments',
-            data: {
-                id: initialId,
-                requestType: 'fetch_by_id'
-            },
-            success: function (response) {
-                let data = JSON.parse(response);
-                if (data.status && data.entity) {
-                    let option = new Option(data.entity.name, data.entity.entityId);
-                    select.append(option).trigger('change');
-                }
-            }
+        fetchDepartment(initialId, function (data) {
+            let option = new Option(data.entity.name, data.entity.entityId);
+            select.append(option).trigger('change');
         });
     }
 }

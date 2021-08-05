@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.controller.command.validator.GroupValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,7 +65,11 @@ public class UpdateGroupCommand implements Command {
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
             }
 
-            result = new CommandResult(ADMIN_EDIT_GROUP_URL + idString, REDIRECT);
+            String url = new UrlStringBuilder(ADMIN_EDIT_GROUP_URL)
+                    .addParam(ENTITY_ID, idString)
+                    .build();
+
+            result = new CommandResult(url, REDIRECT);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'update group' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);

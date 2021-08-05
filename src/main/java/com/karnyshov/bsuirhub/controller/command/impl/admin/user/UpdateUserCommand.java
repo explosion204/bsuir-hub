@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UP
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PROFILE_PICTURE_PATH;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PROFILE_IMAGE_NAME;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
 @Named
@@ -53,7 +54,7 @@ public class UpdateUserCommand implements Command {
         String patronymic = request.getParameter(PATRONYMIC);
         String lastName = request.getParameter(LAST_NAME);
         boolean confirmed = CONFIRMED_VALUE.equals(request.getParameter(CONFIRMED));
-        String profilePicturePath = request.getParameter(PROFILE_PICTURE_PATH);
+        String profileImageName = request.getParameter(PROFILE_IMAGE_NAME);
         String groupIdString = request.getParameter(GROUP_ID);
 
         User user = User.builder()
@@ -65,7 +66,7 @@ public class UpdateUserCommand implements Command {
                 .setLastName(lastName)
                 // empty email -> always not confirmed
                 .setStatus(confirmed && StringUtils.isNotBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
-                .setProfilePicturePath(StringUtils.isNotBlank(profilePicturePath) ? profilePicturePath : DEFAULT_PROFILE_IMAGE_PATH)
+                .setProfileImageName(StringUtils.isNotBlank(profileImageName) ? profileImageName : DEFAULT_PROFILE_IMAGE_PATH)
                 .build();
 
         try {
@@ -98,7 +99,11 @@ public class UpdateUserCommand implements Command {
                 session.setAttribute(ENTITY_UPDATE_SUCCESS, true);
             }
 
-            result = new CommandResult(ADMIN_EDIT_USER_URL + idString, REDIRECT);
+            String url = new UrlStringBuilder(ADMIN_EDIT_USER_URL)
+                    .addParam(ENTITY_ID, idString)
+                    .build();
+
+            result = new CommandResult(url, REDIRECT);
         } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'update user' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);

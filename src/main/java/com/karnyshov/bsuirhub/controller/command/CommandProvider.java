@@ -1,5 +1,7 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.karnyshov.bsuirhub.controller.command.impl.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.department.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.faculty.*;
@@ -9,98 +11,96 @@ import com.karnyshov.bsuirhub.controller.command.impl.admin.user.*;
 import com.karnyshov.bsuirhub.controller.command.impl.ajax.*;
 import jakarta.enterprise.inject.spi.CDI;
 
-import java.util.*;
+import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.controller.command.RequestMethod.*;
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestMethod.GET;
+import static com.karnyshov.bsuirhub.controller.command.RequestMethod.POST;
 
-public enum CommandProvider {
-    /* AJAX AREA */
-    // FIXME: 7/25/2021 api is exposed to everyone
-    SET_LOCALE(SetLocaleCommand.class, POST,"/ajax/set_locale"),
-    GET_USERS(GetUsersCommand.class, GET, "/ajax/get_users"),
-    GET_FACULTIES(GetFacultiesCommand.class, GET, "/ajax/get_faculties"),
-    GET_DEPARTMENTS(GetDepartmentsCommand.class, GET, "/ajax/get_departments"),
-    GET_GROUPS(GetGroupsCommand.class, GET, "/ajax/get_groups"),
-    GET_SUBJECTS(GetSubjectsCommand.class, GET, "/ajax/get_subjects"),
-    UPLOAD_PROFILE_IMAGE(UploadProfileImageCommand.class, POST, "/ajax/upload_profile_image"),
-    CREATE_ASSIGNMENT(CreateStudyAssignmentCommand.class, POST, "/admin/ajax/create_study_assignment"),
-    UPDATE_ASSIGNMENT(UpdateStudyAssignmentCommand.class, POST, "/admin/ajax/update_study_assignment"),
-    DELETE_ASSIGNMENT(DeleteStudyAssignmentCommand.class, POST, "/admin/ajax/delete_study_assignment"),
+public class CommandProvider {
+    public static final CommandProvider instance = new CommandProvider();
+    private Table<String, RequestMethod, Command> urlMap = HashBasedTable.create();
 
-    /* COMMON AREA */
-    GO_TO_INDEX_PAGE(GoToIndexPageCommand.class, GET, "/"),
-    GO_TO_LOGIN_PAGE(GoToLoginPageCommand.class, GET, "/login", "/login/"),
-    GO_TO_FORGOT_PASSWORD_PAGE(GoToForgotPasswordPageCommand.class, GET, "/forgot_password"),
-    GO_TO_RESET_PASSWORD_PAGE(GoToResetPasswordPageCommand.class, GET, "/reset_password"),
-    GO_TO_SETTINGS_PAGE(GoToSettingsPageCommand.class, GET, "/settings", "/settings/"),
-    GO_TO_NOT_FOUND_PAGE(GoToNotFoundPageCommand.class, GET, "/error/404"),
-    GO_TO_INTERNAL_SERVER_ERROR_PAGE(GoToInternalErrorPage.class, GET, "/error/500"),
-    LOGIN(LoginCommand.class, POST, "/login"),
-    SEND_RESET_PASSWORD_LINK(SendResetPasswordLinkCommand.class, POST, "/send_reset_password_link"),
-    LOGOUT(LogoutCommand.class, GET, "/logout", "/logout/"),
-    CHANGE_PASSWORD(ChangePasswordCommand.class, POST, "/settings/change_password"),
-    CHANGE_EMAIL(ChangeEmailCommand.class, POST, "/settings/change_email"),
-    CONFIRM_EMAIL(ConfirmEmailCommand.class, GET, "/confirm_email"),
-    RESET_PASSWORD(ResetPasswordCommand.class, POST, "/reset_password"),
 
-    /* ADMIN AREA */
-    GO_TO_USERS_PAGE(GoToUsersPageCommand.class, GET, "/admin/users", "/admin/users/", "/admin", "/admin/"),
-    GO_TO_NEW_USER_PAGE(GoToNewUserPageCommand.class, GET, "/admin/users/new", "/admin/users/new/"),
-    GO_TO_EDIT_USER_PAGE(GoToEditUserPageCommand.class, GET, "/admin/users/edit"),
-    CREATE_USER(CreateUserCommand.class, POST, "/admin/users/new"),
-    UPDATE_USER(UpdateUserCommand.class, POST, "/admin/users/edit"),
-    DELETE_USER(DeleteUserCommand.class, POST, "/admin/users/delete"),
+    private CommandProvider() {
+        /* AJAX AREA */
+        // FIXME: 7/25/2021 api is exposed to everyone
+        urlMap.put(AJAX_SET_LOCALE_URL, POST, resolveCommand(SetLocaleCommand.class));
+        urlMap.put(AJAX_GET_USERS_URL, GET, resolveCommand(GetUsersCommand.class));
+        urlMap.put(AJAX_GET_FACULTIES_URL, GET, resolveCommand(GetFacultiesCommand.class));
+        urlMap.put(AJAX_GET_DEPARTMENTS_URL, GET, resolveCommand(GetDepartmentsCommand.class));
+        urlMap.put(AJAX_GET_GROUPS_URL, GET, resolveCommand(GetGroupsCommand.class));
+        urlMap.put(AJAX_GET_SUBJECTS_URL, GET, resolveCommand(GetSubjectsCommand.class));
+        urlMap.put(AJAX_GET_ASSIGNMENTS_URL, GET, resolveCommand(GetStudyAssignmentsCommand.class));
+        urlMap.put(AJAX_UPLOAD_PROFILE_IMAGE_URL, POST, resolveCommand(UploadProfileImageCommand.class));
+        urlMap.put(ADMIN_AJAX_CREATE_ASSIGNMENT_URL, POST, resolveCommand(CreateStudyAssignmentCommand.class));
+        urlMap.put(ADMIN_AJAX_UPDATE_ASSIGNMENT_URL, POST, resolveCommand(UpdateStudyAssignmentCommand.class));
+        urlMap.put(ADMIN_AJAX_DELETE_ASSIGNMENT_URL, POST, resolveCommand(DeleteStudyAssignmentCommand.class));
 
-    GO_TO_FACULTIES_PAGE(GoToFacultiesPageCommand.class, GET, "/admin/faculties", "/admin/faculties/"),
-    GO_TO_NEW_FACULTY_PAGE(GoToNewFacultyPageCommand.class, GET, "/admin/faculties/new", "/admin/faculties/new/"),
-    GO_TO_EDIT_FACULTY_PAGE(GoToEditFacultyPageCommand.class, GET, "/admin/faculties/edit"),
-    CREATE_FACULTY(CreateFacultyCommand.class, POST, "/admin/faculties/new"),
-    UPDATE_FACULTY(UpdateFacultyCommand.class, POST, "/admin/faculties/edit"),
-    DELETE_FACULTY(DeleteFacultyCommand.class, POST, "/admin/faculties/delete"),
+        /* COMMON AREA */
+        urlMap.put(INDEX_URL, GET, resolveCommand(GoToIndexPageCommand.class));
+        urlMap.put(LOGIN_URL, GET, resolveCommand(GoToLoginPageCommand.class));
+        urlMap.put(LOGIN_URL, POST, resolveCommand(LoginCommand.class));
+        urlMap.put(LOGOUT_URL, GET, resolveCommand(LogoutCommand.class));
+        urlMap.put(FORGOT_PASSWORD_URL, GET, resolveCommand(GoToForgotPasswordPageCommand.class));
+        urlMap.put(SEND_RESET_PASSWORD_LINK_URL, POST, resolveCommand(SendResetPasswordLinkCommand.class));
+        urlMap.put(RESET_PASSWORD_URL, GET, resolveCommand(GoToResetPasswordPageCommand.class));
+        urlMap.put(RESET_PASSWORD_URL, POST, resolveCommand(ResetPasswordCommand.class));
+        urlMap.put(SETTINGS_URL, GET, resolveCommand(GoToSettingsPageCommand.class));
+        urlMap.put(CHANGE_PASSWORD_URL, POST, resolveCommand(ChangePasswordCommand.class));
+        urlMap.put(CHANGE_EMAIL_URL, POST, resolveCommand(ChangeEmailCommand.class));
+        urlMap.put(CONFIRM_EMAIL_URL, GET, resolveCommand(ConfirmEmailCommand.class));
+        urlMap.put(TEACHER_URL, GET, resolveCommand(GoToTeacherPageCommand.class));
+        urlMap.put(NOT_FOUND_ERROR_URL, GET, resolveCommand(GoToNotFoundPageCommand.class));
+        urlMap.put(INTERNAL_SERVER_ERROR_URL, GET, resolveCommand(GoToInternalErrorPage.class));
 
-    GO_TO_DEPARTMENTS_PAGE(GoToDepartmentsPageCommand.class, GET, "/admin/departments", "/admin/departments/"),
-    GO_TO_NEW_DEPARTMENT_PAGE(GoToNewDepartmentPageCommand.class, GET, "/admin/departments/new", "/admin/departments/new/"),
-    GO_TO_EDIT_DEPARTMENT_PAGE(GoToEditDepartmentPageCommand.class, GET, "/admin/departments/edit"),
-    CREATE_DEPARTMENT(CreateDepartmentCommand.class, POST, "/admin/departments/new"),
-    UPDATE_DEPARTMENT(UpdateDepartmentCommand.class, POST, "/admin/departments/edit"),
-    DELETE_DEPARTMENT(DeleteDepartmentCommand.class, POST, "/admin/departments/delete"),
+        /* ADMIN AREA */
+        urlMap.put(ADMIN_USERS_URL, GET, resolveCommand(GoToUsersPageCommand.class));
+        urlMap.put(ADMIN_NEW_USER_URL, GET, resolveCommand(GoToNewUserPageCommand.class));
+        urlMap.put(ADMIN_NEW_USER_URL, POST, resolveCommand(CreateUserCommand.class));
+        urlMap.put(ADMIN_EDIT_USER_URL, GET, resolveCommand(GoToEditUserPageCommand.class));
+        urlMap.put(ADMIN_EDIT_USER_URL, POST, resolveCommand(UpdateUserCommand.class));
+        urlMap.put(ADMIN_DELETE_USER_URL, POST, resolveCommand(DeleteUserCommand.class));
 
-    GO_TO_GROUPS_PAGE(GoToGroupsPageCommand.class, GET, "/admin/groups", "/admin/groups/"),
-    GO_TO_NEW_GROUP_PAGE(GoToNewGroupPageCommand.class, GET, "/admin/groups/new", "/admin/groups/new/"),
-    GO_TO_EDIT_GROUP_PAGE(GoToEditGroupPageCommand.class, GET, "/admin/groups/edit"),
-    CREATE_GROUP(CreateGroupCommand.class, POST, "/admin/groups/new"),
-    UPDATE_GROUP(UpdateGroupCommand.class, POST, "/admin/groups/edit"),
-    DELETE_GROUP(DeleteGroupCommand.class, POST, "/admin/groups/delete"),
+        urlMap.put(ADMIN_FACULTIES_URL, GET, resolveCommand(GoToFacultiesPageCommand.class));
+        urlMap.put(ADMIN_NEW_FACULTY_URL, GET, resolveCommand(GoToNewFacultyPageCommand.class));
+        urlMap.put(ADMIN_NEW_FACULTY_URL, POST, resolveCommand(CreateFacultyCommand.class));
+        urlMap.put(ADMIN_EDIT_FACULTY_URL, GET, resolveCommand(GoToEditFacultyPageCommand.class));
+        urlMap.put(ADMIN_EDIT_FACULTY_URL, POST, resolveCommand(UpdateFacultyCommand.class));
+        urlMap.put(ADMIN_DELETE_FACULTY_URL, POST, resolveCommand(DeleteFacultyCommand.class));
 
-    GO_TO_SUBJECTS_PAGE(GoToSubjectsPageCommand.class, GET, "/admin/subjects", "/admin/subjects/"),
-    GO_TO_NEW_SUBJECT_PAGE(GoToNewSubjectPageCommand.class, GET, "/admin/subjects/new", "/admin/subjects/new/"),
-    GO_TO_EDIT_SUBJECT_PAGE(GoToEditSubjectPageCommand.class, GET, "/admin/subjects/edit"),
-    CREATE_SUBJECT(CreateSubjectCommand.class, POST, "/admin/subjects/new"),
-    UPDATE_SUBJECT(UpdateSubjectCommand.class, POST, "/admin/subjects/edit"),
-    DELETE_SUBJECT(DeleteSubjectCommand.class, POST, "/admin/subjects/delete");
+        urlMap.put(ADMIN_DEPARTMENTS_URL, GET, resolveCommand(GoToDepartmentsPageCommand.class));
+        urlMap.put(ADMIN_NEW_DEPARTMENT_URL, GET, resolveCommand(GoToNewDepartmentPageCommand.class));
+        urlMap.put(ADMIN_NEW_DEPARTMENT_URL, POST, resolveCommand(CreateDepartmentCommand.class));
+        urlMap.put(ADMIN_EDIT_DEPARTMENT_URL, GET, resolveCommand(GoToEditDepartmentPageCommand.class));
+        urlMap.put(ADMIN_EDIT_DEPARTMENT_URL, POST, resolveCommand(UpdateDepartmentCommand.class));
+        urlMap.put(ADMIN_DELETE_DEPARTMENT_URL, POST, resolveCommand(DeleteDepartmentCommand.class));
 
-    private List<String> urlPatterns;
-    private RequestMethod requestMethod;
-    private Command command;
+        urlMap.put(ADMIN_GROUPS_URL, GET, resolveCommand(GoToGroupsPageCommand.class));
+        urlMap.put(ADMIN_NEW_GROUP_URL, GET, resolveCommand(GoToNewGroupPageCommand.class));
+        urlMap.put(ADMIN_NEW_GROUP_URL, POST, resolveCommand(CreateGroupCommand.class));
+        urlMap.put(ADMIN_EDIT_GROUP_URL, GET, resolveCommand(GoToEditGroupPageCommand.class));
+        urlMap.put(ADMIN_EDIT_GROUP_URL, POST, resolveCommand(UpdateGroupCommand.class));
+        urlMap.put(ADMIN_DELETE_GROUP_URL, POST, resolveCommand(DeleteGroupCommand.class));
 
-    CommandProvider(Class<? extends Command> commandClass, RequestMethod requestMethod, String ... urlPatterns) {
-        command = CDI.current().select(commandClass).get();
-        this.urlPatterns = Arrays.asList(urlPatterns);
-        this.requestMethod = requestMethod;
+        urlMap.put(ADMIN_SUBJECTS_URL, GET, resolveCommand(GoToSubjectsPageCommand.class));
+        urlMap.put(ADMIN_NEW_SUBJECT_URL, GET, resolveCommand(GoToNewSubjectPageCommand.class));
+        urlMap.put(ADMIN_NEW_SUBJECT_URL, POST, resolveCommand(CreateSubjectCommand.class));
+        urlMap.put(ADMIN_EDIT_SUBJECT_URL, GET, resolveCommand(GoToEditSubjectPageCommand.class));
+        urlMap.put(ADMIN_EDIT_SUBJECT_URL, POST, resolveCommand(UpdateSubjectCommand.class));
+        urlMap.put(ADMIN_DELETE_SUBJECT_URL, POST, resolveCommand(DeleteSubjectCommand.class));
     }
 
-    public static Optional<Command> getCommand(String url, RequestMethod requestMethod) {
-        for (CommandProvider commandType : CommandProvider.values()) {
-            Optional<String> urlMatch = commandType.urlPatterns
-                    .stream()
-                    .filter(p -> p.equals(url) && commandType.requestMethod == requestMethod)
-                    .findAny();
+    public static CommandProvider getInstance() {
+        return instance;
+    }
 
-            if (urlMatch.isPresent()) {
-                return Optional.of(commandType.command);
-            }
-        }
+    public Optional<Command> getCommand(String url, RequestMethod requestMethod) {
+        Command command = urlMap.get(url, requestMethod);
+        return Optional.ofNullable(command);
+    }
 
-        return Optional.empty();
+    private Command resolveCommand(Class<? extends Command> commandClass) {
+        return CDI.current().select(commandClass).get();
     }
 }

@@ -25,7 +25,7 @@
                     <c:otherwise>
                         <input hidden id="filePicker" name="profileImage" type="file">
                         <div id="uploadPicture" class="image-container">
-                            <img id="profileImage" src="/static/images/profile/${target_entity.profilePicturePath}"
+                            <img id="profileImage" src="/static/images/profile/${target_entity.profileImageName}"
                                  class="image rounded-circle">
                             <div class="overlay rounded-circle">
                                 <div class="image-text">Change profile picture</div>
@@ -191,7 +191,7 @@
                         Last name must have 1 - 50 alphabetic characters
                     </div>
                 </div>
-                <input hidden type="text" name="profilePicturePath" value="${target_entity.profilePicturePath}">
+                <input hidden type="text" name="profileImageName" value="${target_entity.profileImageName}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <c:choose>
                         <c:when test="${target_entity.status.statusId eq 2}">

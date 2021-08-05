@@ -29,7 +29,7 @@ public class UserMapper implements ResultSetMapper<User> {
                     .setFirstName(resultSet.getString(USER_FIRST_NAME))
                     .setPatronymic(resultSet.getString(USER_PATRONYMIC))
                     .setLastName(resultSet.getString(USER_LAST_NAME))
-                    .setProfilePicturePath(resultSet.getString(USER_PROFILE_PICTURE))
+                    .setProfileImageName(resultSet.getString(USER_PROFILE_IMAGE))
                     .setEntityId(resultSet.getLong(USER_ID))
                     .build();
         } catch (SQLException e) {

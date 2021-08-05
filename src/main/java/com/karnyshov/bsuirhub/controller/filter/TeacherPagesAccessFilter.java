@@ -9,16 +9,16 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.LOGIN_URL;
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.SETTINGS_URL;
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.GUEST;
+import static com.karnyshov.bsuirhub.model.entity.UserRole.STUDENT;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 
 @WebFilter(
-        urlPatterns = "/study/*" // TODO: 7/28/2021
+        urlPatterns = "/teacher"
 )
-public class StudyPagesAccessFilter implements Filter {
+public class TeacherPagesAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -27,8 +27,8 @@ public class StudyPagesAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(USER);
         
-        if (user == null || user.getRole() == GUEST) {
-            httpResponse.sendRedirect(LOGIN_URL);
+        if (user == null || user.getRole() == GUEST || user.getRole() == STUDENT) {
+            httpResponse.sendRedirect(NOT_FOUND_ERROR_URL);
         } else if (user.getStatus() == NOT_CONFIRMED) {
             httpResponse.sendRedirect(SETTINGS_URL);
         } else {

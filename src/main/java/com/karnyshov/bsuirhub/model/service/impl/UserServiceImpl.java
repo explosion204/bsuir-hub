@@ -12,6 +12,7 @@ import jakarta.inject.Named;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -105,12 +106,12 @@ public class UserServiceImpl implements UserService {
                     totalUsers = userDao.selectCountByLastName(keyword);
                     break;
                 case ROLE:
-                    long roleId = Long.parseLong(keyword);
+                    long roleId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
                     userDao.selectByRole(offset, pageSize, roleId, result);
                     totalUsers = userDao.selectCountByRole(roleId);
                     break;
                 case GROUP:
-                    long groupId = Long.parseLong(keyword);
+                    long groupId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
                     userDao.selectByGroup(offset, pageSize, groupId, result);
                     totalUsers = userDao.selectCountByGroup(groupId);
                     break;

@@ -9,6 +9,11 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ordering: false,
+        drawCallback: function () {
+            table.rows().data().each(function (value, index) {
+                console.log(value);
+            })
+        },
         ajax: {
             url: '/ajax/get_users',
             data: function (d) {

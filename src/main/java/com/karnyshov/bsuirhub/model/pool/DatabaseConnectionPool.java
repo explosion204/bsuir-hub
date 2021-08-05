@@ -11,10 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Properties;
-import java.util.Queue;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
@@ -116,11 +113,13 @@ public class DatabaseConnectionPool {
 
             if (availableConnections.size() + busyConnections.size() < poolMaxSize) {
                 connection = ConnectionFactory.createConnection();
-            } else if (availableConnections.isEmpty()) {
-                hasAvailableConnections.await();
-            }
+            } else {
+                if (availableConnections.isEmpty()) {
+                    hasAvailableConnections.await();
+                }
 
-            connection = availableConnections.remove();
+                connection = availableConnections.remove();
+            }
 
             Instant usageStart = Instant.now();
             busyConnections.add(Pair.of(connection, usageStart));
@@ -134,7 +133,7 @@ public class DatabaseConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
+    public void releaseConnection(Connection connection) { // TODO: 8/5/2021 return boolean
         if (connection != null && connection.getClass() == ProxyConnection.class) {
             try {
                 connectionPoolLock.lock();

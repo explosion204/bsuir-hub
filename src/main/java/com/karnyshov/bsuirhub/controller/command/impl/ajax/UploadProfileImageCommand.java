@@ -82,7 +82,7 @@ public class UploadProfileImageCommand implements Command {
                 if (validationResult) {
                     // delete existing user profile image
                     File currentProfileImage = new File(uploadPath + File.separator
-                            + target.get().getProfilePicturePath());
+                            + target.get().getProfileImageName());
 
                     if (currentProfileImage.exists()) {
                         currentProfileImage.delete();
@@ -91,7 +91,7 @@ public class UploadProfileImageCommand implements Command {
                     // update profile image path
                     User updatedTarget = User.builder()
                             .of(target.get())
-                            .setProfilePicturePath(fileName)
+                            .setProfileImageName(fileName)
                             .build();
 
                     userService.update(updatedTarget);

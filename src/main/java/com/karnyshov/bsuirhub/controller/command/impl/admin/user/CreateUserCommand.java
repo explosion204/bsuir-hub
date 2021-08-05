@@ -62,7 +62,7 @@ public class CreateUserCommand implements Command {
                     .setGroupId(groupId)
                     // empty email -> always not confirmed
                     .setStatus(confirmed && !StringUtils.isBlank(email) ? UserStatus.CONFIRMED : UserStatus.NOT_CONFIRMED)
-                    .setProfilePicturePath(DEFAULT_PROFILE_IMAGE_PATH)
+                    .setProfileImageName(DEFAULT_PROFILE_IMAGE_PATH)
                     .build();
 
             if (validator.validateUser(request, user, password, confirmPassword, false, false, false)) {

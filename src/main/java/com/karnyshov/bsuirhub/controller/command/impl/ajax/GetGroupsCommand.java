@@ -31,22 +31,9 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
 public class GetGroupsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
-    private static final String DEPARTMENT_ID_PROPERTY = "departmentId";
-    private static final String DEPARTMENT_NAME_PROPERTY = "departmentName";
-    private static final String CURATOR_ID_PROPERTY = "curatorId";
-    private static final String CURATOR_LAST_NAME_PROPERTY = "curatorLastName";
-    private static final String HEADMAN_ID_PROPERTY = "headmanId";
-    private static final String HEADMAN_LAST_NAME_PROPERTY = "headmanLastName";
-    private static final String EMPTY_VALUE = "";
 
     @Inject
     private GroupService groupService;
-
-    @Inject
-    private DepartmentService departmentService;
-
-    @Inject
-    private UserService userService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -98,36 +85,14 @@ public class GetGroupsCommand implements Command {
         List<Group> groups = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? groupService.filter(page, length, GroupFilterCriteria.valueOf(searchCriteria), searchValue, groups)
+                ? groupService.filter(page, length, GroupFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                        searchValue, groups)
                 : groupService.filter(page, length, groups);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
         response.put(RECORDS_FILTERED, recordsFetched);
-
-        JsonArray objects = gson.toJsonTree(groups).getAsJsonArray();
-        for (JsonElement object : objects) {
-            JsonObject jsonObject = object.getAsJsonObject();
-            long departmentId = jsonObject.get(DEPARTMENT_ID_PROPERTY).getAsLong();
-            long curatorId = jsonObject.get(CURATOR_ID_PROPERTY).getAsLong();
-            long headmanId = jsonObject.get(HEADMAN_ID_PROPERTY).getAsLong();
-
-            Optional<Department> department = departmentService.findById(departmentId);
-            Optional<User> curator = userService.findById(curatorId);
-            Optional<User> headman = userService.findById(headmanId);
-
-            jsonObject.addProperty(DEPARTMENT_NAME_PROPERTY, department.isPresent()
-                    ? department.get().getName()
-                    : EMPTY_VALUE);
-            jsonObject.addProperty(CURATOR_LAST_NAME_PROPERTY, curator.isPresent()
-                    ? curator.get().getLastName()
-                    : EMPTY_VALUE);
-            jsonObject.addProperty(HEADMAN_LAST_NAME_PROPERTY, headman.isPresent()
-                    ? headman.get().getLastName()
-                    : EMPTY_VALUE);
-        }
-
-        response.put(DATA, objects);
+        response.put(DATA, groups);
     }
 
     private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) throws ServiceException {

@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
                     totalGroups = groupDao.selectCountByName(keyword);
                     break;
                 case DEPARTMENT:
-                    long departmentId = Long.parseLong(keyword);
+                    long departmentId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
                     groupDao.selectByDepartment(offset, pageSize, departmentId, result);
                     totalGroups = groupDao.selectCountByDepartment(departmentId);
                     break;

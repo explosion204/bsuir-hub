@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.util.TokenService;
 import com.karnyshov.bsuirhub.util.MailService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,8 +66,11 @@ public class ChangeEmailCommand implements Command {
                 //        + CONFIRM_EMAIL_URL + jwtService.generateJwt(targetId);
 
                 // FIXME: development link
-                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080"
-                        + CONFIRM_EMAIL_URL + tokenService.generateEmailConfirmationToken(targetId, email);
+                String token = tokenService.generateEmailConfirmationToken(targetId, email);
+                String url = new UrlStringBuilder(CONFIRM_EMAIL_URL)
+                        .addParam(TOKEN, token)
+                        .build();
+                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
 
                 HttpSession session = request.getSession();
                 String locale = (String) session.getAttribute(LOCALE);

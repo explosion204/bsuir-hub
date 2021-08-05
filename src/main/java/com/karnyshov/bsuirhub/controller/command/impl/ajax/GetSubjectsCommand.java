@@ -76,7 +76,8 @@ public class GetSubjectsCommand implements Command {
         List<Subject> subjects = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? subjectService.filter(page, length, SubjectFilterCriteria.valueOf(searchCriteria), searchValue, subjects)
+                ? subjectService.filter(page, length, SubjectFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                        searchValue, subjects)
                 : subjectService.filter(page, length, subjects);
 
         response.put(DRAW, draw);

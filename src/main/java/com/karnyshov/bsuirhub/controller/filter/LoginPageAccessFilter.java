@@ -14,7 +14,7 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_UR
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 @WebFilter(
-        urlPatterns = "/login"
+        urlPatterns = "/login/*"
 )
 public class LoginPageAccessFilter implements Filter {
     @Override

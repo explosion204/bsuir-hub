@@ -80,7 +80,8 @@ public class GetUsersCommand implements Command {
         List<User> users = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? userService.filter(page, length, UserFilterCriteria.valueOf(searchCriteria), searchValue, users)
+                ? userService.filter(page, length, UserFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                        searchValue, users)
                 : userService.filter(page, length, users);
 
         response.put(DRAW, draw);
@@ -101,7 +102,7 @@ public class GetUsersCommand implements Command {
 
         if (fetchStudents) {
             // get all students for requested group
-            users = new LinkedList<>();
+            users = new LinkedList<>(); // TODO: 8/4/2021 ArrayList vs LinkedList
             // to determine if pagination is required we use amount of fetched records BEFORE filtering by last name
             recordsFetched = userService.filter(page, pageSize, UserFilterCriteria.GROUP, groupIdString, users);
             // filter by last name

@@ -19,7 +19,7 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.JWT_TOKEN;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.TOKEN;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER_ID;
 
 @Named
@@ -38,7 +38,7 @@ public class GoToResetPasswordPageCommand implements Command {
 
         try {
             boolean success = false;
-            String token = request.getParameter(JWT_TOKEN);
+            String token = request.getParameter(TOKEN);
             Optional<Pair<Long, String>> tokenContent = tokenService.parsePasswordResetToken(token);
 
             if (tokenContent.isPresent()) {

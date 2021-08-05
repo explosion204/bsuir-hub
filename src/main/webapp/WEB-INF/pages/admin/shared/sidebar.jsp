@@ -26,13 +26,12 @@
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle text-wrap"
            id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/static/images/profile/${sessionScope.user.profilePicturePath}" width="32" height="32"
+            <img src="/static/images/profile/${sessionScope.user.profileImageName}" width="32" height="32"
                  class="rounded-circle me-2">
             <strong><jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text></strong>
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
             <li><a class="dropdown-item" href="/settings">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/logout">Log out</a></li>
         </ul>

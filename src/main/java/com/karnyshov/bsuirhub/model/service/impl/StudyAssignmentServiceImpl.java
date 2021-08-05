@@ -35,6 +35,18 @@ public class StudyAssignmentServiceImpl implements StudyAssignmentService {
     }
 
     @Override
+    public long findByTeacher(int page, int pageSize, long teacherId, List<StudyAssignment> result) throws ServiceException {
+        int offset = pageSize * (page - 1);
+
+        try {
+            studyAssignmentDao.selectDistinctByTeacher(offset, pageSize, teacherId, result);
+            return studyAssignmentDao.selectDistinctCountByTeacher(teacherId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public long create(StudyAssignment studyAssignment) throws ServiceException {
         try {
             return studyAssignmentDao.insert(studyAssignment);

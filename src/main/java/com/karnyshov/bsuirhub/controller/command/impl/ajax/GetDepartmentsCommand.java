@@ -1,14 +1,10 @@
 package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
@@ -28,15 +24,9 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
 public class GetDepartmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
-    private static final String FACULTY_ID_PROPERTY = "facultyId";
-    private static final String FACULTY_NAME_PROPERTY = "facultyName";
-    private static final String EMPTY_VALUE = "";
 
     @Inject
     private DepartmentService departmentService;
-
-    @Inject
-    private FacultyService facultyService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -88,22 +78,14 @@ public class GetDepartmentsCommand implements Command {
         List<Department> departments = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? departmentService.filter(page, length, DepartmentFilterCriteria.valueOf(searchCriteria), searchValue, departments)
+                ? departmentService.filter(page, length, DepartmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                        searchValue, departments)
                 : departmentService.filter(page, length, departments);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
         response.put(RECORDS_FILTERED, recordsFetched);
-
-        JsonArray objects = gson.toJsonTree(departments).getAsJsonArray();
-        for (JsonElement object : objects) {
-            JsonObject jsonObject = object.getAsJsonObject();
-            long facultyId = jsonObject.get(FACULTY_ID_PROPERTY).getAsLong();
-            Optional<Faculty> faculty = facultyService.findById(facultyId);
-            jsonObject.addProperty(FACULTY_NAME_PROPERTY, faculty.isPresent() ? faculty.get().getName() : EMPTY_VALUE);
-        }
-
-        response.put(DATA, objects);
+        response.put(DATA, departments);
     }
 
     private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) throws ServiceException {

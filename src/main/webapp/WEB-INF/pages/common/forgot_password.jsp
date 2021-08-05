@@ -18,7 +18,7 @@
     </c:if>
 
     <h4 class="pb-2">Reset password</h4>
-    <form id="forgotPasswordForm" method="post" action="/send_reset_password_link">
+    <form id="forgotPasswordForm" method="post" action="/login/send_reset_password_link">
         <div class="form-group mb-2 mt-2">
             <label for="emailInput">Email</label>
             <input type="email" name="email" class="bg-light form-control" maxlength="50" id="emailInput">

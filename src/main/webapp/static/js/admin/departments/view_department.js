@@ -42,19 +42,8 @@ $(document).ready(function () {
         }
     });
 
-    $.ajax({
-        method: 'GET',
-        url: '/ajax/get_faculties',
-        data: {
-            id: $('main').data('faculty-id'),
-            requestType: 'fetch_by_id'
-        },
-        success: function (response) {
-            let data = JSON.parse(response);
-            if (data && data.status) {
-                let option = new Option(data.entity.name, data.entity.entityId);
-                facultySelect.append(option).trigger('change');
-            }
-        }
-    });
+    fetchFaculty($('main').data('faculty-id'), function (data) {
+        let option = new Option(data.entity.name, data.entity.entityId);
+        facultySelect.append(option).trigger('change');
+    })
 })

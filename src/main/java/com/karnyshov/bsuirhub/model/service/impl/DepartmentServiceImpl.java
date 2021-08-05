@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     totalDepartments = departmentDao.selectCountByShortName(keyword);
                     break;
                 case FACULTY:
-                    long facultyId = Long.parseLong(keyword);
+                    long facultyId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
                     departmentDao.selectByFaculty(offset, pageSize, facultyId, result);
                     totalDepartments = departmentDao.selectCountByFaculty(facultyId);
                     break;

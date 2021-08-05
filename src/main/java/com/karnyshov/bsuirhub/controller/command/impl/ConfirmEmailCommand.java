@@ -20,7 +20,7 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.EMAIL_CONFIRMATION_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.JWT_TOKEN;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.TOKEN;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
 
@@ -40,7 +40,7 @@ public class ConfirmEmailCommand implements Command {
 
         try {
             boolean success = false;
-            String token = request.getParameter(JWT_TOKEN);
+            String token = request.getParameter(TOKEN);
             Optional<Pair<Long, String>> tokenContent = tokenService.parseEmailConfirmationToken(token);
 
             if (tokenContent.isPresent()) {

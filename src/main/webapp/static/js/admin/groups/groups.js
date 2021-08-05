@@ -16,28 +16,26 @@ $(document).ready(function() {
                 d.filterCriteria = $('#searchCriteria').val();
             }
         },
+        drawCallback: function () { onDataLoaded(table); },
         columns: [
             { data: 'entityId' },
             { data: 'name' },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="link-secondary" href="/admin/departments/edit?id=' + row.departmentId + '">'
-                            + row.departmentName + '</a>'
+                    return '<a class="link-secondary" href="/admin/departments/edit?id=' + row.departmentId + '"></a>'
                 }
             },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.headmanId + '">'
-                        + row.headmanLastName + '</a>'
+                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.headmanId + '"></a>'
                 }
             },
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.curatorId + '">'
-                        + row.curatorLastName + '</a>'
+                    return '<a class="link-secondary" href="/admin/users/edit?id=' + row.curatorId + '"></a>'
                 }
             },
             {
@@ -65,6 +63,10 @@ $(document).ready(function() {
             </div>
         `
     );
+
+    table.rows().data().each(function (value, index) {
+        console.log(`For index ${index}, data value is ${value}`);
+    })
 
     let searchCriteria = $('#searchCriteria');
     let searchInput = $('#searchInput');
@@ -139,3 +141,27 @@ $(document).ready(function() {
         window.location.href = '/admin/groups/new';
     });
 });
+
+function onDataLoaded(table) {
+    table.rows().data().each(function (value, index) {
+        fetchDepartment(value.departmentId, function (data) {
+            let departmentName = data.entity.shortName;
+            let cell = table.cell(index, 2).node();
+            $(cell).find('a').text(departmentName);
+        });
+
+        if (value.headmanId) {
+            fetchUser(value.headmanId, function (data) {
+                let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+                let cell = table.cell(index, 3).node();
+                $(cell).find('a').text(name);
+            });
+        }
+
+        fetchUser(value.curatorId, function (data) {
+            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+            let cell = table.cell(index, 4).node();
+            $(cell).find('a').text(name);
+        });
+    })
+}

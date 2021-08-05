@@ -47,7 +47,7 @@
                         </div>
                     </c:if>
                     <div class="form-group">
-                        <a href="/forgot_password" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
+                        <a href="/login/forgot_password" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
                     </div>
                 </form>
             </div>

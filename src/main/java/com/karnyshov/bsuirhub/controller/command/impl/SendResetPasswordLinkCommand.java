@@ -7,6 +7,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.util.TokenService;
 import com.karnyshov.bsuirhub.util.MailService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +22,7 @@ import java.util.ResourceBundle;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_RESET_LINK_SENT;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.EMAIL;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOCALE;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
 
 @Named
@@ -60,8 +60,11 @@ public class SendResetPasswordLinkCommand implements Command {
                 //        + CONFIRM_EMAIL_URL + jwtService.generateEmailConfirmationToken(targetId);
 
                 // FIXME: development link
-                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080"
-                        + RESET_PASSWORD_URL + tokenService.generatePasswordResetToken(userId, salt);
+                String token = tokenService.generatePasswordResetToken(userId, salt);
+                String url = new UrlStringBuilder(RESET_PASSWORD_URL)
+                        .addParam(TOKEN, token)
+                        .build();
+                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
 
                 HttpSession session = request.getSession();
                 String locale = (String) session.getAttribute(LOCALE);
