@@ -1,0 +1,25 @@
+.wrapper {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    max-width: 100%;
+}
+
+.text-wrap {
+    word-break: break-all;
+}
+
+#subjectsTable tr {
+    cursor: pointer;
+}
+
+.profile-image-holder.dashboard {
+    height: 7rem;
+    width: 7rem;
+}
+
+.profile-image.dashboard {
+    height: 7rem;
+    width: 7rem;
+}
+

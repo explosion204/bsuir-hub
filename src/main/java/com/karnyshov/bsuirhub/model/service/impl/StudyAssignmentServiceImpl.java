@@ -5,6 +5,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.StudyAssignmentDao;
 import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
 import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
+import com.karnyshov.bsuirhub.model.service.criteria.StudyAssignmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -26,21 +27,26 @@ public class StudyAssignmentServiceImpl implements StudyAssignmentService {
     }
 
     @Override
-    public void findByGroup(long groupId, List<StudyAssignment> result) throws ServiceException {
-        try {
-            studyAssignmentDao.selectByGroup(groupId, result);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public long findByTeacher(int page, int pageSize, long teacherId, List<StudyAssignment> result) throws ServiceException {
+    public long filter(int page, int pageSize,  StudyAssignmentFilterCriteria criteria, long filterId,
+                List<StudyAssignment> result) throws ServiceException {
         int offset = pageSize * (page - 1);
+        long totalSubjects;
 
         try {
-            studyAssignmentDao.selectDistinctByTeacher(offset, pageSize, teacherId, result);
-            return studyAssignmentDao.selectDistinctCountByTeacher(teacherId);
+            switch (criteria) {
+                case GROUP:
+                    studyAssignmentDao.selectByGroup(offset, pageSize, filterId, result);
+                    totalSubjects = studyAssignmentDao.selectCountByGroup(filterId);
+                    break;
+                case TEACHER:
+                    studyAssignmentDao.selectByTeacher(offset, pageSize, filterId, result);
+                    totalSubjects = studyAssignmentDao.selectCountByTeacher(filterId);
+                    break;
+                default:
+                    throw new ServiceException("Invalid criteria: " + criteria);
+            }
+
+            return totalSubjects;
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

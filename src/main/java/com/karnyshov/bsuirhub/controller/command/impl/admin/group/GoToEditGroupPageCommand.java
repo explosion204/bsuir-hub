@@ -4,18 +4,13 @@ import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
 import com.karnyshov.bsuirhub.model.service.GroupService;
-import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
@@ -33,9 +28,6 @@ public class GoToEditGroupPageCommand implements Command {
     @Inject
     private GroupService groupService;
 
-    @Inject
-    private StudyAssignmentService studyAssignmentService;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
@@ -45,10 +37,6 @@ public class GoToEditGroupPageCommand implements Command {
             Optional<Group> group = groupService.findById(entityId);
 
             if (group.isPresent()) {
-                List<StudyAssignment> assignments = new LinkedList<>();
-                studyAssignmentService.findByGroup(group.get().getEntityId(), assignments);
-                request.setAttribute(STUDY_ASSIGNMENTS, assignments);
-
                 request.setAttribute(TARGET_ENTITY, group.get());
                 request.getSession().setAttribute(PREVIOUS_NAME, group.get().getName());
                 request.setAttribute(NEW_ENTITY_PAGE, false);
@@ -58,7 +46,7 @@ public class GoToEditGroupPageCommand implements Command {
             }
         } catch (NumberFormatException e) {
             result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
-        } catch (ServiceException | NoSuchElementException e) {
+        } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to edit group page' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }

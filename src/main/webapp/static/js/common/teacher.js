@@ -18,9 +18,11 @@ $(document).ready(function () {
             url: '/ajax/get_study_assignments',
             data: function (d) {
                 d.requestType = 'jquery_datatable';
-                d.filterCriteria = 'none';
-                d.teacherId = teacherId;
+                d.filterCriteria = 'teacher';
             }
+        },
+        search: {
+            search: teacherId
         },
         columns: [
             { data: null }
@@ -80,10 +82,22 @@ $(document).ready(function () {
 
 function onAssignmentsLoaded(subjectsTable) {
     let assignments = [];
-
-    // save all assignments to session storage
     subjectsTable.rows().data().each(val => assignments.push(val));
-    sessionStorage.setItem('assignments', JSON.stringify(assignments));
+
+    // find unique pair of subject id and group id
+    let filteredAssignments = assignments.filter(function (item) {
+        let key = item.groupId + '|' + item.subjectId;
+
+        if (!this[key]) {
+            this[key] = true;
+            return true;
+        }
+
+        return false;
+    }, Object.create(null));
+
+    // save filtered assignments to session storage
+    sessionStorage.setItem('assignments', JSON.stringify(filteredAssignments));
 
     // find unique subject ids
     let subjectIds = $.map(assignments, item => item.subjectId);
@@ -158,7 +172,7 @@ function onGroupsTableSelect(groupsTable, studentsTable) {
 
 function onStudentsTableSelect(subjectsTable, studentsTable) {
     let studentId = studentsTable.row(this).data().entityId;
-    let subjectId = subjectsTable.rows({ selected: true }).data()[0].subjectId;
+    let subjectId = $('#subjectsTable .selected').data('subject-id');
 
     console.log('Student id: ' + studentId);
     console.log('Subject id: ' + subjectId);

@@ -12,7 +12,7 @@
 <body data-user-id="${sessionScope.user.entityId}">
     <jsp:include page="shared/header.jsp" />
 
-    <div class="wrapper bg-white w-100">
+    <div class="wrapper bg-white w-100 p-4">
         <h4 class="pb-4 border-bottom">Account settings</h4>
         <div class="d-flex py-3 border-bottom">
             <img id="profileImage" src="/static/images/profile/${sessionScope.user.profileImageName}"

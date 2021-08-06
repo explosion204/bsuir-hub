@@ -22,17 +22,17 @@
                     </li>
                     <c:if test="${role eq 2 or role eq 3}">
                         <li class="nav-item me-1">
-                            <a href="/teacher" class="nav-link" aria-current="page">Teacher</a>
+                            <a href="/teacher" class="nav-link" aria-current="page">Dashboard</a>
                         </li>
                     </c:if>
-                    <c:if test="${role ne 0}">
+                    <c:if test="${role eq 1}">
                         <li class="nav-item me-1">
-                            <a href="/student" class="nav-link" aria-current="page">Student</a>
+                            <a href="/student" class="nav-link" aria-current="page">Dashboard</a>
                         </li>
                     </c:if>
                     <c:if test="${role eq 3}">
                         <li class="nav-item me-1">
-                            <a href="/admin/users" class="nav-link" aria-current="page">Administration</a>
+                            <a href="/admin/users" class="nav-link" aria-current="page">Admin panel</a>
                         </li>
                     </c:if>
 <%--                    <li class="nav-item dropdown me-1">--%>
@@ -59,8 +59,8 @@
                                     <p class="mt-auto mb-auto ms-1 me-3"><b>
                                         <jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text>
                                     </b></p>
-                                    <p class="profile-picture-holder ms-auto mt-auto mb-auto">
-                                        <img id="profileImage" src="/static/images/profile/${sessionScope.user.profileImageName}">
+                                    <p class="profile-image-holder ms-auto mt-auto mb-auto">
+                                        <img id="profileImage" class="profile-image" src="/static/images/profile/${sessionScope.user.profileImageName}">
                                     </p>
                                     <i class="fas fa-chevron-down ms-2 me-2"></i>
                                 </a>

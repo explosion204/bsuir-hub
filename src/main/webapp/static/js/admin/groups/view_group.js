@@ -15,44 +15,73 @@ $(document).ready(function () {
     initializeStudentSelect($('#headmanSelect'), '100%', headmanId);
     initializeTeacherSelect($('#curatorSelect'), '100%', curatorId);
 
-    addEmptyAssignment();
-})
-
-function addExistingAssignment(id, subjectId, teacherId) {
-    // initialization
-    let selectionBody = $(`<div class="input-group mt-2 mb-2 pb-2"><input hidden value="${id}"></div>`);
-    let subjectSelect = $(`<select></select>`);
-    let teacherSelect = $(`<select></select>`);
-    let saveButton = $('<button class="btn btn-secondary create-button">Save</button>');
-    let deleteButton = $('<button class="btn btn-secondary create-button">Delete</button>');
-    selectionBody.append(subjectSelect, teacherSelect, saveButton, deleteButton);
-    $('.admin-main-area').append(selectionBody);
-
-    initializeSubjectSelect(subjectSelect, '45%', subjectId);
-    initializeTeacherSelect(teacherSelect, '35%', teacherId);
-
-    saveButton.click(function () {
-        let groupId = $('#groupId').val();
-        let newSubjectId = subjectSelect.val();
-        let newTeacherId = teacherSelect.val();
-        onAssignmentUpdate.call(this, id, groupId, newSubjectId, newTeacherId);
+    let assignmentsTable =  $('#assignmentsTable').DataTable({
+        dom: '<"toolbar">rt',
+        scrollX: false,
+        scrollY: '50vh',
+        scrollResize: true,
+        ordering: false,
+        scroller: {
+            loadingIndicator: true,
+            displayBuffer: 10 // 100 before next draw
+        },
+        processing: true,
+        serverSide: true,
+        drawCallback: function () { onAssignmentsLoaded(assignmentsTable); },
+        ajax: {
+            url: '/ajax/get_study_assignments',
+            data: function (d) {
+                d.requestType = 'jquery_datatable';
+                d.filterCriteria = 'group';
+            }
+        },
+        search: {
+            search: $('#groupId').val()
+        },
+        columns: [
+            { data: null }
+        ]
     });
 
-    deleteButton.click(function () {
-        onAssignmentDelete.call(this, id);
-        selectionBody.remove();
+    initToolbar(assignmentsTable);
+})
+
+function onAssignmentsLoaded(assignmentsTable) {
+    assignmentsTable.rows().data().each(function (value, index) {
+        console.log(value);
+
+        let selectionBody = $(`<div class="input-group"><input hidden value="${value.entityId}"></div>`);
+        let subjectSelect = $(`<select></select>`);
+        let teacherSelect = $(`<select></select>`);
+        let saveButton = $('<button class="btn btn-secondary create-button">Save</button>');
+        let deleteButton = $('<button class="btn btn-secondary create-button">Delete</button>');
+        selectionBody.append(subjectSelect, teacherSelect, saveButton, deleteButton);
+        let cell = assignmentsTable.cell(index, 0).node();
+        $(cell).html(selectionBody);
+
+        initializeSubjectSelect(subjectSelect, '45%', value.subjectId);
+        initializeTeacherSelect(teacherSelect, '35%', value.teacherId);
+
+        saveButton.click(function () {
+            let newSubjectId = subjectSelect.val();
+            let newTeacherId = teacherSelect.val();
+            onAssignmentUpdate.call(this, value.entityId, value.groupId, newSubjectId, newTeacherId);
+        });
+
+        deleteButton.click(function () {
+            onAssignmentDelete.call(this, assignmentsTable, value.entityId);
+        });
     });
 }
 
-function addEmptyAssignment() {
+function initToolbar(assignmentsTable) {
     // initialization
-    let selectionBody = $(`<div class="input-group mt-2 mb-2 pb-2"><input hidden></div></div>`);
+    let selectionBody = $(`<div class="input-group"></div>`);
     let subjectSelect = $(`<select></select>`);
     let teacherSelect = $(`<select></select>`);
     let saveButton = $('<button class="btn btn-secondary create-button" disabled>Create</button>');
     selectionBody.append(subjectSelect, teacherSelect, saveButton);
-    $('.admin-main-area').append(selectionBody);
-
+    $('div.toolbar').append(selectionBody);
     initializeSubjectSelect(subjectSelect, '45%');
     initializeTeacherSelect(teacherSelect, '45%');
 
@@ -66,11 +95,11 @@ function addEmptyAssignment() {
     });
 
     saveButton.click(function () {
-        onAssignmentCreate.call(this, selectionBody, subjectSelect, teacherSelect);
+        onAssignmentCreate.call(this, assignmentsTable, subjectSelect, teacherSelect);
     });
 }
 
-function onAssignmentCreate(selectionBody, subjectSelect, teacherSelect) {
+function onAssignmentCreate(assignmentsTable, subjectSelect, teacherSelect) {
     let saveButton = this;
     $(saveButton).attr('disabled', true);
 
@@ -86,25 +115,7 @@ function onAssignmentCreate(selectionBody, subjectSelect, teacherSelect) {
             let data = JSON.parse(response);
 
             if (data.status) {
-                let deleteButton = $('<button class="btn btn-secondary create-button">Delete</button>');
-                initializeTeacherSelect(teacherSelect, '35%');
-                $(selectionBody).append(deleteButton);
-                $(selectionBody).find('input').attr('val', data.assignmentId);
-
-                $(saveButton).unbind();
-                $(saveButton).text('Save');
-                $(saveButton).click(function () {
-                    let groupId = $('#groupId').val();
-                    let newSubjectId = subjectSelect.val();
-                    let newTeacherId = teacherSelect.val();
-                    onAssignmentUpdate.call(this, data.assignmentId, groupId, newSubjectId, newTeacherId);
-                });
-                deleteButton.click(function () {
-                    onAssignmentDelete.call(this, data.assignmentId);
-                    selectionBody.remove();
-                });
-
-                addEmptyAssignment();
+                assignmentsTable.draw();
             }
 
             $(saveButton).attr('disabled', false);
@@ -138,7 +149,7 @@ function onAssignmentUpdate(assignmentId, groupId, subjectId, teacherId) {
     $(this).attr('disabled', false);
 }
 
-function onAssignmentDelete(assignmentId) {
+function onAssignmentDelete(assignmentsTable, assignmentId) {
     $(this).attr('disabled', true);
     $.ajax({
         method: 'POST',
@@ -147,15 +158,7 @@ function onAssignmentDelete(assignmentId) {
             id: assignmentId
         },
         success: function () {
-            $.confirm({
-                title: 'Success',
-                content: 'Assignment successfully deleted',
-                buttons: {
-                    'OK': function () {
-
-                    },
-                }
-            });
+            assignmentsTable.draw();
         }
     });
 }

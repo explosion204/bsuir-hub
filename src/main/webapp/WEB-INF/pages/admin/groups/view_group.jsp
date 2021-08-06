@@ -80,14 +80,19 @@
             </form>
 
             <h1 class="display-6">Subjects and teachers</h1>
+            <table id="assignmentsTable" class="table table-borderless">
+                <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Assignment</td>
+                </tr>
+                </tbody>
+            </table>
     </div>
 </main>
 </body>
-
-<script>
-    <c:forEach var="assignment" items="${study_assignments}">
-        addExistingAssignment(${assignment.entityId}, ${assignment.subjectId}, ${assignment.teacherId});
-    </c:forEach>
-    $('script').remove();
-</script>
 </html>

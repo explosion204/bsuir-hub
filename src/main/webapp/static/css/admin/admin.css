@@ -15,6 +15,10 @@
     margin: 20px 20px 20px 300px;
 }
 
+div.dts_label {
+    display: none !important;
+}
+
 .admin-sidebar {
     width: 280px;
     height: 100%;

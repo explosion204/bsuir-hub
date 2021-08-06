@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
 import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
+import com.karnyshov.bsuirhub.model.service.criteria.StudyAssignmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,10 +63,16 @@ public class GetStudyAssignmentsCommand implements Command {
         int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
-        long teacherId = Long.parseLong(request.getParameter(TEACHER_ID));
+        String searchCriteria = request.getParameter(FILTER_CRITERIA);
+        long searchId = Long.parseLong(request.getParameter(SEARCH_VALUE));
 
         List<StudyAssignment> assignments = new LinkedList<>();
-        long recordsFetched = assignmentService.findByTeacher(page, length, teacherId, assignments);
+
+        long recordsFetched = 0;
+        if (searchCriteria != null) {
+            recordsFetched = assignmentService.filter(page, length, StudyAssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                    searchId, assignments);
+        }
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);

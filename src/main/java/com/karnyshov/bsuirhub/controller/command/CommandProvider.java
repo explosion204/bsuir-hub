@@ -50,7 +50,9 @@ public class CommandProvider {
         urlMap.put(CHANGE_PASSWORD_URL, POST, resolveCommand(ChangePasswordCommand.class));
         urlMap.put(CHANGE_EMAIL_URL, POST, resolveCommand(ChangeEmailCommand.class));
         urlMap.put(CONFIRM_EMAIL_URL, GET, resolveCommand(ConfirmEmailCommand.class));
-        urlMap.put(TEACHER_URL, GET, resolveCommand(GoToTeacherPageCommand.class));
+        urlMap.put(TEACHER_DASHBOARD_URL, GET, resolveCommand(GoToTeacherDashboardPageCommand.class));
+        urlMap.put(STUDENT_DASHBOARD_URL, GET, resolveCommand(GoToStudentDashboardPageCommand.class));
+        urlMap.put(GRADES_OVERVIEW_URL, GET, resolveCommand(GoToGradesOverviewPageCommand.class));
         urlMap.put(NOT_FOUND_ERROR_URL, GET, resolveCommand(GoToNotFoundPageCommand.class));
         urlMap.put(INTERNAL_SERVER_ERROR_URL, GET, resolveCommand(GoToInternalErrorPage.class));
 

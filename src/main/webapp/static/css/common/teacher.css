@@ -7,10 +7,6 @@ tr {
     margin: 10px;
 }
 
-div.dts_label {
-    display: none !important;
-}
-
 tr.selected {
     background-color: #e9ecef;
 }
