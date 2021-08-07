@@ -39,6 +39,24 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    public double calculateAverage(long studentId) throws ServiceException {
+        try {
+            return gradeDao.selectAverageNotExam(studentId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public double calculateAverageBySubject(long studentId, long subjectId) throws ServiceException {
+        try {
+            return gradeDao.selectAverageNotExamBySubject(studentId, subjectId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public long create(Grade grade) throws ServiceException {
         try {
             return gradeDao.insert(grade);

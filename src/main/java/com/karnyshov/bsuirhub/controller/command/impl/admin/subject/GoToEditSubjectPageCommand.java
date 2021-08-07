@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.subject;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.RequestAttribute;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
@@ -38,7 +37,7 @@ public class GoToEditSubjectPageCommand implements Command {
 
             if (subject.isPresent() && !subject.get().getArchived()) {
                 request.setAttribute(TARGET_ENTITY, subject.get());
-                request.setAttribute(RequestAttribute.ENTITY_ID, subject.get().getEntityId());
+                request.setAttribute(ENTITY_ID, subject.get().getEntityId());
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_SUBJECT_JSP, FORWARD);
             } else {

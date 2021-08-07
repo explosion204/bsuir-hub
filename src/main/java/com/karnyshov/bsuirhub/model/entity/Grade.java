@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Grade extends AbstractEntity {
@@ -9,7 +9,7 @@ public class Grade extends AbstractEntity {
     private long teacherId;
     private long studentId;
     private long subjectId;
-    private Date date;
+    private LocalDate date; // TODO: 8/7/2021 Local Date vs Date ???
 
     private Grade(GradeBuilder builder) {
         super(builder);
@@ -22,29 +22,18 @@ public class Grade extends AbstractEntity {
     }
 
     public enum Value {
-        ONE("1"),
-        TWO("2"),
-        THREE("3"),
-        FOUR("4"),
-        FIVE("5"),
-        SIX("6"),
-        SEVEN("7"),
-        EIGHT("8"),
-        NINE("9"),
-        TEN("10"),
-        PASSED("passed"),
-        NOT_PASSED("not_passed");
-
-        private final String value;
-
-        Value(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
+        NOT_PASSED,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE,
+        TEN,
+        PASSED;
     }
 
     public static GradeBuilder builder() {
@@ -71,7 +60,7 @@ public class Grade extends AbstractEntity {
         return subjectId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -126,7 +115,7 @@ public class Grade extends AbstractEntity {
         private long teacherId;
         private long studentId;
         private long subjectId;
-        private Date date;
+        private LocalDate date;
 
         private GradeBuilder() {
 
@@ -157,7 +146,7 @@ public class Grade extends AbstractEntity {
             return this;
         }
 
-        public GradeBuilder setDate(Date date) {
+        public GradeBuilder setDate(LocalDate date) {
             this.date = date;
             return this;
         }

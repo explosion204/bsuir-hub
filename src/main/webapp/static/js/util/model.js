@@ -87,3 +87,21 @@ function fetchSubject(id, callback) {
         }
     })
 }
+
+function fetchAverageGrade(studentId, subjectId, callback) {
+    $.ajax({
+        method: 'GET',
+        url: '/ajax/get_average_grade',
+        data: {
+            studentId: studentId,
+            subjectId: subjectId
+        },
+        success: function (response) {
+            let data = JSON.parse(response);
+
+            if (data && data.status) {
+                callback(data);
+            }
+        }
+    })
+}

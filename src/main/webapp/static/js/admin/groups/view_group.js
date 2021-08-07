@@ -29,7 +29,7 @@ $(document).ready(function () {
         serverSide: true,
         drawCallback: function () { onAssignmentsLoaded(assignmentsTable); },
         ajax: {
-            url: '/ajax/get_study_assignments',
+            url: '/ajax/get_assignments',
             data: function (d) {
                 d.requestType = 'jquery_datatable';
                 d.filterCriteria = 'group';
@@ -105,7 +105,7 @@ function onAssignmentCreate(assignmentsTable, subjectSelect, teacherSelect) {
 
     $.ajax({
         method: 'POST',
-        url: '/admin/ajax/create_study_assignment',
+        url: '/admin/ajax/create_assignment',
         data: {
             groupId: $('#groupId').val(),
             teacherId: teacherSelect.val(),
@@ -114,8 +114,11 @@ function onAssignmentCreate(assignmentsTable, subjectSelect, teacherSelect) {
         success: function (response) {
             let data = JSON.parse(response);
 
-            if (data.status) {
+            if (data && data.status) {
+                $('#createToast').toast('show');
                 assignmentsTable.draw();
+            } else {
+                // TODO: failure notifications
             }
 
             $(saveButton).attr('disabled', false);
@@ -127,23 +130,19 @@ function onAssignmentUpdate(assignmentId, groupId, subjectId, teacherId) {
     $(this).attr('disabled', true);
     $.ajax({
        method: 'POST',
-       url: '/admin/ajax/update_study_assignment',
+       url: '/admin/ajax/update_assignment',
        data: {
            id: assignmentId,
            groupId: groupId,
            subjectId: subjectId,
            teacherId: teacherId
        },
-        success: function () {
-            $.confirm({
-                title: 'Success',
-                content: 'Assignment successfully updated',
-                buttons: {
-                    'OK': function () {
+        success: function (response) {
+            let data = JSON.parse(response);
 
-                    },
-                }
-            });
+            if (data && data.status) {
+                $('#updateToast').toast('show');
+            }
         }
     });
     $(this).attr('disabled', false);
@@ -153,12 +152,17 @@ function onAssignmentDelete(assignmentsTable, assignmentId) {
     $(this).attr('disabled', true);
     $.ajax({
         method: 'POST',
-        url: '/admin/ajax/delete_study_assignment',
+        url: '/admin/ajax/delete_assignment',
         data: {
             id: assignmentId
         },
-        success: function () {
-            assignmentsTable.draw();
+        success: function (response) {
+            let data = JSON.parse(response);
+
+            if (data && data.status) {
+                assignmentsTable.draw();
+                $('#deleteToast').toast('show');
+            }
         }
     });
 }

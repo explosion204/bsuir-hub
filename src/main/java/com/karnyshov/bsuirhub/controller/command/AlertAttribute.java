@@ -1,30 +1,30 @@
 package com.karnyshov.bsuirhub.controller.command;
 
 public class AlertAttribute {
-    public static final String AUTH_ERROR = "auth_error";
+    public static final String AUTH_ERROR = "authError";
 
-    public static final String ENTITY_UPDATE_SUCCESS = "entity_update_success";
-    public static final String EMAIL_CHANGE_SUCCESS = "email_change_success";
-    public static final String PASSWORD_CHANGE_SUCCESS = "password_change_success";
-    public static final String EMAIL_CONFIRMATION_SUCCESS = "email_confirmation_success";
-    public static final String PASSWORD_RESET_LINK_SENT = "password_reset_link_sent";
+    public static final String ENTITY_UPDATE_SUCCESS = "entityUpdateSuccess";
+    public static final String EMAIL_CHANGE_SUCCESS = "emailChangeSuccess";
+    public static final String PASSWORD_CHANGE_SUCCESS = "passwordChangeSuccess";
+    public static final String EMAIL_CONFIRMATION_SUCCESS = "emailConfirmationSuccess";
+    public static final String PASSWORD_RESET_LINK_SENT = "passwordResetLinkSent";
 
-    public static final String INVALID_ROLE = "invalid_role";
-    public static final String INVALID_LOGIN = "invalid_login";
-    public static final String NOT_UNIQUE_LOGIN = "not_unique_login";
-    public static final String INVALID_EMAIL = "invalid_email";
-    public static final String NOT_UNIQUE_EMAIL = "not_unique_email";
-    public static final String INVALID_PASSWORD = "invalid_password";
-    public static final String INVALID_CURRENT_PASSWORD = "invalid_current_password";
-    public static final String PASSWORDS_DO_NOT_MATCH = "passwords_do_not_match";
-    public static final String INVALID_FIRST_NAME = "invalid_first_name";
-    public static final String INVALID_PATRONYMIC = "invalid_patronymic";
-    public static final String INVALID_LAST_NAME = "invalid_last_name";
+    public static final String INVALID_ROLE = "invalidRole";
+    public static final String INVALID_LOGIN = "invalidLogin";
+    public static final String NOT_UNIQUE_LOGIN = "notUniqueLogin";
+    public static final String INVALID_EMAIL = "invalidEmail";
+    public static final String NOT_UNIQUE_EMAIL = "notUniqueEmail";
+    public static final String INVALID_PASSWORD = "invalidPassword";
+    public static final String INVALID_CURRENT_PASSWORD = "invalidCurrentPassword";
+    public static final String PASSWORDS_DO_NOT_MATCH = "passwordsDoNotMatch";
+    public static final String INVALID_FIRST_NAME = "invalidFirstName";
+    public static final String INVALID_PATRONYMIC = "invalidPatronymic";
+    public static final String INVALID_LAST_NAME = "invalidLastName";
 
-    public static final String INVALID_NAME = "invalid_name";
-    public static final String INVALID_SHORT_NAME = "invalid_short_name";
-    public static final String INVALID_SPECIALTY_ALIAS = "invalid_specialty_alias";
-    public static final String NOT_UNIQUE_NAME = "not_unique_name";
+    public static final String INVALID_NAME = "invalidName";
+    public static final String INVALID_SHORT_NAME = "invalidShortName";
+    public static final String INVALID_SPECIALTY_ALIAS = "invalidSpecialtyAlias";
+    public static final String NOT_UNIQUE_NAME = "notUniqueName";
 
     private AlertAttribute() {
 

@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.StudyAssignment;
-import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
+import com.karnyshov.bsuirhub.model.entity.Assignment;
+import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.criteria.StudyAssignmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -15,17 +15,17 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestType.JQUERY_DATATABLE;
 
 @Named
-public class GetStudyAssignmentsCommand implements Command {
+public class GetAssignmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
 
     @Inject
-    private StudyAssignmentService assignmentService;
+    private AssignmentService assignmentService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -43,10 +43,9 @@ public class GetStudyAssignmentsCommand implements Command {
                     status = false;
                 }
             } catch (ServiceException | IllegalArgumentException e) {
-                logger.error("An error occurred executing 'get study assignments' command", e);
+                logger.error("An error occurred executing 'get assignments' command", e);
                 status = false;
             }
-
         } else {
             status = false;
         }
@@ -66,12 +65,11 @@ public class GetStudyAssignmentsCommand implements Command {
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
         long searchId = Long.parseLong(request.getParameter(SEARCH_VALUE));
 
-        List<StudyAssignment> assignments = new LinkedList<>();
-
+        List<Assignment> assignments = new LinkedList<>();
         long recordsFetched = 0;
         if (searchCriteria != null) {
-            recordsFetched = assignmentService.filter(page, length, StudyAssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
-                    searchId, assignments);
+            recordsFetched = assignmentService.filter(page, length,
+                    StudyAssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()), searchId, assignments);
         }
 
         response.put(DRAW, draw);

@@ -22,7 +22,7 @@
     <div class="container login-container mt-auto mb-auto">
         <div class="row justify-content-center">
             <div class="col-md-6 login-form">
-                <c:if test="${password_change_success}">
+                <c:if test="${passwordChangeSuccess}">
                     <div class="alert alert-success mt-2" role="alert">
                         Password successfully changed
                     </div>
@@ -41,7 +41,7 @@
                         <!-- TODO button is disabled after submitting invalid data -->
                         <input id="loginButton" type="submit" class="btn-submit" value="${login}" disabled />
                     </div>
-                    <c:if test="${not empty auth_error}">
+                    <c:if test="${not empty authError}">
                         <div class="alert alert-danger" role="alert">
                             <fmt:message key="login.error" />
                         </div>

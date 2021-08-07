@@ -15,7 +15,7 @@ $(document).ready(function () {
         serverSide: true,
         drawCallback: function () { onAssignmentsLoaded(subjectsTable); },
         ajax: {
-            url: '/ajax/get_study_assignments',
+            url: '/ajax/get_assignments',
             data: function (d) {
                 d.requestType = 'jquery_datatable';
                 d.filterCriteria = 'teacher';
@@ -171,9 +171,11 @@ function onGroupsTableSelect(groupsTable, studentsTable) {
 }
 
 function onStudentsTableSelect(subjectsTable, studentsTable) {
-    let studentId = studentsTable.row(this).data().entityId;
+    let student = studentsTable.row(this).data();
     let subjectId = $('#subjectsTable .selected').data('subject-id');
 
-    console.log('Student id: ' + studentId);
-    console.log('Subject id: ' + subjectId);
+    if (student && subjectId) {
+        let studentId = student.entityId;
+        window.location.href = `/grades?subjectId=${subjectId}&studentId=${studentId}`;
+    }
 }

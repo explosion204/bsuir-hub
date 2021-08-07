@@ -1,18 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import com.karnyshov.bsuirhub.model.entity.User;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GroupService;
-import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -22,10 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.RECORDS_FILTERED;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
 @Named
 public class GetGroupsCommand implements Command {

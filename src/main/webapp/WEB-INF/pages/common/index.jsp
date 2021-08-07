@@ -11,7 +11,7 @@
 </body>
 </html>
 
-<c:if test="${email_confirmation_success}">
+<c:if test="${emailConfirmationSuccess}">
     <script>
         $.confirm({
             title: 'Success',

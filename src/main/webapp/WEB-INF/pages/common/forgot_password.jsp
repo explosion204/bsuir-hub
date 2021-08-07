@@ -10,8 +10,8 @@
 <body>
 <jsp:include page="shared/header.jsp" />
 
-<div class="wrapper bg-white mt-auto mb-auto w-100">
-    <c:if test="${password_reset_link_sent}">
+<div class="wrapper bg-white mt-auto mb-auto w-100 p-4">
+    <c:if test="${passwordResetLinkSent}">
         <div class="alert alert-success mt-2" role="alert">
             Password reset link sent
         </div>

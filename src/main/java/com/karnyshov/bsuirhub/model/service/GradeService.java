@@ -10,6 +10,8 @@ public interface GradeService {
     Optional<Grade> findById(long id) throws ServiceException;
     long findByStudentAndSubject(int page, int pageSize, long studentId, long subjectId, List<Grade> result)
             throws ServiceException;
+    double calculateAverage(long studentId) throws ServiceException;
+    double calculateAverageBySubject(long studentId, long subjectId) throws ServiceException;
     long create(Grade grade) throws ServiceException;
     void update(Grade grade) throws ServiceException;
     void delete(long id) throws ServiceException;

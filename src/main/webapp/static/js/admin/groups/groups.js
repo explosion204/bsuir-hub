@@ -44,7 +44,7 @@ $(document).ready(function() {
                     return '<a class="btn btn-secondary me-2" href="/admin/groups/edit?id=' + row.entityId + '">Edit</a>' +
                     '<form style="display: inline" method="post" action="/admin/groups/delete?id=' + row.entityId + '">' +
                     '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
-                    '</span>'
+                    '</form>'
                 }
             }
         ]

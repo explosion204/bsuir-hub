@@ -15,9 +15,7 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.GUEST;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.STUDENT;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 
-@WebFilter(
-        urlPatterns = "/teacher"
-)
+@WebFilter(filterName = "TeacherPagesAccessFilter")
 public class TeacherPagesAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

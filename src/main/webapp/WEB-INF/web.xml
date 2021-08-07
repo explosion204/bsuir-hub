@@ -5,13 +5,69 @@
          version="4.0">
     <display-name>BSUIRHub</display-name>
 
+    <filter-mapping>
+        <filter-name>UserRoleFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>LoginPageAccessFilter</filter-name>
+        <url-pattern>/login/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>SettingsPageAccessFilter</filter-name>
+        <url-pattern>/settings/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>StudentPageAccessFilter</filter-name>
+        <url-pattern>/student</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>TeacherPagesAccessFilter</filter-name>
+        <url-pattern>/teacher</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>AjaxAccessFilter</filter-name>
+        <url-pattern>/ajax/get_assignments</url-pattern>
+        <url-pattern>/ajax/get_departments</url-pattern>
+        <url-pattern>/ajax/get_faculties</url-pattern>
+        <url-pattern>/ajax/get_grades</url-pattern>
+        <url-pattern>/ajax/get_groups</url-pattern>
+        <url-pattern>/ajax/get_subjects</url-pattern>
+        <url-pattern>/ajax/get_users</url-pattern>
+        <url-pattern>/ajax/get_assignments</url-pattern>
+        <url-pattern>/ajax/get_average_grade</url-pattern>
+        <url-pattern>/ajax/upload_profile_image</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>GradesOverviewPageAccessFilter</filter-name>
+        <url-pattern>/grades/*</url-pattern>
+        <!-- NOTE: covering /grades/ajax/* -->
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>AdminPagesAccessFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+        <!-- NOTE: covering /admin/ajax/* -->
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>ControllerEntryFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/pages/common/errors/500.jsp</location>
     </error-page>
 
     <error-page>
-        <error-code>403</error-code>
+        <error-code>404</error-code>
         <location>/WEB-INF/pages/common/errors/500.jsp</location>
     </error-page>
 </web-app>

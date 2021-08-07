@@ -10,12 +10,10 @@ import java.io.IOException;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.LOCALE;
 
-@WebFilter(
-        urlPatterns = "/*"
-)
-public class UrlFilter implements Filter {
+
+@WebFilter(filterName = "ControllerEntryFilter")
+public class ControllerEntryFilter implements Filter {
     private static final String MAIN_CONTROLLER_URL = "/controller";
 
     @Override

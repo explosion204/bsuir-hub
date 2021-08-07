@@ -43,11 +43,16 @@ public class ApplicationPath {
     public static final String AJAX_GET_DEPARTMENTS_URL = "/ajax/get_departments";
     public static final String AJAX_GET_GROUPS_URL = "/ajax/get_groups";
     public static final String AJAX_GET_SUBJECTS_URL = "/ajax/get_subjects";
-    public static final String AJAX_GET_ASSIGNMENTS_URL = "/ajax/get_study_assignments";
+    public static final String AJAX_GET_ASSIGNMENTS_URL = "/ajax/get_assignments";
+    public static final String AJAX_GET_GRADES_URL = "/ajax/get_grades";
+    public static final String AJAX_GET_AVERAGE_GRADE_URL = "/ajax/get_average_grade";
     public static final String AJAX_UPLOAD_PROFILE_IMAGE_URL = "/ajax/upload_profile_image";
-    public static final String ADMIN_AJAX_CREATE_ASSIGNMENT_URL = "/admin/ajax/create_study_assignment";
-    public static final String ADMIN_AJAX_UPDATE_ASSIGNMENT_URL = "/admin/ajax/update_study_assignment";
-    public static final String ADMIN_AJAX_DELETE_ASSIGNMENT_URL = "/admin/ajax/delete_study_assignment";
+    public static final String AJAX_CREATE_GRADE_URL = "/grades/ajax/create_grade";
+    public static final String AJAX_UPDATE_GRADE_URL = "/grades/ajax/update_grade";
+    public static final String AJAX_DELETE_GRADE_URL = "/grades/ajax/delete_grade";
+    public static final String ADMIN_AJAX_CREATE_ASSIGNMENT_URL = "/admin/ajax/create_assignment";
+    public static final String ADMIN_AJAX_UPDATE_ASSIGNMENT_URL = "/admin/ajax/update_assignment";
+    public static final String ADMIN_AJAX_DELETE_ASSIGNMENT_URL = "/admin/ajax/delete_assignment";
 
     /* JSP for forwarding only */
     public static final String INDEX_JSP = "common/index.jsp";
@@ -55,9 +60,9 @@ public class ApplicationPath {
     public static final String FORGOT_PASSWORD_JSP = "common/forgot_password.jsp";
     public static final String RESET_PASSWORD_JSP = "common/reset_password.jsp";
     public static final String SETTINGS_JSP = "common/settings.jsp";
-    public static final String TEACHER_DASHBOARD_JSP = "common/teacher.jsp";
-    public static final String STUDENT_DASHBOARD_JSP = "common/student.jsp";
-    public static final String GRADES_OVERVIEW_JSP = "common/grades.jsp";
+    public static final String TEACHER_DASHBOARD_JSP = "common/teacher_dashboard.jsp";
+    public static final String STUDENT_DASHBOARD_JSP = "common/student_dashboard.jsp";
+    public static final String GRADES_OVERVIEW_JSP = "common/grades_overview.jsp";
     public static final String ERROR_NOT_FOUND_JSP = "common/errors/404.jsp";
     public static final String ERROR_INTERNAL_SERVER_JSP = "common/errors/500.jsp";
     public static final String ADMIN_USERS_JSP = "admin/users/users.jsp";

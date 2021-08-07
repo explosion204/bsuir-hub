@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.PROFILE_PICTURES_ROOT;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
@@ -46,7 +46,7 @@ public class UploadProfileImageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        boolean status = true;
+        boolean status;
 
         try {
             User user = (User) request.getSession().getAttribute(USER);
@@ -77,9 +77,9 @@ public class UploadProfileImageCommand implements Command {
                 }
 
                 // validate file
-                boolean validationResult = validator.validateProfileImage(filePath);
+                status = validator.validateProfileImage(filePath);
 
-                if (validationResult) {
+                if (status) {
                     // delete existing user profile image
                     File currentProfileImage = new File(uploadPath + File.separator
                             + target.get().getProfileImageName());
@@ -107,8 +107,6 @@ public class UploadProfileImageCommand implements Command {
                     // delete file
                     new File(filePath).delete();
                 }
-
-                response.put(STATUS, validationResult);
             } else {
                 logger.error("Invalid issuer (id = " + issuerId + ") or target (id = " + targetId + ")");
                 status = false;

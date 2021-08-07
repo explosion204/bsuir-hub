@@ -11,10 +11,7 @@ import java.io.IOException;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.GUEST;
 
-@WebFilter(
-        urlPatterns = "/controller",
-        dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD }
-)
+@WebFilter(filterName = "UserRoleFilter")
 public class UserRoleFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

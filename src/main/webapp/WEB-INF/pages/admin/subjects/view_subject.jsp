@@ -15,42 +15,42 @@
         <div class="container">
             <h1 class="display-3">
                 <c:choose>
-                    <c:when test="${new_entity_page}">New subject</c:when>
+                    <c:when test="${newEntityPage}">New subject</c:when>
                     <c:otherwise>Edit subject</c:otherwise>
                 </c:choose>
             </h1>
         </div>
         <hr>
         <c:choose>
-            <c:when test="${new_entity_page}">
+            <c:when test="${newEntityPage}">
                 <form id="subjectForm" action="/admin/subjects/new" method="post">
             </c:when>
             <c:otherwise>
-                <form id="subjectForm" action="/admin/subjects/edit?id=${target_entity.entityId}" method="post">
+                <form id="subjectForm" action="/admin/subjects/edit?id=${targetEntity.entityId}" method="post">
             </c:otherwise>
         </c:choose>
-                <c:if test="${entity_update_success}">
+                <c:if test="${entityUpdateSuccess}">
                     <div class="alert alert-success" role="alert">
                         Subject successfully updated
                     </div>
                 </c:if>
-                <c:if test="${invalid_name}">
+                <c:if test="${invalidName}">
                     <div class="alert alert-danger" role="alert">
                         Subject name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
                     </div>
                 </c:if>
-                <c:if test="${invalid_short_name}">
+                <c:if test="${invalidShortName}">
                     <div class="alert alert-danger" role="alert">
                         Subject short name must have 1 - 15 alphabetic characters
                     </div>
                 </c:if>
 
-                <input hidden type="text" name="id" value="${target_entity.entityId}">
+                <input hidden type="text" name="id" value="${targetEntity.entityId}">
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="nameInput">Name</label>
                     <input type="text" name="name" class="form-control"
                            pattern="(?=[a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я,\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
-                           id="nameInput" value="${target_entity.name}" required>
+                           id="nameInput" value="${targetEntity.name}" required>
                     <div class="invalid-feedback">
                         Subject name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
                     </div>
@@ -59,13 +59,13 @@
                     <label for="shortNameInput">Short name</label>
                     <input type="text" name="shortName" class="form-control"
                            pattern="[a-zA-Zа-яА-Я]{1,15}"
-                           id="shortNameInput" value="${target_entity.shortName}" required>
+                           id="shortNameInput" value="${targetEntity.shortName}" required>
                     <div class="invalid-feedback">
                         Subject short name must have 1 - 15 alphabetic characters
                     </div>
                 </div>
                 <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
-                        <c:if test="${new_entity_page}">disabled</c:if>
+                        <c:if test="${newEntityPage}">disabled</c:if>
                 >Save</button>
             </form>
     </div>

@@ -25,20 +25,20 @@
             </div>
         </div>
 
-        <c:if test="${email_change_success}">
+        <c:if test="${emailChangeSuccess}">
             <div class="alert alert-success mt-2" role="alert">
                 Confirmation email sent
             </div>
         </c:if>
 
 
-        <c:if test="${invalid_email}">
+        <c:if test="${invalidEmail}">
             <div class="alert alert-danger" role="alert">
                 Invalid email
             </div>
         </c:if>
 
-        <c:if test="${not_unique_email}">
+        <c:if test="${notUniqueEmail}">
             <div class="alert alert-danger" role="alert">
                 Not unique email
             </div>
@@ -67,25 +67,25 @@
             </div>
         </form>
 
-        <c:if test="${password_change_success}">
+        <c:if test="${passwordChangeSuccess}">
             <div class="alert alert-success mt-2" role="alert">
                 Password successfully changed
             </div>
         </c:if>
 
-        <c:if test="${invalid_current_password}">
+        <c:if test="${invalidCurrentPassword}">
             <div class="alert alert-danger mt-2" role="alert">
                 Invalid current password
             </div>
         </c:if>
 
-        <c:if test="${invalid_password}">
+        <c:if test="${invalidPassword}">
             <div class="alert alert-danger" role="alert">
                 Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
             </div>
         </c:if>
 
-        <c:if test="${passwords_do_not_match}">
+        <c:if test="${passwordsDoNotMatch}">
             <div class="alert alert-danger" role="alert">
                 Passwords do not match
             </div>

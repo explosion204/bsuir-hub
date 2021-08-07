@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.command;
 
 public class RequestParameter {
     public static final String LOCALE = "locale";
-
     public static final String ENTITY_ID = "id";
     public static final String LOGIN = "login";
     public static final String EMAIL = "email";
@@ -24,6 +23,32 @@ public class RequestParameter {
     public static final String DEPARTMENT_ID = "departmentId";
     public static final String CURATOR_ID = "curatorId";
     public static final String HEADMAN_ID = "headmanId";
+    public static final String SUBJECT_ID = "subjectId";
+    public static final String STUDENT_ID = "studentId";
+    public static final String GRADE_VALUE = "gradeValue";
+    public static final String AVG_VALUE = "avgValue";
+
+    // ajax
+    public static final String STATUS = "status";
+    public static final String REQUEST_TYPE = "requestType";
+    public static final String DRAW = "draw";
+    public static final String RECORDS_TOTAL = "recordsTotal";
+    public static final String RECORDS_FILTERED = "recordsFiltered";
+    public static final String DATA = "data";
+    public static final String SEARCH_VALUE = "search[value]";
+    public static final String FILTER_CRITERIA = "filterCriteria";
+    public static final String PAGINATION_START = "start";
+    public static final String PAGINATION_LENGTH = "length";
+    public static final String TERM = "term";
+    public static final String PAGE = "page";
+    public static final String PAGE_SIZE = "pageSize";
+    public static final String RESULTS = "results";
+    public static final String PAGINATION_MORE = "paginationMore";
+    public static final String FETCH_STUDENTS = "fetchStudents";
+    public static final String ASSIGNMENT_ID = "assignmentId";
+    public static final String TEACHER_ID = "teacherId";
+    public static final String ENTITY = "entity";
+    public static final String TARGET_ID = "targetId";
 
     private RequestParameter() {
 

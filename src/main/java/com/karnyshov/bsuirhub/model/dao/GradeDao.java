@@ -9,4 +9,7 @@ public interface GradeDao extends BaseDao<Grade> {
     void selectByStudentAndSubject(int offset, int limit, long studentId, long subjectId, List<Grade> result)
             throws DaoException;
     long selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException;
+
+    double selectAverageNotExam(long studentId) throws DaoException;
+    double selectAverageNotExamBySubject(long studentId, long subjectId) throws DaoException;
 }

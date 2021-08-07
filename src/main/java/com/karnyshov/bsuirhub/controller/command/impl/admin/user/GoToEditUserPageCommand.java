@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.user;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.RequestAttribute;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
@@ -41,7 +40,7 @@ public class GoToEditUserPageCommand implements Command {
 
             if (user.isPresent() && user.get().getStatus() != UserStatus.DELETED) {
                 request.setAttribute(TARGET_ENTITY, user.get());
-                request.setAttribute(RequestAttribute.ENTITY_ID, user.get().getEntityId());
+                request.setAttribute(ENTITY_ID, user.get().getEntityId());
 
                 HttpSession session = request.getSession();
                 session.setAttribute(PREVIOUS_EMAIL, user.get().getEmail());

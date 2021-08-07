@@ -13,9 +13,7 @@ import java.io.IOException;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.LOGIN_URL;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
-@WebFilter(
-        urlPatterns = "/settings/*"
-)
+@WebFilter(filterName = "SettingsPageAccessFilter")
 public class SettingsPageAccessFilter implements Filter {
 
     @Override

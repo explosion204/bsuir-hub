@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.service.StudyAssignmentService;
+import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,16 +14,15 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
 @Named
-public class DeleteStudyAssignmentCommand implements Command {
+public class GetAverageGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject
-    private StudyAssignmentService studyAssignmentService;
+    private GradeService gradeService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -31,12 +30,16 @@ public class DeleteStudyAssignmentCommand implements Command {
         boolean status = true;
 
         try {
-            long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
-            studyAssignmentService.delete(entityId);
-        } catch (NumberFormatException | ServiceException e) {
-            logger.error("An error occurred executing 'delete study assignment' command", e);
+            long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
+            long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
+
+            double averageGradeValue = gradeService.calculateAverageBySubject(studentId, subjectId);
+            response.put(AVG_VALUE, averageGradeValue);
+        } catch (ServiceException | IllegalArgumentException e) {
+            logger.error("An error occurred executing 'get average grade' command", e);
             status = false;
         }
+
 
         response.put(STATUS, status);
         return new CommandResult(new Gson().toJson(response), JSON);

@@ -14,9 +14,7 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 
-@WebFilter(
-        urlPatterns = "/student"
-)
+@WebFilter(filterName = "StudentPageAccessFilter")
 public class StudentPageAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

@@ -5,7 +5,7 @@
 <head>
     <jsp:include page="shared/head.html" />
     <script src="/static/js/util/validation.js"></script>
-    <script src="/static/js/common/student.js"></script>
+    <script src="/static/js/common/student_dashboard.js"></script>
     <link href="/static/css/common/student.css" rel="stylesheet">
 </head>
 <body data-user-id="${sessionScope.user.entityId}"
@@ -23,15 +23,15 @@
             <div class="ms-3 text-wrap">
                 <div class="lead fs-2">${sessionScope.user.lastName}</div>
                 <div class="lead">${sessionScope.user.firstName} ${sessionScope.user.patronymic}</div>
-                <div class="h6 mt-1">Группа <span id="groupName"></span></div>
+                <div class="h6 mt-1">Группа <span id="groupName">${groupName}</span></div>
             </div>
         </div>
         <div class="lead fs-3 border-bottom text-center p-2">
             <div>
-                Average exam grade: <span id="averageExamGrade" class="text-success">8.0</span>
+                Average exam grade: <span id="averageExamGrade" class="text-success"></span>
             </div>
             <div>
-                Average study grade: <span id="averageStudyGrade" class="text-warning">6.3</span>
+                Average study grade: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
             </div>
         </div>
         <table id="examResultsTable" class="table table-hover row-border">

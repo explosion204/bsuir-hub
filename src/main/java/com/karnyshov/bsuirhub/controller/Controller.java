@@ -25,7 +25,7 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINA
         maxFileSize = 1024 * 512, // 512 kb
         maxRequestSize = 1024 * 1024 * 3 // 3 mb
 )
-public class MainController extends HttpServlet {
+public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private static final String PAGES_PATH = "/WEB-INF/pages/";
 

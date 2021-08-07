@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
-import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -16,9 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
 @Named
 public class GetDepartmentsCommand implements Command {

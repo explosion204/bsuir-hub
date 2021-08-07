@@ -10,20 +10,20 @@
 <body>
 <jsp:include page="shared/header.jsp" />
 
-<div class="wrapper bg-white mt-auto mb-auto w-100">
-    <c:if test="${password_change_success}">
+<div class="wrapper bg-white mt-auto mb-auto w-100 p-4">
+    <c:if test="${passwordChangeSuccess}">
         <div class="alert alert-success mt-2" role="alert">
             Password successfully changed
         </div>
     </c:if>
 
-    <c:if test="${invalid_password}">
+    <c:if test="${invalidPassword}">
         <div class="alert alert-danger" role="alert">
             Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
         </div>
     </c:if>
 
-    <c:if test="${passwords_do_not_match}">
+    <c:if test="${passwordsDoNotMatch}">
         <div class="alert alert-danger" role="alert">
             Passwords do not match
         </div>

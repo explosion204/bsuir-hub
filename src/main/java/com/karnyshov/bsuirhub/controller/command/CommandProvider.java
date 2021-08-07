@@ -24,18 +24,22 @@ public class CommandProvider {
 
     private CommandProvider() {
         /* AJAX AREA */
-        // FIXME: 7/25/2021 api is exposed to everyone
         urlMap.put(AJAX_SET_LOCALE_URL, POST, resolveCommand(SetLocaleCommand.class));
         urlMap.put(AJAX_GET_USERS_URL, GET, resolveCommand(GetUsersCommand.class));
         urlMap.put(AJAX_GET_FACULTIES_URL, GET, resolveCommand(GetFacultiesCommand.class));
         urlMap.put(AJAX_GET_DEPARTMENTS_URL, GET, resolveCommand(GetDepartmentsCommand.class));
         urlMap.put(AJAX_GET_GROUPS_URL, GET, resolveCommand(GetGroupsCommand.class));
         urlMap.put(AJAX_GET_SUBJECTS_URL, GET, resolveCommand(GetSubjectsCommand.class));
-        urlMap.put(AJAX_GET_ASSIGNMENTS_URL, GET, resolveCommand(GetStudyAssignmentsCommand.class));
+        urlMap.put(AJAX_GET_ASSIGNMENTS_URL, GET, resolveCommand(GetAssignmentsCommand.class));
+        urlMap.put(AJAX_GET_GRADES_URL, GET, resolveCommand(GetGradesCommand.class));
+        urlMap.put(AJAX_GET_AVERAGE_GRADE_URL, GET, resolveCommand(GetAverageGradeCommand.class));
         urlMap.put(AJAX_UPLOAD_PROFILE_IMAGE_URL, POST, resolveCommand(UploadProfileImageCommand.class));
-        urlMap.put(ADMIN_AJAX_CREATE_ASSIGNMENT_URL, POST, resolveCommand(CreateStudyAssignmentCommand.class));
-        urlMap.put(ADMIN_AJAX_UPDATE_ASSIGNMENT_URL, POST, resolveCommand(UpdateStudyAssignmentCommand.class));
-        urlMap.put(ADMIN_AJAX_DELETE_ASSIGNMENT_URL, POST, resolveCommand(DeleteStudyAssignmentCommand.class));
+        urlMap.put(AJAX_CREATE_GRADE_URL, POST, resolveCommand(CreateGradeCommand.class));
+        urlMap.put(AJAX_UPDATE_GRADE_URL, POST, resolveCommand(UpdateGradeCommand.class));
+        urlMap.put(AJAX_DELETE_GRADE_URL, POST, resolveCommand(DeleteGradeCommand.class));
+        urlMap.put(ADMIN_AJAX_CREATE_ASSIGNMENT_URL, POST, resolveCommand(CreateAssignmentCommand.class));
+        urlMap.put(ADMIN_AJAX_UPDATE_ASSIGNMENT_URL, POST, resolveCommand(UpdateAssignmentCommand.class));
+        urlMap.put(ADMIN_AJAX_DELETE_ASSIGNMENT_URL, POST, resolveCommand(DeleteAssignmentCommand.class));
 
         /* COMMON AREA */
         urlMap.put(INDEX_URL, GET, resolveCommand(GoToIndexPageCommand.class));

@@ -5,7 +5,7 @@
 <head>
     <jsp:include page="shared/head.html" />
     <script src="/static/js/util/validation.js"></script>
-    <script src="/static/js/common/teacher.js"></script>
+    <script src="/static/js/common/teacher_dashboard.js"></script>
     <link href="/static/css/common/teacher.css" rel="stylesheet">
 </head>
 <body data-teacher-id="${sessionScope.user.entityId}">

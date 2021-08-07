@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    updateGradeStyle();
     let groupId = $('body').data('group-id');
     let subjectsTable = $('#subjectsTable').DataTable({
         dom: 'rt',
@@ -14,7 +15,7 @@ $(document).ready(function () {
         serverSide: true,
         drawCallback: function () { onAssignmentsLoaded(subjectsTable); },
         ajax: {
-            url: '/ajax/get_study_assignments',
+            url: '/ajax/get_assignments',
             data: function (d) {
                 d.requestType = 'jquery_datatable';
                 d.filterCriteria = 'group';
@@ -90,6 +91,12 @@ function onSubjectsTableSelect() {
     let studentId = $('body').data('user-id');
     let subjectId = $(this).data('subject-id');
 
-    console.log('Student id: ' + studentId);
-    console.log('Subject id: ' + subjectId);
+    window.location.href = `/grades?subjectId=${subjectId}&studentId=${studentId}`;
+}
+
+function updateGradeStyle() {
+    let averageStudyGradeSpan = $('#averageStudyGrade');
+    let className = getClassName(averageStudyGradeSpan.text());
+    averageStudyGradeSpan.removeClass();
+    averageStudyGradeSpan.addClass(className);
 }

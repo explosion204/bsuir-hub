@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.faculty;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.RequestAttribute;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
@@ -38,7 +37,7 @@ public class GoToEditFacultyPageCommand implements Command {
 
             if (faculty.isPresent() && !faculty.get().getArchived()) {
                 request.setAttribute(TARGET_ENTITY, faculty.get());
-                request.setAttribute(RequestAttribute.ENTITY_ID, faculty.get().getEntityId());
+                request.setAttribute(ENTITY_ID, faculty.get().getEntityId());
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_FACULTY_JSP, FORWARD);
             } else {

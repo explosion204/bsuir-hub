@@ -15,9 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.karnyshov.bsuirhub.controller.command.AjaxRequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
 @Named
 public class GetFacultiesCommand implements Command {
