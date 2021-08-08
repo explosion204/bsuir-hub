@@ -15,6 +15,12 @@ import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 @WebFilter(filterName = "ControllerEntryFilter")
 public class ControllerEntryFilter implements Filter {
     private static final String MAIN_CONTROLLER_URL = "/controller";
+    private static final String CACHE_CONTROL_HEADER = "Cache-Control";
+    private static final String CACHE_CONTROL_VALUE = "no-cache, no-store, must-revalidate";
+    private static final String PRAGMA_HEADER = "Pragma";
+    private static final String PRAGMA_VALUE = "no-cache";
+    private static final String EXPIRES_HEADER = "Expires";
+    private static final String EXPIRES_VALUE = "0";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -23,10 +29,17 @@ public class ControllerEntryFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String url = httpRequest.getRequestURI();
-        httpRequest.setAttribute(ORIGINAL_URL, url);
+        httpRequest.setAttribute(ORIGINAL_URL, url);    
 
+        disableCaching(httpResponse);
         extractAlertsFromSession(httpRequest);
         httpRequest.getRequestDispatcher(MAIN_CONTROLLER_URL).forward(httpRequest, httpResponse);
+    }
+
+    private void disableCaching(HttpServletResponse response) {
+        response.setHeader(CACHE_CONTROL_HEADER, CACHE_CONTROL_VALUE); // HTTP 1.1.
+        response.setHeader(PRAGMA_HEADER, PRAGMA_VALUE); // HTTP 1.0.
+        response.setHeader(EXPIRES_HEADER, EXPIRES_VALUE); // Proxies.
     }
 
     private void extractAlertsFromSession(HttpServletRequest request) {
