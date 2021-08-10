@@ -81,38 +81,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long filter(int page, int pageSize, UserFilterCriteria criteria, String keyword, List<User> result)
+    public long filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
                 throws ServiceException {
-
-        int offset = pageSize * (page - 1);
         long totalUsers;
         
         try {
             switch (criteria) {
                 case NONE:
-                    userDao.selectAll(offset, pageSize, result);
+                    userDao.selectAll(start, size, result);
                     totalUsers = userDao.selectTotalCount();
                     break;
                 case LOGIN:
-                    userDao.selectByLogin(offset, pageSize, keyword, result);
+                    userDao.selectByLogin(start, size, keyword, result);
                     totalUsers = userDao.selectCountByLogin(keyword);
                     break;
                 case EMAIL:
-                    userDao.selectByEmail(offset, pageSize, keyword, result);
+                    userDao.selectByEmail(start, size, keyword, result);
                     totalUsers = userDao.selectCountByEmail(keyword);
                     break;
                 case LAST_NAME:
-                    userDao.selectByLastName(offset, pageSize, keyword, result);
+                    userDao.selectByLastName(start, size, keyword, result);
                     totalUsers = userDao.selectCountByLastName(keyword);
                     break;
                 case ROLE:
                     long roleId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
-                    userDao.selectByRole(offset, pageSize, roleId, result);
+                    userDao.selectByRole(start, size, roleId, result);
                     totalUsers = userDao.selectCountByRole(roleId);
                     break;
                 case GROUP:
                     long groupId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
-                    userDao.selectByGroup(offset, pageSize, groupId, result);
+                    userDao.selectByGroup(start, size, groupId, result);
                     totalUsers = userDao.selectCountByGroup(groupId);
                     break;
                 default:

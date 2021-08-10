@@ -41,7 +41,7 @@ public class TokenServiceImpl implements TokenService {
             secretKey = Keys.hmacShaKeyFor(rawKey.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             logger.fatal("Unable to read jwt properties", e);
-            throw new RuntimeException("Unable to read jwt properties", e);
+            throw new RuntimeException(e);
         }
     }
 

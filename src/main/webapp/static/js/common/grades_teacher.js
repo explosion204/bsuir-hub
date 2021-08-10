@@ -1,27 +1,23 @@
 $(document).ready(function () {
-    // TODO: hide table init and redraw blinking
-    // TODO: ajax optimization
-
+    invalidateCache();
     updateGradeStyle();
 
-    let body = $('body');
-    let studentId = body.data('student-id');
-    let subjectId = body.data('subject-id');
-    let teacherId = body.data('teacher-id');
+    let bodyBlock = $('body');
+    let studentId = bodyBlock.data('student-id');
+    let subjectId = bodyBlock.data('subject-id');
+    let userId = bodyBlock.data('user-id');
 
     let gradesTable = $('#gradesTable').DataTable({
         dom: '<"toolbar">rt',
         scrollX: false,
-        scrollY: '50vh',
-        scrollResize: true,
+        scrollY: '70vh',
         scroller: {
-            loadingIndicator: true,
-            displayBuffer: 2
+            loadingIndicator: true
         },
         ordering: false,
         processing: true,
         serverSide: true,
-        drawCallback: function () { onDataLoaded(gradesTable, teacherId, studentId, subjectId); },
+        drawCallback: function () { onDataLoaded(gradesTable, userId, studentId, subjectId); },
         ajax: {
             url: '/ajax/get_grades',
             data: function (d) {
@@ -31,10 +27,23 @@ $(document).ready(function () {
             }
         },
         columns: [
-            { data: null },
-            { data: null, },
-            { data: null },
-            { data: null }
+            {
+                data: null,
+                className: 'text-center align-middle',
+                width: '10%',
+                render: function () {
+                    return `
+                        <span class="btn comments-control">
+                            <i class="expand-chevron fas fa-chevron-down fa-xs"></i>
+                            <i class="btn far fa-comments fa-lg"></i>
+                        </span>
+                    `;
+                }
+            },
+            { data: null, width: '30%' },
+            { data: null, width: '20%' },
+            { data: null, width: '20%' },
+            { data: null, width: '20%' }
         ]
     });
 
@@ -58,26 +67,31 @@ $(document).ready(function () {
 
     $('#createButton').click(function () {
         let gradeValue = $('#gradeSelect').val();
-        onGradeCreate(gradesTable, teacherId, studentId, subjectId, gradeValue);
+        onGradeCreate(gradesTable, studentId, subjectId, gradeValue);
+    });
+
+    $('#gradesTable tbody').on('click', 'td span.comments-control', function () {
+        onCommentsSpanClicked.call(this, gradesTable, subjectId, studentId);
     });
 })
 
-function onDataLoaded(table, teacherId, studentId, subjectId) {
+function onDataLoaded(table, userId, studentId, subjectId) {
     table.rows().data().each(function (value, index) {
-        fetchUser(value.teacherId, function (data) {
+        FETCH_QUEUE.append(fetchUser, [value.teacherId], function (entity) {
             // teacher name
-            let teacherName = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
-            let teacherCell = table.cell(index, 0).node();
+            let teacherName = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
+            let teacherCell = table.cell(index, 1).node();
             $(teacherCell).text(teacherName);
+        });
 
-            // date
-            let date = value.date;
-            let dateCell = table.cell(index, 1).node();
-            $(dateCell).text(`${date.day}.${date.month}.${date.year}`);
+        // date
+        let date = value.date;
+        let dateCell = table.cell(index, 2).node();
+        $(dateCell).text(`${date.day}.${date.month}.${date.year}`);
 
-            // grade value
-            let gradeCell = table.cell(index, 2).node();
-            let gradeSelect = $(`
+        // grade value
+        let gradeCell = table.cell(index, 3).node();
+        let gradeSelect = $(`
                 <select id="gradeSelect" class="form-select">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -90,37 +104,38 @@ function onDataLoaded(table, teacherId, studentId, subjectId) {
                     <option value="9">9</option>
                     <option value="10">10</option>
                 </select>
-            `);
+        `);
 
-            gradeSelect.val(value.value);
-            $(gradeCell).html(gradeSelect);
+        gradeSelect.val(value.value);
+        $(gradeCell).html(gradeSelect);
 
-            // action buttons
-            let actionCell = table.cell(index, 3).node();
-            let updateButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Update</button>`);
-            let deleteButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Delete</button>`)
+        // action buttons
+        let actionCell = table.cell(index, 4).node();
+        let updateButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Update</button>`);
+        let deleteButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Delete</button>`)
 
-            updateButton.click(function () {
-                let gradeValue = gradeSelect.val();
-                onGradeUpdate.call(this, teacherId, studentId, subjectId, gradeValue);
-            });
-
-            deleteButton.click(function () {
-                onGradeDelete.call(this, table, studentId, subjectId);
-            });
-
-            $(actionCell).empty();
-            $(actionCell).append(updateButton, deleteButton);
+        updateButton.click(function () {
+            let gradeValue = gradeSelect.val();
+            onGradeUpdate.call(this, studentId, subjectId, gradeValue);
         });
+
+        deleteButton.click(function () {
+            onGradeDelete.call(this, table, studentId, subjectId);
+        });
+
+        $(actionCell).empty();
+        $(actionCell).append(updateButton, deleteButton);
+
+        let row = table.row(index).node();
+        $(row).data('grade-id', value.entityId);
     })
 }
 
-function onGradeCreate(gradesTable, teacherId, studentId, subjectId, gradeValue) {
+function onGradeCreate(gradesTable, studentId, subjectId, gradeValue) {
     $.ajax({
         method: 'POST',
         url: '/grades/ajax/create_grade',
         data: {
-            teacherId: teacherId,
             studentId: studentId,
             subjectId: subjectId,
             gradeValue: gradeValue
@@ -137,13 +152,12 @@ function onGradeCreate(gradesTable, teacherId, studentId, subjectId, gradeValue)
     })
 }
 
-function onGradeUpdate(teacherId, studentId, subjectId, gradeValue) {
+function onGradeUpdate(studentId, subjectId, gradeValue) {
     $.ajax({
         method: 'POST',
         url: '/grades/ajax/update_grade',
         data: {
             id: $(this).data('grade-id'),
-            teacherId: teacherId,
             studentId: studentId,
             subjectId: subjectId,
             gradeValue: gradeValue
@@ -184,11 +198,4 @@ function updateAverageGrade(studentId, subjectId) {
         $('#avgGrade').text(avg);
         updateGradeStyle();
     });
-}
-
-function updateGradeStyle() {
-    let averageStudyGradeSpan = $('#avgGrade');
-    let className = getClassName(averageStudyGradeSpan.text());
-    averageStudyGradeSpan.removeClass();
-    averageStudyGradeSpan.addClass(className);
 }

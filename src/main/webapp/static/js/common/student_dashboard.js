@@ -1,6 +1,8 @@
 $(document).ready(function () {
     updateGradeStyle();
-    let groupId = $('body').data('group-id');
+    let bodyBlock = $('body');
+    let groupId = bodyBlock.data('group-id');
+
     let subjectsTable = $('#subjectsTable').DataTable({
         dom: 'rt',
         scrollX: false,
@@ -29,13 +31,6 @@ $(document).ready(function () {
         ]
     });
 
-    $('#examResultsTable').DataTable({
-        dom: 'rt',
-        scrollX: false,
-        scrollResize: true,
-        ordering: false
-    });
-
     $('#subjectsTable tbody').on('click', 'tr', onSubjectsTableSelect);
 
     $.ajax({
@@ -52,9 +47,7 @@ $(document).ready(function () {
                 $('#groupName').text(data.entity.name);
             }
         }
-    })
-
-    // TODO: ajax query: average grades
+    });
 })
 
 function onAssignmentsLoaded(subjectsTable) {
@@ -71,9 +64,9 @@ function onAssignmentsLoaded(subjectsTable) {
     subjectsTable.rows().data().each(function (value, index) {
         let subjectId = distinctSubjectIds[index];
         if (subjectId) {
-            fetchSubject(subjectId, function (data) {
-                let name = data.entity.name;
-                let shortName = data.entity.shortName;
+            fetchSubject(subjectId, function (entity) {
+                let name = entity.name;
+                let shortName = entity.shortName;
                 let cell = subjectsTable.cell(index, 0).node();
                 $(cell).html(`<div class="lead">${name}</div><div>${shortName}</div>`);
 

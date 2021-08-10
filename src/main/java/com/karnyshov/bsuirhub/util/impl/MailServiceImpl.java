@@ -40,7 +40,7 @@ public class MailServiceImpl implements MailService {
             });
         } catch (IOException e) {
             logger.fatal("Unable to read mailing properties", e);
-            throw new RuntimeException("Unable to read mailing properties", e);
+            throw new RuntimeException(e);
         }
     }
 

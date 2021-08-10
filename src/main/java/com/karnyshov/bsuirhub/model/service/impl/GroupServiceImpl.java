@@ -34,23 +34,22 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public long filter(int page, int pageSize, GroupFilterCriteria criteria, String keyword, List<Group> result) throws ServiceException {
-        int offset = pageSize * (page - 1);
+    public long filter(int start, int size, GroupFilterCriteria criteria, String keyword, List<Group> result) throws ServiceException {
         long totalGroups;
 
         try {
             switch (criteria) {
                 case NONE:
-                    groupDao.selectAll(offset, pageSize, result);
+                    groupDao.selectAll(start, size, result);
                     totalGroups = groupDao.selectTotalCount();
                     break;
                 case NAME:
-                    groupDao.selectByName(offset, pageSize, keyword, result);
+                    groupDao.selectByName(start, size, keyword, result);
                     totalGroups = groupDao.selectCountByName(keyword);
                     break;
                 case DEPARTMENT:
                     long departmentId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
-                    groupDao.selectByDepartment(offset, pageSize, departmentId, result);
+                    groupDao.selectByDepartment(start, size, departmentId, result);
                     totalGroups = groupDao.selectCountByDepartment(departmentId);
                     break;
                 default:
@@ -64,8 +63,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public long filter(int page, int pageSize, List<Group> result) throws ServiceException {
-        return filter(page, pageSize, NONE, null, result);
+    public long filter(int start, int size, List<Group> result) throws ServiceException {
+        return filter(start, size, NONE, null, result);
     }
 
     @Override

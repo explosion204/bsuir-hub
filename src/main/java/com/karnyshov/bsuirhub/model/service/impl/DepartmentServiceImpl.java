@@ -30,28 +30,27 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public long filter(int page, int pageSize, DepartmentFilterCriteria criteria, String keyword,
-                List<Department> result) throws ServiceException {
-        int offset = pageSize * (page - 1);
+    public long filter(int start, int size, DepartmentFilterCriteria criteria, String keyword,
+                       List<Department> result) throws ServiceException {
         long totalDepartments;
 
         try {
             switch (criteria) {
                 case NONE:
-                    departmentDao.selectAll(offset, pageSize, result);
+                    departmentDao.selectAll(start, size, result);
                     totalDepartments = departmentDao.selectTotalCount();
                     break;
                 case NAME:
-                    departmentDao.selectByName(offset, pageSize, keyword, result);
+                    departmentDao.selectByName(start, size, keyword, result);
                     totalDepartments = departmentDao.selectCountByName(keyword);
                     break;
                 case SHORT_NAME:
-                    departmentDao.selectByShortName(offset, pageSize, keyword, result);
+                    departmentDao.selectByShortName(start, size, keyword, result);
                     totalDepartments = departmentDao.selectCountByShortName(keyword);
                     break;
                 case FACULTY:
                     long facultyId = NumberUtils.isParsable(keyword) ? Long.parseLong(keyword) : 0;
-                    departmentDao.selectByFaculty(offset, pageSize, facultyId, result);
+                    departmentDao.selectByFaculty(start, size, facultyId, result);
                     totalDepartments = departmentDao.selectCountByFaculty(facultyId);
                     break;
                 default:
@@ -65,8 +64,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public long filter(int page, int pageSize, List<Department> result) throws ServiceException {
-        return filter(page, pageSize, NONE, null, result);
+    public long filter(int start, int size, List<Department> result) throws ServiceException {
+        return filter(start, size, NONE, null, result);
     }
 
     @Override

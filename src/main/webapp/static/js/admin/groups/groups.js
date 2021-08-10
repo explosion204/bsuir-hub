@@ -1,5 +1,6 @@
 $(document).ready(function() {
     setActiveNavItem(4);
+    invalidateCache();
 
     let table = $('#dataTable').DataTable({
         dom: '<"toolbar">rtip',
@@ -144,22 +145,22 @@ $(document).ready(function() {
 
 function onDataLoaded(table) {
     table.rows().data().each(function (value, index) {
-        fetchDepartment(value.departmentId, function (data) {
-            let departmentName = data.entity.shortName;
+        FETCH_QUEUE.append(fetchDepartment, [value.departmentId], function (entity) {
+            let departmentName = entity.shortName;
             let cell = table.cell(index, 2).node();
             $(cell).find('a').text(departmentName);
         });
 
         if (value.headmanId) {
-            fetchUser(value.headmanId, function (data) {
-                let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+            fetchUser(value.headmanId, function (entity) {
+                let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
                 let cell = table.cell(index, 3).node();
                 $(cell).find('a').text(name);
             });
         }
 
-        fetchUser(value.curatorId, function (data) {
-            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
+        FETCH_QUEUE.append(fetchUser, [value.curatorId], function (entity) {
+            let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
             let cell = table.cell(index, 4).node();
             $(cell).find('a').text(name);
         });

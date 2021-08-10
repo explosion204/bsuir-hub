@@ -55,6 +55,7 @@ public class ControllerEntryFilter implements Filter {
         session.removeAttribute(ENTITY_UPDATE_SUCCESS);
         session.removeAttribute(EMAIL_CHANGE_SUCCESS);
         session.removeAttribute(PASSWORD_CHANGE_SUCCESS);
+        session.removeAttribute(EMAIL_CONFIRMATION_SUCCESS);
         session.removeAttribute(PASSWORD_RESET_LINK_SENT);
 
         // auth error

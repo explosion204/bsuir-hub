@@ -67,7 +67,6 @@ public class GetDepartmentsCommand implements Command {
 
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -76,9 +75,9 @@ public class GetDepartmentsCommand implements Command {
         List<Department> departments = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? departmentService.filter(page, length, DepartmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                ? departmentService.filter(start, length, DepartmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, departments)
-                : departmentService.filter(page, length, departments);
+                : departmentService.filter(start, length, departments);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
@@ -90,9 +89,10 @@ public class GetDepartmentsCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        int start = pageSize * (page - 1);
 
         List<Department> departments = new LinkedList<>();
-        long recordsFetched = departmentService.filter(page, pageSize, DepartmentFilterCriteria.NAME,
+        long recordsFetched = departmentService.filter(start, pageSize, DepartmentFilterCriteria.NAME,
                 searchValue, departments);
         response.put(RESULTS, departments);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);

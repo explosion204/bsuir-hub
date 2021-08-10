@@ -1,5 +1,6 @@
 $(document).ready(function () {
     setActiveNavItem(4);
+    invalidateCache();
     configureValidation([['groupForm', 'saveButton']]);
 
     $('#groupForm').submit(function () {
@@ -203,8 +204,8 @@ function initializeSubjectSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        fetchSubject(initialId, function (data) {
-            let option = new Option(data.entity.name, data.entity.entityId);
+        FETCH_QUEUE.append(fetchSubject, [initialId], function (entity) {
+            let option = new Option(entity.name, entity.entityId);
             select.append(option).trigger('change');
         });
     }
@@ -247,9 +248,9 @@ function initializeTeacherSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        fetchUser(initialId, function (data) {
-            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
-            let option = new Option(name, data.entity.entityId);
+        FETCH_QUEUE.append(fetchUser, [initialId], function (entity) {
+            let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
+            let option = new Option(name, entity.entityId);
             select.append(option).trigger('change');
         });
     }
@@ -294,9 +295,9 @@ function initializeStudentSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        fetchUser(initialId, function (data) {
-            let name = data.entity.lastName + ' ' + data.entity.firstName + ' ' + data.entity.patronymic;
-            let option = new Option(name, data.entity.entityId);
+        fetchUser(initialId, function (entity) {
+            let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
+            let option = new Option(name, entity.entityId);
             select.append(option).trigger('change');
         });
     }
@@ -338,8 +339,8 @@ function initializeDepartmentSelect(select, width, initialId) {
     });
 
     if (initialId) {
-        fetchDepartment(initialId, function (data) {
-            let option = new Option(data.entity.name, data.entity.entityId);
+        fetchDepartment(initialId, function (entity) {
+            let option = new Option(entity.name, entity.entityId);
             select.append(option).trigger('change');
         });
     }

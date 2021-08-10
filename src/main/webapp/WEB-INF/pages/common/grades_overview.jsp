@@ -6,9 +6,9 @@
 <head>
     <jsp:include page="shared/head.html" />
     <script src="/static/js/util/validation.js"></script>
-    <link href="/static/css/common/student.css" rel="stylesheet">
+    <link href="/static/css/common/student_dashboard.css" rel="stylesheet">
     <link href="/static/css/common/grades.css" rel="stylesheet">
-
+    <script src="/static/js/common/grades_shared.js"></script>
     <c:choose>
         <c:when test="${role eq 1}">
             <script src="/static/js/common/grades_student.js"></script>
@@ -20,7 +20,7 @@
 </head>
 <body data-student-id="${student.entityId}"
       data-subject-id="${subject.entityId}"
-      data-teacher-id="${sessionScope.user.entityId}">
+      data-user-id="${sessionScope.user.entityId}">
 
     <jsp:include page="shared/header.jsp" />
 
@@ -30,9 +30,10 @@
         <div class="fs-6">Average subject grade: <span id="avgGrade">${averageStudyGrade}</span></div>
     </div>
     <div class="wrapper ms-5 me-5">
-        <table id="gradesTable" class="table table-hover row-border">
+        <table id="gradesTable" class="table row-border ms-2">
             <thead>
             <tr>
+                <th></th>
                 <th>Teacher</th>
                 <th>Date</th>
                 <th>Grade</th>

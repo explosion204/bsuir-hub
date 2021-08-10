@@ -15,8 +15,7 @@ public class GradeMapper implements ResultSetMapper<Grade> {
     public Grade map(ResultSet resultSet) throws DaoException {
         try {
             return (Grade) Grade.builder()
-                    .setValue(Grade.Value.values()[resultSet.getInt(GRADE_VALUE)])
-                    .setIsExam(resultSet.getBoolean(GRADE_IS_EXAM))
+                    .setValue(resultSet.getByte(GRADE_VALUE))
                     .setTeacherId(resultSet.getLong(GRADE_TEACHER_ID))
                     .setStudentId(resultSet.getLong(GRADE_STUDENT_ID))
                     .setSubjectId(resultSet.getLong(GRADE_SUBJECT_ID))

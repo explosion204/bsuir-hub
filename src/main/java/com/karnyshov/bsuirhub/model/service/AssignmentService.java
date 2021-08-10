@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AssignmentService {
     Optional<Assignment> findById(long id) throws ServiceException;
-    long filter(int page, int pageSize, StudyAssignmentFilterCriteria criteria, long filterId,
+    long filter(int start, int size, StudyAssignmentFilterCriteria criteria, long filterId,
             List<Assignment> result) throws ServiceException;
     boolean assignmentExists(long groupId, long subjectId) throws ServiceException;
     boolean assignmentExists(long groupId, long teacherId, long subjectId) throws ServiceException;

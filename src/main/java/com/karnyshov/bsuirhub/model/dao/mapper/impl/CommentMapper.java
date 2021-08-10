@@ -19,6 +19,7 @@ public class CommentMapper implements ResultSetMapper<Comment> {
                     .setGradeId(resultSet.getLong(COMMENT_GRADE_ID))
                     .setUserId(resultSet.getLong(COMMENT_USER_ID))
                     .setText(resultSet.getString(COMMENT_TEXT))
+                    .setCreationTime(resultSet.getTimestamp(COMMENT_CREATION_TIME).toLocalDateTime())
                     .setEntityId(resultSet.getLong(COMMENT_ID))
                     .build();
         } catch (SQLException e) {

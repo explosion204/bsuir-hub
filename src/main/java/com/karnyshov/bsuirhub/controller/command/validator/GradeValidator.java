@@ -7,7 +7,7 @@ import jakarta.inject.Named;
 public class GradeValidator {
     private static final int MAX_GRADE_VALUE = 11;
 
-    public boolean validateGradeValue(int gradeValue) {
+    public boolean validateGradeValue(byte gradeValue) {
         return gradeValue <= MAX_GRADE_VALUE;
     }
 }

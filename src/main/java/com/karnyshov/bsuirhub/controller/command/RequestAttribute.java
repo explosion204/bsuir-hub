@@ -7,7 +7,6 @@ public class RequestAttribute {
     public static final String STUDENT = "student";
     public static final String SUBJECT = "subject";
     public static final String AVERAGE_STUDY_GRADE = "averageStudyGrade";
-    public static final String AVERAGE_EXAM_GRADE = "averageExamGrade";
     public static final String GROUP_NAME = "groupName";
 
     private RequestAttribute() {

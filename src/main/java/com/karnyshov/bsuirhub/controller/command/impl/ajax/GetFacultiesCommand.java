@@ -65,7 +65,6 @@ public class GetFacultiesCommand implements Command {
 
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -74,9 +73,9 @@ public class GetFacultiesCommand implements Command {
         List<Faculty> faculties = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? facultyService.filter(page, length, FacultyFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                ? facultyService.filter(start, length, FacultyFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, faculties)
-                : facultyService.filter(page, length, faculties);
+                : facultyService.filter(start, length, faculties);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
@@ -89,9 +88,10 @@ public class GetFacultiesCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        int start = pageSize * (page - 1);
 
         List<Faculty> faculties = new LinkedList<>();
-        long recordsFetched = facultyService.filter(page, pageSize, FacultyFilterCriteria.NAME,
+        long recordsFetched = facultyService.filter(start, pageSize, FacultyFilterCriteria.NAME,
                 searchValue, faculties);
         response.put(RESULTS, faculties);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);

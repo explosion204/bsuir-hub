@@ -18,15 +18,15 @@ public class GradeDaoImpl implements GradeDao {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String SELECT_BY_ID
-            = "SELECT id, value, id_teacher, id_student, id_subject, date, is_exam " +
+            = "SELECT id, value, id_teacher, id_student, id_subject, date " +
               "FROM grades " +
               "WHERE id = ?;";
 
     private static final String SELECT_BY_STUDENT_AND_SUBJECT
-            = "SELECT id, value, id_teacher, id_student, id_subject, date, is_exam " +
+            = "SELECT id, value, id_teacher, id_student, id_subject, date " +
               "FROM grades " +
               "WHERE id_student = ? AND id_subject = ? " +
-              "ORDER BY date " +
+              "ORDER BY date DESC " +
               "LIMIT ? " +
               "OFFSET ?;";
 
@@ -35,22 +35,22 @@ public class GradeDaoImpl implements GradeDao {
               "FROM grades " +
               "WHERE id_student = ? AND id_subject = ?;";
 
-    private static final String SELECT_AVERAGE_NOT_EXAM_BY_SUBJECT
+    private static final String SELECT_AVERAGE_BY_SUBJECT
             = "SELECT ROUND(AVG(value), 2) " +
               "FROM grades " +
-              "WHERE id_student = ? AND id_subject = ? AND is_exam = 0 AND value BETWEEN 1 AND 10;";
+              "WHERE id_student = ? AND id_subject = ?;";
 
-    private static final String SELECT_AVERAGE_NOT_EXAM
+    private static final String SELECT_AVERAGE
             = "SELECT ROUND(AVG(value), 2) " +
               "FROM grades " +
-              "WHERE id_student = ? AND is_exam = 0 AND value BETWEEN 1 AND 10;";
+              "WHERE id_student = ?;";
 
     private static final String INSERT
-            = "INSERT grades (value, id_teacher, id_student, id_subject, date, is_exam) VALUES (?, ?, ?, ?, ?, ?);";
+            = "INSERT grades (value, id_teacher, id_student, id_subject, date) VALUES (?, ?, ?, ?, ?);";
 
     private static final String UPDATE
             = "UPDATE grades " +
-              "SET value = ?, id_teacher = ?, id_student = ?, id_subject = ?, is_exam = ? " +
+              "SET value = ?, id_teacher = ?, id_student = ?, id_subject = ? " +
               "WHERE id = ?;";
 
     private static final String DELETE
@@ -98,15 +98,15 @@ public class GradeDaoImpl implements GradeDao {
     }
 
     @Override
-    public double selectAverageNotExam(long studentId) throws DaoException {
-        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE_NOT_EXAM,
+    public double selectAverage(long studentId) throws DaoException {
+        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE,
                 studentId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_AVERAGE_NOT_EXAM query"));
     }
 
     @Override
-    public double selectAverageNotExamBySubject(long studentId, long subjectId) throws DaoException {
-        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE_NOT_EXAM_BY_SUBJECT,
+    public double selectAverageBySubject(long studentId, long subjectId) throws DaoException {
+        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE_BY_SUBJECT,
                 studentId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_AVERAGE_NOT_EXAM_BY_SUBJECT query"));
     }
@@ -115,12 +115,11 @@ public class GradeDaoImpl implements GradeDao {
     public long insert(Grade grade) throws DaoException {
         return QueryExecutor.executeInsert(
                 INSERT,
-                grade.getValue().ordinal(),
+                grade.getValue(),
                 grade.getTeacherId(),
                 grade.getStudentId(),
                 grade.getSubjectId(),
-                grade.getDate(),
-                grade.getIsExam()
+                grade.getDate()
         );
     }
 
@@ -128,11 +127,10 @@ public class GradeDaoImpl implements GradeDao {
     public void update(Grade grade) throws DaoException {
         QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
-                grade.getValue().ordinal(),
+                grade.getValue(),
                 grade.getTeacherId(),
                 grade.getStudentId(),
                 grade.getSubjectId(),
-                grade.getIsExam(),
                 grade.getEntityId()
         );
     }

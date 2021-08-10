@@ -10,6 +10,6 @@ public interface GradeDao extends BaseDao<Grade> {
             throws DaoException;
     long selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException;
 
-    double selectAverageNotExam(long studentId) throws DaoException;
-    double selectAverageNotExamBySubject(long studentId, long subjectId) throws DaoException;
+    double selectAverage(long studentId) throws DaoException;
+    double selectAverageBySubject(long studentId, long subjectId) throws DaoException;
 }

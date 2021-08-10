@@ -59,7 +59,6 @@ public class GetAssignmentsCommand implements Command {
 
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -68,7 +67,7 @@ public class GetAssignmentsCommand implements Command {
         List<Assignment> assignments = new LinkedList<>();
         long recordsFetched = 0;
         if (searchCriteria != null) {
-            recordsFetched = assignmentService.filter(page, length,
+            recordsFetched = assignmentService.filter(start, length,
                     StudyAssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()), searchId, assignments);
         }
 

@@ -25,6 +25,7 @@ public class RequestParameter {
     public static final String HEADMAN_ID = "headmanId";
     public static final String SUBJECT_ID = "subjectId";
     public static final String STUDENT_ID = "studentId";
+    public static final String GRADE_ID = "gradeId";
     public static final String GRADE_VALUE = "gradeValue";
     public static final String AVG_VALUE = "avgValue";
 
@@ -46,6 +47,8 @@ public class RequestParameter {
     public static final String PAGINATION_MORE = "paginationMore";
     public static final String FETCH_STUDENTS = "fetchStudents";
     public static final String ASSIGNMENT_ID = "assignmentId";
+    public static final String COMMENT_ID = "commentId";
+    public static final String COMMENT_TEXT = "commentText";
     public static final String TEACHER_ID = "teacherId";
     public static final String ENTITY = "entity";
     public static final String TARGET_ID = "targetId";

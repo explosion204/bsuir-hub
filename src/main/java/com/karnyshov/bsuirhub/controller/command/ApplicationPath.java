@@ -45,11 +45,14 @@ public class ApplicationPath {
     public static final String AJAX_GET_SUBJECTS_URL = "/ajax/get_subjects";
     public static final String AJAX_GET_ASSIGNMENTS_URL = "/ajax/get_assignments";
     public static final String AJAX_GET_GRADES_URL = "/ajax/get_grades";
+    public static final String AJAX_GET_COMMENTS_URL = "/ajax/get_comments"; // TODO: exposed api
     public static final String AJAX_GET_AVERAGE_GRADE_URL = "/ajax/get_average_grade";
     public static final String AJAX_UPLOAD_PROFILE_IMAGE_URL = "/ajax/upload_profile_image";
     public static final String AJAX_CREATE_GRADE_URL = "/grades/ajax/create_grade";
     public static final String AJAX_UPDATE_GRADE_URL = "/grades/ajax/update_grade";
     public static final String AJAX_DELETE_GRADE_URL = "/grades/ajax/delete_grade";
+    public static final String AJAX_CREATE_COMMENT_URL = "/grades/ajax/create_comment";
+    public static final String AJAX_DELETE_COMMENT_URL = "/grades/ajax/delete_comment";
     public static final String ADMIN_AJAX_CREATE_ASSIGNMENT_URL = "/admin/ajax/create_assignment";
     public static final String ADMIN_AJAX_UPDATE_ASSIGNMENT_URL = "/admin/ajax/update_assignment";
     public static final String ADMIN_AJAX_DELETE_ASSIGNMENT_URL = "/admin/ajax/delete_assignment";
@@ -75,9 +78,6 @@ public class ApplicationPath {
     public static final String ADMIN_VIEW_GROUP_JSP = "/admin/groups/view_group.jsp";
     public static final String ADMIN_SUBJECTS_JSP = "/admin/subjects/subjects.jsp";
     public static final String ADMIN_VIEW_SUBJECT_JSP = "/admin/subjects/view_subject.jsp";
-
-    /* DIRECTORIES */
-    public static final String PROFILE_PICTURES_ROOT = "static/images/profile";
 
     private ApplicationPath() {
 

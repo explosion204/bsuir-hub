@@ -29,23 +29,22 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public long filter(int page, int pageSize, SubjectFilterCriteria criteria, String keyword, List<Subject> result)
+    public long filter(int start, int size, SubjectFilterCriteria criteria, String keyword, List<Subject> result)
             throws ServiceException {
-        int offset = pageSize * (page - 1);
         long totalSubjects;
 
         try {
             switch (criteria) {
                 case NONE:
-                    subjectDao.selectAll(offset, pageSize, result);
+                    subjectDao.selectAll(start, size, result);
                     totalSubjects = subjectDao.selectTotalCount();
                     break;
                 case NAME:
-                    subjectDao.selectByName(offset, pageSize, keyword, result);
+                    subjectDao.selectByName(start, size, keyword, result);
                     totalSubjects = subjectDao.selectCountByName(keyword);
                     break;
                 case SHORT_NAME:
-                    subjectDao.selectByShortName(offset, pageSize, keyword, result);
+                    subjectDao.selectByShortName(start, size, keyword, result);
                     totalSubjects = subjectDao.selectCountByShortName(keyword);
                     break;
                 default:

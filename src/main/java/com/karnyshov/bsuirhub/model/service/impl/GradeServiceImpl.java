@@ -26,12 +26,10 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public long findByStudentAndSubject(int page, int pageSize, long studentId, long subjectId, List<Grade> result)
+    public long findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
             throws ServiceException {
-        int offset = pageSize * (page - 1);
-
         try {
-            gradeDao.selectByStudentAndSubject(offset, pageSize, studentId, subjectId, result);
+            gradeDao.selectByStudentAndSubject(start, size, studentId, subjectId, result);
             return gradeDao.selectCountByStudentAndSubject(studentId, subjectId);
         } catch (DaoException e) {
             throw new ServiceException(e);
@@ -41,7 +39,7 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public double calculateAverage(long studentId) throws ServiceException {
         try {
-            return gradeDao.selectAverageNotExam(studentId);
+            return gradeDao.selectAverage(studentId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -50,7 +48,7 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public double calculateAverageBySubject(long studentId, long subjectId) throws ServiceException {
         try {
-            return gradeDao.selectAverageNotExamBySubject(studentId, subjectId);
+            return gradeDao.selectAverageBySubject(studentId, subjectId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

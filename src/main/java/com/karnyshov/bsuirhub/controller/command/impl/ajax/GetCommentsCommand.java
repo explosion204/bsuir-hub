@@ -1,12 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Grade;
-import com.karnyshov.bsuirhub.model.service.GradeService;
+import com.karnyshov.bsuirhub.model.entity.Comment;
+import com.karnyshov.bsuirhub.model.service.CommentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,12 +22,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestType.JQUERY_DATATABLE;
 
 @Named
-public class GetGradesCommand implements Command {
+public class GetCommentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
 
     @Inject
-    private GradeService gradeService;
+    private CommentService commentsService;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -46,7 +45,7 @@ public class GetGradesCommand implements Command {
                     status = false;
                 }
             } catch (ServiceException | IllegalArgumentException e) {
-                logger.error("An error occurred executing 'get grades' command", e);
+                logger.error("An error occurred executing 'get comments' command", e);
                 status = false;
             }
         } else {
@@ -64,11 +63,10 @@ public class GetGradesCommand implements Command {
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
-        long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
-        long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
+        long gradeId = Long.parseLong(request.getParameter(GRADE_ID));
 
-        List<Grade> grades = new LinkedList<>();
-        long recordsFetched = gradeService.findByStudentAndSubject(start, length, studentId, subjectId, grades);
+        List<Comment> grades = new LinkedList<>();
+        long recordsFetched = commentsService.findByGrade(start, length, gradeId, grades);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);

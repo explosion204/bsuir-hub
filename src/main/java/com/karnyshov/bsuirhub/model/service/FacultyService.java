@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface FacultyService {
     Optional<Faculty> findById(long id) throws ServiceException;
-    long filter(int page, int pageSize, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
+    long filter(int start, int size, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
             throws ServiceException;
-    long filter(int page, int pageSize, List<Faculty> result) throws ServiceException;
+    long filter(int start, int size, List<Faculty> result) throws ServiceException;
     long create(Faculty faculty) throws ServiceException;
     void update(Faculty faculty) throws ServiceException;
     void delete(long id) throws ServiceException;

@@ -65,7 +65,6 @@ public class GetSubjectsCommand implements Command {
 
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -74,9 +73,9 @@ public class GetSubjectsCommand implements Command {
         List<Subject> subjects = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? subjectService.filter(page, length, SubjectFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                ? subjectService.filter(start, length, SubjectFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, subjects)
-                : subjectService.filter(page, length, subjects);
+                : subjectService.filter(start, length, subjects);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
@@ -89,9 +88,10 @@ public class GetSubjectsCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        int start = pageSize * (page - 1);
 
         List<Subject> subjects = new LinkedList<>();
-        long recordsFetched = subjectService.filter(page, pageSize, SubjectFilterCriteria.NAME, searchValue, subjects);
+        long recordsFetched = subjectService.filter(start, pageSize, SubjectFilterCriteria.NAME, searchValue, subjects);
         response.put(RESULTS, subjects);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);
     }

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CommentService {
     Optional<Comment> findById(long id) throws ServiceException;
-    long findByGrade(int page, int pageSize, long gradeId, List<Comment> result) throws ServiceException;
+    long findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException;
     long create(Comment comment) throws ServiceException;
     void update(Comment comment) throws ServiceException;
     void delete(long id) throws ServiceException;

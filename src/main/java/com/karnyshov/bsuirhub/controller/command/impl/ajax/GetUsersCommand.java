@@ -70,7 +70,6 @@ public class GetUsersCommand implements Command {
         
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -79,9 +78,9 @@ public class GetUsersCommand implements Command {
         List<User> users = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? userService.filter(page, length, UserFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                ? userService.filter(start, length, UserFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, users)
-                : userService.filter(page, length, users);
+                : userService.filter(start, length, users);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
@@ -93,6 +92,8 @@ public class GetUsersCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        int start = pageSize * (page - 1);
+
         boolean fetchStudents = Boolean.parseBoolean(request.getParameter(FETCH_STUDENTS));
         String groupIdString = request.getParameter(GROUP_ID);
 
@@ -103,7 +104,7 @@ public class GetUsersCommand implements Command {
             // get all students for requested group
             users = new LinkedList<>(); // TODO: 8/4/2021 ArrayList vs LinkedList
             // to determine if pagination is required we use amount of fetched records BEFORE filtering by last name
-            recordsFetched = userService.filter(page, pageSize, UserFilterCriteria.GROUP, groupIdString, users);
+            recordsFetched = userService.filter(start, pageSize, UserFilterCriteria.GROUP, groupIdString, users);
             // filter by last name
             users = users.stream().filter(u -> StringUtils.containsIgnoreCase(u.getLastName(), searchValue))
                     .collect(Collectors.toList());
@@ -112,11 +113,11 @@ public class GetUsersCommand implements Command {
             List<User> teachers = new LinkedList<>();
 
             // fetch teachers
-            recordsFetched = userService.filter(page, pageSize, UserFilterCriteria.ROLE,
+            recordsFetched = userService.filter(start, pageSize, UserFilterCriteria.ROLE,
                     String.valueOf(TEACHER.ordinal()), teachers);
 
             // fetch admins
-            recordsFetched += userService.filter(page, pageSize, UserFilterCriteria.ROLE,
+            recordsFetched += userService.filter(start, pageSize, UserFilterCriteria.ROLE,
                     String.valueOf(ADMIN.ordinal()), admins);
 
             teachers.addAll(admins);

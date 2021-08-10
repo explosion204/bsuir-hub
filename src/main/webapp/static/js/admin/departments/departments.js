@@ -1,5 +1,6 @@
 $(document).ready(function() {
     setActiveNavItem(3);
+    invalidateCache();
 
     let table = $('#dataTable').DataTable({
         dom: '<"toolbar">rtip',
@@ -131,8 +132,9 @@ $(document).ready(function() {
 
 function onDataLoaded(table) {
     table.rows().data().each(function (value, index) {
-        fetchFaculty(value.facultyId, function (data) {
-            let facultyName = data.entity.shortName;
+        FETCH_QUEUE.append(fetchFaculty, [value.facultyId], function (entity) {
+            console.log(entity);
+            let facultyName = entity.shortName;
             let cell = table.cell(index, 4).node();
             $(cell).find('a').text(facultyName);
         });

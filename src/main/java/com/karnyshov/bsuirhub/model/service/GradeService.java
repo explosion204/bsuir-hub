@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface GradeService {
     Optional<Grade> findById(long id) throws ServiceException;
-    long findByStudentAndSubject(int page, int pageSize, long studentId, long subjectId, List<Grade> result)
+    long findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
             throws ServiceException;
     double calculateAverage(long studentId) throws ServiceException;
     double calculateAverageBySubject(long studentId, long subjectId) throws ServiceException;

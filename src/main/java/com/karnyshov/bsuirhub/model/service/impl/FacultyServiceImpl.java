@@ -29,23 +29,22 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public long filter(int page, int pageSize, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
+    public long filter(int start, int size, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
                 throws ServiceException {
-        int offset = pageSize * (page - 1);
         long totalFaculties;
 
         try {
             switch (criteria) {
                 case NONE:
-                    facultyDao.selectAll(offset, pageSize, result);
+                    facultyDao.selectAll(start, size, result);
                     totalFaculties = facultyDao.selectTotalCount();
                     break;
                 case NAME:
-                    facultyDao.selectByName(offset, pageSize, keyword, result);
+                    facultyDao.selectByName(start, size, keyword, result);
                     totalFaculties = facultyDao.selectCountByName(keyword);
                     break;
                 case SHORT_NAME:
-                    facultyDao.selectByShortName(offset, pageSize, keyword, result);
+                    facultyDao.selectByShortName(start, size, keyword, result);
                     totalFaculties = facultyDao.selectCountByShortName(keyword);
                     break;
                 default:
@@ -59,8 +58,8 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public long filter(int page, int pageSize, List<Faculty> result) throws ServiceException {
-        return filter(page, pageSize, NONE, null, result);
+    public long filter(int start, int size, List<Faculty> result) throws ServiceException {
+        return filter(start, size, NONE, null, result);
     }
 
     @Override

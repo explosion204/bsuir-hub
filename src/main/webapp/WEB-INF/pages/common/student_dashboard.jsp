@@ -6,7 +6,7 @@
     <jsp:include page="shared/head.html" />
     <script src="/static/js/util/validation.js"></script>
     <script src="/static/js/common/student_dashboard.js"></script>
-    <link href="/static/css/common/student.css" rel="stylesheet">
+    <link href="/static/css/common/student_dashboard.css" rel="stylesheet">
 </head>
 <body data-user-id="${sessionScope.user.entityId}"
       data-group-id="${sessionScope.user.groupId}">
@@ -28,32 +28,9 @@
         </div>
         <div class="lead fs-3 border-bottom text-center p-2">
             <div>
-                Average exam grade: <span id="averageExamGrade" class="text-success"></span>
-            </div>
-            <div>
-                Average study grade: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
+                Average grade: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
             </div>
         </div>
-        <table id="examResultsTable" class="table table-hover row-border">
-            <thead>
-            <tr>
-                <th>
-                    <h1 class="display-6 ms-2">Exam results</h1>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <div class="d-flex flex-row lead">
-                        <div class="ms-2 me-auto">Subject #1</div>
-                        <span class=" text-success ms-auto me-2 fs-5">8</span>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
     </div>
 
     <div class="wrapper w-75 ms-2 mt-2">
@@ -66,27 +43,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
-            <tr>
-                <td><div class="ms-2 lead">Subject #1</div></td>
-            </tr>
             </tbody>
         </table>
     </div>

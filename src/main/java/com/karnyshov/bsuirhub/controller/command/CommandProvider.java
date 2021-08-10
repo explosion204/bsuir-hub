@@ -21,7 +21,6 @@ public class CommandProvider {
     public static final CommandProvider instance = new CommandProvider();
     private Table<String, RequestMethod, Command> urlMap = HashBasedTable.create();
 
-
     private CommandProvider() {
         /* AJAX AREA */
         urlMap.put(AJAX_SET_LOCALE_URL, POST, resolveCommand(SetLocaleCommand.class));
@@ -32,11 +31,14 @@ public class CommandProvider {
         urlMap.put(AJAX_GET_SUBJECTS_URL, GET, resolveCommand(GetSubjectsCommand.class));
         urlMap.put(AJAX_GET_ASSIGNMENTS_URL, GET, resolveCommand(GetAssignmentsCommand.class));
         urlMap.put(AJAX_GET_GRADES_URL, GET, resolveCommand(GetGradesCommand.class));
+        urlMap.put(AJAX_GET_COMMENTS_URL, GET, resolveCommand(GetCommentsCommand.class));
         urlMap.put(AJAX_GET_AVERAGE_GRADE_URL, GET, resolveCommand(GetAverageGradeCommand.class));
         urlMap.put(AJAX_UPLOAD_PROFILE_IMAGE_URL, POST, resolveCommand(UploadProfileImageCommand.class));
         urlMap.put(AJAX_CREATE_GRADE_URL, POST, resolveCommand(CreateGradeCommand.class));
         urlMap.put(AJAX_UPDATE_GRADE_URL, POST, resolveCommand(UpdateGradeCommand.class));
         urlMap.put(AJAX_DELETE_GRADE_URL, POST, resolveCommand(DeleteGradeCommand.class));
+        urlMap.put(AJAX_CREATE_COMMENT_URL, POST, resolveCommand(CreateCommentCommand.class));
+        urlMap.put(AJAX_DELETE_COMMENT_URL, POST, resolveCommand(DeleteCommentCommand.class));
         urlMap.put(ADMIN_AJAX_CREATE_ASSIGNMENT_URL, POST, resolveCommand(CreateAssignmentCommand.class));
         urlMap.put(ADMIN_AJAX_UPDATE_ASSIGNMENT_URL, POST, resolveCommand(UpdateAssignmentCommand.class));
         urlMap.put(ADMIN_AJAX_DELETE_ASSIGNMENT_URL, POST, resolveCommand(DeleteAssignmentCommand.class));

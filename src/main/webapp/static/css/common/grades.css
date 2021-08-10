@@ -9,3 +9,17 @@
 .select2-selection__arrow {
     display: none;
 }
+
+table {
+    table-layout:fixed;
+    width: 99% !important;
+}
+
+table td {
+    word-wrap: break-word;
+    max-width: 400px;
+}
+
+.comments-table thead th {
+    border-bottom: 0;
+}

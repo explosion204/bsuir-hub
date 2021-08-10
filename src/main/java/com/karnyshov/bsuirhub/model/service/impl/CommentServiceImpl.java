@@ -26,11 +26,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public long findByGrade(int page, int pageSize, long gradeId, List<Comment> result) throws ServiceException {
-        int offset = pageSize * (page - 1);
-
+    public long findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException {
         try {
-            commentDao.selectByGrade(offset, pageSize, gradeId, result);
+            commentDao.selectByGrade(start, size, gradeId, result);
             return commentDao.selectCountByGrade(gradeId);
         } catch (DaoException e) {
             throw new ServiceException(e);

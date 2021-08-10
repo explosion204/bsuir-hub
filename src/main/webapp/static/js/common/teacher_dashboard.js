@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    invalidateCache();
+
     let bodyBlock = $('body');
     let teacherId = bodyBlock.data('teacher-id');
     let subjectsTable = $('#subjectsTable').DataTable({
@@ -8,8 +10,7 @@ $(document).ready(function () {
         scrollResize: true,
         ordering: false,
         scroller: {
-            loadingIndicator: true,
-            displayBuffer: 1
+            loadingIndicator: true
         },
         processing: true,
         serverSide: true,
@@ -44,8 +45,7 @@ $(document).ready(function () {
         scrollResize: true,
         ordering: false,
         scroller: {
-            loadingIndicator: true,
-            displayBuffer: 1
+            loadingIndicator: true
         },
         processing: true,
         serverSide: true,
@@ -68,7 +68,6 @@ $(document).ready(function () {
         ]
     });
 
-    bodyBlock.find('.dataTables_scrollBody').addClass('scrollbar');
     $('#subjectsTable tbody').on('click', 'tr', function () {
         onSubjectsTableSelect.call(this, subjectsTable, groupsTable, studentsTable);
     });
@@ -109,9 +108,9 @@ function onAssignmentsLoaded(subjectsTable) {
     subjectsTable.rows().data().each(function (value, index) {
         let subjectId = distinctSubjectIds[index];
         if (subjectId) {
-            fetchSubject(subjectId, function (data) {
-                let name = data.entity.name;
-                let shortName = data.entity.shortName;
+            fetchSubject(subjectId, function (entity) {
+                let name = entity.name;
+                let shortName = entity.shortName;
                 let cell = subjectsTable.cell(index, 0).node();
                 $(cell).html(`<div class="lead">${name}</div><div>${shortName}</div>`);
 
@@ -134,16 +133,16 @@ function onSubjectsTableSelect(subjectsTable, groupsTable, studentsTable) {
         // find all assignments with this subject id
         let concreteAssignments = assignments.filter(a => a.subjectId === subjectId);
 
+        // clear groups table
+        groupsTable.clear();
+        // clear students table
+        studentsTable.search('').draw(); // the only possible workaround to clear ajax-powered table
+
         // fetch groups by their id
         $.each(concreteAssignments, function (index, value) {
-            // clear groups and students tables
-            groupsTable.clear();
-            studentsTable.search('').draw(); // the only possible workaround to clear ajax-powered table
-
             let groupId = value.groupId;
-            fetchGroup(groupId, function (data) {
-                let name = data.entity.name;
-
+            FETCH_QUEUE.append(fetchGroup, [groupId], function (entity) {
+                let name = entity.name;
                 // associate group id with its row
                 let row = groupsTable.row.add(
                     $(`<tr><td><div class="lead">${name}</div></td></tr>`)[0]

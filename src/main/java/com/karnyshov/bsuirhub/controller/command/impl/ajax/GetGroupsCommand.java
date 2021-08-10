@@ -67,7 +67,6 @@ public class GetGroupsCommand implements Command {
 
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
-        int page = start / length + 1;
 
         int draw = Integer.parseInt(request.getParameter(DRAW));
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
@@ -76,9 +75,9 @@ public class GetGroupsCommand implements Command {
         List<Group> groups = new LinkedList<>();
 
         long recordsFetched = searchCriteria != null
-                ? groupService.filter(page, length, GroupFilterCriteria.valueOf(searchCriteria.toUpperCase()),
+                ? groupService.filter(start, length, GroupFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, groups)
-                : groupService.filter(page, length, groups);
+                : groupService.filter(start, length, groups);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);
@@ -90,9 +89,10 @@ public class GetGroupsCommand implements Command {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
+        int start = pageSize * (page - 1);
 
         List<Group> groups = new LinkedList<>();
-        long recordsFetched = groupService.filter(page, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
+        long recordsFetched = groupService.filter(start, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
         response.put(RESULTS, groups);
         response.put(RECORDS_FILTERED, recordsFetched);
     }

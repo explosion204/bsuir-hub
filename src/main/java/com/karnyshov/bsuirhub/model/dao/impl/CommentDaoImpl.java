@@ -18,14 +18,15 @@ public class CommentDaoImpl implements CommentDao {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String SELECT_BY_ID
-            = "SELECT id, id_grade, id_user, text " +
+            = "SELECT id, id_grade, id_user, text, creation_time " +
               "FROM comments " +
               "WHERE id = ?;";
 
     private static final String SELECT_BY_GRADE
-            = "SELECT id, id_grade, id_user, text " +
+            = "SELECT id, id_grade, id_user, text, creation_time " +
               "FROM comments " +
               "WHERE id_grade = ? " +
+              "ORDER BY creation_time DESC " +
               "LIMIT ? " +
               "OFFSET ?";
 
@@ -35,12 +36,7 @@ public class CommentDaoImpl implements CommentDao {
               "WHERE id_grade = ?;";
 
     private static final String INSERT
-            = "INSERT comments (id_grade, id_user, text) VALUES (?, ?, ?);";
-
-    private static final String UPDATE
-            = "UPDATE comments " +
-              "SET id_grade = ?, id_user = ?, text = ? " +
-              "WHERE id = ?;";
+            = "INSERT comments (id_grade, id_user, text, creation_time) VALUES (?, ?, ?, ?);";
 
     private static final String DELETE
             = "DELETE FROM comments " +
@@ -55,13 +51,11 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Comment> result) throws DaoException {
-        logger.error("Implementation of CommentDao does not support selectAll operation");
         throw new UnsupportedOperationException("Implementation of CommentDao does not support selectAll operation");
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        logger.error("Implementation of CommentDao does not support selectTotalCount operation");
         throw new UnsupportedOperationException("Implementation of CommentDao does not support selectTotalCount operation");
     }
 
@@ -72,7 +66,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void selectByGrade(int offset, int limit, long gradeId, List<Comment> result) throws DaoException {
-        QueryExecutor.executeSelect(commentMapper, SELECT_BY_GRADE, result, limit, offset, gradeId);
+        QueryExecutor.executeSelect(commentMapper, SELECT_BY_GRADE, result, gradeId, limit, offset);
     }
 
     @Override
@@ -87,19 +81,15 @@ public class CommentDaoImpl implements CommentDao {
                 INSERT,
                 comment.getGradeId(),
                 comment.getUserId(),
-                comment.getText()
+                comment.getText(),
+                comment.getCreationTime()
         );
     }
 
     @Override
     public void update(Comment comment) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
-                UPDATE,
-                comment.getGradeId(),
-                comment.getUserId(),
-                comment.getText(),
-                comment.getEntityId()
-        );
+        logger.error("Implementation of CommentDao does not support selectAll operation");
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support update operation");
     }
 
     @Override

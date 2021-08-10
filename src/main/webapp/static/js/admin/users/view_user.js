@@ -77,8 +77,8 @@ $(document).ready(function () {
 
     roleSelect.trigger('change');
 
-    fetchGroup($('main').data('group-id'), function (data) {
-        let option = new Option(data.entity.name, data.entity.entityId);
+    fetchGroup($('main').data('group-id'), function (entity) {
+        let option = new Option(entity.name, entity.entityId);
         groupSelect.append(option).trigger('change');
     });
 })

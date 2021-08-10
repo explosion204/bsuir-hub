@@ -1,17 +1,20 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Comment extends AbstractEntity {
     private long gradeId;
     private long userId;
     private String text;
+    private LocalDateTime creationTime;
 
     private Comment(CommentBuilder builder) {
         super(builder);
         this.gradeId = builder.gradeId;
         this.userId = builder.userId;
         this.text = builder.text;
+        this.creationTime = builder.creationTime;
     }
 
     public static CommentBuilder builder() {
@@ -28,6 +31,10 @@ public class Comment extends AbstractEntity {
 
     public String getText() {
         return text;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
     @Override
@@ -63,7 +70,8 @@ public class Comment extends AbstractEntity {
         builder.append(super.toString()).append("): ");
         builder.append("grade id = ").append(gradeId).append(", ");
         builder.append("user id = ").append(userId).append(", ");
-        builder.append("text = ").append(text);
+        builder.append("text = ").append(text).append(", ");
+        builder.append("creation time = ").append(text);
 
         return builder.toString();
     }
@@ -72,6 +80,7 @@ public class Comment extends AbstractEntity {
         private long gradeId;
         private long userId;
         private String text;
+        private LocalDateTime creationTime;
 
         private CommentBuilder() {
 
@@ -92,11 +101,17 @@ public class Comment extends AbstractEntity {
             return this;
         }
 
+        public CommentBuilder setCreationTime(LocalDateTime creationTime) {
+            this.creationTime = creationTime;
+            return this;
+        }
+
         public CommentBuilder of(Comment comment) {
             super.of(comment);
             this.gradeId = comment.gradeId;
             this.userId = comment.userId;
             this.text = comment.text;
+            this.creationTime = comment.creationTime;
             return this;
         }
 

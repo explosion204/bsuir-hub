@@ -42,8 +42,8 @@ $(document).ready(function () {
         }
     });
 
-    fetchFaculty($('main').data('faculty-id'), function (data) {
-        let option = new Option(data.entity.name, data.entity.entityId);
+    fetchFaculty($('main').data('faculty-id'), function (entity) {
+        let option = new Option(entity.name, entity.entityId);
         facultySelect.append(option).trigger('change');
-    })
+    });
 })

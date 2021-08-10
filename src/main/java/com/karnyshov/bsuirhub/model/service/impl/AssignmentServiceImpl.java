@@ -27,19 +27,18 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public long filter(int page, int pageSize,  StudyAssignmentFilterCriteria criteria, long filterId,
-                List<Assignment> result) throws ServiceException {
-        int offset = pageSize * (page - 1);
+    public long filter(int start, int size, StudyAssignmentFilterCriteria criteria, long filterId,
+                       List<Assignment> result) throws ServiceException {
         long totalAssignments;
 
         try {
             switch (criteria) {
                 case GROUP:
-                    assignmentDao.selectByGroup(offset, pageSize, filterId, result);
+                    assignmentDao.selectByGroup(start, size, filterId, result);
                     totalAssignments = assignmentDao.selectCountByGroup(filterId);
                     break;
                 case TEACHER:
-                    assignmentDao.selectByTeacher(offset, pageSize, filterId, result);
+                    assignmentDao.selectByTeacher(start, size, filterId, result);
                     totalAssignments = assignmentDao.selectCountByTeacher(filterId);
                     break;
                 default:

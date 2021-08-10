@@ -47,9 +47,9 @@ public class UpdateGradeCommand implements Command {
             try {
                 long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
                 long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
-                long teacherId = Long.parseLong(request.getParameter(TEACHER_ID));
+                long teacherId = currentUser.getEntityId();
                 long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
-                int gradeValue = Integer.parseInt(request.getParameter(GRADE_VALUE));
+                byte gradeValue = Byte.parseByte(request.getParameter(GRADE_VALUE));
 
                 status = validator.validateGradeValue(gradeValue);
                 if (status) {
@@ -57,7 +57,7 @@ public class UpdateGradeCommand implements Command {
                             .setStudentId(studentId)
                             .setTeacherId(teacherId)
                             .setSubjectId(subjectId)
-                            .setValue(Grade.Value.values()[gradeValue])
+                            .setValue(gradeValue)
                             .setEntityId(entityId)
                             .build();
 

@@ -12,9 +12,9 @@ public interface UserService {
     Optional<User> findById(long id) throws ServiceException;
     Optional<User> findByLogin(String login) throws ServiceException;
     Optional<User> findByEmail(String email) throws ServiceException;
-    long filter(int page, int pageSize, UserFilterCriteria criteria, String keyword, List<User> result)
+    long filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
             throws ServiceException;
-    long filter(int page, int pageSize, List<User> result) throws ServiceException;
+    long filter(int start, int size, List<User> result) throws ServiceException;
 
     User changePassword(long id, String newPassword) throws ServiceException;
     User changeEmail(long id, String newEmail) throws ServiceException;

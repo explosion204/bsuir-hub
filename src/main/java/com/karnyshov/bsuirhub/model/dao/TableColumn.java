@@ -61,7 +61,6 @@ public final class TableColumn {
     public static final String GRADE_STUDENT_ID = "id_student";
     public static final String GRADE_SUBJECT_ID = "id_subject";
     public static final String GRADE_DATE = "date";
-    public static final String GRADE_IS_EXAM = "is_exam";
 
     /*
     * TABLE comments
@@ -70,6 +69,7 @@ public final class TableColumn {
     public static final String COMMENT_GRADE_ID = "id_grade";
     public static final String COMMENT_USER_ID = "id_user";
     public static final String COMMENT_TEXT = "text";
+    public static final String COMMENT_CREATION_TIME = "creation_time";
 
     /*
     * TABLE study_assignments
