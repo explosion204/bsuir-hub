@@ -43,6 +43,7 @@ public final class TableColumn {
     public static final String GROUP_HEADMAN_ID = "id_headman";
     public static final String GROUP_CURATOR_ID = "id_curator";
     public static final String GROUP_NAME = "name";
+    public static final String GROUP_IS_ARCHIVED = "is_archived";
 
     /*
      * TABLE subjects

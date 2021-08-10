@@ -7,6 +7,7 @@ public class Group extends AbstractEntity {
     private long headmanId;
     private long curatorId;
     private String name;
+    private transient boolean archived;
 
     private Group(GroupBuilder builder) {
         super(builder);
@@ -14,6 +15,7 @@ public class Group extends AbstractEntity {
         this.headmanId = builder.headmanId;
         this.curatorId = builder.curatorId;
         this.name = builder.name;
+        this.archived = builder.archived;
     }
 
     public static GroupBuilder builder() {
@@ -36,6 +38,10 @@ public class Group extends AbstractEntity {
         return name;
     }
 
+    public boolean isArchived() {
+        return archived;
+    }
+
     @Override
     public int hashCode() {
         int prime = 31;
@@ -45,6 +51,7 @@ public class Group extends AbstractEntity {
         result = prime * result + Long.hashCode(headmanId);
         result = prime * result + Long.hashCode(curatorId);
         result = prime * result + (name != null ? name.hashCode() : 0);
+        result = prime * result + Boolean.hashCode(archived);
 
         return result;
     }
@@ -61,7 +68,7 @@ public class Group extends AbstractEntity {
 
         Group group = (Group) obj;
         return super.equals(obj) && group.departmentId == departmentId && group.headmanId == headmanId
-                && group.curatorId == curatorId && Objects.equals(group.name, name);
+                && group.curatorId == curatorId && Objects.equals(group.name, name) && group.archived == archived;
     }
 
     @Override
@@ -71,6 +78,7 @@ public class Group extends AbstractEntity {
         builder.append("department id = ").append(departmentId).append(", ");
         builder.append("headman id = ").append(headmanId).append(", ");
         builder.append("curator id = ").append(curatorId).append(", ");
+        builder.append("is archived = ").append(archived).append(", ");
         builder.append("name = ").append(name);
 
         return builder.toString();
@@ -81,6 +89,7 @@ public class Group extends AbstractEntity {
         private long headmanId;
         private long curatorId;
         private String name;
+        private boolean archived;
 
         private GroupBuilder() {
         }
@@ -105,12 +114,18 @@ public class Group extends AbstractEntity {
             return this;
         }
 
+        public GroupBuilder setArchived(boolean archived) {
+            this.archived = archived;
+            return this;
+        }
+
         public GroupBuilder of(Group group) {
             super.of(group);
             this.departmentId = group.departmentId;
             this.headmanId = group.headmanId;
             this.curatorId = group.curatorId;
             this.name = group.name;
+            this.archived = group.archived;
             return this;
         }
 

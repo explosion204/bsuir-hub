@@ -35,7 +35,7 @@ public class GoToEditSubjectPageCommand implements Command {
             long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
             Optional<Subject> subject = subjectService.findById(entityId);
 
-            if (subject.isPresent() && !subject.get().getArchived()) {
+            if (subject.isPresent() && !subject.get().isArchived()) {
                 request.setAttribute(TARGET_ENTITY, subject.get());
                 request.setAttribute(ENTITY_ID, subject.get().getEntityId());
                 request.setAttribute(NEW_ENTITY_PAGE, false);

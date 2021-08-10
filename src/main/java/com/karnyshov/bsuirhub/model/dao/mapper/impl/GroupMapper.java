@@ -20,6 +20,7 @@ public class GroupMapper implements ResultSetMapper<Group> {
                     .setHeadmanId(resultSet.getLong(GROUP_HEADMAN_ID))
                     .setCuratorId(resultSet.getLong(GROUP_CURATOR_ID))
                     .setName(resultSet.getString(GROUP_NAME))
+                    .setArchived(resultSet.getBoolean(GROUP_IS_ARCHIVED))
                     .setEntityId(resultSet.getLong(GROUP_ID))
                     .build();
         } catch (SQLException e) {

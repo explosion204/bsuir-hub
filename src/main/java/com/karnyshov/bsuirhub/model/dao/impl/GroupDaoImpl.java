@@ -14,32 +14,32 @@ import java.util.Optional;
 @Named
 public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_ALL
-            = "SELECT id, name, id_department, id_headman, id_curator " +
+            = "SELECT id, name, id_department, id_headman, id_curator, is_archived " +
               "FROM `groups` " +
+              "WHERE is_archived = 0 " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
 
     private static final String SELECT_TOTAL_COUNT
             = "SELECT COUNT(id) " +
-              "FROM `groups`;";
+              "FROM `groups` " +
+              "WHERE is_archived = 0;";
 
     private static final String SELECT_BY_ID
-            = "SELECT id, name, id_department, id_headman, id_curator " +
+            = "SELECT id, name, id_department, id_headman, id_curator, is_archived " +
               "FROM `groups` " +
               "WHERE id = ?;";
 
-
     private static final String SELECT_BY_NAME
-            = "SELECT id, name, id_department, id_headman, id_curator " +
+            = "SELECT id, name, id_department, id_headman, id_curator, is_archived " +
               "FROM `groups` " +
-              "WHERE name = ?;";
-
+              "WHERE name = ? AND is_archived = 0;";
 
     private static final String SELECT_MULTIPLE_BY_NAME
-            = "SELECT id, name, id_department, id_headman, id_curator " +
+            = "SELECT id, name, id_department, id_headman, id_curator, is_archived " +
               "FROM `groups` " +
-              "WHERE name LIKE CONCAT('%', ?, '%') " +
+              "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0 " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
@@ -47,12 +47,12 @@ public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_COUNT_BY_NAME
             = "SELECT COUNT(id) " +
               "FROM `groups` " +
-              "WHERE name LIKE CONCAT('%', ?, '%');";
+              "WHERE name LIKE CONCAT('%', ?, '%') AND is_archived = 0;";
 
     private static final String SELECT_BY_DEPARTMENT
-            = "SELECT groups.id, groups.name, id_department, id_headman, id_curator " +
+            = "SELECT groups.id, groups.name, id_department, id_headman, id_curator, is_archived " +
               "FROM `groups` " +
-              "WHERE id_department = ? " +
+              "WHERE id_department = ? AND is_archived = 0 " +
               "ORDER BY id " +
               "LIMIT ? " +
               "OFFSET ?;";
@@ -60,10 +60,10 @@ public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_COUNT_BY_DEPARTMENT
             = "SELECT COUNT(groups.id) " +
               "FROM `groups` " +
-              "WHERE id_department = ?;";
+              "WHERE id_department = ? AND is_archived = 0;";
     
     private static final String INSERT
-            = "INSERT `groups` (name, id_department, id_headman, id_curator) VALUES (?, ?, ?, ?);";
+            = "INSERT `groups` (name, id_department, id_headman, id_curator, is_archived) VALUES (?, ?, ?, ?, 0);";
 
     private static final String UPDATE
             = "UPDATE `groups` " +
@@ -71,7 +71,8 @@ public class GroupDaoImpl implements GroupDao {
               "WHERE id = ?;";
 
     private static final String DELETE
-            = "DELETE FROM `groups` " +
+            = "UPDATE `groups` " +
+              "SET is_archived = 1 " +
               "WHERE id = ?;";
 
     @Inject
@@ -145,7 +146,7 @@ public class GroupDaoImpl implements GroupDao {
                 UPDATE,
                 group.getName(),
                 group.getDepartmentId(),
-                headmanId != 0 ? headmanId : null, // null for default long value
+                headmanId != 0 ? headmanId : null, // null for default long value // TODO: ???? why I have done this...
                 group.getCuratorId(),
                 group.getEntityId()
         );

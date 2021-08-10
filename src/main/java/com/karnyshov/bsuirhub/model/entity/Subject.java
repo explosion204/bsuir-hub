@@ -11,6 +11,7 @@ public class Subject extends AbstractEntity {
         super(builder);
         this.name = builder.name;
         this.shortName = builder.shortName;
+        this.archived = builder.archived;
     }
 
     public static SubjectBuilder builder() {
@@ -25,7 +26,7 @@ public class Subject extends AbstractEntity {
         return shortName;
     }
 
-    public boolean getArchived() {
+    public boolean isArchived() {
         return archived;
     }
 

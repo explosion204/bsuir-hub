@@ -26,7 +26,7 @@ public class Faculty extends AbstractEntity {
         return shortName;
     }
 
-    public boolean getArchived() {
+    public boolean isArchived() {
         return archived;
     }
 
