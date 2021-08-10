@@ -42,8 +42,11 @@ $(document).ready(function () {
         }
     });
 
-    fetchFaculty($('main').data('faculty-id'), function (entity) {
-        let option = new Option(entity.name, entity.entityId);
-        facultySelect.append(option).trigger('change');
-    });
+    let facultyId = Number.parseInt($('main').data('faculty-id'));
+    if (!isNaN(facultyId)) {
+        fetchFaculty(facultyId, function (entity) {
+            let option = new Option(entity.name, entity.entityId);
+            facultySelect.append(option).trigger('change');
+        });
+    }
 })

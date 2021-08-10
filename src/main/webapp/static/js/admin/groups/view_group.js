@@ -203,7 +203,7 @@ function initializeSubjectSelect(select, width, initialId) {
         }
     });
 
-    if (initialId) {
+    if (!isNaN(Number.parseInt(initialId))) {
         FETCH_QUEUE.append(fetchSubject, [initialId], function (entity) {
             let option = new Option(entity.name, entity.entityId);
             select.append(option).trigger('change');
@@ -247,7 +247,7 @@ function initializeTeacherSelect(select, width, initialId) {
         }
     });
 
-    if (initialId) {
+    if (!isNaN(Number.parseInt(initialId))) {
         FETCH_QUEUE.append(fetchUser, [initialId], function (entity) {
             let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
             let option = new Option(name, entity.entityId);
@@ -294,7 +294,7 @@ function initializeStudentSelect(select, width, initialId) {
         }
     });
 
-    if (initialId) {
+    if (!isNaN(Number.parseInt(initialId))) {
         fetchUser(initialId, function (entity) {
             let name = entity.lastName + ' ' + entity.firstName + ' ' + entity.patronymic;
             let option = new Option(name, entity.entityId);
@@ -338,7 +338,7 @@ function initializeDepartmentSelect(select, width, initialId) {
         }
     });
 
-    if (initialId) {
+    if (!isNaN(Number.parseInt(initialId))) {
         fetchDepartment(initialId, function (entity) {
             let option = new Option(entity.name, entity.entityId);
             select.append(option).trigger('change');

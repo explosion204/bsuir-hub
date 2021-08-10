@@ -77,8 +77,11 @@ $(document).ready(function () {
 
     roleSelect.trigger('change');
 
-    fetchGroup($('main').data('group-id'), function (entity) {
-        let option = new Option(entity.name, entity.entityId);
-        groupSelect.append(option).trigger('change');
-    });
+    let groupId = Number.parseInt($('main').data('group-id'));
+    if (!isNaN(groupId)) {
+        fetchGroup(groupId, function (entity) {
+            let option = new Option(entity.name, entity.entityId);
+            groupSelect.append(option).trigger('change');
+        });
+    }
 })
