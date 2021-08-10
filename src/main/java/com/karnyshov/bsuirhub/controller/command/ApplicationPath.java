@@ -12,7 +12,7 @@ public class ApplicationPath {
     public static final String TEACHER_DASHBOARD_URL = "/teacher";
     public static final String STUDENT_DASHBOARD_URL = "/student";
     public static final String GRADES_OVERVIEW_URL = "/grades";
-    public static final String CONFIRM_EMAIL_URL = "/settings/confirm_email";
+    public static final String CONFIRM_EMAIL_URL = "/confirm_email";
     public static final String SEND_RESET_PASSWORD_LINK_URL = "/login/send_reset_password_link";
     public static final String RESET_PASSWORD_URL = "/login/reset_password";
     public static final String ADMIN_USERS_URL = "/admin/users";

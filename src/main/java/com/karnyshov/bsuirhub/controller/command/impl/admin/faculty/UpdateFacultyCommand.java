@@ -2,18 +2,20 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.faculty;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.FacultyValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
+import com.karnyshov.bsuirhub.model.validator.NewFacultyValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.VALIDATION_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -25,12 +27,10 @@ public class UpdateFacultyCommand implements Command {
     @Inject
     private FacultyService facultyService;
 
-    @Inject
-    private FacultyValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         String idString = request.getParameter(ENTITY_ID);
         String name = request.getParameter(NAME);
@@ -42,7 +42,10 @@ public class UpdateFacultyCommand implements Command {
                 .setArchived(false)
                 .build();
 
-        if (validator.validateFaculty(request, faculty)) {
+        boolean validationResult = NewFacultyValidator.validateFaculty(faculty);
+        session.setAttribute(VALIDATION_ERROR, !validationResult);
+
+        if (validationResult) {
             // data is valid
             try {
                 long entityId = Long.parseLong(idString);

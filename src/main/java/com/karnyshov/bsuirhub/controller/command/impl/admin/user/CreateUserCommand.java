@@ -2,19 +2,21 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.user;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -28,12 +30,10 @@ public class CreateUserCommand implements Command {
     @Inject
     private UserService userService;
 
-    @Inject
-    private UserValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         String login = request.getParameter(LOGIN);
         String email = request.getParameter(EMAIL);
@@ -65,7 +65,22 @@ public class CreateUserCommand implements Command {
                     .setProfileImageName(DEFAULT_PROFILE_IMAGE_PATH)
                     .build();
 
-            if (validator.validateUser(request, user, password, confirmPassword, false, false, false)) {
+            boolean validationResult = NewUserValidator.validateUser(user, password, confirmPassword,
+                    false, false, false);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
+
+            boolean isLoginUnique = userService.isLoginUnique(login);
+            boolean isEmailUnique = userService.isEmailUnique(email);
+
+            if (!isLoginUnique) {
+                session.setAttribute(NOT_UNIQUE_LOGIN, true);
+            }
+
+            if (!isEmailUnique) {
+                session.setAttribute(NOT_UNIQUE_EMAIL, true);
+            }
+
+            if (validationResult && isLoginUnique && isEmailUnique) {
                 // data is valid
                 userService.create(user, password);
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);

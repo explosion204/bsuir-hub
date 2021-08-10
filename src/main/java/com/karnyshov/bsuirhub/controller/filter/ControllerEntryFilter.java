@@ -63,34 +63,16 @@ public class ControllerEntryFilter implements Filter {
         session.removeAttribute(AUTH_ERROR);
 
         // validation errors
-        request.setAttribute(INVALID_ROLE, session.getAttribute(INVALID_ROLE));
-        request.setAttribute(INVALID_LOGIN, session.getAttribute(INVALID_LOGIN));
+        request.setAttribute(VALIDATION_ERROR, session.getAttribute(VALIDATION_ERROR));
         request.setAttribute(NOT_UNIQUE_LOGIN, session.getAttribute(NOT_UNIQUE_LOGIN));
-        request.setAttribute(INVALID_EMAIL, session.getAttribute(INVALID_EMAIL));
         request.setAttribute(NOT_UNIQUE_EMAIL, session.getAttribute(NOT_UNIQUE_EMAIL));
-        request.setAttribute(INVALID_PASSWORD, session.getAttribute(INVALID_PASSWORD));
         request.setAttribute(INVALID_CURRENT_PASSWORD, session.getAttribute(INVALID_CURRENT_PASSWORD));
-        request.setAttribute(PASSWORDS_DO_NOT_MATCH, session.getAttribute(PASSWORDS_DO_NOT_MATCH));
-        request.setAttribute(INVALID_FIRST_NAME, session.getAttribute(INVALID_FIRST_NAME));
-        request.setAttribute(INVALID_PATRONYMIC, session.getAttribute(INVALID_PATRONYMIC));
-        request.setAttribute(INVALID_LAST_NAME, session.getAttribute(INVALID_LAST_NAME));
-        request.setAttribute(INVALID_NAME, session.getAttribute(INVALID_NAME));
-        request.setAttribute(INVALID_SHORT_NAME, session.getAttribute(INVALID_SHORT_NAME));
         request.setAttribute(NOT_UNIQUE_NAME, session.getAttribute(NOT_UNIQUE_NAME));
 
-        session.removeAttribute(INVALID_ROLE);
-        session.removeAttribute(INVALID_LOGIN);
+        session.removeAttribute(VALIDATION_ERROR);
         session.removeAttribute(NOT_UNIQUE_LOGIN);
-        session.removeAttribute(INVALID_EMAIL);
         session.removeAttribute(NOT_UNIQUE_EMAIL);
-        session.removeAttribute(INVALID_PASSWORD);
         session.removeAttribute(INVALID_CURRENT_PASSWORD);
-        session.removeAttribute(PASSWORDS_DO_NOT_MATCH);
-        session.removeAttribute(INVALID_FIRST_NAME);
-        session.removeAttribute(INVALID_PATRONYMIC);
-        session.removeAttribute(INVALID_LAST_NAME);
-        session.removeAttribute(INVALID_NAME);
-        session.removeAttribute(INVALID_SHORT_NAME);
         session.removeAttribute(NOT_UNIQUE_NAME);
     }
 }

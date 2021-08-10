@@ -3,11 +3,11 @@ package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.CommentValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.CommentService;
+import com.karnyshov.bsuirhub.model.validator.CommentValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,7 +61,7 @@ public class CreateCommentCommand implements Command {
                     .setCreationTime(LocalDateTime.now())
                     .build();
 
-            status = validator.validateComment(comment);
+            status = CommentValidator.validateComment(comment);
 
             if (status) {
                 long entityId = commentService.create(comment);

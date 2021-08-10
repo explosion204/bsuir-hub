@@ -16,6 +16,7 @@ public interface UserService {
             throws ServiceException;
     long filter(int start, int size, List<User> result) throws ServiceException;
 
+    String hashPassword(String password);
     User changePassword(long id, String newPassword) throws ServiceException;
     User changeEmail(long id, String newEmail) throws ServiceException;
 

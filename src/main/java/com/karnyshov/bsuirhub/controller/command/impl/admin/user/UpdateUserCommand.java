@@ -2,13 +2,13 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.user;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
-import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
+import com.karnyshov.bsuirhub.controller.listener.SessionAttributeListener;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -33,9 +33,6 @@ public class UpdateUserCommand implements Command {
 
     @Inject
     private UserService userService;
-
-    @Inject
-    private UserValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -71,11 +68,21 @@ public class UpdateUserCommand implements Command {
 
         try {
             long entityId = Long.parseLong(idString);
-            boolean roleNotChanged = role == previousRole;
+            boolean skipRoleValidation = role == previousRole;
             boolean emailNotChanged = StringUtils.equals(email, previousEmail);
+            boolean passwordNotChanged = StringUtils.isBlank(password);
 
-            if (validator.validateUser(request, user, password, confirmPassword, roleNotChanged, emailNotChanged, true)) {
+            boolean validationResult = NewUserValidator.validateUser(user, password, confirmPassword, skipRoleValidation,
+                    emailNotChanged, passwordNotChanged);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
 
+            boolean isEmailUnique = emailNotChanged || userService.isEmailUnique(email);
+
+            if (!isEmailUnique) {
+                session.setAttribute(NOT_UNIQUE_EMAIL, true);
+            }
+
+            if (validationResult && isEmailUnique) {
                 // when role is not STUDENT, we disassociate user with current group (setting NULL in database)
                 long groupId = role == UserRole.STUDENT && StringUtils.isNotBlank(groupIdString)
                         ? Long.parseLong(groupIdString)
@@ -93,7 +100,7 @@ public class UpdateUserCommand implements Command {
                 // update target user session if exists
                 // this command can be executed only by administrator, so we have to update session this way
                 // because it belongs to another user
-                AuthenticatedSessionCollector.findSession(entityId).ifPresent(
+                SessionAttributeListener.findSession(entityId).ifPresent(
                         targetSession -> targetSession.setAttribute(USER, updatedUser));
 
                 session.setAttribute(ENTITY_UPDATE_SUCCESS, true);

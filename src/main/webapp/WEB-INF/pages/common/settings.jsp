@@ -31,12 +31,12 @@
             </div>
         </c:if>
 
-
-        <c:if test="${invalidEmail}">
+        <c:if test="${validationError}">
             <div class="alert alert-danger" role="alert">
-                Invalid email
+                A server-side validation error occurred
             </div>
         </c:if>
+
 
         <c:if test="${notUniqueEmail}">
             <div class="alert alert-danger" role="alert">

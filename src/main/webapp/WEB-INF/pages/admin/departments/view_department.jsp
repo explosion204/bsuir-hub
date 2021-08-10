@@ -36,19 +36,9 @@
                         Department successfully updated
                     </div>
                 </c:if>
-                <c:if test="${invalidName}">
+                <c:if test="${validationError}">
                     <div class="alert alert-danger" role="alert">
-                        Department name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
-                    </div>
-                </c:if>
-                <c:if test="${invalidShortName}">
-                    <div class="alert alert-danger" role="alert">
-                        Department short name must have 1 - 15 alphabetic characters
-                    </div>
-                </c:if>
-                <c:if test="${invalidSpecialtyAlias}">
-                    <div class="alert alert-danger" role="alert">
-                        Department short name must have 1 - 15 alphabetic characters
+                        A server-side validation error occurred
                     </div>
                 </c:if>
 

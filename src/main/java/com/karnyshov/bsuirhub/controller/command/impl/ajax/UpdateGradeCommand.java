@@ -3,12 +3,12 @@ package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.GradeValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.GradeService;
+import com.karnyshov.bsuirhub.model.validator.GradeValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,9 +31,6 @@ public class UpdateGradeCommand implements Command {
     @Inject
     private GradeService gradeService;
 
-    @Inject
-    private GradeValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -51,7 +48,8 @@ public class UpdateGradeCommand implements Command {
                 long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
                 byte gradeValue = Byte.parseByte(request.getParameter(GRADE_VALUE));
 
-                status = validator.validateGradeValue(gradeValue);
+                status = GradeValidator.validateGradeValue(gradeValue);
+
                 if (status) {
                     Grade grade = (Grade) Grade.builder()
                             .setStudentId(studentId)

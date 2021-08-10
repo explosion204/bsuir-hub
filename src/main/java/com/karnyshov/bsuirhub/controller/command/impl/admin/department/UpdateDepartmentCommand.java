@@ -2,18 +2,20 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.department;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.DepartmentValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
+import com.karnyshov.bsuirhub.model.validator.NewDepartmentValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.VALIDATION_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -26,12 +28,10 @@ public class UpdateDepartmentCommand implements Command {
     @Inject
     private DepartmentService departmentService;
 
-    @Inject
-    private DepartmentValidator departmentValidator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         String idString = request.getParameter(ENTITY_ID);
         String name = request.getParameter(NAME);
@@ -48,7 +48,10 @@ public class UpdateDepartmentCommand implements Command {
                     .setArchived(false)
                     .build();
 
-            if (departmentValidator.validateDepartment(request, department)) {
+            boolean validationResult = NewDepartmentValidator.validateDepartment(department);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
+
+            if (validationResult) {
                 // data is valid
                 long entityId = Long.parseLong(idString);
                 Department updatedDepartment = (Department) Department.builder()

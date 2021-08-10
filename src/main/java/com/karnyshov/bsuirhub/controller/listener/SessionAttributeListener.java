@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 @WebListener
-public class AuthenticatedSessionCollector implements HttpSessionAttributeListener {
+public class SessionAttributeListener implements HttpSessionAttributeListener {
     private static final Map<Long, HttpSession> allSessions = new ConcurrentHashMap<>();
 
     @Override

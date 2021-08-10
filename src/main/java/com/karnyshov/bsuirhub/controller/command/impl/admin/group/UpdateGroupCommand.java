@@ -2,19 +2,20 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.group;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.GroupValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
+import com.karnyshov.bsuirhub.model.validator.NewGroupValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.ENTITY_UPDATE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -27,12 +28,10 @@ public class UpdateGroupCommand implements Command {
     @Inject
     private GroupService groupService;
 
-    @Inject
-    private GroupValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         String idString = request.getParameter(ENTITY_ID);
         String name = request.getParameter(NAME);
@@ -51,9 +50,16 @@ public class UpdateGroupCommand implements Command {
                     .setHeadmanId(headmanId)
                     .build();
 
-            boolean nameNotChanged = StringUtils.equals(name, previousName);
+            boolean validationResult = NewGroupValidator.validateGroup(group);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            if (validator.validateGroup(request, group, nameNotChanged)) {
+            boolean nameNotChanged = StringUtils.equals(name, previousName);
+            boolean isNameUnique = nameNotChanged || groupService.isNameUnique(name);
+            if (!isNameUnique) {
+                session.setAttribute(NOT_UNIQUE_NAME, true);
+            }
+
+            if (validationResult && isNameUnique) {
                 // data is valid
                 long entityId = Long.parseLong(idString);
                 Group updatedGroup = (Group) Group.builder()

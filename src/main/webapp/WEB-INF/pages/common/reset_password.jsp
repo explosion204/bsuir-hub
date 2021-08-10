@@ -11,24 +11,6 @@
 <jsp:include page="shared/header.jsp" />
 
 <div class="wrapper bg-white mt-auto mb-auto w-100 p-4">
-    <c:if test="${passwordChangeSuccess}">
-        <div class="alert alert-success mt-2" role="alert">
-            Password successfully changed
-        </div>
-    </c:if>
-
-    <c:if test="${invalidPassword}">
-        <div class="alert alert-danger" role="alert">
-            Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
-        </div>
-    </c:if>
-
-    <c:if test="${passwordsDoNotMatch}">
-        <div class="alert alert-danger" role="alert">
-            Passwords do not match
-        </div>
-    </c:if>
-
     <h4 class="pb-2">Reset password</h4>
     <form id="resetPasswordForm" method="post" action="/login/reset_password">
         <div class="form-group mb-2 mt-2">

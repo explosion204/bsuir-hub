@@ -36,9 +36,9 @@
                         Group successfully updated
                     </div>
                 </c:if>
-                <c:if test="${invalidName}">
+                <c:if test="${validationError}">
                     <div class="alert alert-danger" role="alert">
-                        Group name must have 1 - 20 alphanumeric characters
+                        A server-side validation error occurred
                     </div>
                 </c:if>
                 <c:if test="${notUniqueName}">
@@ -79,19 +79,21 @@
                 >Save</button>
             </form>
 
-            <h1 class="display-6">Subjects and teachers</h1>
-            <table id="assignmentsTable" class="table table-borderless">
-                <thead>
-                <tr>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Assignment</td>
-                </tr>
-                </tbody>
-            </table>
+            <c:if test="${not newEntityPage}">
+                <h1 class="display-6">Subjects and teachers</h1>
+                <table id="assignmentsTable" class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Assignment</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </c:if>
     </div>
 </main>
 

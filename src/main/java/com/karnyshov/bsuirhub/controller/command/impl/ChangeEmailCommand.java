@@ -2,10 +2,10 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import com.karnyshov.bsuirhub.util.TokenService;
 import com.karnyshov.bsuirhub.util.MailService;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.EMAIL_CHANGE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -42,23 +42,28 @@ public class ChangeEmailCommand implements Command {
     @Inject
     private MailService mailService;
 
-    @Inject
-    private UserValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         try {
             User user = (User) request.getSession().getAttribute(USER);
             long targetId = user.getEntityId();
 
             String email = request.getParameter(EMAIL);
+            boolean validationResult = NewUserValidator.validateEmail(email);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            if (validator.validateEmail(request, email)) {
+            boolean isEmailUnique = userService.isEmailUnique(email);
+            if (!isEmailUnique) {
+                session.setAttribute(NOT_UNIQUE_EMAIL, true);
+            }
+
+            if (validationResult && isEmailUnique) {
                 // data is valid
                 User updatedUser = userService.changeEmail(targetId, email);
-                request.getSession().setAttribute(EMAIL_CHANGE_SUCCESS, true);
+                session.setAttribute(EMAIL_CHANGE_SUCCESS, true);
 
                 // send confirmation mail
                 // FIXME: production link
@@ -72,7 +77,6 @@ public class ChangeEmailCommand implements Command {
                         .build();
                 String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
 
-                HttpSession session = request.getSession();
                 String locale = (String) session.getAttribute(LOCALE);
                 ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(locale));
 

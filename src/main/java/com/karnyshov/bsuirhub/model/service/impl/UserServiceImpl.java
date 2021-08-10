@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
             User user = result.get(0);
             String dbPasswordHash = user.getPasswordHash();
             String salt = user.getSalt();
-            String passwordHash = DigestUtils.sha256Hex(password + salt);
+            String passwordHash = hashPassword(password + salt);
 
             if (Objects.equals(passwordHash, dbPasswordHash)) {
                 return Optional.of(user);
@@ -129,13 +129,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String hashPassword(String password) {
+        return DigestUtils.sha256Hex(password);
+    }
+
+    @Override
     public User changePassword(long id, String newPassword) throws ServiceException {
         try {
             User user = userDao.selectById(id)
                     .orElseThrow(() -> new ServiceException("Unable to find user with id " + id));
 
             String salt = RandomStringUtils.random(SALT_LENGTH, true, true);
-            String passwordHash = DigestUtils.sha256Hex(newPassword + salt);
+            String passwordHash = hashPassword(newPassword + salt);
 
             User updatedUser = User.builder().of(user)
                     .setPasswordHash(passwordHash)
@@ -220,7 +225,7 @@ public class UserServiceImpl implements UserService {
         try {
             if (!StringUtils.isBlank(password)) {
                 salt = RandomStringUtils.random(SALT_LENGTH, true, true);
-                passwordHash = DigestUtils.sha256Hex(password + salt);
+                passwordHash = hashPassword(password + salt);
             } else {
                 Optional<User> oldUser = userDao.selectById(user.getEntityId());
 

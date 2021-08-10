@@ -27,6 +27,11 @@
                         Password successfully changed
                     </div>
                 </c:if>
+                <c:if test="${validationError}">
+                    <div class="alert alert-danger" role="alert">
+                        A server-side validation error occurred
+                    </div>
+                </c:if>
 
                 <form id="login" class="needs-validation" method="post" action="/login" novalidate>
                     <div class="form-group mb-3">

@@ -2,9 +2,9 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_CHANGE_SUCCESS;
+import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.VALIDATION_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -26,21 +27,20 @@ public class ResetPasswordCommand implements Command {
     @Inject
     private UserService userService;
 
-    @Inject
-    private UserValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
+        HttpSession session = request.getSession();
 
         try {
             Long userId = (Long) request.getSession().getAttribute(USER_ID);
             String password = request.getParameter(PASSWORD);
             String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
 
-            HttpSession session = request.getSession();
+            boolean validationResult = NewUserValidator.validatePassword(password, confirmPassword);
+            session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            if (userId != null && validator.validatePasswordChange(request, userId, null, password, confirmPassword, true)) {
+            if (validationResult) {
                 // data is valid
                 userService.changePassword(userId, password);
                 // prevent sending second request

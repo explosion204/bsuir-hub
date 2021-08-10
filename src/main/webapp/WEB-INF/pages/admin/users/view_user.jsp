@@ -51,54 +51,21 @@
                     </div>
                 </c:if>
 
-                <c:if test="${invalidLogin}">
+                <c:if test="${validationError}">
                     <div class="alert alert-danger" role="alert">
-                        Invalid login
+                        A server-side validation error occurred
                     </div>
                 </c:if>
+
                 <c:if test="${notUniqueLogin}">
                     <div class="alert alert-danger" role="alert">
                         Not unique login
                     </div>
                 </c:if>
-                <c:if test="${invalidEmail}">
-                    <div class="alert alert-danger" role="alert">
-                        Invalid email
-                    </div>
-                </c:if>
+
                 <c:if test="${notUniqueEmail}">
                     <div class="alert alert-danger" role="alert">
                         Not unique email
-                    </div>
-                </c:if>
-                <c:if test="${invalidPassword}">
-                    <div class="alert alert-danger" role="alert">
-                        Password must contain 8 - 32 alphanumeric characters (letters and digits are required both)
-                    </div>
-                </c:if>
-                <c:if test="${passwordsDoNotMatch}">
-                    <div class="alert alert-danger" role="alert">
-                        Passwords do not match
-                    </div>
-                </c:if>
-                <c:if test="${invalidFirstName}">
-                    <div class="alert alert-danger" role="alert">
-                        First name must have 1 - 50 alphabetic characters
-                    </div>
-                </c:if>
-                <c:if test="${invalidPatronymic}">
-                    <div class="alert alert-danger" role="alert">
-                        Patronymic must have 1 - 50 alphabetic characters
-                    </div>
-                </c:if>
-                <c:if test="${invalidLastName}">
-                    <div class="alert alert-danger" role="alert">
-                        Last name must have 1 - 50 alphabetic characters
-                    </div>
-                </c:if>
-                <c:if test="${invalidRole}">
-                    <div class="alert alert-danger" role="alert">
-                        Cannot grant administrator role via this application
                     </div>
                 </c:if>
 

@@ -3,13 +3,12 @@ package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.listener.AuthenticatedSessionCollector;
-import com.karnyshov.bsuirhub.controller.command.validator.UserValidator;
+import com.karnyshov.bsuirhub.controller.listener.SessionAttributeListener;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import jakarta.annotation.PostConstruct;
+import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
@@ -59,9 +58,6 @@ public class UploadProfileImageCommand implements Command {
     @Inject
     private UserService userService;
 
-    @Inject
-    private UserValidator validator;
-
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -96,7 +92,7 @@ public class UploadProfileImageCommand implements Command {
                 }
 
                 // validate file
-                status = validator.validateProfileImage(filePath);
+                status = NewUserValidator.validateProfileImage(filePath);
 
                 if (status) {
                     // delete existing user profile image
@@ -119,7 +115,7 @@ public class UploadProfileImageCommand implements Command {
                     // update target user session if exists
                     // this command can be executed by administrator, so we have to update session as
                     // if it belongs to another user
-                    AuthenticatedSessionCollector.findSession(targetId).ifPresent(
+                    SessionAttributeListener.findSession(targetId).ifPresent(
                             httpSession -> httpSession.setAttribute(USER, updatedTarget)
                     );
                 } else {
