@@ -8,9 +8,14 @@ $(document).ready(function () {
     });
 
     let emailInput = $('#emailInput');
+    $('#resendConfirmation').attr('disabled', !emailInput[0].checkValidity());
     sessionStorage.setItem(INITIAL_EMAIL, emailInput.val());
+
     emailInput.keyup(function () {
-        $('#changeEmailButton').attr('disabled', emailInput.val() === sessionStorage.getItem(INITIAL_EMAIL));
+        $('#changeEmailButton').attr('disabled',
+            emailInput.val() === sessionStorage.getItem(INITIAL_EMAIL) || !emailInput[0].checkValidity());
+        $('#resendConfirmation').attr('disabled',
+            emailInput.val() !== sessionStorage.getItem(INITIAL_EMAIL) || !emailInput[0].checkValidity());
     });
 
     $('#passwordForm').on('input', function () {

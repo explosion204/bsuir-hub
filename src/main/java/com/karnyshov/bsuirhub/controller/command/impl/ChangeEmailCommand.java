@@ -13,6 +13,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +25,7 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 
 @Named
 public class ChangeEmailCommand implements Command {
@@ -55,7 +57,11 @@ public class ChangeEmailCommand implements Command {
             boolean validationResult = NewUserValidator.validateEmail(email);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            boolean isEmailUnique = userService.isEmailUnique(email);
+            // logic for resending confirmation link
+            // if user submitted the same email as his current not confirmed from session, uniqueness check will be omitted
+            // and activation link will be resent
+            boolean isEmailUnique = StringUtils.equals(user.getEmail(), email) && user.getStatus() == NOT_CONFIRMED
+                    || userService.isEmailUnique(email);
             if (!isEmailUnique) {
                 session.setAttribute(NOT_UNIQUE_EMAIL, true);
             }

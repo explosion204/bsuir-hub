@@ -64,6 +64,9 @@
             </div>
             <div class="py-2 pb-3 border-bottom">
                 <button type="submit" class="btn btn-secondary w-100" id="changeEmailButton" disabled>Change email</button>
+                <c:if test="${sessionScope.user.status.statusId eq 1}">
+                    <button type="submit" class="btn btn-secondary w-100 mt-2" id="resendConfirmation">Resend confirmation link</button>
+                </c:if>
             </div>
         </form>
 
