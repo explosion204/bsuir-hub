@@ -5,6 +5,7 @@ public class RequestParameter {
     public static final String ENTITY_ID = "id";
     public static final String LOGIN = "login";
     public static final String EMAIL = "email";
+    public static final String TEXT = "text";
     public static final String CURRENT_PASSWORD = "currentPassword";
     public static final String PASSWORD = "password";
     public static final String CONFIRM_PASSWORD = "confirmPassword";

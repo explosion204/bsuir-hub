@@ -7,7 +7,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.CommentService;
-import com.karnyshov.bsuirhub.model.validator.CommentValidator;
+import com.karnyshov.bsuirhub.model.validator.PlainTextValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class CreateCommentCommand implements Command {
     private CommentService commentService;
 
     @Inject
-    private CommentValidator validator;
+    private PlainTextValidator validator;
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -61,7 +61,7 @@ public class CreateCommentCommand implements Command {
                     .setCreationTime(LocalDateTime.now())
                     .build();
 
-            status = CommentValidator.validateComment(comment);
+            status = PlainTextValidator.validateText(text);
 
             if (status) {
                 long entityId = commentService.create(comment);

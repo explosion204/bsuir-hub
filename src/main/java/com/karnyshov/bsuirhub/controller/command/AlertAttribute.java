@@ -8,6 +8,7 @@ public class AlertAttribute {
     public static final String PASSWORD_CHANGE_SUCCESS = "passwordChangeSuccess";
     public static final String EMAIL_CONFIRMATION_SUCCESS = "emailConfirmationSuccess";
     public static final String PASSWORD_RESET_LINK_SENT = "passwordResetLinkSent";
+    public static final String MESSAGE_SENT = "messageSent";
 
     public static final String VALIDATION_ERROR = "validationError";
 

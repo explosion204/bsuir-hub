@@ -6,6 +6,8 @@ public class ApplicationPath {
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";
     public static final String FORGOT_PASSWORD_URL = "/login/forgot_password";
+    public static final String CONTACT_US_URL = "/contact_us";
+    public static final String SEND_MESSAGE_URL = "/send_message";
     public static final String SETTINGS_URL = "/settings";
     public static final String CHANGE_PASSWORD_URL = "/settings/change_password";
     public static final String CHANGE_EMAIL_URL = "/settings/change_email";
@@ -66,6 +68,7 @@ public class ApplicationPath {
     public static final String TEACHER_DASHBOARD_JSP = "common/teacher_dashboard.jsp";
     public static final String STUDENT_DASHBOARD_JSP = "common/student_dashboard.jsp";
     public static final String GRADES_OVERVIEW_JSP = "common/grades_overview.jsp";
+    public static final String CONTACT_US_JSP = "/common/contact_us.jsp";
     public static final String ERROR_NOT_FOUND_JSP = "common/errors/404.jsp";
     public static final String ERROR_INTERNAL_SERVER_JSP = "common/errors/500.jsp";
     public static final String ADMIN_USERS_JSP = "admin/users/users.jsp";

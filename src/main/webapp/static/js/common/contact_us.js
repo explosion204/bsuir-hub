@@ -6,8 +6,8 @@ $(document).ready(function () {
         }
     });
 
-    configureValidation([['forgotPasswordForm', 'sendEmailButton']]);
-    $('#forgotPasswordForm').submit(function () {
+    configureValidation([['contactForm', 'sendEmailButton']]);
+    $('#contactForm').submit(function () {
         $('#sendEmailButton').attr('disabled', true);
     })
 })

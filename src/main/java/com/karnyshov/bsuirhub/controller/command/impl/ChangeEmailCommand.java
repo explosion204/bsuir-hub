@@ -32,8 +32,8 @@ public class ChangeEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String BUNDLE_NAME = "locale";
     private static final String PROTOCOL_DELIMITER = "://";
-    private static final String SUBJECT_PROPERTY = "mail.subject";
-    private static final String MESSAGE_PROPERTY = "mail.message";
+    private static final String SUBJECT_PROPERTY = "confirmation_mail.subject";
+    private static final String MESSAGE_PROPERTY = "confirmation_mail.message";
 
     @Inject
     private UserService userService;

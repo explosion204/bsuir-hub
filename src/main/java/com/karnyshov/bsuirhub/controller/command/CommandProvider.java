@@ -53,6 +53,8 @@ public class CommandProvider {
         urlMap.put(RESET_PASSWORD_URL, GET, resolveCommand(GoToResetPasswordPageCommand.class));
         urlMap.put(RESET_PASSWORD_URL, POST, resolveCommand(ResetPasswordCommand.class));
         urlMap.put(SETTINGS_URL, GET, resolveCommand(GoToSettingsPageCommand.class));
+        urlMap.put(CONTACT_US_URL, GET, resolveCommand(GoToContactUsPageCommand.class));
+        urlMap.put(SEND_MESSAGE_URL, POST, resolveCommand(SendMessageCommand.class));
         urlMap.put(CHANGE_PASSWORD_URL, POST, resolveCommand(ChangePasswordCommand.class));
         urlMap.put(CHANGE_EMAIL_URL, POST, resolveCommand(ChangeEmailCommand.class));
         urlMap.put(CONFIRM_EMAIL_URL, GET, resolveCommand(ConfirmEmailCommand.class));

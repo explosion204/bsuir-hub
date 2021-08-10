@@ -21,7 +21,7 @@
     <form id="forgotPasswordForm" method="post" action="/login/send_reset_password_link">
         <div class="form-group mb-2 mt-2">
             <label for="emailInput">Email</label>
-            <input type="email" name="email" class="bg-light form-control" maxlength="50" id="emailInput">
+            <input type="email" name="email" class="bg-light form-control" maxlength="50" id="emailInput" required>
             <div class="invalid-feedback">
                 Invalid email
             </div>

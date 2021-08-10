@@ -51,12 +51,14 @@ public class ControllerEntryFilter implements Filter {
         request.setAttribute(PASSWORD_CHANGE_SUCCESS, session.getAttribute(PASSWORD_CHANGE_SUCCESS));
         request.setAttribute(EMAIL_CONFIRMATION_SUCCESS, session.getAttribute(EMAIL_CONFIRMATION_SUCCESS));
         request.setAttribute(PASSWORD_RESET_LINK_SENT, session.getAttribute(PASSWORD_RESET_LINK_SENT));
+        request.setAttribute(MESSAGE_SENT, session.getAttribute(MESSAGE_SENT));
 
         session.removeAttribute(ENTITY_UPDATE_SUCCESS);
         session.removeAttribute(EMAIL_CHANGE_SUCCESS);
         session.removeAttribute(PASSWORD_CHANGE_SUCCESS);
         session.removeAttribute(EMAIL_CONFIRMATION_SUCCESS);
         session.removeAttribute(PASSWORD_RESET_LINK_SENT);
+        session.removeAttribute(MESSAGE_SENT);
 
         // auth error
         request.setAttribute(AUTH_ERROR, session.getAttribute(AUTH_ERROR));
