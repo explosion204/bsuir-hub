@@ -28,11 +28,11 @@ class PoolValidationTask extends TimerTask {
         try {
             connectionPoolLock.lock();
 
+            // close connections that are in use longer than permitted
+            closeTimedOutConnections(busyConnections, connectionUsageTimeout);
+
             // validate pool size
             validatePoolSize(availableConnections, busyConnections, poolMinSize);
-
-            // close connections that are in use longer than permitted
-            closeTimedOutConnections(availableConnections, busyConnections, connectionUsageTimeout);
 
             // free pool decreasing amount of available connections to lower threshold by one every time task executed
             freePool(availableConnections, busyConnections, poolMinSize);
@@ -41,9 +41,7 @@ class PoolValidationTask extends TimerTask {
         }
     }
 
-    private void closeTimedOutConnections(Queue<Connection> availableConnections,
-                Queue<Pair<Connection, Instant>> busyConnections, long connectionUsageTimeout) {
-
+    private void closeTimedOutConnections(Queue<Pair<Connection, Instant>> busyConnections, long connectionUsageTimeout) {
         for (Pair<Connection, Instant> pair : busyConnections) {
             ProxyConnection connection = (ProxyConnection) pair.getLeft();
             Instant usageStart = pair.getRight();
@@ -55,13 +53,8 @@ class PoolValidationTask extends TimerTask {
                     // force leaked connection to be closed
                     connection.closeWrappedConnection();
                     busyConnections.removeIf(p -> p.getLeft().equals(connection));
-
-                    Connection newConnection = ConnectionFactory.createConnection();
-                    availableConnections.offer(newConnection);
                 } catch (SQLException e) {
                     logger.error("Unable to close connection in a proper way", e);
-                } catch (DatabaseConnectionException e) {
-                    logger.error("Caught an error trying to establish connection", e);
                 }
             }
         }
@@ -69,7 +62,6 @@ class PoolValidationTask extends TimerTask {
 
     private void validatePoolSize(Queue<Connection> availableConnections,
                 Queue<Pair<Connection, Instant>> busyConnections, int poolMinSize) {
-
         while (availableConnections.size() + busyConnections.size() < poolMinSize) {
             // add new available connections if a pool does not contain minimal required amount of connections
             try {
