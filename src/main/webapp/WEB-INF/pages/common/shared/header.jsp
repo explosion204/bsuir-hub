@@ -48,7 +48,7 @@
 <%--                        </ul>--%>
 <%--                    </li>--%> <!-- TODO -->
                     <li class="nav-item me-auto">
-                        <a href="#" class="nav-link" aria-current="page"><fmt:message key="header.about" /></a>
+                        <a href="c" class="nav-link" aria-current="page">Contact us</a>
                     </li>
 
                     <c:choose>

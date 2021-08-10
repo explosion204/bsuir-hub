@@ -7,7 +7,11 @@ public class RequestAttribute {
     public static final String STUDENT = "student";
     public static final String SUBJECT = "subject";
     public static final String AVERAGE_STUDY_GRADE = "averageStudyGrade";
-    public static final String GROUP_NAME = "groupName";
+    public static final String GROUP = "group";
+    public static final String FACULTY = "faculty";
+    public static final String DEPARTMENT = "department";
+    public static final String CURATOR = "curator";
+    public static final String HEADMAN = "headman";
 
     private RequestAttribute() {
 

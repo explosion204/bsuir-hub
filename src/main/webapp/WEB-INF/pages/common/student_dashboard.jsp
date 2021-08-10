@@ -23,13 +23,31 @@
             <div class="ms-3 text-wrap">
                 <div class="lead fs-2">${sessionScope.user.lastName}</div>
                 <div class="lead">${sessionScope.user.firstName} ${sessionScope.user.patronymic}</div>
-                <div class="h6 mt-1">Группа <span id="groupName">${groupName}</span></div>
             </div>
         </div>
         <div class="lead fs-3 border-bottom text-center p-2">
             <div>
                 Average grade: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
             </div>
+        </div>
+        <div class="lead fs-3 border-bottom p-2 text-center">
+            <div class="lead mt-1">Факультет</div>
+            <div class="h6 mt-1 text-uppercase">${faculty.name}</div>
+            <div class="h6 text-uppercase">(${faculty.shortName})</div>
+        </div>
+        <div class="lead fs-3 border-bottom p-2 text-center">
+            <div class="lead mt-1">Кафедра</div>
+            <div class="h6 mt-1 text-uppercase">${department.name}</div>
+            <div class="h6 text-uppercase">(${department.shortName})</div>
+        </div>
+        <div class="lead fs-3 border-bottom p-2 text-center">
+            <div class="lead mt-1">Специальность</div>
+            <div class="h6 mt-1 text-uppercase">${department.specialtyAlias}</div>
+        </div>
+        <div class="lead fs-3 p-2 text-center">
+            <div class="lead mt-1">Группа <span class="h6">${group.name}</span></div>
+            <div class="lead mt-1">Cтароста <span class="h6">${headman.lastName} ${headman.firstName} ${headman.patronymic}</span></div>
+            <div class="lead mt-1">Куратор <span class="h6">${curator.lastName} ${curator.firstName} ${curator.patronymic}</span></div>
         </div>
     </div>
 

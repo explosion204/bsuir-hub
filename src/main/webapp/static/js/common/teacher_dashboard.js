@@ -141,14 +141,25 @@ function onSubjectsTableSelect(subjectsTable, groupsTable, studentsTable) {
         // fetch groups by their id
         $.each(concreteAssignments, function (index, value) {
             let groupId = value.groupId;
-            FETCH_QUEUE.append(fetchGroup, [groupId], function (entity) {
-                let name = entity.name;
-                // associate group id with its row
-                let row = groupsTable.row.add(
-                    $(`<tr><td><div class="lead">${name}</div></td></tr>`)[0]
-                ).node();
-                groupsTable.draw();
-                $(row).data('group-id', groupId);
+
+            // fetch group, faculty, departments names
+            FETCH_QUEUE.append(fetchGroup, [groupId], function (group) {
+                FETCH_QUEUE.append(fetchDepartment, [group.departmentId], function (department) {
+                    FETCH_QUEUE.append(fetchFaculty, [department.facultyId], function (faculty) {
+                        let row = groupsTable.row.add(
+                            $(`
+                                <tr><td>
+                                    <div class="lead">${group.name}</div>
+                                    <div class="lead">Факультет <span class="h6"> ${faculty.name}</span></div>
+                                    <div class="lead">Кафедра <span class="h6"> ${department.name}</span></div>
+                                </td></tr>
+                            `)[0]
+                        ).node();
+                        // associate group id with its row
+                        $(row).data('group-id', groupId);
+                        groupsTable.draw();
+                    });
+                });
             });
         });
 

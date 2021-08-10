@@ -32,22 +32,6 @@ $(document).ready(function () {
     });
 
     $('#subjectsTable tbody').on('click', 'tr', onSubjectsTableSelect);
-
-    $.ajax({
-        method: 'GET',
-        url: '/ajax/get_groups',
-        data: {
-            requestType: 'fetch_by_id',
-            id: groupId
-        },
-        success: function (response) {
-            let data = JSON.parse(response);
-
-            if (data.status) {
-                $('#groupName').text(data.entity.name);
-            }
-        }
-    });
 })
 
 function onAssignmentsLoaded(subjectsTable) {

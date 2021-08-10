@@ -3,21 +3,24 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
+import com.karnyshov.bsuirhub.model.entity.Department;
+import com.karnyshov.bsuirhub.model.entity.Faculty;
+import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.entity.User;
-import com.karnyshov.bsuirhub.model.service.GradeService;
-import com.karnyshov.bsuirhub.model.service.GroupService;
+import com.karnyshov.bsuirhub.model.service.*;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL_SERVER_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.STUDENT_DASHBOARD_JSP;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.AVERAGE_STUDY_GRADE;
-import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.GROUP_NAME;
+import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 @Named
@@ -30,6 +33,15 @@ public class GoToStudentDashboardPageCommand implements Command {
     @Inject
     private GroupService groupService;
 
+    @Inject
+    private FacultyService facultyService;
+
+    @Inject
+    private DepartmentService departmentService;
+
+    @Inject
+    private UserService userService;
+
     @Override
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
@@ -38,7 +50,26 @@ public class GoToStudentDashboardPageCommand implements Command {
         long groupId = student.getGroupId();
 
         try {
-            groupService.findById(groupId).ifPresent(group -> request.setAttribute(GROUP_NAME, group.getName()));
+            Optional<Group> optionalGroup = groupService.findById(groupId);
+            if (optionalGroup.isPresent()) {
+                Group group = optionalGroup.get();
+                long departmentId = group.getDepartmentId();
+                long curatorId = group.getCuratorId();
+                long headmanId = group.getHeadmanId();
+
+                request.setAttribute(GROUP, group);
+                userService.findById(curatorId).ifPresent(curator -> request.setAttribute(CURATOR, curator));
+                userService.findById(headmanId).ifPresent(headman -> request.setAttribute(HEADMAN, headman));
+                Optional<Department> optionalDepartment = departmentService.findById(departmentId);
+
+                if (optionalDepartment.isPresent()) {
+                    Department department = optionalDepartment.get();
+                    long facultyId = department.getFacultyId();
+
+                    request.setAttribute(DEPARTMENT, department);
+                    facultyService.findById(facultyId).ifPresent(faculty -> request.setAttribute(FACULTY, faculty));
+                }
+            }
 
             double averageGradeValue = gradeService.calculateAverage(studentId);
             request.setAttribute(AVERAGE_STUDY_GRADE, averageGradeValue);
