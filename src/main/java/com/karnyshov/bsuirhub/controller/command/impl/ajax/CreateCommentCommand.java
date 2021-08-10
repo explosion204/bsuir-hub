@@ -26,6 +26,17 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 public class CreateCommentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
+    private static final String AMPERSAND = "&";
+    private static final String LESS_THEN = "<";
+    private static final String GREATER_THEN = ">";
+    private static final String QUOTES = "\"";
+    private static final String APOSTROPHE = "'";
+    private static final String ESCAPED_AMPERSAND = "&amp;";
+    private static final String ESCAPED_LESS_THEN = "&lt;";
+    private static final String ESCAPED_GREATER_THEN = "&gt;";
+    private static final String ESCAPED_QUOTES = "&quot;";
+    private static final String ESCAPED_APOSTROPHE = "&#x27;";
+
     @Inject
     private CommentService commentService;
 
@@ -41,7 +52,7 @@ public class CreateCommentCommand implements Command {
         try {
             long gradeId = Long.parseLong(request.getParameter(GRADE_ID));
             long userId = currentUser.getEntityId();
-            String text = request.getParameter(COMMENT_TEXT);
+            String text = escapeString(request.getParameter(COMMENT_TEXT));
 
             Comment comment = Comment.builder()
                     .setGradeId(gradeId)
@@ -63,5 +74,13 @@ public class CreateCommentCommand implements Command {
 
         response.put(STATUS, status);
         return new CommandResult(new Gson().toJson(response), JSON);
+    }
+
+    private String escapeString(String target) {
+        return target.replace(AMPERSAND, ESCAPED_AMPERSAND)
+                .replace(GREATER_THEN, ESCAPED_GREATER_THEN)
+                .replace(LESS_THEN, ESCAPED_LESS_THEN)
+                .replace(QUOTES, ESCAPED_QUOTES)
+                .replace(APOSTROPHE, ESCAPED_APOSTROPHE);
     }
 }
