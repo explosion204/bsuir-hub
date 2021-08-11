@@ -1,5 +1,5 @@
 const LOCALE = 'locale';
-const DEFAULT_LOCALE = 'ru';
+const DEFAULT_LOCALE = 'en';
 
 function setLocale(locale) {
     sessionStorage.setItem(LOCALE, locale);

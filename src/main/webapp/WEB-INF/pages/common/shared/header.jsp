@@ -1,11 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <fmt:setLocale value="${sessionScope.locale}" />
 <fmt:setBundle basename="locale" />
 
 <c:set var="role" value="${sessionScope.user.role.ordinal()}" />
+
 
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -18,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="nav navbar-nav w-100 align-items-md-center">
                     <li class="nav-item me-1">
-                        <a href="/" class="nav-link" aria-current="page"><fmt:message key="header.home" /></a>
+                        <a href="/" class="nav-link" aria-current="page"><bht:localeTag key="header.home" /></a>
                     </li>
                     <c:if test="${role eq 2 or role eq 3}">
                         <li class="nav-item me-1">
