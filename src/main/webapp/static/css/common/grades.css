@@ -12,12 +12,11 @@
 
 table {
     table-layout:fixed;
-    width: 99% !important;
+    width: 100%;
 }
 
 table td {
     word-wrap: break-word;
-    max-width: 400px;
 }
 
 .comments-table thead th {

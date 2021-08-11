@@ -1,35 +1,22 @@
-function onCommentsSpanClicked(gradesTable, subjectId, studentId) {
-    let tr = $(this).closest('tr');
-    let row = gradesTable.row(tr);
-    let gradeId = tr.data('grade-id');
+function useGradeIdParam(allGrades, subjectId, studentId) {
+    let gradeId = $('body').data('grade-id');
+    let filteredGrades = $.grep(allGrades, function (value) {
+        return value.entityId === gradeId;
+    });
 
-    if (row.child.isShown()) {
-        // close
-        let expandChevron = $('.shown .expand-chevron');
-        expandChevron.removeClass('fa-chevron-up');
-        expandChevron.addClass('fa-chevron-down');
-
-        row.child.hide();
-        tr.removeClass('shown');
+    if (filteredGrades.length === 1) {
+        let teacherId = filteredGrades[0].teacherId;
+        $('body').data('active-grade-id', gradeId)
+        initializeCommentsTable(gradeId, teacherId, subjectId, studentId);
+        $('#commentsModal').modal('show');
     }
-    else {
-        // open
-        let commentsTableLayout = $(`
-            <table class="comments-table table">
-                <thead>
-                <tr>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        `);
-        row.child(commentsTableLayout).show();
-        tr.addClass('shown');
+}
 
-        let commentsTable = commentsTableLayout.DataTable({
-            dom: '<"newComment">rt',
+function initializeCommentsTable(gradeId, teacherId, subjectId, studentId) {
+    let commentsTable;
+    if (!$.fn.dataTable.isDataTable('#commentsTable')) {
+        commentsTable = $('#commentsTable').DataTable({
+            dom: '<"new-comment">rt',
             scrollX: false,
             scrollY: '50vh',
             scrollResize: true,
@@ -45,20 +32,29 @@ function onCommentsSpanClicked(gradesTable, subjectId, studentId) {
                 url: '/ajax/get_comments',
                 data: function (d) {
                     d.requestType = 'jquery_datatable';
-                    d.gradeId = gradeId;
+                    d.gradeId = $('body').data('active-grade-id');
                 }
             },
             columns: [
                 { data: null }
             ]
         });
+    } else {
+        commentsTable = $('#commentsTable').DataTable();
+    }
 
-        let newCommentAreaBody = $('<div class="input-group mb-1"></div>');
-        let commentTextArea = $(`<textarea class="form-control" maxlength="255" placeholder="Comment text"></textarea>`);
-        let newCommentButton = $(`<button type="button" class="btn btn-secondary" disabled>New comment</button>`)
-        newCommentAreaBody.append(commentTextArea, newCommentButton);
+    let userId = $('body').data('user-id');
 
-        $('div.newComment').html(newCommentAreaBody);
+    if (userId === studentId || userId === teacherId) {
+        $('div.new-comment').html(`
+            <div class="input-group mb-1">
+                <textarea id="commentsTextArea" class="form-control" maxlength="255" placeholder="Comment text"></textarea>
+                <button id="newCommentButton" type="button" class="btn btn-secondary" disabled>New comment</button>
+            </div>
+        `);
+
+        let commentTextArea = $('#commentsTextArea');
+        let newCommentButton = $('#newCommentButton');
 
         commentTextArea.keyup(function () {
             let length = $(this).val().trim().length;
@@ -68,11 +64,11 @@ function onCommentsSpanClicked(gradesTable, subjectId, studentId) {
         newCommentButton.click(function () {
             onCommentCreate(commentsTable, gradeId, subjectId, studentId, commentTextArea.val());
         });
-
-        let expandChevron = $('.shown .expand-chevron');
-        expandChevron.removeClass('fa-chevron-down');
-        expandChevron.addClass('fa-chevron-up');
+    } else {
+        $('div.new-comment').html('');
     }
+
+    return commentsTable;
 }
 
 function onCommentsLoaded(commentsTable, subjectId, studentId) {
@@ -107,7 +103,7 @@ function onCommentsLoaded(commentsTable, subjectId, studentId) {
             })
         }
 
-        let textDiv = $(`<div>${value.text}</div>`);
+        let textDiv = $(`<td><div>${value.text}</div></td>`);
         commentBody.append(headerDiv, textDiv);
         let row = commentsTable.row(index).node();
         $(row).html(commentBody);
@@ -135,6 +131,8 @@ function onCommentCreate(commentsTable, gradeId, subjectId, studentId, text) {
 
             if (data && data.status) {
                 commentsTable.draw();
+                $('#commentsTextArea').val('');
+                $('#newCommentButton').attr('disabled', true);
             }
         }
     })

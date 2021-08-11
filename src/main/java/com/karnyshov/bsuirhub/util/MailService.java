@@ -4,4 +4,5 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 
 public interface MailService {
     void sendMail(String recipient, String subject, String body) throws ServiceException;
+    String getMailProperty(String propertyName);
 }

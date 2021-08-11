@@ -42,7 +42,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
               "OFFSET ?;";
 
     private static final String SELECT_COUNT_BY_TEACHER
-            = "SELECT DISTINCT COUNT(id) OVER() " +
+            = "SELECT COUNT(id) " +
               "FROM assignments " +
               "WHERE id_teacher = ?;";
 

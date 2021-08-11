@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.controller.filter;
 
 import com.karnyshov.bsuirhub.model.entity.User;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.RETURN_URL;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
@@ -24,6 +26,9 @@ public class StudentPageAccessFilter implements Filter {
         User user = (User) session.getAttribute(USER);
 
         if (user == null || user.getRole() == GUEST || user.getRole() == TEACHER) {
+            String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI())
+                    .build(httpRequest.getQueryString());
+            session.setAttribute(RETURN_URL, returnUrl);
             httpResponse.sendRedirect(LOGIN_URL);
         } else if (user.getStatus() == NOT_CONFIRMED) {
             httpResponse.sendRedirect(SETTINGS_URL);

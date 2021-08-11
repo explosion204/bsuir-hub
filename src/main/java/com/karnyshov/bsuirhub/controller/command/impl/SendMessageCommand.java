@@ -6,17 +6,12 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
 import com.karnyshov.bsuirhub.model.validator.PlainTextValidator;
 import com.karnyshov.bsuirhub.util.MailService;
-import com.karnyshov.bsuirhub.util.impl.MailServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
@@ -26,29 +21,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class SendMessageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String SUBJECT = "BSUIRHUB | Contact request";
-    private static final String BODY_CONTACT_EMAIL = "<b>Contact email:</b> ";
-    private static final String BODY_TEXT = "<br/><b>Message:</b> ";
-
-    private static final String MAIL_PROPERTIES_NAME = "mail.properties";
     private static final String SUPPORT_PROPERTY = "support";
-    private static final String supportMail;
+    private static final String SUBJECT_PROPERTY = "contact_request.subject";
+    private static final String BODY_PROPERTY = "contact_request.body";
 
     @Inject
     private MailService mailService;
-
-    static {
-        ClassLoader classLoader = MailServiceImpl.class.getClassLoader();
-
-        try (InputStream inputStream = classLoader.getResourceAsStream(MAIL_PROPERTIES_NAME)) {
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            supportMail = properties.getProperty(SUPPORT_PROPERTY);
-        } catch (IOException e) {
-            logger.fatal("Unable to read mailing properties", e);
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -62,8 +40,11 @@ public class SendMessageCommand implements Command {
 
         try {
             if (validationResult) {
-                String body = BODY_CONTACT_EMAIL + contactEmail + BODY_TEXT + text;
-                mailService.sendMail(supportMail, SUBJECT, body);
+                String supportMail = mailService.getMailProperty(SUPPORT_PROPERTY);
+                String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
+                String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);
+                String mailBody = String.format(bodyTemplate, contactEmail, text);
+                mailService.sendMail(supportMail, subject, mailBody);
                 session.setAttribute(MESSAGE_SENT, true);
             }
 

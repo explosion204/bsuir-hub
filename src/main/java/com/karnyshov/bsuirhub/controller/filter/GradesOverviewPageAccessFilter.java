@@ -5,6 +5,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -17,10 +18,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.LOGIN_URL;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUND_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.STUDENT;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.STUDENT_ID;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT_ID;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 @WebFilter(filterName = "GradesOverviewPageAccessFilter")
@@ -40,13 +41,14 @@ public class GradesOverviewPageAccessFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
         boolean canAccess = false;
+        UserRole role = UserRole.GUEST;
 
         try {
             long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
             long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
 
             User currentUser = (User) session.getAttribute(USER);
-            UserRole role = currentUser.getRole();
+            role = currentUser.getRole();
 
             // user whose overview we want to access
             User student = null;
@@ -71,13 +73,25 @@ public class GradesOverviewPageAccessFilter implements Filter {
             // store retrieved user as request attribute to optimize access to database
             request.setAttribute(STUDENT, student);
         } catch (NumberFormatException | ServiceException e) {
-            logger.error("An error occurred trying to access grade overview page command", e);
+            logger.error("An error occurred trying to access grade overview page", e);
         }
 
         if (canAccess) {
             chain.doFilter(request, response);
         } else {
-            httpResponse.sendRedirect(NOT_FOUND_ERROR_URL);
+            // guest will be redirected to login page or to not found page otherwise
+            String redirectUrl;
+
+            if (role == UserRole.GUEST) {
+                String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI())
+                        .build(httpRequest.getQueryString());
+                session.setAttribute(RETURN_URL, returnUrl);
+                redirectUrl = LOGIN_URL;
+            } else {
+                redirectUrl = NOT_FOUND_ERROR_URL;
+            }
+
+            httpResponse.sendRedirect(redirectUrl);
         }
     }
 }

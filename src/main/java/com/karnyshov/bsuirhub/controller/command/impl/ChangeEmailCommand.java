@@ -17,8 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
@@ -30,10 +28,10 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 @Named
 public class ChangeEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String BUNDLE_NAME = "locale";
     private static final String PROTOCOL_DELIMITER = "://";
+
     private static final String SUBJECT_PROPERTY = "confirmation_mail.subject";
-    private static final String MESSAGE_PROPERTY = "confirmation_mail.message";
+    private static final String BODY_PROPERTY = "confirmation_mail.body";
 
     @Inject
     private UserService userService;
@@ -83,13 +81,10 @@ public class ChangeEmailCommand implements Command {
                         .build();
                 String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
 
-                String locale = (String) session.getAttribute(LOCALE);
-                ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(locale));
-
-                String subject = bundle.getString(SUBJECT_PROPERTY);
-                String message = bundle.getString(MESSAGE_PROPERTY);
-                String mailBody = message + confirmationLink;
-                mailService.sendMail(email, subject, mailBody); // TODO: 7/28/2021
+                String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
+                String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);
+                String mailBody = String.format(bodyTemplate, confirmationLink);
+                mailService.sendMail(email, subject, mailBody);
 
                 // update target user session if exists
                 request.getSession().setAttribute(USER, updatedUser);

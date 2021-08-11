@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.service.SubjectService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +19,7 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.GRADE_ID;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT_ID;
 
 @Named
@@ -39,6 +41,12 @@ public class GoToGradesOverviewPageCommand implements Command {
         try {
             subjectService.findById(subjectId)
                     .ifPresent(subject -> request.setAttribute(SUBJECT, subject));
+
+            String gradeIdParameter = request.getParameter(GRADE_ID);
+            if (NumberUtils.isParsable(gradeIdParameter)) {
+                long gradeId = Long.parseLong(gradeIdParameter);
+                request.setAttribute(GRADE_ID, gradeId);
+            }
 
             long studentId = student.getEntityId();
             double averageGrade = gradeService.calculateAverageBySubject(studentId, subjectId);

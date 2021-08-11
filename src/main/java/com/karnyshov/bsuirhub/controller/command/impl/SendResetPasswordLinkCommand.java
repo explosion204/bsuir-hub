@@ -11,13 +11,10 @@ import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_RESET_LINK_SENT;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
@@ -28,10 +25,9 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
 @Named
 public class SendResetPasswordLinkCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String BUNDLE_NAME = "locale";
     private static final String PROTOCOL_DELIMITER = "://";
     private static final String SUBJECT_PROPERTY = "password_reset.subject";
-    private static final String MESSAGE_PROPERTY = "password_reset.message";
+    private static final String BODY_PROPERTY = "password_reset.message";
 
     @Inject
     private UserService userService;
@@ -41,6 +37,7 @@ public class SendResetPasswordLinkCommand implements Command {
 
     @Inject
     private MailService mailService;
+
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
@@ -66,16 +63,10 @@ public class SendResetPasswordLinkCommand implements Command {
                         .build();
                 String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
 
-                HttpSession session = request.getSession();
-                String locale = (String) session.getAttribute(LOCALE);
-
-                if (locale != null) {
-                    ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(locale));
-                    String subject = bundle.getString(SUBJECT_PROPERTY);
-                    String message = bundle.getString(MESSAGE_PROPERTY);
-                    String mailBody = message + confirmationLink;
-                    mailService.sendMail(email, subject, mailBody);
-                }
+                String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
+                String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);
+                String mailBody = String.format(bodyTemplate, confirmationLink);
+                mailService.sendMail(email, subject, mailBody);
             }
 
             request.getSession().setAttribute(PASSWORD_RESET_LINK_SENT, true);

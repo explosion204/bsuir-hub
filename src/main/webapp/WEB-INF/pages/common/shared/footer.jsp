@@ -28,7 +28,7 @@
     <c:if test="${empty sessionScope.locale}">
         let localeName = sessionStorage.getItem(LOCALE);
         if (!localeName) {
-            sessionStorage.setItem(LOCALE, DEFAULT_LOCALE);
+            localStorage.setItem(LOCALE, DEFAULT_LOCALE);
             localeName = DEFAULT_LOCALE;
         }
 

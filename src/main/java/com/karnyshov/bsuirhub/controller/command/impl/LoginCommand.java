@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOGIN;
-import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PASSWORD;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.AUTH_ERROR;
 
@@ -41,6 +40,8 @@ public class LoginCommand implements Command {
 
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
+        String returnUrl = request.getParameter(RETURN_URL);
+        session.removeAttribute(RETURN_URL);
         CommandResult result;
 
         try {
@@ -48,7 +49,7 @@ public class LoginCommand implements Command {
 
             if (user.isPresent()) {
                 session.setAttribute(USER, user.get());
-                result = new CommandResult(INDEX_URL, REDIRECT);
+                result = new CommandResult(returnUrl, REDIRECT);
             } else {
                 session.setAttribute(AUTH_ERROR, true);
                 result = new CommandResult(LOGIN_URL, REDIRECT);

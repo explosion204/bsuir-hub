@@ -52,6 +52,7 @@
                         </div>
                     </c:if>
                     <div class="form-group">
+                        <input hidden name="returnUrl" value="${returnUrl}">
                         <a href="/login/forgot_password" class="forget-pwd"><fmt:message key="login.forgot_password" /></a>
                     </div>
                 </form>

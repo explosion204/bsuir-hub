@@ -20,7 +20,8 @@
 </head>
 <body data-student-id="${student.entityId}"
       data-subject-id="${subject.entityId}"
-      data-user-id="${sessionScope.user.entityId}">
+      data-user-id="${sessionScope.user.entityId}"
+      data-grade-id="${gradeId}">
 
     <jsp:include page="shared/header.jsp" />
 
@@ -45,6 +46,31 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+
+    <div class="modal fade" id="commentsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="commentsTable" class="comments-table table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <jsp:include page="shared/footer.jsp"/>
