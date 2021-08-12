@@ -23,7 +23,6 @@ public class CommandProvider {
 
     private CommandProvider() {
         /* AJAX AREA */
-        urlMap.put(AJAX_SET_LOCALE_URL, POST, resolveCommand(SetLocaleCommand.class));
         urlMap.put(AJAX_GET_USERS_URL, GET, resolveCommand(GetUsersCommand.class));
         urlMap.put(AJAX_GET_FACULTIES_URL, GET, resolveCommand(GetFacultiesCommand.class));
         urlMap.put(AJAX_GET_DEPARTMENTS_URL, GET, resolveCommand(GetDepartmentsCommand.class));

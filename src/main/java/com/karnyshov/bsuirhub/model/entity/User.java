@@ -123,8 +123,6 @@ public class User extends AbstractEntity {
         builder.append(super.toString()).append("): ");
         builder.append("login = ").append(login).append(", ");
         builder.append("email = ").append(email).append(", ");
-        builder.append("password hash = ").append(passwordHash).append(", ");
-        builder.append("salt = ").append(salt).append(", ");
         builder.append("user role = ").append(role).append(", ");
         builder.append("user status = ").append(status).append(", ");
         builder.append("group id = ").append(groupId).append(", ");

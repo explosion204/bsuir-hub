@@ -2,6 +2,7 @@ package com.karnyshov.bsuirhub.controller.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import java.io.IOException;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOCALE_CODE;
 
 
 @WebFilter(filterName = "ControllerEntryFilter")
@@ -21,6 +23,7 @@ public class ControllerEntryFilter implements Filter {
     private static final String PRAGMA_VALUE = "no-cache";
     private static final String EXPIRES_HEADER = "Expires";
     private static final String EXPIRES_VALUE = "0";
+    private static final String LOCALE_COOKIE_NAME = "localeCode";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -29,7 +32,12 @@ public class ControllerEntryFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String url = httpRequest.getRequestURI();
-        httpRequest.setAttribute(ORIGINAL_URL, url);    
+        httpRequest.setAttribute(ORIGINAL_URL, url);
+
+        String localeCode = request.getParameter(LOCALE_CODE);
+        if (localeCode != null) {
+            setLocale(httpResponse, localeCode);
+        }
 
         disableCaching(httpResponse);
         extractAlertsFromSession(httpRequest);
@@ -40,6 +48,11 @@ public class ControllerEntryFilter implements Filter {
         response.setHeader(CACHE_CONTROL_HEADER, CACHE_CONTROL_VALUE); // HTTP 1.1.
         response.setHeader(PRAGMA_HEADER, PRAGMA_VALUE); // HTTP 1.0.
         response.setHeader(EXPIRES_HEADER, EXPIRES_VALUE); // Proxies.
+    }
+
+    private void setLocale(HttpServletResponse response, String localeCode) {
+        Cookie localeCookie = new Cookie(LOCALE_COOKIE_NAME, localeCode);
+        response.addCookie(localeCookie);
     }
 
     private void extractAlertsFromSession(HttpServletRequest request) {

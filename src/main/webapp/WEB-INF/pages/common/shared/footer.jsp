@@ -16,22 +16,28 @@
             </a>
 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><button id="ru_locale" class="dropdown-item" onclick="setLocale('ru');">Russian</button></li>
-                <li><button id="en_locale" class="dropdown-item" onclick="setLocale('en');">English</button></li>
+                <li><button id="ru_locale" class="dropdown-item" onclick="localeItemClick('ru');">Russian</button></li>
+                <li><button id="en_locale" class="dropdown-item" onclick="localeItemClick('en');">English</button></li>
             </ul>
         </div>
     </div>
 </footer>
 
-
 <script>
-    <c:if test="${empty sessionScope.locale}">
-        let localeName = sessionStorage.getItem(LOCALE);
-        if (!localeName) {
-            localStorage.setItem(LOCALE, DEFAULT_LOCALE);
-            localeName = DEFAULT_LOCALE;
-        }
-
-        setLocale(localeName);
-    </c:if>
+    function localeItemClick(localeCode) {
+        <c:choose>
+            <c:when test="${cookie.size() eq 0}">
+                $.confirm({
+                    title: 'Внимание! Attention!',
+                    content: 'Выбран язык по умолчанию, так как куки отключены!<br/>Default language is set because of disabled cookies!',
+                    buttons: {
+                        'OK': function () { },
+                    }
+                });
+            </c:when>
+            <c:otherwise>
+                setLocale(localeCode);
+            </c:otherwise>
+        </c:choose>
+    }
 </script>

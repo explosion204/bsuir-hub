@@ -9,8 +9,6 @@ public class SessionAttribute {
     public static final String PREVIOUS_ROLE = "previousRole";
     public static final String PREVIOUS_NAME = "previousName";
 
-    public static final String LOCALE = "locale";
-
     private SessionAttribute() {
 
     }

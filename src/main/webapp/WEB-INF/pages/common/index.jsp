@@ -4,23 +4,14 @@
 <html>
 <head>
     <jsp:include page="shared/head.html" />
+    <!-- jQuery Confirm -->
+    <link href="/static/lib/jquery-confirm/css/jquery-confirm.min.css" rel="stylesheet">
+    <script src="/static/lib/jquery-confirm/js/jquery-confirm.min.js"></script>
+    <!-- custom -->
+    <script src="/static/js/common/index.js"></script>
 </head>
-<body>
+<body data-email-confirmation-success="${emailConfirmationSuccess}">
     <jsp:include page="shared/header.jsp" />
     <jsp:include page="shared/footer.jsp"/>
 </body>
 </html>
-
-<c:if test="${emailConfirmationSuccess}">
-    <script>
-        $.confirm({
-            title: 'Success',
-            content: 'Email successfully confirmed!',
-            buttons: {
-                'OK': function () {
-
-                },
-            }
-        });
-    </script>
-</c:if>

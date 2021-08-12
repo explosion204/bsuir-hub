@@ -54,15 +54,3 @@
         </ul>
     </div>
 </div>
-
-<script>
-    <c:if test="${empty sessionScope.locale}">
-    let localeName = sessionStorage.getItem(LOCALE);
-    if (!localeName) {
-        sessionStorage.setItem(LOCALE, DEFAULT_LOCALE);
-        localeName = DEFAULT_LOCALE;
-    }
-
-    setLocale(localeName);
-    </c:if>
-</script>

@@ -1,14 +1,9 @@
-const LOCALE = 'locale';
-const DEFAULT_LOCALE = 'en';
-
-function setLocale(locale) {
-    sessionStorage.setItem(LOCALE, locale);
-
+function setLocale(localeCode) {
     $.ajax({
         method: 'POST',
-        url: '/ajax/set_locale',
+        url: window.location.pathname,
         data: {
-            'locale': locale
+            'localeCode': localeCode
         },
         success: function () {
             window.location.reload();

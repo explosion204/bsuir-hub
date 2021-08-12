@@ -5,16 +5,28 @@
 <html>
 <head>
     <jsp:include page="shared/head.html" />
-    <script src="/static/js/util/validation.js"></script>
+    <!-- Datatables -->
+    <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <link href="/static/lib/datatables/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="/static/lib/datatables/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables Scroller -->
+    <link href="/static/lib/datatables/css/scroller.dataTables.min.css">
+    <script src="/static/lib/datatables/js/dataTables.scroller.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="/static/lib/fontawesome/css/all.min.css" rel="stylesheet">
+    <!-- custom -->
+    <script src="/static/js/util/async_task_queue.js"></script>
+    <script src="/static/js/util/fetch.js"></script>
+    <script src="/static/js/util/grade_styler.js"></script>
     <link href="/static/css/common/student_dashboard.css" rel="stylesheet">
     <link href="/static/css/common/grades.css" rel="stylesheet">
-    <script src="/static/js/common/grades_shared.js"></script>
+    <script src="/static/js/common/grades/grades_shared.js"></script>
     <c:choose>
         <c:when test="${role eq 1}">
-            <script src="/static/js/common/grades_student.js"></script>
+            <script src="/static/js/common/grades/grades_student.js"></script>
         </c:when>
         <c:when test="${role eq 2 or role eq 3}">
-            <script src="/static/js/common/grades_teacher.js"></script>
+            <script src="/static/js/common/grades/grades_teacher.js"></script>
         </c:when>
     </c:choose>
 </head>

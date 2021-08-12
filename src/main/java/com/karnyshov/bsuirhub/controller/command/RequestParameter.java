@@ -1,7 +1,7 @@
 package com.karnyshov.bsuirhub.controller.command;
 
 public class RequestParameter {
-    public static final String LOCALE = "locale";
+    public static final String LOCALE_CODE = "localeCode";
     public static final String ENTITY_ID = "id";
     public static final String RETURN_URL = "returnUrl";
     public static final String LOGIN = "login";

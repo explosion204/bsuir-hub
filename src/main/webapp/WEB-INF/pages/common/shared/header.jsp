@@ -1,13 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
-<fmt:setLocale value="${sessionScope.locale}" />
-<fmt:setBundle basename="locale" />
-
 <c:set var="role" value="${sessionScope.user.role.ordinal()}" />
-
 
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -37,18 +32,6 @@
                             <a href="/admin/users" class="nav-link" aria-current="page">Admin panel</a>
                         </li>
                     </c:if>
-<%--                    <li class="nav-item dropdown me-1">--%>
-<%--                        <a href="#" class="nav-link dropdown-toggle" id="universityDropdownMenu" role="button"--%>
-<%--                           data-bs-toggle="dropdown" aria-expanded="false">--%>
-<%--                            <fmt:message key="header.university" />--%>
-<%--                        </a>--%>
-<%--                        <ul class="dropdown-menu" aria-labelledby="universityDropdownMenu">--%>
-<%--                            <li><a href="#" class="dropdown-item"><fmt:message key="header.teachers" /></a></li>--%>
-<%--                            <li><a href="#" class="dropdown-item"><fmt:message key="header.subjects" /></a></li>--%>
-<%--                            <li><a href="#" class="dropdown-item"><fmt:message key="header.faculties" /></a></li>--%>
-<%--                            <li><a href="#" class="dropdown-item"><fmt:message key="header.departments" /></a></li>--%>
-<%--                        </ul>--%>
-<%--                    </li>--%> <!-- TODO -->
                     <li class="nav-item me-auto">
                         <a href="/contact_us" class="nav-link" aria-current="page">Contact us</a>
                     </li>

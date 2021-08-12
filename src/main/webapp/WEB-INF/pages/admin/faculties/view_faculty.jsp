@@ -4,6 +4,7 @@
 <html>
 <head>
     <jsp:include page="../shared/head.html" />
+    <!-- custom -->
     <script src="/static/js/util/validation.js"></script>
     <script src="/static/js/admin/faculties/view_faculty.js"></script>
 </head>

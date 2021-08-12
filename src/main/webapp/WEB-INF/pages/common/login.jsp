@@ -13,7 +13,7 @@
 <head>
     <jsp:include page="shared/head.html" />
     <script src="/static/js/util/validation.js"></script>
-    <script src="/static/js/common/login.js"></script>
+    <script src="/static/js/common/account/login.js"></script>
     <link href="/static/css/common/login.css" rel="stylesheet">
 </head>
 <body>

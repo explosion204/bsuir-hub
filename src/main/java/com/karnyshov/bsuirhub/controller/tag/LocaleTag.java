@@ -1,19 +1,21 @@
 package com.karnyshov.bsuirhub.controller.tag;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.tagext.TagSupport;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.LOCALE;
-
 public class LocaleTag extends TagSupport {
-    private static final String BUNDLE_NAME = "locale";
-    private static final String DEFAULT_LOCALE = "en";
+    private static final String BUNDLE_NAME = "lang";
+    private static final String LOCALE_COOKIE_NAME = "localeCode";
+    private static final String DEFAULT_LOCALE = "ru";
     private String key;
 
     public void setKey(String key) {
@@ -22,10 +24,21 @@ public class LocaleTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        HttpSession session = pageContext.getSession();
-        String localeCode = (String) session.getAttribute(LOCALE);
-        ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale(localeCode != null ? localeCode : DEFAULT_LOCALE));
+        HttpServletRequest httpRequest = (HttpServletRequest) pageContext.getRequest();
+        Cookie[] cookies = httpRequest.getCookies();
+        String localeCode = DEFAULT_LOCALE;
+
+        if (cookies != null) {
+            Optional<Cookie> localeCookie = Arrays.stream(cookies)
+                    .filter(cookie -> cookie.getName().equals(LOCALE_COOKIE_NAME))
+                    .findFirst();
+
+            if (localeCookie.isPresent()) {
+                localeCode = localeCookie.get().getValue();
+            }
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(localeCode));
         String localizedValue = bundle.getString(key);
 
         try {

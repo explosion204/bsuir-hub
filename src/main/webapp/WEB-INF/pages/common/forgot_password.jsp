@@ -5,7 +5,7 @@
     <jsp:include page="shared/head.html" />
     <link href="/static/css/common/settings.css" rel="stylesheet">
     <script src="/static/js/util/validation.js"></script>
-    <script src="/static/js/common/forgot_password.js"></script>
+    <script src="/static/js/common/account/forgot_password.js"></script>
 </head>
 <body>
 <jsp:include page="shared/header.jsp" />

@@ -7,7 +7,7 @@
     <script src="/static/lib/imageTools/imageTools.js"></script>
     <script src="/static/js/util/validation.js"></script>
     <script src="/static/js/util/upload.js"></script>
-    <script src="/static/js/common/settings.js"></script>
+    <script src="/static/js/common/account/settings.js"></script>
 </head>
 <body data-user-id="${sessionScope.user.entityId}">
     <jsp:include page="shared/header.jsp" />

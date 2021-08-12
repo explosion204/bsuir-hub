@@ -4,8 +4,18 @@
 <html>
 <head>
     <jsp:include page="shared/head.html" />
-    <script src="/static/js/util/validation.js"></script>
-    <script src="/static/js/common/student_dashboard.js"></script>
+    <!-- Datatables -->
+    <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <link href="/static/lib/datatables/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="/static/lib/datatables/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables Scroller -->
+    <link href="/static/lib/datatables/css/scroller.dataTables.min.css">
+    <script src="/static/lib/datatables/js/dataTables.scroller.min.js"></script>
+    <!-- custom -->
+    <script src="/static/js/util/async_task_queue.js"></script>
+    <script src="/static/js/util/fetch.js"></script>
+    <script src="/static/js/util/grade_styler.js"></script>
+    <script src="/static/js/common/dashboard/student_dashboard.js"></script>
     <link href="/static/css/common/student_dashboard.css" rel="stylesheet">
 </head>
 <body data-user-id="${sessionScope.user.entityId}"
