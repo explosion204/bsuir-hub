@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_RESET_LINK_SENT;
@@ -28,6 +30,8 @@ public class SendResetPasswordLinkCommand implements Command {
     private static final String PROTOCOL_DELIMITER = "://";
     private static final String SUBJECT_PROPERTY = "password_reset.subject";
     private static final String BODY_PROPERTY = "password_reset.message";
+    private static final String ID_CLAIM = "id";
+    private static final String SALT_CLAIM = "salt";
 
     @Inject
     private UserService userService;
@@ -57,7 +61,8 @@ public class SendResetPasswordLinkCommand implements Command {
                 //        + CONFIRM_EMAIL_URL + jwtService.generateEmailConfirmationToken(targetId);
 
                 // FIXME: development link
-                String token = tokenService.generatePasswordResetToken(userId, salt);
+                Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, user); put(SALT_CLAIM, salt); }};
+                String token = tokenService.generateToken(claims);
                 String url = new UrlStringBuilder(RESET_PASSWORD_URL)
                         .addParam(TOKEN, token)
                         .build();

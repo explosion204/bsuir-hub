@@ -18,6 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
@@ -32,6 +35,9 @@ public class ChangeEmailCommand implements Command {
 
     private static final String SUBJECT_PROPERTY = "confirmation_mail.subject";
     private static final String BODY_PROPERTY = "confirmation_mail.body";
+
+    private static final String ID_CLAIM = "id";
+    private static final String EMAIL_CLAIM = "email";
 
     @Inject
     private UserService userService;
@@ -75,7 +81,8 @@ public class ChangeEmailCommand implements Command {
                 //        + CONFIRM_EMAIL_URL + jwtService.generateJwt(targetId);
 
                 // FIXME: development link
-                String token = tokenService.generateEmailConfirmationToken(targetId, email);
+                Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, targetId); put(EMAIL_CLAIM, email); }};
+                String token = tokenService.generateToken(claims);
                 String url = new UrlStringBuilder(CONFIRM_EMAIL_URL)
                         .addParam(TOKEN, token)
                         .build();

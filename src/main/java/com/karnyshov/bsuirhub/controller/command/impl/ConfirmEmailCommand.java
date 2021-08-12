@@ -15,11 +15,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.EMAIL_CONFIRMATION_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
+import static com.karnyshov.bsuirhub.controller.command.RequestParameter.EMAIL;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.TOKEN;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
@@ -27,6 +29,8 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
 @Named
 public class ConfirmEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String ID_CLAIM = "id";
+    private static final String EMAIL_CLAIM = "email";
 
     @Inject
     private UserService userService;
@@ -41,12 +45,11 @@ public class ConfirmEmailCommand implements Command {
         try {
             boolean success = false;
             String token = request.getParameter(TOKEN);
-            Optional<Pair<Long, String>> tokenContent = tokenService.parseEmailConfirmationToken(token);
+            Map<String, Object> tokenContent = tokenService.parseToken(token);
 
-            if (tokenContent.isPresent()) {
-                Pair<Long, String> pair = tokenContent.get();
-                long userId = pair.getLeft();
-                String email = pair.getRight();
+            if (!tokenContent.isEmpty()) {
+                long userId = ((Double) tokenContent.get(ID_CLAIM)).longValue();
+                String email = (String) tokenContent.get(EMAIL_CLAIM);
 
                 Optional<User> optionalUser = userService.findById(userId);
 
@@ -69,7 +72,6 @@ public class ConfirmEmailCommand implements Command {
                 }
             }
 
-            // TODO: 7/28/2021 invalidate token (maybe with timer task?)
             result = success
                     ? new CommandResult(INDEX_URL, REDIRECT)
                     : new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
