@@ -51,15 +51,15 @@
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="accountDropdownMenu">
-                                    <li><a href="/settings" class="dropdown-item"><fmt:message key="header.settings" /></a></li>
+                                    <li><a href="/settings" class="dropdown-item"><bht:localeTag key="header.settings" /></a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a href="/logout" class="dropdown-item"><fmt:message key="header.logout" /></a></li>
+                                    <li><a href="/logout" class="dropdown-item"><bht:localeTag key="header.logout" /></a></li>
                                 </ul>
                             </li>
                         </c:when>
                         <c:otherwise>
                             <li class="nav-item">
-                                <a href="/login" class="btn btn-secondary"><fmt:message key="header.login" /></a>
+                                <a href="/login" class="btn btn-secondary"><bht:localeTag key="header.login" /></a>
                             </li>
                         </c:otherwise>
                     </c:choose>

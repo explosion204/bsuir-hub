@@ -27,7 +27,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINA
 )
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-    private static final String PAGES_PATH = "/WEB-INF/pages/";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,7 +60,7 @@ public class Controller extends HttpServlet {
 
             switch (routeType) {
                 case FORWARD:
-                    request.getRequestDispatcher(PAGES_PATH + resultDetail).forward(request, response);
+                    request.getRequestDispatcher(resultDetail).forward(request, response);
                     break;
                 case REDIRECT:
                     response.sendRedirect(resultDetail);

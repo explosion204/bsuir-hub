@@ -39,7 +39,6 @@ public class ApplicationPath {
     public static final String ADMIN_DELETE_SUBJECT_URL = "/admin/subjects/delete";
     public static final String NOT_FOUND_ERROR_URL = "/error/404";
     public static final String INTERNAL_SERVER_ERROR_URL = "/error/500";
-    public static final String AJAX_SET_LOCALE_URL = "/ajax/set_locale";
     public static final String AJAX_GET_USERS_URL = "/ajax/get_users";
     public static final String AJAX_GET_FACULTIES_URL = "/ajax/get_faculties";
     public static final String AJAX_GET_DEPARTMENTS_URL = "/ajax/get_departments";
@@ -60,27 +59,28 @@ public class ApplicationPath {
     public static final String ADMIN_AJAX_DELETE_ASSIGNMENT_URL = "/admin/ajax/delete_assignment";
 
     /* JSP for forwarding only */
-    public static final String INDEX_JSP = "common/index.jsp";
-    public static final String LOGIN_JSP = "common/login.jsp";
-    public static final String FORGOT_PASSWORD_JSP = "common/forgot_password.jsp";
-    public static final String RESET_PASSWORD_JSP = "common/reset_password.jsp";
-    public static final String SETTINGS_JSP = "common/settings.jsp";
-    public static final String TEACHER_DASHBOARD_JSP = "common/teacher_dashboard.jsp";
-    public static final String STUDENT_DASHBOARD_JSP = "common/student_dashboard.jsp";
-    public static final String GRADES_OVERVIEW_JSP = "common/grades_overview.jsp";
-    public static final String CONTACT_US_JSP = "/common/contact_us.jsp";
-    public static final String ERROR_NOT_FOUND_JSP = "common/errors/404.jsp";
-    public static final String ERROR_INTERNAL_SERVER_JSP = "common/errors/500.jsp";
-    public static final String ADMIN_USERS_JSP = "admin/users/users.jsp";
-    public static final String ADMIN_VIEW_USER_JSP = "admin/users/view_user.jsp";
-    public static final String ADMIN_FACULTIES_JSP = "admin/faculties/faculties.jsp";
-    public static final String ADMIN_VIEW_FACULTY_JSP = "admin/faculties/view_faculty.jsp";
-    public static final String ADMIN_DEPARTMENTS_JSP = "admin/departments/departments.jsp";
-    public static final String ADMIN_VIEW_DEPARTMENT_JSP = "admin/departments/view_department.jsp";
-    public static final String ADMIN_GROUPS_JSP = "/admin/groups/groups.jsp";
-    public static final String ADMIN_VIEW_GROUP_JSP = "/admin/groups/view_group.jsp";
-    public static final String ADMIN_SUBJECTS_JSP = "/admin/subjects/subjects.jsp";
-    public static final String ADMIN_VIEW_SUBJECT_JSP = "/admin/subjects/view_subject.jsp";
+    public static final String INDEX_JSP = "/WEB-INF/pages/common/index.jsp";
+    public static final String LOGIN_JSP = "/WEB-INF/pages/common/login.jsp";
+    public static final String FORGOT_PASSWORD_JSP = "/WEB-INF/pages/common/forgot_password.jsp";
+    public static final String RESET_PASSWORD_JSP = "/WEB-INF/pages/common/reset_password.jsp";
+    public static final String SETTINGS_JSP = "/WEB-INF/pages/common/settings.jsp";
+    public static final String TEACHER_DASHBOARD_JSP = "/WEB-INF/pages/common/teacher_dashboard.jsp";
+    public static final String STUDENT_DASHBOARD_JSP = "/WEB-INF/pages/common/student_dashboard.jsp";
+    public static final String GRADES_OVERVIEW_JSP = "/WEB-INF/pages/common/grades_overview.jsp";
+    public static final String CONTACT_US_JSP = "/WEB-INF/pages/common/contact_us.jsp";
+    public static final String ERROR_NOT_FOUND_JSP = "/WEB-INF/pages/common/errors/404.jsp";
+    public static final String ERROR_INTERNAL_SERVER_JSP = "/WEB-INF/pages/common/errors/500.jsp";
+    public static final String DISABLED_COOKIES_JSP = "/WEB-INF/pages/common/errors/disabled_cookies.jsp";
+    public static final String ADMIN_USERS_JSP = "/WEB-INF/pages/admin/users/users.jsp";
+    public static final String ADMIN_VIEW_USER_JSP = "/WEB-INF/pages/admin/users/view_user.jsp";
+    public static final String ADMIN_FACULTIES_JSP = "/WEB-INF/pages/admin/faculties/faculties.jsp";
+    public static final String ADMIN_VIEW_FACULTY_JSP = "/WEB-INF/pages/admin/faculties/view_faculty.jsp";
+    public static final String ADMIN_DEPARTMENTS_JSP = "/WEB-INF/pages/admin/departments/departments.jsp";
+    public static final String ADMIN_VIEW_DEPARTMENT_JSP = "/WEB-INF/pages/admin/departments/view_department.jsp";
+    public static final String ADMIN_GROUPS_JSP = "/WEB-INF/pages/admin/groups/groups.jsp";
+    public static final String ADMIN_VIEW_GROUP_JSP = "/WEB-INF/pages/admin/groups/view_group.jsp";
+    public static final String ADMIN_SUBJECTS_JSP = "/WEB-INF/pages/admin/subjects/subjects.jsp";
+    public static final String ADMIN_VIEW_SUBJECT_JSP = "/WEB-INF/pages/admin/subjects/view_subject.jsp";
 
     private ApplicationPath() {
 

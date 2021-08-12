@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.locale}" />
-<fmt:setBundle basename="locale" />
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3 bg-light">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -29,7 +27,7 @@
         <li class="mt-auto border-top border-2 pt-3">
             <div class="dropdown">
                 <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    <fmt:message key="footer.lang" /> - <jsp:text>${sessionScope.locale}</jsp:text>
+                    <bht:localeTag key="footer.lang" /> - ${cookie['localeCode'].value}
                 </a>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
