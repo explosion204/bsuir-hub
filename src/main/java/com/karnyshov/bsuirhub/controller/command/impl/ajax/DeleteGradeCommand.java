@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
+import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.GradeService;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -33,22 +35,26 @@ public class DeleteGradeCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        boolean status = true;
+        boolean status = false;
 
         User currentUser = (User) request.getSession().getAttribute(USER);
         UserRole role = currentUser.getRole();
 
-        // filter grants access to area /grades/* BUT we have to prevent malicious attempts to POST data by students
-        if (role == TEACHER || role == ADMIN) {
-            try {
+        try {
+            // filter grants access to area /grades/* BUT we have to prevent malicious attempts to POST data by students
+            if (role == ADMIN || role == TEACHER) {
                 long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
+                Optional<Grade> optionalGrade = gradeService.findById(entityId);
 
-                gradeService.delete(entityId);
-            } catch (ServiceException | IllegalArgumentException e) {
-                logger.error("An error occurred executing 'delete grade' command", e);
-                status = false;
+                // teacher can delete only his own grades
+                status = optionalGrade.isPresent() && optionalGrade.get().getTeacherId() == currentUser.getEntityId();
+
+                if (status) {
+                    gradeService.delete(entityId);
+                }
             }
-        } else {
+        } catch (ServiceException | IllegalArgumentException e) {
+            logger.error("An error occurred executing 'delete grade' command", e);
             status = false;
         }
 
