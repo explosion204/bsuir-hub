@@ -1,7 +1,10 @@
 $(document).ready(function() {
     setActiveNavItem(1);
-
+    let localeCode = $('main').data('locale-code');
     let table = $('#dataTable').DataTable({
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         dom: '<"toolbar">rtip',
         scrollY: '70vh',
         scrollX: false,
@@ -25,8 +28,30 @@ $(document).ready(function() {
             { data: 'entityId' },
             { data: 'login' },
             { data: 'email' },
-            { data: 'role' },
-            { data: 'status' },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    switch (row.role) {
+                        case 'ADMIN':
+                            return $('#role_admin').text();
+                        case 'TEACHER':
+                            return $('#role_teacher').text();
+                        case 'STUDENT':
+                            return $('#role_student').text();
+                    }
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    switch (row.status) {
+                        case 'CONFIRMED':
+                            return $('#user_confirmed').text();
+                        case 'NOT_CONFIRMED':
+                            return $('#user_not_confirmed').text()
+                    }
+                }
+            },
             { data: 'firstName' },
             { data: 'patronymic' },
             { data: 'lastName' },
@@ -36,34 +61,39 @@ $(document).ready(function() {
                     let issuerId = Number.parseInt($('main').data('issuer-id'));
 
                     if (issuerId === row.entityId || row.userRole === 'ADMIN') {
-                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">Edit</a>' +
+                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">' + $('#admin_edit').text() + '</a>' +
                             '<form style="display: inline" method="post" action="/admin/users/delete?id=' + row.entityId + '">' +
-                            '   <input class="btn btn-secondary" type="submit" value="Delete" disabled>' +
+                            '   <input class="btn btn-secondary" type="submit" value="' + $('#admin_delete').text() + '" disabled>' +
                             '</span>'
                     } else {
-                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">Edit</a>' +
+                        return '<a class="btn btn-secondary me-2" href="/admin/users/edit?id=' + row.entityId + '">' + $('#admin_edit').text() + '</a>' +
                             '<form style="display: inline" method="post" action="/admin/users/delete?id=' + row.entityId + '">' +
-                            '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
+                            '   <input class="btn btn-secondary" type="submit" value="' + $('#admin_delete').text() + '" onclick="return confirmDelete();">' +
                             '</form>'
                     }
                 }
             }
-        ]
+        ],
+        initComplete: function () {
+            dataTableInitComplete(table);
+        }
     });
+});
 
+function dataTableInitComplete(table) {
     $("div.toolbar").html(`
             <div class="input-group mb-3">
-                <button id="createButton" type="button" class="btn btn-secondary create-button">Create</button>
+                <button id="createButton" type="button" class="btn btn-secondary create-button">${$('#admin_create').text()}</button>
                 <select id="searchCriteria" class="form-select">
-                    <optgroup label="Search criteria">
-                        <option value="LOGIN">Login</option>
-                        <option value="EMAIL">Email</option>
-                        <option value="LAST_NAME">Last name</option>
-                        <option value="ROLE">Role</option>
-                        <option value="GROUP">Group</option>
+                    <optgroup label="${$('#admin_search_criteria').text()}">
+                        <option value="LOGIN">${$('#user_login').text()}</option>
+                        <option value="EMAIL">${$('#user_email').text()}</option>
+                        <option value="LAST_NAME">${$('#user_last_name').text()}</option>
+                        <option value="ROLE">${$('#user_role').text()}</option>
+                        <option value="GROUP">${$('#user_group').text()}</option>
                     </optgroup>
                 </select>
-                <input id="searchInput" maxlength="50" type="text" class="form-control w-50" placeholder="Search">
+                <input id="searchInput" maxlength="50" type="text" class="form-control w-50" placeholder="${$('#admin_search').text()}">
                 <select id="searchSelect"></select>
             </div>
         `
@@ -76,6 +106,7 @@ $(document).ready(function() {
     searchSelect.hide();
 
     searchCriteria.select2({
+        language: $('main').data('locale-code'),
         minimumResultsForSearch: -1,
         theme: 'bootstrap',
         width: '10%'
@@ -91,12 +122,13 @@ $(document).ready(function() {
             searchInput.hide();
             searchSelect.show();
             searchSelect.select2({
+                language: $('main').data('locale-code'),
                 theme: 'bootstrap',
                 width: '65%',
                 data: [
-                    { id: '3', text: 'Admin' },
-                    { id: '2', text: 'Teacher' },
-                    { id: '1', text: 'Student' }
+                    { id: '3', text: `${$('#role_admin').text()}` },
+                    { id: '2', text: `${$('#role_teacher').text()}` },
+                    { id: '1', text: `${$('#role_student').text()}` }
                 ]
             });
             searchSelect.trigger('select2:select');
@@ -104,6 +136,7 @@ $(document).ready(function() {
             searchInput.hide();
             searchSelect.show();
             searchSelect.select2({
+                language: $('main').data('locale-code'),
                 theme: 'bootstrap',
                 width: '65%',
                 maximumInputLength: 20,
@@ -157,4 +190,4 @@ $(document).ready(function() {
     $('#createButton').click(function () {
         window.location.href = '/admin/users/new';
     });
-});
+}

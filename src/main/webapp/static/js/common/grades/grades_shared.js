@@ -13,43 +13,55 @@ function useGradeIdParam(allGrades, subjectId, studentId) {
 }
 
 function initializeCommentsTable(gradeId, teacherId, subjectId, studentId) {
-    let commentsTable;
-    if (!$.fn.dataTable.isDataTable('#commentsTable')) {
-        commentsTable = $('#commentsTable').DataTable({
-            dom: '<"new-comment">rt',
-            scrollX: false,
-            scrollY: '50vh',
-            scrollResize: true,
-            scroller: {
-                loadingIndicator: true,
-                displayBuffer: 3
-            },
-            ordering: false,
-            processing: true,
-            serverSide: true,
-            drawCallback: function () { onCommentsLoaded(commentsTable, subjectId, studentId); },
-            ajax: {
-                url: '/ajax/get_comments',
-                data: function (d) {
-                    d.requestType = 'jquery_datatable';
-                    d.gradeId = $('body').data('active-grade-id');
-                }
-            },
-            columns: [
-                { data: null }
-            ]
-        });
-    } else {
-        commentsTable = $('#commentsTable').DataTable();
+    let commentsTable = $('#commentsTable').DataTable();
+    let localeCode = $('body').data('locale-code');
+    if ($.fn.dataTable.isDataTable('#commentsTable')) {
+        commentsTable.destroy();
     }
 
+    commentsTable = $('#commentsTable').DataTable({
+        dom: '<"new-comment">rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
+        scrollX: false,
+        scrollY: '50vh',
+        scrollResize: true,
+        scroller: {
+            loadingIndicator: true,
+            displayBuffer: 3
+        },
+        ordering: false,
+        processing: true,
+        serverSide: true,
+        drawCallback: function () { onCommentsLoaded(commentsTable, subjectId, studentId); },
+        ajax: {
+            url: '/ajax/get_comments',
+            data: function (d) {
+                d.requestType = 'jquery_datatable';
+                d.gradeId = $('body').data('active-grade-id');
+            }
+        },
+        columns: [
+            { data: null }
+        ],
+        initComplete: function () {
+            commentsTableInitComplete(commentsTable, gradeId, teacherId, subjectId, studentId);
+        }
+    });
+
+    return commentsTable;
+}
+
+function commentsTableInitComplete(commentsTable, gradeId, teacherId, subjectId, studentId) {
+    console.log('init complete');
     let userId = $('body').data('user-id');
 
     if (userId === studentId || userId === teacherId) {
         $('div.new-comment').html(`
             <div class="input-group mb-1">
-                <textarea id="commentsTextArea" class="form-control" maxlength="255" placeholder="Comment text"></textarea>
-                <button id="newCommentButton" type="button" class="btn btn-secondary" disabled>New comment</button>
+                <textarea id="commentsTextArea" class="form-control" maxlength="255" placeholder="${$('#grades_comment_text').text()}"></textarea>
+                <button id="newCommentButton" type="button" class="btn btn-secondary" disabled>${$('#grades_new_comment').text()}</button>
             </div>
         `);
 
@@ -67,8 +79,6 @@ function initializeCommentsTable(gradeId, teacherId, subjectId, studentId) {
     } else {
         $('div.new-comment').html('');
     }
-
-    return commentsTable;
 }
 
 function onCommentsLoaded(commentsTable, subjectId, studentId) {

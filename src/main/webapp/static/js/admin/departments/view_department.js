@@ -9,6 +9,7 @@ $(document).ready(function () {
     let facultySelect = $('#facultySelect');
 
     facultySelect.select2({
+        language: $('body').data('locale-code'),
         theme: 'bootstrap',
         width: '100%',
         maximumInputLength: 50,

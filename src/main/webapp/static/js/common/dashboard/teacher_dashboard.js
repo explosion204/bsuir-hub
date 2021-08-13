@@ -2,9 +2,13 @@ $(document).ready(function () {
     invalidateCache();
 
     let bodyBlock = $('body');
+    let localeCode = bodyBlock.data('locale-code');
     let teacherId = bodyBlock.data('teacher-id');
     let subjectsTable = $('#subjectsTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scrollResize: true,
@@ -33,6 +37,9 @@ $(document).ready(function () {
 
     let groupsTable = $('#groupsTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scrollResize: true,
@@ -41,6 +48,9 @@ $(document).ready(function () {
 
     let studentsTable = $('#studentsTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scrollResize: true,

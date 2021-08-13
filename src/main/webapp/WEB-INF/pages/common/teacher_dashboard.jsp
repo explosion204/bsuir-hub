@@ -19,7 +19,7 @@
     <script src="/static/js/common/dashboard/teacher_dashboard.js"></script>
     <link href="/static/css/common/teacher_dashboard.css" rel="stylesheet">
 </head>
-<body data-teacher-id="${sessionScope.user.entityId}">
+<body data-locale-code="${cookie['localeCode'].value}" data-teacher-id="${sessionScope.user.entityId}">
     <jsp:include page="shared/header.jsp" />
     <h1 class="display-4 m-2 text-center"><bht:localeTag key="dashboard.teacher" /></h1>
     <main class="d-flex flex-row">

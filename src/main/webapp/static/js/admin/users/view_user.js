@@ -34,6 +34,7 @@ $(document).ready(function () {
         if ($(this).val() === '1') { // student
             groupSelectBlock.show();
             groupSelect.select2({
+                language: $('main').data('locale-code'),
                 theme: 'bootstrap',
                 width: '100%',
                 maximumInputLength: 20,

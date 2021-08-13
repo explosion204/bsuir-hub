@@ -21,4 +21,6 @@ table td {
 
 .comments-table thead th {
     border-bottom: 0;
+    display: none;
 }
+

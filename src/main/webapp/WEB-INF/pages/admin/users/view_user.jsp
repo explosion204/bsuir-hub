@@ -7,12 +7,13 @@
 
 <html>
 <head>
-    <bht:localeTag key="admin.users" />
+    <title><bht:localeTag key="admin.users" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- jQuery Select2 -->
     <link href="/static/lib/jquery-select2/css/select2.min.css" rel="stylesheet">
     <link href="/static/lib/jquery-select2-bootstrap/css/select2-bootstrap.min.css" rel="stylesheet">
     <script src="/static/lib/jquery-select2/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/${cookie['localeCode'].value}.js"></script>
     <!-- custom -->
     <script src="/static/js/util/async_task_queue.js"></script>
     <script src="/static/js/util/fetch.js"></script>
@@ -23,7 +24,9 @@
     <script src="/static/js/admin/users/view_user.js"></script>
 </head>
 <body>
-<main class="d-flex flex-row h-100" data-group-id="${targetEntity.groupId}">
+<main class="d-flex flex-row h-100"
+      data-locale-code="${cookie['localeCode'].value}"
+      data-group-id="${targetEntity.groupId}">
     <jsp:include page="../shared/sidebar.jsp" />
 
     <div class="admin-main-area w-100 h-auto">

@@ -6,9 +6,12 @@ $(document).ready(function () {
     let studentId = bodyBlock.data('student-id');
     let subjectId = bodyBlock.data('subject-id');
     let userId = bodyBlock.data('user-id');
-
+    let localeCode = $('body').data('locale-code');
     let gradesTable = $('#gradesTable').DataTable({
         dom: '<"toolbar">rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scroller: {
@@ -39,12 +42,17 @@ $(document).ready(function () {
             { data: null, width: '20%' },
             { data: null, width: '20%' },
             { data: null, width: '20%' }
-        ]
+        ],
+        initComplete: function () {
+            gradesTableInitComplete(gradesTable, studentId, subjectId);
+        }
     });
+})
 
+function gradesTableInitComplete(gradesTable, studentId, subjectId) {
     $('div.toolbar').html(`
         <div class="input-group mb-1">
-            <button id="createButton" type="button" class="btn btn-secondary">New grade</button>
+            <button id="createButton" type="button" class="btn btn-secondary">${$('#grades_new_grade').text()}</button>
             <select id="gradeSelect" class="form-select">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -84,7 +92,7 @@ $(document).ready(function () {
         let modifiedUrl = window.location.origin + window.location.pathname + '?' + params.toString();
         window.history.pushState('', '', modifiedUrl);
     });
-})
+}
 
 function onDataLoaded(table, userId, studentId, subjectId) {
     let grades = [];
@@ -125,20 +133,22 @@ function onDataLoaded(table, userId, studentId, subjectId) {
 
         // action buttons
         let actionCell = table.cell(index, 4).node();
-        let updateButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Update</button>`);
-        let deleteButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">Delete</button>`)
-
+        let updateButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">${$('#grades_update').text()}</button>`);
         updateButton.click(function () {
             let gradeValue = gradeSelect.val();
             onGradeUpdate.call(this, studentId, subjectId, gradeValue);
         });
 
-        deleteButton.click(function () {
-            onGradeDelete.call(this, table, studentId, subjectId);
-        });
-
         $(actionCell).empty();
-        $(actionCell).append(updateButton, deleteButton);
+        $(actionCell).append(updateButton);
+
+        if (userId === value.teacherId) {
+            let deleteButton = $(`<button class="btn btn-secondary me-2" data-grade-id="${value.entityId}">${$('#grades_delete').text()}</button>`);
+            deleteButton.click(function () {
+                onGradeDelete.call(this, table, studentId, subjectId);
+            });
+            $(actionCell).append(deleteButton);
+        }
 
         let row = table.row(index).node();
         $(row).data('grade-id', value.entityId);

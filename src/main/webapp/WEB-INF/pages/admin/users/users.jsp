@@ -15,6 +15,7 @@
     <link href="/static/lib/jquery-select2/css/select2.min.css" rel="stylesheet">
     <link href="/static/lib/jquery-select2-bootstrap/css/select2-bootstrap.min.css" rel="stylesheet">
     <script src="/static/lib/jquery-select2/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/${cookie['localeCode'].value}.js"></script>
     <!-- jQuery Confirm -->
     <link href="/static/lib/jquery-confirm/css/jquery-confirm.min.css" rel="stylesheet">
     <script src="/static/lib/jquery-confirm/js/jquery-confirm.min.js"></script>
@@ -23,7 +24,27 @@
     <script src="/static/js/admin/users/users.js"></script>
 </head>
 <body>
-<main class="d-flex flex-row h-100" data-issuer-id="${sessionScope.user.entityId}">
+
+<!-- Locale -->
+<div id="admin_create" hidden><bht:localeTag key="admin.create" /></div>
+<div id="admin_search" hidden><bht:localeTag key="admin.search" /></div>
+<div id="admin_search_criteria" hidden><bht:localeTag key="admin.search_criteria" /></div>
+<div id="admin_edit" hidden><bht:localeTag key="admin.edit" /></div>
+<div id="admin_delete" hidden><bht:localeTag key="admin.delete" /></div>
+<div id="user_login" hidden><bht:localeTag key="user.login" /></div>
+<div id="user_email" hidden><bht:localeTag key="user.email" /></div>
+<div id="user_last_name" hidden><bht:localeTag key="user.last_name" /></div>
+<div id="user_role" hidden><bht:localeTag key="user.role" /></div>
+<div id="user_group" hidden><bht:localeTag key="user.group" /></div>
+<div id="user_confirmed" hidden><bht:localeTag key="user.confirmed" /></div>
+<div id="user_not_confirmed" hidden><bht:localeTag key="user.not_confirmed" /></div>
+<div id="role_admin" hidden><bht:localeTag key="role.admin" /></div>
+<div id="role_teacher" hidden><bht:localeTag key="role.teacher" /></div>
+<div id="role_student" hidden><bht:localeTag key="role.student" /></div>
+
+<main class="d-flex flex-row h-100"
+      data-locale-code="${cookie['localeCode'].value}"
+      data-issuer-id="${sessionScope.user.entityId}">
     <jsp:include page="../shared/sidebar.jsp" />
 
     <table id="dataTable" class="table table-striped table-borderless table-hover">

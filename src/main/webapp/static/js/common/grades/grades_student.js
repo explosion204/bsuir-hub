@@ -6,9 +6,12 @@ $(document).ready(function () {
     let studentId = bodyBlock.data('student-id');
     let subjectId = bodyBlock.data('subject-id');
     let userId = bodyBlock.data('user-id');
-
+    let localeCode = $('body').data('locale-code');
     let gradesTable = $('#gradesTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scroller: {

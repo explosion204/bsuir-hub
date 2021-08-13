@@ -1,9 +1,13 @@
 $(document).ready(function() {
     setActiveNavItem(4);
     invalidateCache();
-
+    let bodyBlock = $('body');
+    let localeCode = bodyBlock.data('locale-code');
     let table = $('#dataTable').DataTable({
         dom: '<"toolbar">rtip',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollY: '70vh',
         scrollX: false,
         scrollResize: true,
@@ -42,32 +46,35 @@ $(document).ready(function() {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return '<a class="btn btn-secondary me-2" href="/admin/groups/edit?id=' + row.entityId + '">Edit</a>' +
+                    return '<a class="btn btn-secondary me-2" href="/admin/groups/edit?id=' + row.entityId + '">' + $('#admin_edit').text() + '</a>' +
                     '<form style="display: inline" method="post" action="/admin/groups/delete?id=' + row.entityId + '">' +
-                    '   <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirmDelete();">' +
+                    '   <input class="btn btn-secondary" type="submit" value="' + $('#admin_delete').text() + '" onclick="return confirmDelete();">' +
                     '</form>'
                 }
             }
-        ]
+        ],
+        initComplete: function () {
+            dataTableInitComplete(table);
+        }
     });
 
+
+});
+
+function dataTableInitComplete(table) {
     $("div.toolbar").html(`
             <div class="input-group mb-3">
-                <button id="createButton" type="button" class="btn btn-secondary create-button">Create</button>
+                <button id="createButton" type="button" class="btn btn-secondary create-button">${$('#admin_create').text()}</button>
                 <select id="searchCriteria" class="form-select">
-                    <option disabled>Search criteria</option>
-                    <option value="NAME">Name</option>
-                    <option value="DEPARTMENT">Department</option>
+                    <option disabled>${$('#admin_search_criteria').text()}</option>
+                    <option value="NAME">${$('#group_name').text()}</option>
+                    <option value="DEPARTMENT">${$('#group_department').text()}</option>
                 </select>
-                <input id="searchInput" maxlength="20" type="text" class="form-control w-50" placeholder="Search">
+                <input id="searchInput" maxlength="20" type="text" class="form-control w-50" placeholder="${$('#admin_search').text()}">
                 <select id="searchSelect"></select>
             </div>
         `
     );
-
-    table.rows().data().each(function (value, index) {
-        console.log(`For index ${index}, data value is ${value}`);
-    })
 
     let searchCriteria = $('#searchCriteria');
     let searchInput = $('#searchInput');
@@ -86,6 +93,7 @@ $(document).ready(function() {
             searchInput.hide();
             searchSelect.show();
             searchSelect.select2({
+                language: $('body').data('locale-code'),
                 theme: 'bootstrap',
                 width: '65%',
                 maximumInputLength: 50,
@@ -94,11 +102,11 @@ $(document).ready(function() {
                     url: '/ajax/get_departments',
                     data: function (params) {
                         return {
-                          term: params.term || '',
-                          page: params.page || 1,
-                          pageSize: 10,
-                          requestType: 'jquery_select',
-                      }
+                            term: params.term || '',
+                            page: params.page || 1,
+                            pageSize: 10,
+                            requestType: 'jquery_select',
+                        }
                     },
                     processResults: function (data, params) {
                         data = JSON.parse(data);
@@ -141,7 +149,7 @@ $(document).ready(function() {
     $('#createButton').click(function () {
         window.location.href = '/admin/groups/new';
     });
-});
+}
 
 function onDataLoaded(table) {
     table.rows().data().each(function (value, index) {

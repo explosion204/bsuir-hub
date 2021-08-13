@@ -2,9 +2,12 @@ $(document).ready(function () {
     updateGradeStyle();
     let bodyBlock = $('body');
     let groupId = bodyBlock.data('group-id');
-
+    let localeCode = bodyBlock.data('locale-code');
     let subjectsTable = $('#subjectsTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '50vh',
         scrollResize: true,
@@ -38,6 +41,9 @@ $(document).ready(function () {
 
     $('#studentsTable').DataTable({
         dom: 'rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '70vh',
         scrollResize: true,

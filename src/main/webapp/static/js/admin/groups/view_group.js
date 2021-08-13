@@ -11,6 +11,7 @@ $(document).ready(function () {
     let departmentId = mainBlock.data('department-id');
     let headmanId = mainBlock.data('headman-id');
     let curatorId = mainBlock.data('curator-id');
+    let localeCode = mainBlock.data('locale-code');
 
     initializeDepartmentSelect($('#departmentSelect'), '100%', departmentId);
     initializeStudentSelect($('#headmanSelect'), '100%', headmanId);
@@ -18,6 +19,9 @@ $(document).ready(function () {
 
     let assignmentsTable =  $('#assignmentsTable').DataTable({
         dom: '<"toolbar">rt',
+        language: {
+            url: `/static/lib/datatables/locale/${localeCode}.json`
+        },
         scrollX: false,
         scrollY: '50vh',
         scrollResize: true,
@@ -41,10 +45,11 @@ $(document).ready(function () {
         },
         columns: [
             { data: null }
-        ]
+        ],
+        initComplete: function () {
+            initToolbar(assignmentsTable);
+        }
     });
-
-    initToolbar(assignmentsTable);
 })
 
 function onAssignmentsLoaded(assignmentsTable) {
@@ -54,8 +59,8 @@ function onAssignmentsLoaded(assignmentsTable) {
         let selectionBody = $(`<div class="input-group"><input hidden value="${value.entityId}"></div>`);
         let subjectSelect = $(`<select></select>`);
         let teacherSelect = $(`<select></select>`);
-        let saveButton = $('<button class="btn btn-secondary create-button">Save</button>');
-        let deleteButton = $('<button class="btn btn-secondary create-button">Delete</button>');
+        let saveButton = $(`<button class="btn btn-secondary create-button">${$('#admin_save').text()}</button>`);
+        let deleteButton = $(`<button class="btn btn-secondary create-button">${$('#admin_delete').text()}</button>`);
         selectionBody.append(subjectSelect, teacherSelect, saveButton, deleteButton);
         let cell = assignmentsTable.cell(index, 0).node();
         $(cell).html(selectionBody);
@@ -80,7 +85,7 @@ function initToolbar(assignmentsTable) {
     let selectionBody = $(`<div class="input-group"></div>`);
     let subjectSelect = $(`<select></select>`);
     let teacherSelect = $(`<select></select>`);
-    let saveButton = $('<button class="btn btn-secondary create-button" disabled>Create</button>');
+    let saveButton = $(`<button class="btn btn-secondary create-button" disabled>${$('#admin_create').text()}</button>`);
     selectionBody.append(subjectSelect, teacherSelect, saveButton);
     $('div.toolbar').append(selectionBody);
     initializeSubjectSelect(subjectSelect, '45%');
@@ -170,9 +175,10 @@ function onAssignmentDelete(assignmentsTable, assignmentId) {
 
 function initializeSubjectSelect(select, width, initialId) {
     select.select2({
+        language: $('main').data('locale-code'),
         theme: 'bootstrap',
         width: width,
-        placeholder: 'Choose subject',
+        placeholder: $('#group_choose_subject').text(),
         ajax: {
             delay: 250,
             url: '/ajax/get_subjects',
@@ -213,9 +219,10 @@ function initializeSubjectSelect(select, width, initialId) {
 
 function initializeTeacherSelect(select, width, initialId) {
     select.select2({
+        language: $('main').data('locale-code'),
         theme: 'bootstrap',
         width: width,
-        placeholder: 'Choose teacher',
+        placeholder: $('#group_choose_teacher').text(),
         ajax: {
             delay: 250,
             url: '/ajax/get_users',
@@ -258,6 +265,7 @@ function initializeTeacherSelect(select, width, initialId) {
 
 function initializeStudentSelect(select, width, initialId) {
     select.select2({
+        language: $('main').data('locale-code'),
         theme: 'bootstrap',
         width: width,
         maximumInputLength: 50,
@@ -305,6 +313,7 @@ function initializeStudentSelect(select, width, initialId) {
 
 function initializeDepartmentSelect(select, width, initialId) {
     select.select2({
+        language: $('main').data('locale-code'),
         theme: 'bootstrap',
         width: width,
         maximumInputLength: 50,

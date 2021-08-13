@@ -20,7 +20,8 @@
     <script src="/static/js/common/dashboard/student_dashboard.js"></script>
     <link href="/static/css/common/student_dashboard.css" rel="stylesheet">
 </head>
-<body data-user-id="${sessionScope.user.entityId}"
+<body data-locale-code="${cookie['localeCode'].value}"
+      data-user-id="${sessionScope.user.entityId}"
       data-group-id="${sessionScope.user.groupId}">
 
 <jsp:include page="shared/header.jsp" />

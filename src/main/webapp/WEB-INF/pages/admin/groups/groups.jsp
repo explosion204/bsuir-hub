@@ -15,13 +15,24 @@
     <link href="/static/lib/jquery-select2/css/select2.min.css" rel="stylesheet">
     <link href="/static/lib/jquery-select2-bootstrap/css/select2-bootstrap.min.css" rel="stylesheet">
     <script src="/static/lib/jquery-select2/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/${cookie['localeCode'].value}.js"></script>
     <!-- custom -->
     <script src="/static/js/util/async_task_queue.js"></script>
     <script src="/static/js/util/fetch.js"></script>
     <script src="/static/js/util/delay.js"></script>
     <script src="/static/js/admin/groups/groups.js"></script>
 </head>
-<body>
+<body data-locale-code="${cookie['localeCode'].value}">
+
+<!-- Locale -->
+<div id="admin_create" hidden><bht:localeTag key="admin.create" /></div>
+<div id="admin_search" hidden><bht:localeTag key="admin.search" /></div>
+<div id="admin_search_criteria" hidden><bht:localeTag key="admin.search_criteria" /></div>
+<div id="admin_edit" hidden><bht:localeTag key="admin.edit" /></div>
+<div id="admin_delete" hidden><bht:localeTag key="admin.delete" /></div>
+<div id="group_name" hidden><bht:localeTag key="group.name" /></div>
+<div id="group_department" hidden><bht:localeTag key="group.department" /></div>
+
 <main class="d-flex flex-row h-100">
     <jsp:include page="../shared/sidebar.jsp" />
 

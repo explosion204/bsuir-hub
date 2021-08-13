@@ -32,10 +32,18 @@
         </c:when>
     </c:choose>
 </head>
-<body data-student-id="${student.entityId}"
+<body data-locale-code="${cookie['localeCode'].value}"
+      data-student-id="${student.entityId}"
       data-subject-id="${subject.entityId}"
       data-user-id="${sessionScope.user.entityId}"
       data-grade-id="${gradeId}">
+
+    <!-- Locale -->
+    <div id="grades_new_grade" hidden><bht:localeTag key="grades.new_grade" /></div>
+    <div id="grades_update" hidden><bht:localeTag key="grades.update" /></div>
+    <div id="grades_delete" hidden><bht:localeTag key="grades.delete" /></div>
+    <div id="grades_new_comment" hidden><bht:localeTag key="grades.new_comment" /></div>
+    <div id="grades_comment_text" hidden><bht:localeTag key="grades.comment_text" /></div>
 
     <jsp:include page="shared/header.jsp" />
 
