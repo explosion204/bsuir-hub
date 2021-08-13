@@ -5,7 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title><bht:localeTag key="groups" /></title>
+    <title><bht:localeTag key="admin.groups" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -29,21 +29,21 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th><bht:localeTag key="name" /></th>
-            <th><bht:localeTag key="department" /></th>
-            <th><bht:localeTag key="headman" /></th>
-            <th><bht:localeTag key="curator" /></th>
-            <th><bht:localeTag key="action" /></th>
+            <th><bht:localeTag key="group.name" /></th>
+            <th><bht:localeTag key="group.department" /></th>
+            <th><bht:localeTag key="group.headman" /></th>
+            <th><bht:localeTag key="group.curator" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th>Id</th>
-            <th><bht:localeTag key="name" /></th>
-            <th><bht:localeTag key="department" /></th>
-            <th><bht:localeTag key="headman" /></th>
-            <th><bht:localeTag key="curator" /></th>
-            <th><bht:localeTag key="action" /></th>
+            <th><bht:localeTag key="group.name" /></th>
+            <th><bht:localeTag key="group.department" /></th>
+            <th><bht:localeTag key="group.headman" /></th>
+            <th><bht:localeTag key="group.curator" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </tfoot>
     </table>

@@ -36,7 +36,7 @@
             <th><bht:localeTag key="department.short_name" /></th>
             <th><bht:localeTag key="department.specialty_alias" /></th>
             <th><bht:localeTag key="department.faculty" /></th>
-            <th><bht:localeTag key="department.action" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </thead>
         <tfoot>
@@ -46,7 +46,7 @@
             <th><bht:localeTag key="department.short_name" /></th>
             <th><bht:localeTag key="department.specialty_alias" /></th>
             <th><bht:localeTag key="department.faculty" /></th>
-            <th><bht:localeTag key="department.action" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </tfoot>
     </table>

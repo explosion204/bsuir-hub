@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
-import com.karnyshov.bsuirhub.model.validator.NewFacultyValidator;
+import com.karnyshov.bsuirhub.model.validator.FacultyValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class CreateFacultyCommand implements Command {
                 .setArchived(false)
                 .build();
 
-        boolean validationResult = NewFacultyValidator.validateFaculty(faculty);
+        boolean validationResult = FacultyValidator.validateFaculty(faculty);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
         if (validationResult) {

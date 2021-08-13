@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
+import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import com.karnyshov.bsuirhub.util.TokenService;
 import com.karnyshov.bsuirhub.util.MailService;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
@@ -58,7 +58,7 @@ public class ChangeEmailCommand implements Command {
             long targetId = user.getEntityId();
 
             String email = request.getParameter(EMAIL);
-            boolean validationResult = NewUserValidator.validateEmail(email);
+            boolean validationResult = UserValidator.validateEmail(email);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             // logic for resending confirmation link

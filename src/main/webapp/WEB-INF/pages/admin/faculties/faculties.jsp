@@ -5,7 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title><bht:localeTag key="faculties" /></title>
+    <title><bht:localeTag key="admin.faculties" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -30,17 +30,17 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th><bht:localeTag key="name" /></th>
-            <th><bht:localeTag key="short_name" /></th>
-            <th><bht:localeTag key="action" /></th>
+            <th><bht:localeTag key="faculty.name" /></th>
+            <th><bht:localeTag key="faculty.short_name" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th>Id</th>
-            <th><bht:localeTag key="name" /></th>
-            <th><bht:localeTag key="short_name" /></th>
-            <th><bht:localeTag key="action" /></th>
+            <th><bht:localeTag key="faculty.name" /></th>
+            <th><bht:localeTag key="faculty.short_name" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </tfoot>
     </table>

@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
-import com.karnyshov.bsuirhub.model.validator.NewDepartmentValidator;
+import com.karnyshov.bsuirhub.model.validator.DepartmentValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public class CreateDepartmentCommand implements Command {
                     .setArchived(false)
                     .build();
 
-            boolean validationResult = NewDepartmentValidator.validateDepartment(department);
+            boolean validationResult = DepartmentValidator.validateDepartment(department);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             if (validationResult) {

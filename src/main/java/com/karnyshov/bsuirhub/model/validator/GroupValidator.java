@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import java.util.regex.Pattern;
 
 
-public class NewGroupValidator {
+public class GroupValidator {
     private static final String VALID_NAME = "^[\\p{L}\\d]{1,20}$";
 
     public static boolean validateGroup(Group group) {

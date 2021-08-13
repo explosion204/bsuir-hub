@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
-import com.karnyshov.bsuirhub.model.validator.NewSubjectValidator;
+import com.karnyshov.bsuirhub.model.validator.SubjectValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -42,7 +42,7 @@ public class UpdateSubjectCommand implements Command {
                 .setArchived(false)
                 .build();
 
-        boolean validationResult = NewSubjectValidator.validateSubject(subject);
+        boolean validationResult = SubjectValidator.validateSubject(subject);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
         // data is valid

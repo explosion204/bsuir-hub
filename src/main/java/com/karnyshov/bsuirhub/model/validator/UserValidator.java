@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
-public class NewUserValidator {
+public class UserValidator {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String VALID_LOGIN_REGEX = "^\\p{Alnum}{8,20}$";

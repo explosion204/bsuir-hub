@@ -3,7 +3,7 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
+import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import com.karnyshov.bsuirhub.model.validator.PlainTextValidator;
 import com.karnyshov.bsuirhub.util.MailService;
 import jakarta.inject.Inject;
@@ -35,7 +35,7 @@ public class SendMessageCommand implements Command {
         String contactEmail = request.getParameter(EMAIL);
         String text = request.getParameter(TEXT);
 
-        boolean validationResult = NewUserValidator.validateEmail(contactEmail) && PlainTextValidator.validateText(text);
+        boolean validationResult = UserValidator.validateEmail(contactEmail) && PlainTextValidator.validateText(text);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
         try {

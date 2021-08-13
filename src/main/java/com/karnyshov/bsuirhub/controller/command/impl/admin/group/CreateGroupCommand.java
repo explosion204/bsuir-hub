@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
-import com.karnyshov.bsuirhub.model.validator.NewGroupValidator;
+import com.karnyshov.bsuirhub.model.validator.GroupValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class CreateGroupCommand implements Command {
                     .setName(name)
                     .build();
 
-            boolean validationResult = NewGroupValidator.validateGroup(group);
+            boolean validationResult = GroupValidator.validateGroup(group);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             boolean isNameUnique = groupService.isNameUnique(name);

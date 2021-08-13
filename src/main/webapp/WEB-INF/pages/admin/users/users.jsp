@@ -5,7 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <bht:localeTag key="users" />
+    <title><bht:localeTag key="admin.users" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -30,27 +30,27 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th><bht:localeTag key="user_login" /></th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>First name</th>
-            <th>Patronymic</th>
-            <th>Last name</th>
-            <th>Action</th>
+            <th><bht:localeTag key="user.login" /></th>
+            <th><bht:localeTag key="user.email" /></th>
+            <th><bht:localeTag key="user.role" /></th>
+            <th><bht:localeTag key="user.status" /></th>
+            <th><bht:localeTag key="user.first_name" /></th>
+            <th><bht:localeTag key="user.patronymic" /></th>
+            <th><bht:localeTag key="user.last_name" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th>Id</th>
-            <th>Login</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>First name</th>
-            <th>Patronymic</th>
-            <th>Last name</th>
-            <th>Action</th>
+            <th><bht:localeTag key="user.login" /></th>
+            <th><bht:localeTag key="user.email" /></th>
+            <th><bht:localeTag key="user.role" /></th>
+            <th><bht:localeTag key="user.status" /></th>
+            <th><bht:localeTag key="user.first_name" /></th>
+            <th><bht:localeTag key="user.patronymic" /></th>
+            <th><bht:localeTag key="user.last_name" /></th>
+            <th><bht:localeTag key="admin.action" /></th>
         </tr>
         </tfoot>
     </table>
@@ -59,9 +59,3 @@
 </body>
 
 </html>
-
-<script>
-    function confirmDelete() {
-        return confirm("Attention, you're trying to delete user. Are you sure?");
-    }
-</script>

@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
-import com.karnyshov.bsuirhub.model.validator.NewGroupValidator;
+import com.karnyshov.bsuirhub.model.validator.GroupValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -50,7 +50,7 @@ public class UpdateGroupCommand implements Command {
                     .setHeadmanId(headmanId)
                     .build();
 
-            boolean validationResult = NewGroupValidator.validateGroup(group);
+            boolean validationResult = GroupValidator.validateGroup(group);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             boolean nameNotChanged = StringUtils.equals(name, previousName);

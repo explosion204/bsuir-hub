@@ -8,7 +8,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
+import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
@@ -92,7 +92,7 @@ public class UploadProfileImageCommand implements Command {
                 }
 
                 // validate file
-                status = NewUserValidator.validateProfileImage(filePath);
+                status = UserValidator.validateProfileImage(filePath);
 
                 if (status) {
                     // delete existing user profile image

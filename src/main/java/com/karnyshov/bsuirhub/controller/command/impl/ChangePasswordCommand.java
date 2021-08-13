@@ -5,7 +5,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
+import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public class ChangePasswordCommand implements Command {
             String password = request.getParameter(PASSWORD);
             String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
 
-            boolean validationResult = NewUserValidator.validatePassword(password, confirmPassword);
+            boolean validationResult = UserValidator.validatePassword(password, confirmPassword);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             Optional<User> targetUser = userService.findById(targetId);

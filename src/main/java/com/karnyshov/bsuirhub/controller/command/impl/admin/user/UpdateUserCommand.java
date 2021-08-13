@@ -8,7 +8,7 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
-import com.karnyshov.bsuirhub.model.validator.NewUserValidator;
+import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -72,7 +72,7 @@ public class UpdateUserCommand implements Command {
             boolean emailNotChanged = StringUtils.equals(email, previousEmail);
             boolean passwordNotChanged = StringUtils.isBlank(password);
 
-            boolean validationResult = NewUserValidator.validateUser(user, password, confirmPassword, skipRoleValidation,
+            boolean validationResult = UserValidator.validateUser(user, password, confirmPassword, skipRoleValidation,
                     emailNotChanged, passwordNotChanged);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
