@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.validator.UserValidator;
+import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -30,6 +31,7 @@ public class UpdateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONFIRMED_VALUE = "on";
     private static final String DEFAULT_PROFILE_IMAGE_PATH = "default_profile.jpg";
+    private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
 
     @Inject
     private UserService userService;
@@ -76,7 +78,7 @@ public class UpdateUserCommand implements Command {
                     emailNotChanged, passwordNotChanged);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            boolean isEmailUnique = emailNotChanged || userService.isEmailUnique(email);
+            boolean isEmailUnique = emailNotChanged || uniqueValues.add(email) && userService.isEmailUnique(email);
 
             if (!isEmailUnique) {
                 session.setAttribute(NOT_UNIQUE_EMAIL, true);
@@ -114,6 +116,8 @@ public class UpdateUserCommand implements Command {
         } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'update user' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+        } finally {
+            uniqueValues.remove(email);
         }
 
         // clean up cached values

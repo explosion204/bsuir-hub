@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import com.karnyshov.bsuirhub.util.TokenService;
 import com.karnyshov.bsuirhub.util.MailService;
+import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -31,6 +32,7 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
 @Named
 public class ChangeEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
     private static final String PROTOCOL_DELIMITER = "://";
 
     private static final String SUBJECT_PROPERTY = "confirmation_mail.subject";
@@ -52,12 +54,12 @@ public class ChangeEmailCommand implements Command {
     public CommandResult execute(HttpServletRequest request) {
         CommandResult result;
         HttpSession session = request.getSession();
+        String email = request.getParameter(EMAIL);
 
         try {
             User user = (User) request.getSession().getAttribute(USER);
             long targetId = user.getEntityId();
 
-            String email = request.getParameter(EMAIL);
             boolean validationResult = UserValidator.validateEmail(email);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
@@ -65,7 +67,7 @@ public class ChangeEmailCommand implements Command {
             // if user submitted the same email as his current not confirmed from session, uniqueness check will be omitted
             // and activation link will be resent
             boolean isEmailUnique = StringUtils.equals(user.getEmail(), email) && user.getStatus() == NOT_CONFIRMED
-                    || userService.isEmailUnique(email);
+                    || uniqueValues.add(email) && userService.isEmailUnique(email);
             if (!isEmailUnique) {
                 session.setAttribute(NOT_UNIQUE_EMAIL, true);
             }
@@ -101,6 +103,8 @@ public class ChangeEmailCommand implements Command {
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'change email' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+        } finally {
+            uniqueValues.remove(email);
         }
 
         return result;

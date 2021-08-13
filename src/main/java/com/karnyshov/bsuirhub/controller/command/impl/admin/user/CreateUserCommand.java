@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.validator.UserValidator;
+import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ public class CreateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONFIRMED_VALUE = "on";
     private static final String DEFAULT_PROFILE_IMAGE_PATH = "default_profile.jpg";
+    private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
 
     @Inject
     private UserService userService;
@@ -69,8 +71,8 @@ public class CreateUserCommand implements Command {
                     false, false, false);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            boolean isLoginUnique = userService.isLoginUnique(login);
-            boolean isEmailUnique = userService.isEmailUnique(email);
+            boolean isLoginUnique = uniqueValues.add(login) && userService.isLoginUnique(login);
+            boolean isEmailUnique = uniqueValues.add(email) && userService.isEmailUnique(email);
 
             if (!isLoginUnique) {
                 session.setAttribute(NOT_UNIQUE_LOGIN, true);
@@ -91,6 +93,9 @@ public class CreateUserCommand implements Command {
         } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'create user' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+        } finally {
+            uniqueValues.remove(login);
+            uniqueValues.remove(email);
         }
 
         return result;

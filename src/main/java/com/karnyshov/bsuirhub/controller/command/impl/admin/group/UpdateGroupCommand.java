@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.validator.GroupValidator;
+import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -24,6 +25,7 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOU
 @Named
 public class UpdateGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
 
     @Inject
     private GroupService groupService;
@@ -54,7 +56,7 @@ public class UpdateGroupCommand implements Command {
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
             boolean nameNotChanged = StringUtils.equals(name, previousName);
-            boolean isNameUnique = nameNotChanged || groupService.isNameUnique(name);
+            boolean isNameUnique = nameNotChanged || uniqueValues.add(name) && groupService.isNameUnique(name);
             if (!isNameUnique) {
                 session.setAttribute(NOT_UNIQUE_NAME, true);
             }
@@ -79,6 +81,8 @@ public class UpdateGroupCommand implements Command {
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'update group' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+        } finally {
+            uniqueValues.remove(name);
         }
 
         return result;

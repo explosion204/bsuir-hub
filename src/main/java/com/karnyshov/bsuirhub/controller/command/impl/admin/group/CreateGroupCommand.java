@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.validator.GroupValidator;
+import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class CreateGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
 
     @Inject
     private GroupService groupService;
@@ -45,7 +47,7 @@ public class CreateGroupCommand implements Command {
             boolean validationResult = GroupValidator.validateGroup(group);
             session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-            boolean isNameUnique = groupService.isNameUnique(name);
+            boolean isNameUnique = uniqueValues.add(name) && groupService.isNameUnique(name);
             if (!isNameUnique) {
                 session.setAttribute(NOT_UNIQUE_NAME, true);
             }
@@ -61,6 +63,8 @@ public class CreateGroupCommand implements Command {
         } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'create group' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+        } finally {
+            uniqueValues.remove(name);
         }
 
         return result;
