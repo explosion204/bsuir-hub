@@ -9,6 +9,12 @@ Student | Authenticated user
 Teacher | Authenticated user
 Admin | Fully authorized user, cannot be added via application
 
+User status |
+--- |
+Not confirmed |
+Confirmed |
+Deleted |
+
 ### Guest ###
 * Authenticate with login and password received from admin beforehand
 * Contact application support submitting message and email for feedback
