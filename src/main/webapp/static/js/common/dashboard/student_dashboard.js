@@ -32,6 +32,41 @@ $(document).ready(function () {
     });
 
     $('#subjectsTable tbody').on('click', 'tr', onSubjectsTableSelect);
+    $('#groupDiv').click(function () {
+       $('#studentsModal').modal('show');
+    });
+
+    $('#studentsTable').DataTable({
+        dom: 'rt',
+        scrollX: false,
+        scrollY: '70vh',
+        scrollResize: true,
+        ordering: false,
+        scroller: {
+            loadingIndicator: true,
+            displayBuffer: 1
+        },
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/ajax/get_users',
+            data: function (d) {
+                d.requestType = 'jquery_datatable';
+                d.filterCriteria = 'group';
+            }
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return `<div class="lead">${row.lastName} ${row.patronymic} ${row.firstName}</div>`;
+                }
+            }
+        ],
+        search: {
+            search: groupId
+        }
+    });
 })
 
 function onAssignmentsLoaded(subjectsTable) {

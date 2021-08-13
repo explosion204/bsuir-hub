@@ -23,3 +23,11 @@
     width: 7rem;
 }
 
+#groupDiv:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+    cursor: pointer;
+}
+
+#studentsTable_wrapper {
+    width: 100%;
+}

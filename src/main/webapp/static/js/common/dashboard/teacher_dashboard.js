@@ -10,7 +10,8 @@ $(document).ready(function () {
         scrollResize: true,
         ordering: false,
         scroller: {
-            loadingIndicator: true
+            loadingIndicator: true,
+            displayBuffer: 1
         },
         processing: true,
         serverSide: true,
@@ -45,7 +46,8 @@ $(document).ready(function () {
         scrollResize: true,
         ordering: false,
         scroller: {
-            loadingIndicator: true
+            loadingIndicator: true,
+            displayBuffer: 1
         },
         processing: true,
         serverSide: true,

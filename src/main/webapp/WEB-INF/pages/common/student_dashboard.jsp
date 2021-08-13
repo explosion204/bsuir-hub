@@ -56,7 +56,7 @@
             <div class="lead mt-1"><bht:localeTag key="dashboard.specialty" /></div>
             <div class="h6 mt-1 text-uppercase">${department.specialtyAlias}</div>
         </div>
-        <div class="lead fs-3 p-2 text-center">
+        <div id="groupDiv" class="lead fs-3 p-2 text-center">
             <div class="lead mt-1"><bht:localeTag key="dashboard.group" /> <span class="h6">${group.name}</span></div>
             <div class="lead mt-1"><bht:localeTag key="dashboard.headman" /> <span class="h6">${headman.lastName} ${headman.firstName} ${headman.patronymic}</span></div>
             <div class="lead mt-1"><bht:localeTag key="dashboard.curator" /> <span class="h6">${curator.lastName} ${curator.firstName} ${curator.patronymic}</span></div>
@@ -77,6 +77,26 @@
         </table>
     </div>
 </main>
+
+<div class="modal fade" id="studentsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><bht:localeTag key="dashboard.students_of_group" /> ${group.name}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="studentsTable" class="table">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><bht:localeTag key="grades.close" /></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <jsp:include page="shared/footer.jsp"/>
 </body>
