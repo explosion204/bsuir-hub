@@ -35,13 +35,14 @@ Deleted |
     * View group name
     * View group headman
     * View group curator
-    * View all students belonging to his group
+    * View all students belonging to student's group
     * View average grade for all subjects
     * View list of active subjects (subject click => grades overview)
 * View grades overview for chosen subject
     * View average grade for chosen subject
     * View grades info including teacher, date and value
-    * Leave comments for all his grades (email notifications about new comments will be sent to grade teacher)
+    * Leave comments for all student's grades (email notifications about new comments will be sent to grade teacher)
+    * Delete own comments
     * Receive email notifications about any new comment at this page
 
 ### Teacher ###
@@ -51,14 +52,15 @@ Deleted |
 * Change password
 * Change profile image
 * View teacher's dashboard info
-    * View list of subjects assigned to him
-    * View list of groups (with faculty and department names) assigned to picked subject
+    * View list of subjects assigned to teacher
+    * View list of groups (with faculty and department names) assigned to chosen subject
     * View list of students of chosen group (student click => grades overview)
 * View grades overview for chosen student and subject
     * View average grade
     * View grades info including teacher, date and value
-    * Leave comments only for his grades (email notifications about new comments will be sent to student)
-    * Receive email notifications about new comments only for his grade
+    * Leave comments only for teacher's grades (email notifications about new comments will be sent to student)
+    * Delete own comments
+    * Receive email notifications about new comments only for teacher's grade
     * Add new grade (1 - 10)
     * Delete grade
 
