@@ -82,3 +82,5 @@ Admin | Fully authorized user, cannot be added via application
         * Add assignment (mapping current group to specified teacher and subject)
         * Update assignment
         * Delete assignment
+
+![Database scheme](https://raw.githubusercontent.com/explosion204/bsuir-hub/master/db/scheme.png)
