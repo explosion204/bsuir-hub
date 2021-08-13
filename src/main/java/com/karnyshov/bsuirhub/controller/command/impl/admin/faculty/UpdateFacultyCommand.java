@@ -45,9 +45,9 @@ public class UpdateFacultyCommand implements Command {
         boolean validationResult = NewFacultyValidator.validateFaculty(faculty);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-        if (validationResult) {
-            // data is valid
-            try {
+        try {
+            if (validationResult) {
+                // data is valid
                 long entityId = Long.parseLong(idString);
                 Faculty updatedFaculty = (Faculty) Faculty.builder()
                         .of(faculty)
@@ -58,18 +58,16 @@ public class UpdateFacultyCommand implements Command {
 
                 // success
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
-                String url = new UrlStringBuilder(ADMIN_EDIT_FACULTY_URL)
-                        .addParam(ENTITY_ID, idString)
-                        .build();
-
-                result = new CommandResult(url, REDIRECT);
-            } catch (ServiceException | NumberFormatException e) {
-                logger.error("An error occurred executing 'update faculty' command", e);
-                result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
             }
-        } else {
-            // data is not valid
-            result = new CommandResult(ADMIN_EDIT_FACULTY_URL + idString, REDIRECT);
+
+            String url = new UrlStringBuilder(ADMIN_EDIT_FACULTY_URL)
+                    .addParam(ENTITY_ID, idString)
+                    .build();
+
+            result = new CommandResult(url, REDIRECT);
+        }  catch (ServiceException | NumberFormatException e) {
+            logger.error("An error occurred executing 'update faculty' command", e);
+            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
         return result;

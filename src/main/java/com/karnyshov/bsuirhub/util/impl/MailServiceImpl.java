@@ -20,7 +20,7 @@ public class MailServiceImpl implements MailService {
     private static final String MAIL_PROPERTIES_NAME = "mail.properties";
     private static final String USERNAME_PROPERTY = "username";
     private static final String PASSWORD_PROPERTY = "password";
-    private static final String THREAD_POOL_SIZE_PROPERTY = "threadPoolSize";
+    private static final String THREAD_POOL_SIZE_PROPERTY = "thread_pool_size";
     private static final String HTML_BODY_TYPE = "text/html; charset=UTF-8";
 
     private static Properties mailProperties;

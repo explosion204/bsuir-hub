@@ -13,8 +13,8 @@
             </a>
 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><button id="ru_locale" class="dropdown-item" onclick="setLocale('ru');">Russian</button></li>
-                <li><button id="en_locale" class="dropdown-item" onclick="setLocale('en');">English</button></li>
+                <li><button id="ru_locale" class="dropdown-item" onclick="setLocale('ru');"><bht:localeTag key="lang.russian" /></button></li>
+                <li><button id="en_locale" class="dropdown-item" onclick="setLocale('en');"><bht:localeTag key="lang.english" /></button></li>
             </ul>
         </div>
     </div>

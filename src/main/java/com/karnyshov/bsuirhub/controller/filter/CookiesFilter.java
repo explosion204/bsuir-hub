@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.DISABLED_COOKIES_JSP;
+import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOCALE_CODE;
 
 @WebFilter(filterName = "CookiesFilter")
@@ -28,6 +29,8 @@ public class CookiesFilter implements Filter {
             String localeCode = request.getParameter(LOCALE_CODE);
             if (localeCode != null) {
                 Cookie localeCookie = new Cookie(LOCALE_COOKIE_NAME, localeCode);
+                // it prevents duplicate cookies with different paths, e.g. / and /login
+                localeCookie.setPath(INDEX_URL);
                 httpResponse.addCookie(localeCookie);
             }
 

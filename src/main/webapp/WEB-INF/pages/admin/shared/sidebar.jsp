@@ -10,19 +10,19 @@
     <hr>
     <ul id="navbar" class="nav nav-pills flex-column mb-auto h-100">
         <li class="nav-item">
-            <a href="/admin/users" class="nav-link link-dark" aria-current="page">Users</a>
+            <a href="/admin/users" class="nav-link link-dark" aria-current="page"><bht:localeTag key="admin.users" /></a>
         </li>
         <li class="nav-item">
-            <a href="/admin/faculties" class="nav-link link-dark">Faculties</a>
+            <a href="/admin/faculties" class="nav-link link-dark"><bht:localeTag key="admin.faculties" /></a>
         </li>
         <li class="nav-item">
-            <a href="/admin/departments" class="nav-link link-dark">Departments</a>
+            <a href="/admin/departments" class="nav-link link-dark"><bht:localeTag key="admin.departments" /></a>
         </li>
         <li class="nav-item">
-            <a href="/admin/groups" class="nav-link link-dark">Groups</a>
+            <a href="/admin/groups" class="nav-link link-dark"><bht:localeTag key="admin.groups" /></a>
         </li>
         <li class="nav-item">
-            <a href="/admin/subjects" class="nav-link link-dark">Subjects</a>
+            <a href="/admin/subjects" class="nav-link link-dark"><bht:localeTag key="admin.subjects" /></a>
         </li>
         <li class="mt-auto border-top border-2 pt-3">
             <div class="dropdown">
@@ -31,8 +31,8 @@
                 </a>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><button id="ru_locale" class="dropdown-item" onclick="setLocale('ru');">Russian</button></li>
-                    <li><button id="en_locale" class="dropdown-item" onclick="setLocale('en');">English</button></li>
+                    <li><button id="ru_locale" class="dropdown-item" onclick="setLocale('ru');"><bht:localeTag key="lang.russian" /></button></li>
+                    <li><button id="en_locale" class="dropdown-item" onclick="setLocale('en');"><bht:localeTag key="lang.english" /></button></li>
                 </ul>
             </div>
         </li>
@@ -46,9 +46,15 @@
             <strong><jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text></strong>
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
-            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+            <li><a class="dropdown-item" href="/settings"><bht:localeTag key="admin.settings" /></a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout">Log out</a></li>
+            <li><a class="dropdown-item" href="/logout"><bht:localeTag key="admin.logout" /></a></li>
         </ul>
     </div>
 </div>
+
+<script>
+    function confirmDelete() {
+        return confirm("<bht:localeTag key="admin.delete_attention" />");
+    }
+</script>

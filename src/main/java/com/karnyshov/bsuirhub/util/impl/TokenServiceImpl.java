@@ -20,8 +20,8 @@ import java.util.*;
 public class TokenServiceImpl implements TokenService {
     private static final Logger logger = LogManager.getLogger();
     private static final String JWT_PROPERTIES_NAME = "jwt.properties";
-    private static final String SECRET_KEY_PROPERTY = "secretKey";
-    private static final String VALIDITY_TIME_PROPERTY = "validityTime";
+    private static final String SECRET_KEY_PROPERTY = "secret_key";
+    private static final String VALIDITY_TIME_PROPERTY = "validity_time";
 
     private static Key secretKey;
     private static int validityTime; // measured in hours

@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <!doctype html>
 <html lang="en">
 <head>
+    <bht:localeTag key="users" />
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -28,7 +30,7 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Login</th>
+            <th><bht:localeTag key="user_login" /></th>
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>

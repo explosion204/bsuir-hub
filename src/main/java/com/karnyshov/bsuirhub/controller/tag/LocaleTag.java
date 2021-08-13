@@ -2,6 +2,7 @@ package com.karnyshov.bsuirhub.controller.tag;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.tagext.TagSupport;
@@ -35,6 +36,10 @@ public class LocaleTag extends TagSupport {
 
             if (localeCookie.isPresent()) {
                 localeCode = localeCookie.get().getValue();
+            } else {
+                // setting locale cookie in case when it does not exist
+                HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+                response.addCookie(new Cookie(LOCALE_COOKIE_NAME, DEFAULT_LOCALE));
             }
         }
 

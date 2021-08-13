@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <html>
 <head>
+    <bht:localeTag key="departments" />
     <jsp:include page="../shared/head.html" />
     <!-- jQuery Select2 -->
     <link href="/static/lib/jquery-select2/css/select2.min.css" rel="stylesheet">
@@ -24,8 +26,8 @@
         <div class="container">
             <h1 class="display-3">
                 <c:choose>
-                    <c:when test="${newEntityPage}">New department</c:when>
-                    <c:otherwise>Edit department</c:otherwise>
+                    <c:when test="${newEntityPage}"><bht:localeTag key="new_department"/></c:when>
+                    <c:otherwise><bht:localeTag key="edit_department" /></c:otherwise>
                 </c:choose>
             </h1>
         </div>
@@ -40,50 +42,50 @@
         </c:choose>
                 <c:if test="${entityUpdateSuccess}">
                     <div class="alert alert-success" role="alert">
-                        Department successfully updated
+                        <bht:localeTag key="department_updated" />
                     </div>
                 </c:if>
                 <c:if test="${validationError}">
                     <div class="alert alert-danger" role="alert">
-                        A server-side validation error occurred
+                        <bht:localeTag key="validation_error" />
                     </div>
                 </c:if>
 
                 <input hidden type="text" name="id" value="${targetEntity.entityId}">
                 <div class="form-group me-5 ms-5 mb-2">
-                    <label for="nameInput">Name</label>
+                    <label for="nameInput"><bht:localeTag key="name" /></label>
                     <input type="text" name="name" class="form-control"
                            pattern="(?=[a-zA-Zа-яА-Я])([a-zA-Zа-яА-Я\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
                            id="nameInput" value="${targetEntity.name}" required>
                     <div class="invalid-feedback">
-                        Department name must have 1 - 50 alphabetic and whitespace (except for trailing and leading) characters
+                        <bht:localeTag key="department_name_validation" />
                     </div>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
-                    <label for="shortNameInput">Short name</label>
+                    <label for="shortNameInput"><bht:localeTag key="short_name" /></label>
                     <input type="text" name="shortName" class="form-control"
                            pattern="[a-zA-Zа-яА-Я]{1,15}"
                            id="shortNameInput" value="${targetEntity.shortName}" required>
                     <div class="invalid-feedback">
-                        Department short name must have 1 - 15 alphabetic characters
+                        <bht:localeTag key="department_short_name_validation" />
                     </div>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
-                    <label for="specialtyAliasInput">Specialty alias</label>
+                    <label for="specialtyAliasInput"><bht:localeTag key="specialty_alias" /></label>
                     <input type="text" name="specialtyAlias" class="form-control"
                            pattern="(?=[a-zA-Zа-яА-Я,])([a-zA-Zа-яА-Я\s,]{1,100})(?<=[a-zA-Zа-яА-Я,])"
                            id="specialtyAliasInput" value="${targetEntity.specialtyAlias}" required>
                     <div class="invalid-feedback">
-                        Department specialty alias must have 1 - 100 alphabetic and whitespace (except for trailing and leading) characters
+                        <bht:localeTag key="department_specialty_validation" />
                     </div>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
-                    <label for="facultySelect">Faculty</label>
+                    <label for="facultySelect"><bht:localeTag key="faculty" /></label>
                     <select name="facultyId" id="facultySelect" required></select>
                 </div>
                 <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
-                >Save</button>
+                ><bht:localeTag key="save" /></button>
             </form>
     </div>
 </main>

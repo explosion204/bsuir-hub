@@ -19,21 +19,21 @@
                     </li>
                     <c:if test="${role eq 2 or role eq 3}">
                         <li class="nav-item me-1">
-                            <a href="/teacher" class="nav-link" aria-current="page">Dashboard</a>
+                            <a href="/teacher" class="nav-link" aria-current="page"><bht:localeTag key="header.dashboard" /></a>
                         </li>
                     </c:if>
                     <c:if test="${role eq 1}">
                         <li class="nav-item me-1">
-                            <a href="/student" class="nav-link" aria-current="page">Dashboard</a>
+                            <a href="/student" class="nav-link" aria-current="page"><bht:localeTag key="header.dashboard" /></a>
                         </li>
                     </c:if>
                     <c:if test="${role eq 3}">
                         <li class="nav-item me-1">
-                            <a href="/admin/users" class="nav-link" aria-current="page">Admin panel</a>
+                            <a href="/admin/users" class="nav-link" aria-current="page"><bht:localeTag key="header.admin_panel" /></a>
                         </li>
                     </c:if>
                     <li class="nav-item me-auto">
-                        <a href="/contact_us" class="nav-link" aria-current="page">Contact us</a>
+                        <a href="/contact_us" class="nav-link" aria-current="page"><bht:localeTag key="header.contact_us" /></a>
                     </li>
 
                     <c:choose>

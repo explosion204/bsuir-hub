@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 
@@ -27,8 +28,7 @@ public class SettingsPageAccessFilter implements Filter {
         User user = (User) session.getAttribute(USER);
 
         if (user == null || user.getRole() == UserRole.GUEST) {
-            String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI())
-                    .build(httpRequest.getQueryString());
+            String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI()).build();
             session.setAttribute(RETURN_URL, returnUrl);
             httpResponse.sendRedirect(LOGIN_URL);
         } else {

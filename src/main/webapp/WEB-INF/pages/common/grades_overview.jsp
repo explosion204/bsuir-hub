@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 <c:set var="role" value="${sessionScope.user.role.ordinal()}" />
 
 <html>
 <head>
+    <title><bht:localeTag key="grades.grades_overview" /></title>
     <jsp:include page="shared/head.html" />
     <!-- Datatables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -40,16 +42,16 @@
     <div class="display-6 text-center">${subject.name} <b>(${subject.shortName})</b></div>
     <div class="lead text-center border-bottom mt-2 pb-2">
         <div class="fs-5">${student.lastName} ${student.patronymic} ${student.firstName}</div>
-        <div class="fs-6">Average subject grade: <span id="avgGrade">${averageStudyGrade}</span></div>
+        <div class="fs-6"><bht:localeTag key="grades.average_subject_grade" />: <span id="avgGrade">${averageStudyGrade}</span></div>
     </div>
     <div class="wrapper ms-5 me-5">
         <table id="gradesTable" class="table row-border ms-2">
             <thead>
             <tr>
                 <th></th>
-                <th>Teacher</th>
-                <th>Date</th>
-                <th>Grade</th>
+                <th><bht:localeTag key="grades.teacher" /></th>
+                <th><bht:localeTag key="grades.date" /></th>
+                <th><bht:localeTag key="grades.grade" /></th>
                 <c:if test="${role eq 2 or role eq 3}">
                     <th>Action</th>
                 </c:if>
@@ -64,7 +66,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><bht:localeTag key="grades.comments" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -79,7 +81,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><bht:localeTag key="grades.close" /></button>
                 </div>
             </div>
         </div>

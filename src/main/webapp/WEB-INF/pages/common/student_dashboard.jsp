@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <html>
 <head>
+    <title><bht:localeTag key="dashboard.student" /></title>
     <jsp:include page="shared/head.html" />
     <!-- Datatables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -23,7 +25,7 @@
 
 <jsp:include page="shared/header.jsp" />
 
-<h1 class="display-4 m-2 text-center">Student dashboard</h1>
+<h1 class="display-4 m-2 text-center"><bht:localeTag key="dashboard.student" /></h1>
 <main class="d-flex flex-row">
     <div class="wrapper w-25 ms-2 mt-2">
         <div class="d-flex flex-row border-bottom p-2">
@@ -37,27 +39,27 @@
         </div>
         <div class="lead fs-3 border-bottom text-center p-2">
             <div>
-                Average grade: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
+                <bht:localeTag key="dashboard.average_grade" />: <span id="averageStudyGrade" class="text-warning">${averageStudyGrade}</span>
             </div>
         </div>
         <div class="lead fs-3 border-bottom p-2 text-center">
-            <div class="lead mt-1">Факультет</div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.faculty" /></div>
             <div class="h6 mt-1 text-uppercase">${faculty.name}</div>
             <div class="h6 text-uppercase">(${faculty.shortName})</div>
         </div>
         <div class="lead fs-3 border-bottom p-2 text-center">
-            <div class="lead mt-1">Кафедра</div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.department" /></div>
             <div class="h6 mt-1 text-uppercase">${department.name}</div>
             <div class="h6 text-uppercase">(${department.shortName})</div>
         </div>
         <div class="lead fs-3 border-bottom p-2 text-center">
-            <div class="lead mt-1">Специальность</div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.specialty" /></div>
             <div class="h6 mt-1 text-uppercase">${department.specialtyAlias}</div>
         </div>
         <div class="lead fs-3 p-2 text-center">
-            <div class="lead mt-1">Группа <span class="h6">${group.name}</span></div>
-            <div class="lead mt-1">Cтароста <span class="h6">${headman.lastName} ${headman.firstName} ${headman.patronymic}</span></div>
-            <div class="lead mt-1">Куратор <span class="h6">${curator.lastName} ${curator.firstName} ${curator.patronymic}</span></div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.group" /> <span class="h6">${group.name}</span></div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.headman" /> <span class="h6">${headman.lastName} ${headman.firstName} ${headman.patronymic}</span></div>
+            <div class="lead mt-1"><bht:localeTag key="dashboard.curator" /> <span class="h6">${curator.lastName} ${curator.firstName} ${curator.patronymic}</span></div>
         </div>
     </div>
 
@@ -66,7 +68,7 @@
             <thead>
             <tr>
                 <th>
-                    <h1 class="display-6 ms-2">Active subjects</h1>
+                    <h1 class="display-6 ms-2"><bht:localeTag key="dashboard.active_subjects" /></h1>
                 </th>
             </tr>
             </thead>

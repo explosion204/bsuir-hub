@@ -61,7 +61,7 @@ public class SendResetPasswordLinkCommand implements Command {
                 //        + CONFIRM_EMAIL_URL + jwtService.generateEmailConfirmationToken(targetId);
 
                 // FIXME: development link
-                Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, user); put(SALT_CLAIM, salt); }};
+                Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, userId); put(SALT_CLAIM, salt); }};
                 String token = tokenService.generateToken(claims);
                 String url = new UrlStringBuilder(RESET_PASSWORD_URL)
                         .addParam(TOKEN, token)

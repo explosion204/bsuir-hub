@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.locale}" />
-<fmt:setBundle basename="locale" />
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <html>
 <head>
@@ -14,10 +12,10 @@
 <div id="error">
     <div class="error-container">
         <div class="error">
-            <h3><fmt:message key="error.page_not_found_title" /></h3>
+            <h3><bht:localeTag key="error.page_not_found_title" /></h3>
             <h1><span>4</span><span>0</span><span>4</span></h1>
         </div>
-        <h2><fmt:message key="error.page_not_found_detail" /></h2>
+        <h2><bht:localeTag key="error.page_not_found_detail" /></h2>
     </div>
 </div>
 

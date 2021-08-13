@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <html>
 <head>
+    <bht:localeTag key="users" />
     <jsp:include page="../shared/head.html" />
     <!-- jQuery Select2 -->
     <link href="/static/lib/jquery-select2/css/select2.min.css" rel="stylesheet">

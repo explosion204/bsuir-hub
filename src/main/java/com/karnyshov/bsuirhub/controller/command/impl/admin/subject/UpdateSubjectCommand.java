@@ -45,9 +45,9 @@ public class UpdateSubjectCommand implements Command {
         boolean validationResult = NewSubjectValidator.validateSubject(subject);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-        if (validationResult) {
-            // data is valid
-            try {
+        // data is valid
+        try {
+            if (validationResult) {
                 long entityId = Long.parseLong(idString);
                 Subject updatedSubject = (Subject) Subject.builder()
                         .of(subject)
@@ -58,18 +58,16 @@ public class UpdateSubjectCommand implements Command {
 
                 // success
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
-                String url = new UrlStringBuilder(ADMIN_EDIT_SUBJECT_URL)
-                        .addParam(ENTITY_ID, idString)
-                        .build();
-
-                result = new CommandResult(url, REDIRECT);
-            } catch (ServiceException | NumberFormatException e) {
-                logger.error("An error occurred executing 'update subject' command", e);
-                result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
             }
-        } else {
-            // data is not valid
-            result = new CommandResult(ADMIN_EDIT_SUBJECT_URL + idString, REDIRECT);
+
+            String url = new UrlStringBuilder(ADMIN_EDIT_SUBJECT_URL)
+                    .addParam(ENTITY_ID, idString)
+                    .build();
+
+            result = new CommandResult(url, REDIRECT);
+        } catch (ServiceException | NumberFormatException e) {
+            logger.error("An error occurred executing 'update subject' command", e);
+            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }
 
         return result;

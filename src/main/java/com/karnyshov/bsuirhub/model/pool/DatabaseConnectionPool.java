@@ -24,11 +24,11 @@ public class DatabaseConnectionPool {
     private static AtomicBoolean instanceInitialized = new AtomicBoolean(false);
 
     private static final String DB_PROPERTIES_NAME = "pool.properties";
-    private static final String MIN_POOL_SIZE_PROPERTY = "poolMinSize";
-    private static final String MAX_POOL_SIZE_PROPERTY = "poolMaxSize";
-    private static final String POOL_VALIDATION_DELAY = "poolValidationDelay";
-    private static final String POOL_VALIDATION_PERIOD = "poolValidationPeriod";
-    private static final String CONNECTION_USAGE_TIMEOUT = "connectionUsageTimeout";
+    private static final String MIN_POOL_SIZE_PROPERTY = "pool_min_size";
+    private static final String MAX_POOL_SIZE_PROPERTY = "pool_max_size";
+    private static final String POOL_VALIDATION_DELAY = "pool_validation_delay";
+    private static final String POOL_VALIDATION_PERIOD = "pool_validation_period";
+    private static final String CONNECTION_USAGE_TIMEOUT = "connection_usage_timeout";
 
     private int poolMinSize;
     private int poolMaxSize;

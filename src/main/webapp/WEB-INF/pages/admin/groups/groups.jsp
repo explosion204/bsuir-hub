@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <!doctype html>
 <html lang="en">
 <head>
+    <title><bht:localeTag key="groups" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -27,21 +29,21 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Headman</th>
-            <th>Curator</th>
-            <th>Action</th>
+            <th><bht:localeTag key="name" /></th>
+            <th><bht:localeTag key="department" /></th>
+            <th><bht:localeTag key="headman" /></th>
+            <th><bht:localeTag key="curator" /></th>
+            <th><bht:localeTag key="action" /></th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Headman</th>
-            <th>Curator</th>
-            <th>Action</th>
+            <th><bht:localeTag key="name" /></th>
+            <th><bht:localeTag key="department" /></th>
+            <th><bht:localeTag key="headman" /></th>
+            <th><bht:localeTag key="curator" /></th>
+            <th><bht:localeTag key="action" /></th>
         </tr>
         </tfoot>
     </table>
@@ -50,9 +52,3 @@
 </body>
 
 </html>
-
-<script>
-    function confirmDelete() {
-        return confirm("Attention, you're trying to delete group. Are you sure?");
-    }
-</script>

@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="bht" uri="bsuirhub-tags" %>
 
 <html>
 <head>
+    <title><bht:localeTag key="groups" /></title>
     <jsp:include page="../shared/head.html" />
     <!-- DataTables -->
     <script src="/static/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -32,8 +34,8 @@
     <div class="admin-main-area w-100 h-auto">
         <h1 class="display-3">
             <c:choose>
-                <c:when test="${newEntityPage}">New group</c:when>
-                <c:otherwise>Edit group</c:otherwise>
+                <c:when test="${newEntityPage}"><bht:localeTag key="new_group" /></c:when>
+                <c:otherwise><bht:localeTag key="edit_group" /></c:otherwise>
             </c:choose>
         </h1>
         <hr>
@@ -47,54 +49,54 @@
         </c:choose>
                 <c:if test="${entityUpdateSuccess}">
                     <div class="alert alert-success" role="alert">
-                        Group successfully updated
+                        <bht:localeTag key="group_updated" />
                     </div>
                 </c:if>
                 <c:if test="${validationError}">
                     <div class="alert alert-danger" role="alert">
-                        A server-side validation error occurred
+                        <bht:localeTag key="validation_error" />d
                     </div>
                 </c:if>
                 <c:if test="${notUniqueName}">
                     <div class="alert alert-danger" role="alert">
-                        Not unique name
+                        <bht:localeTag key="not_unique_name" />
                     </div>
                 </c:if>
 
                 <input id="groupId" hidden type="text" name="id" value="${targetEntity.entityId}">
                 <div class="form-group mb-2">
-                    <label for="nameInput">Name</label>
+                    <label for="nameInput"><bht:localeTag key="name" /></label>
                     <input type="text" name="name" class="form-control"
                            pattern="[0-9a-zA-Zа-яА-Я]{1,20}"
                            id="nameInput" value="${targetEntity.name}" required>
                     <div class="invalid-feedback">
-                        Group name must have 1 - 20 alphanumeric characters
+                        <bht:localeTag key="group_name_validation" />
                     </div>
                 </div>
 
                 <div class="form-group mb-2">
-                    <label for="departmentSelect">Department</label>
+                    <label for="departmentSelect"><bht:localeTag key="department" /></label>
                     <select name="departmentId" id="departmentSelect"></select>
                 </div>
 
                 <c:if test="${not newEntityPage}">
                     <div class="form-group mb-2">
-                        <label for="headmanSelect">Headman</label>
+                        <label for="headmanSelect"><bht:localeTag key="headman" /></label>
                         <select name="headmanId" id="headmanSelect"></select>
                     </div>
                 </c:if>
 
                 <div class="form-group mb-2">
-                    <label for="curatorSelect">Curator</label>
+                    <label for="curatorSelect"><bht:localeTag key="curator" /></label>
                     <select name="curatorId" id="curatorSelect" required></select>
                 </div>
                 <button type="submit" class="btn btn-secondary mb-2" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
-                >Save</button>
+                ><bht:localeTag key="save" /></button>
             </form>
 
             <c:if test="${not newEntityPage}">
-                <h1 class="display-6">Subjects and teachers</h1>
+                <h1 class="display-6"><bht:localeTag key="subjects_and_teachers" /></h1>
                 <table id="assignmentsTable" class="table table-borderless">
                     <thead>
                     <tr>
@@ -103,7 +105,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>Assignment</td>
+                        <td><bht:localeTag key="assignments" /></td>
                     </tr>
                     </tbody>
                 </table>
@@ -115,11 +117,11 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="createToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <strong class="me-auto">Notification</strong>
+                <strong class="me-auto"><bht:localeTag key="notification" /></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                Assignment successfully created
+                <bht:localeTag key="assignment_created" />
             </div>
         </div>
     </div>
@@ -128,11 +130,11 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="updateToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <strong class="me-auto">Notification</strong>
+                <strong class="me-auto"><bht:localeTag key="notification" /></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                Assignment successfully updated
+                <bht:localeTag key="assignment_updated" />
             </div>
         </div>
     </div>
@@ -140,11 +142,11 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <strong class="me-auto">Notification</strong>
+                <strong class="me-auto"><bht:localeTag key="notification" /></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                Assignment successfully deleted
+                <bht:localeTag key="assignment_deleted" />
             </div>
         </div>
     </div>
