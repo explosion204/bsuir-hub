@@ -75,11 +75,14 @@ public class GroupDaoImpl implements GroupDao {
               "SET is_archived = 1 " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Group> groupMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public GroupDaoImpl(ResultSetMapper<Group> groupMapper, ResultSetMapper<Long> longMapper) {
+        this.groupMapper = groupMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Group> result) throws DaoException {

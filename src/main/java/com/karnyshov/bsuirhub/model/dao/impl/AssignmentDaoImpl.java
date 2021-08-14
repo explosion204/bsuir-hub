@@ -68,11 +68,14 @@ public class AssignmentDaoImpl implements AssignmentDao {
             = "DELETE FROM assignments " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Assignment> assignmentMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public AssignmentDaoImpl(ResultSetMapper<Assignment> assignmentMapper, ResultSetMapper<Long> longMapper) {
+        this.assignmentMapper = assignmentMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Assignment> result) throws DaoException {

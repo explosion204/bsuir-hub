@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-public class RequestAttribute {
+public final class RequestAttribute {
     public static final String ORIGINAL_URL = "originalUrl";
     public static final String TARGET_ENTITY = "targetEntity";
     public static final String NEW_ENTITY_PAGE = "newEntityPage";

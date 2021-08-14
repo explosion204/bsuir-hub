@@ -57,14 +57,17 @@ public class GradeDaoImpl implements GradeDao {
             = "DELETE FROM grades " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Grade> gradeMapper;
-
-    @Inject
     private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Double> doubleMapper;
 
     @Inject
-    private ResultSetMapper<Double> doubleMapper;
+    public GradeDaoImpl(ResultSetMapper<Grade> gradeMapper, ResultSetMapper<Long> longMapper,
+                ResultSetMapper<Double> doubleMapper) {
+        this.gradeMapper = gradeMapper;
+        this.longMapper = longMapper;
+        this.doubleMapper = doubleMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Grade> result) throws DaoException {

@@ -70,12 +70,14 @@ public class SubjectDaoImpl implements SubjectDao {
               "SET is_archived = 1 " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Subject> subjectMapper;
-
-    @Inject
     private ResultSetMapper<Long> longMapper;
 
+    @Inject
+    public SubjectDaoImpl(ResultSetMapper<Subject> subjectMapper, ResultSetMapper<Long> longMapper) {
+        this.subjectMapper = subjectMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Subject> result) throws DaoException {

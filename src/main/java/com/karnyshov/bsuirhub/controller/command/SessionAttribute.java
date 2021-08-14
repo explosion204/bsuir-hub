@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-public class SessionAttribute {
+public final class SessionAttribute {
     public static final String USER = "user";
     public static final String USER_ID = "userId";
 

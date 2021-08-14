@@ -12,91 +12,69 @@ import java.util.Optional;
 public class QueryExecutor {
     public static <T> void executeSelect(ResultSetMapper<T> mapper, String sqlQuery, List<T> result, Object ... params)
                 throws DaoException {
-        Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
-        PreparedStatement statement;
 
-        try {
-            connection = pool.acquireConnection();
-            statement = connection.prepareStatement(sqlQuery);
+        try (Connection connection = pool.acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             initPreparedStatement(statement, params);
-            ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                T mappedObject = mapper.map(resultSet);
-                result.add(mappedObject);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    T mappedObject = mapper.map(resultSet);
+                    result.add(mappedObject);
+                }
             }
-
-            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
         }
     }
 
     public static <T> Optional<T> executeSelectForSingleResult(ResultSetMapper<T> mapper, String sqlQuery,
                 Object ... params) throws DaoException {
-        Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
         T mappedObject = null;
 
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+        try (Connection connection = pool.acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             initPreparedStatement(statement, params);
-            ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                mappedObject = mapper.map(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    mappedObject = mapper.map(resultSet);
+                }
             }
-
-            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
         }
 
         return mappedObject != null ? Optional.of(mappedObject) : Optional.empty();
     }
 
     public static long executeInsert(String sqlQuery, Object ... params) throws DaoException {
-        Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
 
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = pool.acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
             initPreparedStatement(statement, params);
             statement.execute();
 
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            long generatedKey = generatedKeys.next() ? generatedKeys.getLong(1) : 0;
-            statement.close();
-
-            return generatedKey;
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                return generatedKeys.next() ? generatedKeys.getLong(1) : 0;
+            }
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
         }
     }
 
     public static void executeUpdateOrDelete(String sqlQuery, Object ... params) throws DaoException {
-        Connection connection = null;
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
 
-        try {
-            connection = pool.acquireConnection();
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+        try (Connection connection = pool.acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
             initPreparedStatement(statement, params);
             statement.execute();
-            statement.close();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
-        } finally {
-            pool.releaseConnection(connection);
         }
     }
 

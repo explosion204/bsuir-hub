@@ -1,6 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-public class AlertAttribute {
+public final class AlertAttribute {
     public static final String AUTH_ERROR = "authError";
 
     public static final String ENTITY_UPDATE_SUCCESS = "entityUpdateSuccess";

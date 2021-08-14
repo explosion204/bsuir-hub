@@ -15,8 +15,6 @@ import java.util.Optional;
 
 @Named
 public class CommentDaoImpl implements CommentDao {
-    private static final Logger logger = LogManager.getLogger();
-
     private static final String SELECT_BY_ID
             = "SELECT id, id_grade, id_user, text, creation_time " +
               "FROM comments " +
@@ -43,11 +41,14 @@ public class CommentDaoImpl implements CommentDao {
               "WHERE id = ?;";
 
 
-    @Inject
     private ResultSetMapper<Comment> commentMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public CommentDaoImpl(ResultSetMapper<Comment> commentMapper, ResultSetMapper<Long> longMapper) {
+        this.commentMapper = commentMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Comment> result) throws DaoException {
@@ -88,7 +89,6 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void update(Comment comment) throws DaoException {
-        logger.error("Implementation of CommentDao does not support selectAll operation");
         throw new UnsupportedOperationException("Implementation of CommentDao does not support update operation");
     }
 

@@ -83,11 +83,14 @@ public class DepartmentDaoImpl implements DepartmentDao {
               "SET is_archived = 1 " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Department> departmentMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public DepartmentDaoImpl(ResultSetMapper<Department> departmentMapper, ResultSetMapper<Long> longMapper) {
+        this.departmentMapper = departmentMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Department> result) throws DaoException {

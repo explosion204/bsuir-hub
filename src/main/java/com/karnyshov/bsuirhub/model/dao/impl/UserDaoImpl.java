@@ -131,11 +131,14 @@ public class UserDaoImpl implements UserDao {
               "SET id_status = 3 " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<User> userMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public UserDaoImpl(ResultSetMapper<User> userMapper, ResultSetMapper<Long> longMapper) {
+        this.userMapper = userMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<User> result) throws DaoException {

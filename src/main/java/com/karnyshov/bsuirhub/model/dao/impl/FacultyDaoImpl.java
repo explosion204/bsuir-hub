@@ -71,11 +71,14 @@ public class FacultyDaoImpl implements FacultyDao {
               "SET is_archived = 1 " +
               "WHERE id = ?;";
 
-    @Inject
     private ResultSetMapper<Faculty> facultyMapper;
+    private ResultSetMapper<Long> longMapper;
 
     @Inject
-    private ResultSetMapper<Long> longMapper;
+    public FacultyDaoImpl(ResultSetMapper<Faculty> facultyMapper, ResultSetMapper<Long> longMapper) {
+        this.facultyMapper = facultyMapper;
+        this.longMapper = longMapper;
+    }
 
     @Override
     public void selectAll(int offset, int limit, List<Faculty> result) throws DaoException {
