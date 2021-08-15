@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-
 /**
  * {@code ProxyConnection} class intercepts {@link Connection#close()} invocations and returns wrapped connection
  * to {@link DatabaseConnectionPool}.

@@ -5,7 +5,6 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-
 /**
  * {@code ControllerContextListener} class is an implementation of {@link ServletContextListener} interface.
  * It detects the moment when the application controller has been destroyed and then destroys

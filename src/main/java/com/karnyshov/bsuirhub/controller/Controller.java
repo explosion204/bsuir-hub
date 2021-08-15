@@ -52,7 +52,6 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        logger.info("TEST"); // TODO: 8/9/2021
         RequestMethod method = RequestMethod.valueOf(request.getMethod());
         String url = (String) request.getAttribute(ORIGINAL_URL);
         Optional<Command> command = CommandProvider.getInstance().getCommand(url, method);

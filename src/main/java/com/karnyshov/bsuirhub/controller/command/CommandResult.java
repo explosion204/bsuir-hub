@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.controller.command;
 
-
 /**
  * {@code CommandResult} class is a result of {@link Command} execution.
  * @author Dmitry Karnyshov
@@ -11,7 +10,7 @@ public class CommandResult {
      */
     public enum RouteType {
         /**
-         * Forward for JSP pages.
+         * Forward to JSP pages.
          */
         FORWARD,
         /**
@@ -19,7 +18,7 @@ public class CommandResult {
          */
         REDIRECT,
         /**
-         * JSON response for ajax section.
+         * JSON response for ajax requests.
          */
         JSON
     }

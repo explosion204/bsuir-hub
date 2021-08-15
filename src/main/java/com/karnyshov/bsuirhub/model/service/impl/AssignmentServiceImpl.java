@@ -18,8 +18,12 @@ import java.util.Optional;
  */
 @Named
 public class AssignmentServiceImpl implements AssignmentService {
-    @Inject
     private AssignmentDao assignmentDao;
+
+    @Inject
+    public AssignmentServiceImpl(AssignmentDao assignmentDao) {
+        this.assignmentDao = assignmentDao;
+    }
 
     @Override
     public Optional<Assignment> findById(long id) throws ServiceException {

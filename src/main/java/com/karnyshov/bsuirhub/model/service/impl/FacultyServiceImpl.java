@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.FacultyDao;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteria;
 import jakarta.inject.Inject;
@@ -21,8 +20,12 @@ import static com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteri
  */
 @Named
 public class FacultyServiceImpl implements FacultyService {
-    @Inject
     private FacultyDao facultyDao;
+
+    @Inject
+    public FacultyServiceImpl(FacultyDao facultyDao) {
+        this.facultyDao = facultyDao;
+    }
 
     @Override
     public Optional<Faculty> findById(long id) throws ServiceException {

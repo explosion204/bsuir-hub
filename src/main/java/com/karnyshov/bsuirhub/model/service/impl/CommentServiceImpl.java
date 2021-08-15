@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.entity.Comment;
-import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.CommentService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,8 +17,12 @@ import java.util.Optional;
  */
 @Named
 public class CommentServiceImpl implements CommentService {
-    @Inject
     private CommentDao commentDao;
+
+    @Inject
+    public CommentServiceImpl(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
 
     @Override
     public Optional<Comment> findById(long id) throws ServiceException {

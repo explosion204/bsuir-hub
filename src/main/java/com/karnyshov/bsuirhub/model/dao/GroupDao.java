@@ -2,13 +2,10 @@ package com.karnyshov.bsuirhub.model.dao;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
-import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.Group;
 
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * {@code GroupDao} interface extends {@link BaseDao}. It provides a bunch of means for manipulating stored

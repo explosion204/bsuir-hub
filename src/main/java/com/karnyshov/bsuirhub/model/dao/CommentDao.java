@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.entity.*;
 
 import java.util.List;
 
-
 /**
  * {@code CommentDao} interface extends {@link BaseDao}. It provides a bunch of means for manipulating stored
  * {@link Comment} entities.

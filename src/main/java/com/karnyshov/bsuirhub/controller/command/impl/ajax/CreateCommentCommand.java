@@ -93,13 +93,12 @@ public class CreateCommentCommand implements Command {
                 long entityId = commentService.create(comment);
                 response.put(COMMENT_ID, entityId);
 
-                // FIXME: development link
                 String url = new UrlStringBuilder(GRADES_OVERVIEW_URL)
                         .addParam(SUBJECT_ID, request.getParameter(SUBJECT_ID))
                         .addParam(STUDENT_ID, request.getParameter(STUDENT_ID))
                         .addParam(GRADE_ID, gradeId)
                         .build();
-                String commentsLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
+                String commentsLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + url;
 
                 String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
                 String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);

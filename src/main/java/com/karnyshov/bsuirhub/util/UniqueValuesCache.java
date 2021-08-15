@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.util;
 
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@code UniqueValuesCache} singleton class is a simple cache implementation with manual adding and removing.
@@ -14,7 +14,7 @@ public class UniqueValuesCache {
     private Set<Object> uniqueValues;
 
     private UniqueValuesCache() {
-        uniqueValues = new HashSet<>();
+        uniqueValues = ConcurrentHashMap.newKeySet();
     }
 
     /**

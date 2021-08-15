@@ -4,14 +4,11 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +21,12 @@ import static com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria.
  */
 @Named
 public class GroupServiceImpl implements GroupService {
-    @Inject
     private GroupDao groupDao;
+
+    @Inject
+    public GroupServiceImpl(GroupDao groupDao) {
+        this.groupDao = groupDao;
+    }
 
     @Override
     public Optional<Group> findById(long id) throws ServiceException {

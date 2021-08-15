@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.util;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
 
-
 /**
  * {@code MailService} interface provides sending email functionality.
  * @author Dmitry Karnyshov

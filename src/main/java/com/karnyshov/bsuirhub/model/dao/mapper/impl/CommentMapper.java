@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 
-
 /**
  * {@code CommentMapper} is an implementation of {@link ResultSetMapper} interface and provides mapping for
  * {@link Comment} object.

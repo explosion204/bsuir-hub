@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.model.validator;
 
-
 /**
  * {@code PlainTextValidator} class contains methods for validation untrusted text data.
  * @author Dmitry Karnyshov

@@ -69,7 +69,6 @@ public class GetFacultiesCommand implements Command {
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
             throws ServiceException, NumberFormatException {
-
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 
@@ -105,7 +104,7 @@ public class GetFacultiesCommand implements Command {
     }
 
     private void processFetchByIdRequest(HttpServletRequest request, Map<String, Object> response)
-            throws ServiceException {
+                throws ServiceException {
         long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
         Optional<Faculty> faculty = facultyService.findById(entityId);
         faculty.ifPresent(value -> response.put(ENTITY, value));

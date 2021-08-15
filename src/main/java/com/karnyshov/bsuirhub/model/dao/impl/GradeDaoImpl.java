@@ -1,7 +1,6 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.dao.FacultyDao;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -88,13 +87,13 @@ public class GradeDaoImpl implements GradeDao {
     @Override
     public void selectAll(int offset, int limit, List<Grade> result) throws DaoException {
         logger.error("Implementation of GradeDao does not support selectAll operation");
-        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectAll operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
         logger.error("Implementation of GradeDao does not support selectTotalCount operation");
-        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectTotalCount operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override

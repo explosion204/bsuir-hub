@@ -1,7 +1,6 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -160,7 +159,7 @@ public class GroupDaoImpl implements GroupDao {
                 UPDATE,
                 group.getName(),
                 group.getDepartmentId(),
-                headmanId != 0 ? headmanId : null, // null for default long value // TODO: ???? why I have done this...
+                headmanId != 0 ? headmanId : null, // null for default long value
                 group.getCuratorId(),
                 group.getEntityId()
         );

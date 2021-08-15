@@ -61,17 +61,12 @@ public class SendResetPasswordLinkCommand implements Command {
                 String salt = user.get().getSalt();
 
                 // send confirmation mail
-                // FIXME: production link
-                // String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName()
-                //        + CONFIRM_EMAIL_URL + jwtService.generateEmailConfirmationToken(targetId);
-
-                // FIXME: development link
                 Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, userId); put(SALT_CLAIM, salt); }};
                 String token = tokenService.generateToken(claims);
                 String url = new UrlStringBuilder(RESET_PASSWORD_URL)
                         .addParam(TOKEN, token)
                         .build();
-                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
+                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + url;
 
                 String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
                 String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);

@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.DepartmentDao;
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
 import jakarta.inject.Inject;
@@ -22,8 +21,12 @@ import static com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCrit
  */
 @Named
 public class DepartmentServiceImpl implements DepartmentService {
-    @Inject
     private DepartmentDao departmentDao;
+
+    @Inject
+    public DepartmentServiceImpl(DepartmentDao departmentDao) {
+        this.departmentDao = departmentDao;
+    }
 
     @Override
     public Optional<Department> findById(long id) throws ServiceException {

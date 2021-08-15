@@ -1,8 +1,6 @@
 package com.karnyshov.bsuirhub.model.validator;
 
 import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Faculty;
-import com.karnyshov.bsuirhub.model.entity.Subject;
 
 import java.util.regex.Pattern;
 

@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 
 import java.util.List;
 
-
 /**
  * {@code SubjectDao} interface extends {@link BaseDao}. It provides a bunch of means for manipulating stored
  * {@link Subject} entities.

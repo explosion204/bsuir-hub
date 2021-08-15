@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.model.service.criteria;
 
-import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 
 /**

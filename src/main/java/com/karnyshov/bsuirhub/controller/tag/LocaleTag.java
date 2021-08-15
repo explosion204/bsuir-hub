@@ -23,11 +23,6 @@ public class LocaleTag extends TagSupport {
     private static final String DEFAULT_LOCALE = "ru";
     private String key;
 
-    /**
-     * Sets key.
-     *
-     * @param key the key
-     */
     public void setKey(String key) {
         this.key = key;
     }
@@ -63,10 +58,5 @@ public class LocaleTag extends TagSupport {
         }
 
         return SKIP_BODY;
-    }
-
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
     }
 }

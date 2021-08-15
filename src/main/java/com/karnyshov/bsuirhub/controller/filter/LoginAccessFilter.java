@@ -21,7 +21,8 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 @WebFilter(filterName = "LoginAccessFilter")
 public class LoginAccessFilter implements Filter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();

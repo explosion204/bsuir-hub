@@ -109,7 +109,7 @@ public class GetUsersCommand implements Command {
 
         if (fetchStudents) {
             // get all students for requested group
-            users = new LinkedList<>(); // TODO: 8/4/2021 ArrayList vs LinkedList
+            users = new LinkedList<>();
             // to determine if pagination is required we use amount of fetched records BEFORE filtering by last name
             recordsFetched = userService.filter(start, pageSize, UserFilterCriteria.GROUP, groupIdString, users);
             // filter by last name

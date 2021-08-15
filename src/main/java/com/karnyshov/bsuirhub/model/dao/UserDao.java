@@ -1,14 +1,12 @@
 package com.karnyshov.bsuirhub.model.dao;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.entity.Assignment;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * {@code UserDao} interface extends {@link BaseDao}. It provides a bunch of means for manipulating stored

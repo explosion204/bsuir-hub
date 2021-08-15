@@ -26,7 +26,7 @@ public class Grade extends AbstractEntity {
      * */
     private long subjectId;
 
-    private LocalDate date; // TODO: 8/7/2021 Local Date vs Date ???
+    private LocalDate date;
 
     private Grade(GradeBuilder builder) {
         super(builder);

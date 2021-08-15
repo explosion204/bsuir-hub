@@ -102,7 +102,6 @@ public class UpdateUserCommand implements Command {
                         .setGroupId(groupId)
                         .setEntityId(entityId)
                         .build();
-
                 userService.update(updatedUser, password);
 
                 // success

@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * {@code QueryExecutor} class provides a bunch of generic static methods to query database.
  */

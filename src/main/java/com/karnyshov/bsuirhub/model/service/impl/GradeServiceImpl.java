@@ -4,7 +4,6 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.entity.Grade;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,8 +17,12 @@ import java.util.Optional;
  */
 @Named
 public class GradeServiceImpl implements GradeService {
-    @Inject
     private GradeDao gradeDao;
+
+    @Inject
+    public GradeServiceImpl(GradeDao gradeDao) {
+        this.gradeDao = gradeDao;
+    }
 
     @Override
     public Optional<Grade> findById(long id) throws ServiceException {

@@ -1,7 +1,6 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.dao.AssignmentDao;
 import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -20,6 +19,7 @@ import java.util.Optional;
  */
 @Named
 public class CommentDaoImpl implements CommentDao {
+    private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_ID
             = "SELECT id, id_grade, id_user, text, creation_time " +
               "FROM comments " +
@@ -71,12 +71,14 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Comment> result) throws DaoException {
-        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectAll operation");
+        logger.error("Implementation of CommentDao does not support selectAll operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectTotalCount operation");
+        logger.error("Implementation of CommentDao does not support selectTotalCount operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -108,7 +110,8 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void update(Comment comment) throws DaoException {
-        throw new UnsupportedOperationException("Implementation of CommentDao does not support update operation");
+        logger.error("Implementation of CommentDao does not support update operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override

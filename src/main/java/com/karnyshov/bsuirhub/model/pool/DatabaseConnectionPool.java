@@ -18,7 +18,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 /**
  * {@code DatabaseConnectionPool} class represents thread-safe object pool which contains database connections.
  * @author Dmitry Karnyshov
@@ -155,7 +154,8 @@ public class DatabaseConnectionPool {
      *
      * @param connection {@code Connection} instance that must be returned to the pool.
      */
-    public void releaseConnection(Connection connection) { // TODO: 8/5/2021 return boolean
+    public boolean releaseConnection(Connection connection) {
+        boolean result;
         if (connection != null && connection.getClass() == ProxyConnection.class) {
             try {
                 connectionPoolLock.lock();
@@ -165,9 +165,14 @@ public class DatabaseConnectionPool {
                 hasAvailableConnections.signal();
                 connectionPoolLock.unlock();
             }
+
+            result = true;
         } else {
+            result = false;
             logger.warn("Trying to release a connection not supposed to be released!");
         }
+
+        return result;
     }
 
     /**

@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-
 /**
  * {@code UserValidator} class contains methods for validation untrusted data encapsulated in {@link User} entity.
  * @author Dmitry Karnyshov

@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.exception;
 
-
 /**
  * {@code DaoException} class is DAO layer exception.
  * @author Dmitry Karnyshov

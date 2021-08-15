@@ -13,13 +13,14 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * {@code AssignmentDaoImpl} is an implementation of {@link AssignmentDao} interfaces.
  * @author Dmitry Karnyshov
  */
 @Named
 public class AssignmentDaoImpl implements AssignmentDao {
+    private static final Logger logger = LogManager.getLogger();
+
     private static final String SELECT_BY_ID
             = "SELECT id, id_teacher, id_subject, id_group " +
               "FROM assignments " +
@@ -88,12 +89,14 @@ public class AssignmentDaoImpl implements AssignmentDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Assignment> result) throws DaoException {
-        throw new UnsupportedOperationException("Implementation of AssignmentDao does not support selectAll operation");
+        logger.error("Implementation of AssignmentDao does not support selectAll operation");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long selectTotalCount() throws DaoException {
-        throw new UnsupportedOperationException("Implementation of AssignmentDao does not support selectTotalCount operation");
+        logger.error("Implementation of AssignmentDao does not support selectTotalCount operation");
+        throw new UnsupportedOperationException();
 
     }
 

@@ -52,9 +52,9 @@ public class UpdateSubjectCommand implements Command {
         boolean validationResult = SubjectValidator.validateSubject(subject);
         session.setAttribute(VALIDATION_ERROR, !validationResult);
 
-        // data is valid
         try {
             if (validationResult) {
+                // data is valid
                 long entityId = Long.parseLong(idString);
                 Subject updatedSubject = (Subject) Subject.builder()
                         .of(subject)

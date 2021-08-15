@@ -65,7 +65,6 @@ public class GetCommentsCommand implements Command {
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
             throws ServiceException, NumberFormatException {
-
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 

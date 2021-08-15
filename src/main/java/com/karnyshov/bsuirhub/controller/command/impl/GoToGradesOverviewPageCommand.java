@@ -58,7 +58,6 @@ public class GoToGradesOverviewPageCommand implements Command {
             double averageGrade = gradeService.calculateAverageBySubject(studentId, subjectId);
             request.setAttribute(AVERAGE_STUDY_GRADE, averageGrade);
 
-            // set average subject grade
             result = new CommandResult(GRADES_OVERVIEW_JSP, FORWARD);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to grades overview page' command", e);

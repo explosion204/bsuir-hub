@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.model.dao.mapper.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
-import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import jakarta.inject.Named;
 

@@ -1,9 +1,7 @@
 package com.karnyshov.bsuirhub.model.service;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteria;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 
 import java.util.List;

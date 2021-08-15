@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Arrays;
 
-
 /**
  * {@code UserStatus} enum represents a status of user in application.
  * @author Dmitry Karnyshov

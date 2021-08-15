@@ -1,7 +1,6 @@
 package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
@@ -66,7 +65,6 @@ public class GetGradesCommand implements Command {
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
             throws ServiceException, NumberFormatException {
-
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 

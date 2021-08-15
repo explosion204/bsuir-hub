@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
@@ -14,8 +13,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -28,8 +25,12 @@ public class UserServiceImpl implements UserService {
     private static final int SALT_LENGTH = 16;
     private static final String EMPTY_PASSWORD = "";
 
-    @Inject
     private UserDao userDao;
+
+    @Inject
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public Optional<User> authenticate(String login, String password) throws ServiceException {

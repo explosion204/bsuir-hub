@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.util;
 
 import java.util.Map;
 
-
 /**
  * {@code TokenService} interface provides functionality for generating and parsing tokens.
  * @author Dmitry Karnyshov

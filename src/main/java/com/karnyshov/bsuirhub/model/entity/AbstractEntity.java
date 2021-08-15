@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.model.entity;
 
-
 /**
  * {@code AbstractEntity} is a top abstract class in the hierarchy of domain entities.
  * @author Dmitry Karnyshov

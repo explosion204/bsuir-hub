@@ -1,7 +1,6 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.dao.SubjectDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;

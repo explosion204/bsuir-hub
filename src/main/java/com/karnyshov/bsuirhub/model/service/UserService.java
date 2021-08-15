@@ -1,14 +1,11 @@
 package com.karnyshov.bsuirhub.model.service;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.User;
-import com.karnyshov.bsuirhub.model.service.criteria.AssignmentFilterCriteria;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 
 import java.util.List;
 import java.util.Optional;
-
 
 /**
  * {@code UserService} is an interface with a bunch of methods that allow to manipulate {@link User}

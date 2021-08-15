@@ -47,7 +47,6 @@ public class GetAverageGradeCommand implements Command {
             status = false;
         }
 
-
         response.put(STATUS, status);
         return new CommandResult(new Gson().toJson(response), JSON);
     }

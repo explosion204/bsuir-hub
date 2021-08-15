@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 /**
  * {@code UrlStringBuilder} class is used for constructing URLs with parameters.
  * @author Dmitry Karnyshov

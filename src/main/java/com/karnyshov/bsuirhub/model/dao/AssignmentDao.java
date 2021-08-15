@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 
 import java.util.List;
 
-
 /**
  * {@code AssignmentDao} interface extends {@link BaseDao}. It provides a bunch of means for manipulating stored
  * {@link Assignment} entities.

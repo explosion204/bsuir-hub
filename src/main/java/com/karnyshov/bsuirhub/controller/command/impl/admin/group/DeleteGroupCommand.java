@@ -3,7 +3,6 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.group;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;

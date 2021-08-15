@@ -11,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-
 /**
  * {@code ConnectionFactory} class is used for internal creating connections via JDBC driver.
  * @author Dmitry Karnyshov

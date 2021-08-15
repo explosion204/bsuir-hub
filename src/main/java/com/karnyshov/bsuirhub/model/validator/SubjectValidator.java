@@ -1,10 +1,8 @@
 package com.karnyshov.bsuirhub.model.validator;
 
 import com.karnyshov.bsuirhub.model.entity.Subject;
-import com.karnyshov.bsuirhub.model.entity.User;
 
 import java.util.regex.Pattern;
-
 
 /**
  * {@code SubjectValidator} class contains methods for validation untrusted data encapsulated in {@link Subject} entity.

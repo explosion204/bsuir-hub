@@ -84,17 +84,12 @@ public class ChangeEmailCommand implements Command {
                 session.setAttribute(EMAIL_CHANGE_SUCCESS, true);
 
                 // send confirmation mail
-                // FIXME: production link
-                // String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName()
-                //        + CONFIRM_EMAIL_URL + jwtService.generateJwt(targetId);
-
-                // FIXME: development link
                 Map<String, Object> claims = new HashMap<>() {{ put(ID_CLAIM, targetId); put(EMAIL_CLAIM, email); }};
                 String token = tokenService.generateToken(claims);
                 String url = new UrlStringBuilder(CONFIRM_EMAIL_URL)
                         .addParam(TOKEN, token)
                         .build();
-                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName() + ":8080" + url;
+                String confirmationLink = request.getScheme() + PROTOCOL_DELIMITER + request.getServerName()  + url;
 
                 String subject = mailService.getMailProperty(SUBJECT_PROPERTY);
                 String bodyTemplate = mailService.getMailProperty(BODY_PROPERTY);
