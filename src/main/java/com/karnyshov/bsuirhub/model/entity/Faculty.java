@@ -2,6 +2,11 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Objects;
 
+/**
+ * {@code Faculty} class represents a faculty entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Faculty extends AbstractEntity {
     private String name;
     private String shortName;
@@ -68,6 +73,11 @@ public class Faculty extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code FacultyBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the faculty entity.
+     * @author Dmitry Karnyshov
+     */
     public static class FacultyBuilder extends AbstractEntity.AbstractBuilder {
         private String name;
         private String shortName;

@@ -26,6 +26,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.PROFILE_IMAGE_NAME;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 
+/**
+ * {@code UpdateUserCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class UpdateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

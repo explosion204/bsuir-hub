@@ -1,5 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+/**
+ * {@code RequestAttribute} class contains constant keys that are stored as {@link HttpServletRequest} attributes.
+ * @author Dmitry Karnyshov
+ * */
 public final class RequestAttribute {
     public static final String ORIGINAL_URL = "originalUrl";
     public static final String TARGET_ENTITY = "targetEntity";

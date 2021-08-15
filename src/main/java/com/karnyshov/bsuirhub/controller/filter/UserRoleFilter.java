@@ -11,6 +11,11 @@ import java.io.IOException;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.GUEST;
 
+/**
+ * {@code UserRoleFilter} class is an implementation of {@link Filter} interface.
+ * This filter sets {@code user} variable with guest role to new unauthenticated sessions.
+ * @author Dmitry Karnyshov
+ */
 @WebFilter(filterName = "UserRoleFilter")
 public class UserRoleFilter implements Filter {
     @Override

@@ -11,6 +11,10 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.LOGIN_JS
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.RETURN_URL;
 
+/**
+ * {@code GoToLoginPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToLoginPageCommand implements Command {
     @Override

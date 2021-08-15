@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.SubjectDao;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -11,7 +12,10 @@ import jakarta.inject.Named;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * {@code UserDaoImpl} is an implementation of {@link UserDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL
@@ -134,6 +138,12 @@ public class UserDaoImpl implements UserDao {
     private ResultSetMapper<User> userMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code UserDaoImpl}.
+     *
+     * @param userMapper mapper for users.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public UserDaoImpl(ResultSetMapper<User> userMapper, ResultSetMapper<Long> longMapper) {
         this.userMapper = userMapper;

@@ -1,5 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+/**
+ * {@code RequestParameter} class contains constant keys that are stored as {@link HttpServletRequest} parameters.
+ * @author Dmitry Karnyshov
+ * */
 public final class RequestParameter {
     public static final String LOCALE_CODE = "localeCode";
     public static final String ENTITY_ID = "id";
@@ -30,8 +36,6 @@ public final class RequestParameter {
     public static final String GRADE_ID = "gradeId";
     public static final String GRADE_VALUE = "gradeValue";
     public static final String AVG_VALUE = "avgValue";
-
-    // ajax
     public static final String STATUS = "status";
     public static final String REQUEST_TYPE = "requestType";
     public static final String DRAW = "draw";

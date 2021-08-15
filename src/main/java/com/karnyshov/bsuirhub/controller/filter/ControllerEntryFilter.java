@@ -11,7 +11,13 @@ import java.io.IOException;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 
-
+/**
+ * {@code ControllerEntryFilter} class is an implementation of {@link Filter} interface.
+ * This filter takes URL of the incoming request and forwards it to main controller.
+ * During this process it controls caches to be disabled, retrieves various alert messages from session
+ * and puts them to request.
+ * @author Dmitry Karnyshov
+ */
 @WebFilter(filterName = "ControllerEntryFilter")
 public class ControllerEntryFilter implements Filter {
     private static final String MAIN_CONTROLLER_URL = "/controller";

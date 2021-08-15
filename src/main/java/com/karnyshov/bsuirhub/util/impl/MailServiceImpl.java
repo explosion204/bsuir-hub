@@ -14,6 +14,12 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * {@code MailServiceImpl} class is an implementation of {@link MailService} interface.
+ * Main feature of this implementation is sending emails in separate threads from fixed thread pool.
+ * Pool size is defined in configuration .properties file.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class MailServiceImpl implements MailService {
     private static final Logger logger = LogManager.getLogger();

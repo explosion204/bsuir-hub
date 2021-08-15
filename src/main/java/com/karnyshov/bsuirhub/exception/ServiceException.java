@@ -1,5 +1,9 @@
 package com.karnyshov.bsuirhub.exception;
 
+/**
+ * {@code ServiceException} class is Service layer exception.
+ * @author Dmitry Karnyshov
+ */
 public class ServiceException extends Exception {
     public ServiceException() {
         super();

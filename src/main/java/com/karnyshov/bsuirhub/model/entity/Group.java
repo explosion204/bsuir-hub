@@ -2,10 +2,27 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Objects;
 
+/**
+ * {@code Group} class represents a group entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Group extends AbstractEntity {
+    /**
+     * Foreign key to {@link Department} entity.
+     * */
     private long departmentId;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long headmanId;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long curatorId;
+
     private String name;
     private transient boolean archived;
 
@@ -84,6 +101,11 @@ public class Group extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code GroupBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the group entity.
+     * @author Dmitry Karnyshov
+     */
     public static class GroupBuilder extends AbstractEntity.AbstractBuilder {
         private long departmentId;
         private long headmanId;

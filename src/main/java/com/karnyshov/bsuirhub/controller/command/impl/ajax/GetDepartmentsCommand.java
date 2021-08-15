@@ -18,6 +18,10 @@ import java.util.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
+/**
+ * {@code GetDepartmentsCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GetDepartmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

@@ -22,6 +22,10 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
+/**
+ * {@code CreateUserCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class CreateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

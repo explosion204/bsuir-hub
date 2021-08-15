@@ -1,8 +1,25 @@
 package com.karnyshov.bsuirhub.model.entity;
 
+/**
+ * {@code Assignment} class encapsulates an accordance relation between {@link Group}, {@link Subject} and {@link User}
+ * with role of {@code Teacher} (see {@link UserRole}).
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Assignment extends AbstractEntity {
+    /**
+     * Foreign key to {@link Group} entity.
+     * */
     private long groupId;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long teacherId;
+
+    /**
+     * Foreign key to {@link Subject} entity.
+     * */
     private long subjectId;
 
     private Assignment(AssignmentBuilder builder) {
@@ -66,6 +83,11 @@ public class Assignment extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code AssignmentBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the assignment entity.
+     * @author Dmitry Karnyshov
+     */
     public static class AssignmentBuilder extends AbstractEntity.AbstractBuilder {
         private long groupId;
         private long teacherId;

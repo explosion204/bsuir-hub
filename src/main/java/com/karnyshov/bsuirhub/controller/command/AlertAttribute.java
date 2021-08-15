@@ -1,5 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+import jakarta.servlet.http.HttpSession;
+
+/**
+ * {@code AlertAttribute} class contains alert constant keys that are temporarily stored in {@link HttpSession}.
+ * @author Dmitry Karnyshov
+ * */
 public final class AlertAttribute {
     public static final String AUTH_ERROR = "authError";
 

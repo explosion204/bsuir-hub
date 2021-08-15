@@ -2,11 +2,21 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Objects;
 
+/**
+ * {@code Department} class represents a department entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Department extends AbstractEntity {
     private String name;
     private String shortName;
     private transient boolean archived;
+
+    /**
+     * Foreign key to {@link Faculty} entity.
+     * */
     private long facultyId;
+
     private String specialtyAlias;
 
     private Department(DepartmentBuilder builder) {
@@ -85,6 +95,11 @@ public class Department extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code DepartmentBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the department entity.
+     * @author Dmitry Karnyshov
+     */
     public static class DepartmentBuilder extends AbstractEntity.AbstractBuilder {
         private String name;
         private String shortName;

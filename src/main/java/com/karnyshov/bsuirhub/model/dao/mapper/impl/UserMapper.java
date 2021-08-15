@@ -2,6 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.mapper.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
@@ -13,6 +14,11 @@ import java.sql.SQLException;
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.USER_ID;
 
+/**
+ * {@code UserMapper} is an implementation of {@link ResultSetMapper} interface and provides mapping for
+ * {@link User} object.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class UserMapper implements ResultSetMapper<User> {
     @Override

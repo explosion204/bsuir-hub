@@ -4,6 +4,7 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.entity.Group;
+import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
@@ -17,10 +18,12 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria.NONE;
 
+/**
+ * {@code GroupServiceImpl} class is an implementation of {@link GroupService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GroupServiceImpl implements GroupService {
-    private static final Logger logger = LogManager.getLogger();
-
     @Inject
     private GroupDao groupDao;
 
@@ -68,17 +71,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public boolean isNameUnique(String name) {
-        Optional<Group> group;
-
+    public boolean isNameUnique(String name) throws ServiceException {
         try {
-            group = groupDao.selectByName(name);
+            Optional<Group> group = groupDao.selectByName(name);
+            return group.isEmpty();
         } catch (DaoException e) {
-            logger.error("Something went wrong (GroupService.isNameUnique)", e);
-            return false;
+            throw new ServiceException(e);
         }
-
-        return group.isEmpty();
     }
 
     @Override

@@ -14,6 +14,10 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
+/**
+ * {@code UserValidator} class contains methods for validation untrusted data encapsulated in {@link User} entity.
+ * @author Dmitry Karnyshov
+ */
 public class UserValidator {
     private static final Logger logger = LogManager.getLogger();
 
@@ -23,7 +27,8 @@ public class UserValidator {
     private static final String VALID_NAME = "^\\p{L}{1,50}$";
 
     private enum AcceptedImageType {
-        JPEG("image/jpeg"), PNG("image/png");
+        JPEG("image/jpeg"),
+        PNG("image/png");
 
         private String mimeType;
 
@@ -31,13 +36,24 @@ public class UserValidator {
             this.mimeType = mimeType;
         }
 
-        public String getMimeType() {
+        private String getMimeType() {
             return mimeType;
         }
     }
 
+    /**
+     * Validate {@link User} entity.
+     *
+     * @param user object that needs validation.
+     * @param password plain text password of the user.
+     * @param confirmPassword repeated plain text password of the user.
+     * @param skipRoleValidation role validation will be skipped if this flag is {@code true}
+     * @param skipEmailValidation email validation will be skipped if this flag is {@code true}
+     * @param skipPasswordValidation password validation will be skipped if this flag is {@code true}
+     * @return {@code true} if the user is valid, {@code false} otherwise.
+     */
     public static boolean validateUser(User user, String password, String confirmPassword,
-                                boolean skipRoleValidation, boolean skipEmailValidation, boolean skipPasswordValidation) {
+                boolean skipRoleValidation, boolean skipEmailValidation, boolean skipPasswordValidation) {
         boolean validationResult;
         UserRole role = user.getRole();
         String login = user.getLogin();
@@ -57,6 +73,12 @@ public class UserValidator {
         return validationResult;
     }
 
+    /**
+     * Validate profile image type.
+     *
+     * @param filePath path to the object of validation.
+     * @return {@code true} if the image is PNG or JPEG, {@code false} otherwise.
+     */
     public static boolean validateProfileImage(String filePath) {
         try (InputStream inputStream = new FileInputStream(filePath)) {
             Tika tika = new Tika();
@@ -69,6 +91,13 @@ public class UserValidator {
         }
     }
 
+    /**
+     * Validate password.
+     *
+     * @param password plain text password of the user.
+     * @param confirmPassword repeated plain text password of the user.
+     * @return {@code true} if the email is valid, {@code false} otherwise.
+     */
     public static boolean validatePassword(String password, String confirmPassword) {
         boolean validationResult;
 
@@ -78,6 +107,12 @@ public class UserValidator {
         return validationResult;
     }
 
+    /**
+     * Validate email.
+     *
+     * @param email email of the user.
+     * @return {@code true} if the email is valid, {@code false} otherwise.
+     */
     public static boolean validateEmail(String email) {
         return Pattern.matches(VALID_EMAIL_REGEX, email);
     }

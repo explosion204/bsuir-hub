@@ -13,8 +13,13 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "AdminPagesAccessFilter")
-public class AdminPagesAccessFilter implements Filter {
+/**
+ * {@code AdminAccessFilter} class is an implementation of {@link Filter} interface.
+ * This filter controls access of users to URLs like "/admin/*".
+ * @author Dmitry Karnyshov
+ */
+@WebFilter(filterName = "AdminAccessFilter")
+public class AdminAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;

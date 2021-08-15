@@ -12,6 +12,14 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.DISABLED
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.LOCALE_CODE;
 
+/**
+ * {@code CookiesFilter} class is an implementation of {@link Filter} interface.
+ * This filter prevents application usage with disabled cookies.
+ * If application is not working without cookies in a proper way, it is a good solution to restrict
+ * inconvenient user-experience at all.
+ * Also, it sets a new locale as a cookie.
+ * @author Dmitry Karnyshov
+ */
 @WebFilter(filterName = "CookiesFilter")
 public class CookiesFilter implements Filter {
     private static final String LOCALE_COOKIE_NAME = "localeCode";

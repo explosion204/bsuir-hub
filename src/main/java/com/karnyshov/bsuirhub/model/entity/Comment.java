@@ -3,9 +3,22 @@ package com.karnyshov.bsuirhub.model.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * {@code Group} class represents a comment entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Comment extends AbstractEntity {
+    /**
+     * Foreign key to {@link Grade} entity.
+     * */
     private long gradeId;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long userId;
+
     private String text;
     private LocalDateTime creationTime;
 
@@ -76,6 +89,11 @@ public class Comment extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code GroupBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the comment entity.
+     * @author Dmitry Karnyshov
+     */
     public static class CommentBuilder extends AbstractEntity.AbstractBuilder {
         private long gradeId;
         private long userId;

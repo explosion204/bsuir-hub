@@ -13,6 +13,11 @@ import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
 
+
+/**
+ * {@code PoolValidationTask} is a subclass of {@link TimerTask} and used for pool integrity validation purposes.
+ * @author Dmitry Karnyshov
+ */
 class PoolValidationTask extends TimerTask {
     private static final Logger logger = LogManager.getLogger();
 

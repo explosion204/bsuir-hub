@@ -16,6 +16,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 
+/**
+ * {@code TokenServiceImpl} class is an implementation of {@link TokenService} interfaces.
+ * This implementation provides functionality of generating, validation and parsing
+ * JSON Web Tokens.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class TokenServiceImpl implements TokenService {
     private static final Logger logger = LogManager.getLogger();

@@ -18,6 +18,11 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+
+/**
+ * {@code DatabaseConnectionPool} class represents thread-safe object pool which contains database connections.
+ * @author Dmitry Karnyshov
+ */
 public class DatabaseConnectionPool {
     private static final Logger logger = LogManager.getLogger();
     private static AtomicReference<DatabaseConnectionPool> instance = new AtomicReference<>(null);
@@ -94,6 +99,11 @@ public class DatabaseConnectionPool {
         timer.schedule(task, poolValidationDelay, poolValidationPeriod);
     }
 
+    /**
+     * Get instance of {@code DatabaseConnectionPool} class.
+     *
+     * @return {@code DatabaseConnectionPool} instance.
+     */
     public static DatabaseConnectionPool getInstance() {
         while (instance.get() == null) {
             if (instanceInitialized.compareAndSet(false, true)) {
@@ -105,6 +115,13 @@ public class DatabaseConnectionPool {
     }
 
 
+    /**
+     * Acquire a database connection. This method is blocking, callee thread has to wait until pool has available
+     * connections.
+     *
+     * @return {@code Connection} instance.
+     * @throws DatabaseConnectionException if application is unable to establish proper connection.
+     */
     public Connection acquireConnection() throws DatabaseConnectionException {
         Connection connection = null;
 
@@ -133,6 +150,11 @@ public class DatabaseConnectionPool {
         return connection;
     }
 
+    /**
+     * Release connection and return it to the pool.
+     *
+     * @param connection {@code Connection} instance that must be returned to the pool.
+     */
     public void releaseConnection(Connection connection) { // TODO: 8/5/2021 return boolean
         if (connection != null && connection.getClass() == ProxyConnection.class) {
             try {
@@ -148,6 +170,9 @@ public class DatabaseConnectionPool {
         }
     }
 
+    /**
+     * Destroy pool and free all resources.
+     */
     public void destroyPool() {
         timer.cancel(); // cancel validation task
         connectionPoolLock.lock();
@@ -181,22 +206,20 @@ public class DatabaseConnectionPool {
                 });
     }
 
+
+    /* package-private methods used for pool validation */
     Lock getConnectionPoolLock() {
         return connectionPoolLock;
     }
-
     Queue<Connection> getAvailableConnections() {
         return availableConnections;
     }
-
     Queue<Pair<Connection, Instant>> getBusyConnections() {
         return busyConnections;
     }
-
     long getConnectionUsageTimeout() {
         return connectionUsageTimeout;
     }
-
     int getPoolMinSize() {
         return poolMinSize;
     }

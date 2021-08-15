@@ -4,6 +4,7 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.FacultyDao;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
+import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteria;
 import jakarta.inject.Inject;
@@ -14,6 +15,10 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteria.NONE;
 
+/**
+ * {@code FacultyServiceImpl} class is an implementation of {@link FacultyService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class FacultyServiceImpl implements FacultyService {
     @Inject

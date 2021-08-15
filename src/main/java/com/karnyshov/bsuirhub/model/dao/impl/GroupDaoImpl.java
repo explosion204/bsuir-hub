@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -11,6 +12,10 @@ import jakarta.inject.Named;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code GroupDaoImpl} is an implementation of {@link GroupDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_ALL
@@ -78,6 +83,12 @@ public class GroupDaoImpl implements GroupDao {
     private ResultSetMapper<Group> groupMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code GroupDaoImpl}.
+     *
+     * @param groupMapper mapper for groups.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public GroupDaoImpl(ResultSetMapper<Group> groupMapper, ResultSetMapper<Long> longMapper) {
         this.groupMapper = groupMapper;

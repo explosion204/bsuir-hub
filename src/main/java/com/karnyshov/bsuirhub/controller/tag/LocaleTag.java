@@ -13,12 +13,21 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * {@code LocaleTag} class is a custom JSP tag used for JSP internationalization.
+ * @author Dmitry Karnyshov
+ */
 public class LocaleTag extends TagSupport {
     private static final String BUNDLE_NAME = "lang";
     private static final String LOCALE_COOKIE_NAME = "localeCode";
     private static final String DEFAULT_LOCALE = "ru";
     private String key;
 
+    /**
+     * Sets key.
+     *
+     * @param key the key
+     */
     public void setKey(String key) {
         this.key = key;
     }

@@ -21,6 +21,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENT
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOUS_NAME;
 
+/**
+ * {@code GoToEditGroupPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToEditGroupPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

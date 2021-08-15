@@ -5,13 +5,17 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.AssignmentDao;
 import com.karnyshov.bsuirhub.model.entity.Assignment;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
-import com.karnyshov.bsuirhub.model.service.criteria.StudyAssignmentFilterCriteria;
+import com.karnyshov.bsuirhub.model.service.criteria.AssignmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code AssignmentServiceImpl} class is an implementation of {@link AssignmentService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class AssignmentServiceImpl implements AssignmentService {
     @Inject
@@ -27,7 +31,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public long filter(int start, int size, StudyAssignmentFilterCriteria criteria, long filterId,
+    public long filter(int start, int size, AssignmentFilterCriteria criteria, long filterId,
                        List<Assignment> result) throws ServiceException {
         long totalAssignments;
 

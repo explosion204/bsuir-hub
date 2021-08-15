@@ -24,8 +24,13 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.STUDENT
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
-@WebFilter(filterName = "GradesOverviewPageAccessFilter")
-public class GradesOverviewPageAccessFilter implements Filter {
+/**
+ * {@code GradesOverviewAccessFilter} class is an implementation of {@link Filter} interface.
+ * This filter controls access of users to URLs like "/grades/*".
+ * @author Dmitry Karnyshov
+ */
+@WebFilter(filterName = "GradesOverviewAccessFilter")
+public class GradesOverviewAccessFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
 
     @Inject

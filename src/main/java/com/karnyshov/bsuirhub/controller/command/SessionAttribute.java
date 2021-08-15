@@ -1,5 +1,11 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+import jakarta.servlet.http.HttpSession;
+
+/**
+ * {@code SessionAttribute} class contains constants keys that are stored as {@link HttpSession} attributes.
+ * @author Dmitry Karnyshov
+ * */
 public final class SessionAttribute {
     public static final String USER = "user";
     public static final String USER_ID = "userId";

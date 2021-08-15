@@ -17,6 +17,11 @@ import java.util.Optional;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUND_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
 
+/**
+ * {@code Controller} class is a subclass of {@link HttpServlet} class.
+ * It processes all requests after filtering.
+ * @author Dmitry Karnyshov
+ */
 @WebServlet(
         urlPatterns = { "/controller" }, loadOnStartup = 1
 )

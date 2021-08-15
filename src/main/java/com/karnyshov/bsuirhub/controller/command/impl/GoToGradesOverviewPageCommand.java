@@ -22,6 +22,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.GRADE_ID;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT_ID;
 
+/**
+ * {@code GoToGradesOverviewPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToGradesOverviewPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

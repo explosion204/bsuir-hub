@@ -16,6 +16,11 @@ import java.util.Map;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.STATUS;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
+/**
+ * {@code AjaxAccessFilter} class is an implementation of {@link Filter} interface.
+ * This filter controls access of users to many ajax URLs like "/ajax/*".
+ * @author Dmitry Karnyshov
+ */
 @WebFilter(filterName = "AjaxAccessFilter")
 public class AjaxAccessFilter implements Filter {
     @Override

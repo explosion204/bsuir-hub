@@ -23,6 +23,10 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
+/**
+ * {@code GoToStudentDashboardPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToStudentDashboardPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

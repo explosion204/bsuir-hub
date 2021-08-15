@@ -2,6 +2,11 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Objects;
 
+/**
+ * {@code Subject} class represents a subject entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Subject extends AbstractEntity {
     private String name;
     private String shortName;
@@ -68,6 +73,11 @@ public class Subject extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code SubjectBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the subject entity.
+     * @author Dmitry Karnyshov
+     */
     public static class SubjectBuilder extends AbstractEntity.AbstractBuilder {
         private String name;
         private String shortName;

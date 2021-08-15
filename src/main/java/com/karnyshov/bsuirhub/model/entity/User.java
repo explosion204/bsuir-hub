@@ -2,6 +2,11 @@ package com.karnyshov.bsuirhub.model.entity;
 
 import java.util.Objects;
 
+/**
+ * {@code User} class represents an application user.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class User extends AbstractEntity {
     private String login;
     private String email;
@@ -9,7 +14,12 @@ public class User extends AbstractEntity {
     private transient String salt;
     private UserRole role;
     private UserStatus status;
+
+    /**
+     * Foreign key to {@link Group} entity.
+     * */
     private long groupId;
+
     private String firstName;
     private String patronymic;
     private String lastName;
@@ -134,6 +144,11 @@ public class User extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code UserBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the user entity.
+     * @author Dmitry Karnyshov
+     */
     public static class UserBuilder extends AbstractEntity.AbstractBuilder {
         private String login;
         private String email;

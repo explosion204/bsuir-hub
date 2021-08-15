@@ -21,6 +21,10 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 
+/**
+ * {@code GetUsersCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

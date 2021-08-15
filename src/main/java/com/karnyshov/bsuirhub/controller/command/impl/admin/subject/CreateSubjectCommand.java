@@ -19,6 +19,10 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.NAME;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SHORT_NAME;
 
+/**
+ * {@code CreateSubjectCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class CreateSubjectCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

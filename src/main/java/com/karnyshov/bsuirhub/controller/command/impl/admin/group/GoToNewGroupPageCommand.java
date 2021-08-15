@@ -9,6 +9,10 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.ADMIN_VI
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENTITY_PAGE;
 
+/**
+ * {@code GoToNewGroupPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToNewGroupPageCommand implements Command {
     @Override

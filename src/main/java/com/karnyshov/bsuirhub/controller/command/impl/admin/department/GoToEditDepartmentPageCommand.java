@@ -20,6 +20,10 @@ import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
+/**
+ * {@code GoToEditDepartmentPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToEditDepartmentPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

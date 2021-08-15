@@ -4,6 +4,7 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.entity.Grade;
+import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,6 +12,10 @@ import jakarta.inject.Named;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code GradeServiceImpl} class is an implementation of {@link GradeService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GradeServiceImpl implements GradeService {
     @Inject

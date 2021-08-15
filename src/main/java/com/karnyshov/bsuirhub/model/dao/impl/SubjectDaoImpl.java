@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.dao.SubjectDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -11,6 +12,10 @@ import jakarta.inject.Named;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code SubjectDaoImpl} is an implementation of {@link SubjectDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class SubjectDaoImpl implements SubjectDao {
     private static final String SELECT_ALL
@@ -73,6 +78,12 @@ public class SubjectDaoImpl implements SubjectDao {
     private ResultSetMapper<Subject> subjectMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code SubjectDaoImpl}.
+     *
+     * @param subjectMapper mapper for subjects.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public SubjectDaoImpl(ResultSetMapper<Subject> subjectMapper, ResultSetMapper<Long> longMapper) {
         this.subjectMapper = subjectMapper;

@@ -9,6 +9,10 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_UR
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
+/**
+ * {@code LogoutCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class LogoutCommand implements Command {
     @Override

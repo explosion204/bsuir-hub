@@ -3,6 +3,11 @@ package com.karnyshov.bsuirhub.model.entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * {@code UserRole} enum represents a role of user in application.
+ * @author Dmitry Karnyshov
+ * @see User
+ */
 public enum UserRole {
     GUEST,
     STUDENT,
@@ -11,6 +16,13 @@ public enum UserRole {
 
     private static final Logger logger = LogManager.getLogger();
 
+
+    /**
+     * Parse {@code UserRole} instance from integer id.
+     *
+     * @param roleId unique id tightly coupled with the ordinal value.
+     * @return {@code UserRole} instance.
+     */
     public static UserRole parseRole(int roleId) {
         try {
             return UserRole.values()[roleId];
@@ -20,6 +32,12 @@ public enum UserRole {
         }
     }
 
+    /**
+     * Parse {@code UserRole} instance from stringified integer id.
+     *
+     * @param roleId unique stringified id tightly coupled with the ordinal value.
+     * @return {@code UserRole} instance.
+     */
     public static UserRole parseRole(String roleId) {
         try {
             return parseRole(Integer.parseInt(roleId));

@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.SETTINGS_JSP;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 
+/**
+ * {@code GoToSettingsPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToSettingsPageCommand implements Command {
     @Override

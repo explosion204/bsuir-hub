@@ -18,6 +18,10 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 
+/**
+ * {@code CreateDepartmentCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class CreateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

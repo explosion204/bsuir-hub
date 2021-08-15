@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.ERROR_NOT_FOUND_JSP;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 
+/**
+ * {@code GoToNotFoundPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToNotFoundPageCommand implements Command {
     @Override

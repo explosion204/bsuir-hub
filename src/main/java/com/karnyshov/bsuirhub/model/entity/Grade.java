@@ -3,11 +3,29 @@ package com.karnyshov.bsuirhub.model.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * {@code Grade} class represents student's grade entity.
+ * @see AbstractEntity
+ * @author Dmitry Karnyshov
+ */
 public class Grade extends AbstractEntity {
     private byte value;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long teacherId;
+
+    /**
+     * Foreign key to {@link User} entity.
+     * */
     private long studentId;
+
+    /**
+     * Foreign key to {@link Subject} entity.
+     * */
     private long subjectId;
+
     private LocalDate date; // TODO: 8/7/2021 Local Date vs Date ???
 
     private Grade(GradeBuilder builder) {
@@ -85,6 +103,11 @@ public class Grade extends AbstractEntity {
         return builder.toString();
     }
 
+    /**
+     * {@code GradeBuilder} is a subclass of {@link AbstractBuilder} class and used for building
+     * the grade entity.
+     * @author Dmitry Karnyshov
+     */
     public static class GradeBuilder extends AbstractEntity.AbstractBuilder {
         private byte value;
         private long teacherId;

@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.dao.DepartmentDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -11,6 +12,10 @@ import jakarta.inject.Named;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code DepartmentDaoImpl} is an implementation of {@link DepartmentDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class DepartmentDaoImpl implements DepartmentDao {
     private static final String SELECT_ALL
@@ -86,6 +91,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
     private ResultSetMapper<Department> departmentMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code DepartmentDaoImpl}.
+     *
+     * @param departmentMapper mapper for departments.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public DepartmentDaoImpl(ResultSetMapper<Department> departmentMapper, ResultSetMapper<Long> longMapper) {
         this.departmentMapper = departmentMapper;

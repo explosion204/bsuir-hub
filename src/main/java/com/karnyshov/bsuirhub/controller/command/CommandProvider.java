@@ -17,8 +17,15 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestMethod.GET;
 import static com.karnyshov.bsuirhub.controller.command.RequestMethod.POST;
 
+
+/**
+ * {@code CommandProvider} class contains all mappings between URLs and {@link Command} instances.
+ * It retrieves command dependencies from Jakarta CDI container and adds them to hash table
+ * with composite keys (URL, {@link RequestMethod}).
+ * @author Dmitry Karnyshov
+ */
 public class CommandProvider {
-    public static final CommandProvider instance = new CommandProvider();
+    private static final CommandProvider instance = new CommandProvider();
     private Table<String, RequestMethod, Command> urlMap = HashBasedTable.create();
 
     private CommandProvider() {
@@ -61,7 +68,7 @@ public class CommandProvider {
         urlMap.put(STUDENT_DASHBOARD_URL, GET, resolveCommand(GoToStudentDashboardPageCommand.class));
         urlMap.put(GRADES_OVERVIEW_URL, GET, resolveCommand(GoToGradesOverviewPageCommand.class));
         urlMap.put(NOT_FOUND_ERROR_URL, GET, resolveCommand(GoToNotFoundPageCommand.class));
-        urlMap.put(INTERNAL_SERVER_ERROR_URL, GET, resolveCommand(GoToInternalErrorPage.class));
+        urlMap.put(INTERNAL_SERVER_ERROR_URL, GET, resolveCommand(GoToInternalErrorPageCommand.class));
 
         /* ADMIN AREA */
         urlMap.put(ADMIN_USERS_URL, GET, resolveCommand(GoToUsersPageCommand.class));
@@ -100,10 +107,22 @@ public class CommandProvider {
         urlMap.put(ADMIN_DELETE_SUBJECT_URL, POST, resolveCommand(DeleteSubjectCommand.class));
     }
 
+    /**
+     * Get instance of {@code CommandProvider} class.
+     *
+     * @return {@code CommandProvider} instance.
+     */
     public static CommandProvider getInstance() {
         return instance;
     }
 
+    /**
+     * Get command by URL and {@link RequestMethod}.
+     *
+     * @param url stringified url from controller.
+     * @param requestMethod request method.
+     * @return the command
+     */
     public Optional<Command> getCommand(String url, RequestMethod requestMethod) {
         Command command = urlMap.get(url, requestMethod);
         return Optional.ofNullable(command);

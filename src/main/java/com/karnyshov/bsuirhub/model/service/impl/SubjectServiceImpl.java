@@ -4,6 +4,7 @@ import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.SubjectDao;
 import com.karnyshov.bsuirhub.model.entity.Subject;
+import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
 import com.karnyshov.bsuirhub.model.service.criteria.SubjectFilterCriteria;
 import jakarta.inject.Inject;
@@ -14,6 +15,10 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.model.service.criteria.SubjectFilterCriteria.NONE;
 
+/**
+ * {@code SubjectServiceImpl} class is an implementation of {@link SubjectService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class SubjectServiceImpl implements SubjectService {
     @Inject

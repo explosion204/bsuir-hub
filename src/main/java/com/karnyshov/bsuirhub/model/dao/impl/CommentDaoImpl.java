@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.AssignmentDao;
 import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -13,6 +14,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code CommentDaoImpl} is an implementation of {@link CommentDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class CommentDaoImpl implements CommentDao {
     private static final String SELECT_BY_ID
@@ -44,6 +49,12 @@ public class CommentDaoImpl implements CommentDao {
     private ResultSetMapper<Comment> commentMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code CommentDaoImpl}.
+     *
+     * @param commentMapper mapper for comments.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public CommentDaoImpl(ResultSetMapper<Comment> commentMapper, ResultSetMapper<Long> longMapper) {
         this.commentMapper = commentMapper;

@@ -6,7 +6,7 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Assignment;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
-import com.karnyshov.bsuirhub.model.service.criteria.StudyAssignmentFilterCriteria;
+import com.karnyshov.bsuirhub.model.service.criteria.AssignmentFilterCriteria;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +19,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestType.JQUERY_DATATABLE;
 
+/**
+ * {@code GetAssignmentsCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GetAssignmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -68,7 +72,7 @@ public class GetAssignmentsCommand implements Command {
         long recordsFetched = 0;
         if (searchCriteria != null) {
             recordsFetched = assignmentService.filter(start, length,
-                    StudyAssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()), searchId, assignments);
+                    AssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()), searchId, assignments);
         }
 
         response.put(DRAW, draw);

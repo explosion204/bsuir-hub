@@ -13,8 +13,13 @@ import java.io.IOException;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
-@WebFilter(filterName = "LoginPageAccessFilter")
-public class LoginPageAccessFilter implements Filter {
+/**
+ * {@code LoginAccessFilter} class is an implementation of {@link Filter} interface.
+ * This filter controls access of users to URLs like "/login/*".
+ * @author Dmitry Karnyshov
+ */
+@WebFilter(filterName = "LoginAccessFilter")
+public class LoginAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;

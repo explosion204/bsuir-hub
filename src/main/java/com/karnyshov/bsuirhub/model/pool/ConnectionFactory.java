@@ -11,6 +11,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
+/**
+ * {@code ConnectionFactory} class is used for internal creating connections via JDBC driver.
+ * @author Dmitry Karnyshov
+ */
 class ConnectionFactory {
     private static final Logger logger = LogManager.getLogger();
 
@@ -41,6 +46,13 @@ class ConnectionFactory {
         }
     }
 
+    /**
+     * Create a database connection. {@link Connection} implementation is a {@link ProxyConnection} under the hood.
+     *
+     * @return {@code Connection} instance.
+     * @throws DatabaseConnectionException if application is unable to establish proper connection with database.
+     * @see ProxyConnection
+     */
     static Connection createConnection() throws DatabaseConnectionException {
         try {
             Connection connection = DriverManager.getConnection(dbUrl, dbProperties);

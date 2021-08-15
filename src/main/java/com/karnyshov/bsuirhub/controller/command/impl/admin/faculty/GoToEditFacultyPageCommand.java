@@ -20,6 +20,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENT
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_ENTITY;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 
+/**
+ * {@code GoToEditFacultyPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToEditFacultyPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

@@ -1,6 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
+import com.karnyshov.bsuirhub.model.dao.FacultyDao;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
@@ -13,6 +14,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code GradeDaoImpl} is an implementation of {@link GradeDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GradeDaoImpl implements GradeDao {
     private static final Logger logger = LogManager.getLogger();
@@ -61,6 +66,13 @@ public class GradeDaoImpl implements GradeDao {
     private ResultSetMapper<Long> longMapper;
     private ResultSetMapper<Double> doubleMapper;
 
+    /**
+     * Instantiate a new instance of {@code GradeDaoImpl}.
+     *
+     * @param gradeMapper mapper for grades.
+     * @param longMapper mapper for {@code long} values.
+     * @param doubleMapper mapper for {@code double} values.
+     */
     @Inject
     public GradeDaoImpl(ResultSetMapper<Grade> gradeMapper, ResultSetMapper<Long> longMapper,
                 ResultSetMapper<Double> doubleMapper) {

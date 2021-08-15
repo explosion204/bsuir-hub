@@ -5,6 +5,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
+import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
@@ -18,9 +19,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+/**
+ * {@code UserServiceImpl} class is an implementation of {@link UserService} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = LogManager.getLogger();
     private static final int SALT_LENGTH = 16;
     private static final String EMPTY_PASSWORD = "";
 
@@ -57,15 +61,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findById(long id) throws ServiceException {
         try {
             return userDao.selectById(id);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Optional<User> findByLogin(String login) throws ServiceException {
-        try {
-            return userDao.selectByLogin(login);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -173,31 +168,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isLoginUnique(String login) {
-        Optional<User> user; // TODO: 7/27/2021 caching
-
+    public boolean isLoginUnique(String login) throws ServiceException {
         try {
-            user = userDao.selectByLogin(login);
+            Optional<User> user = userDao.selectByLogin(login);
+            return user.isEmpty();
         } catch (DaoException e) {
-            logger.error("Something went wrong (UserService.isLoginUnique)", e);
-            return false;
+            throw new ServiceException(e);
         }
-
-        return user.isEmpty();
     }
 
     @Override
-    public boolean isEmailUnique(String email) {
-        Optional<User> user; // TODO: 7/27/2021 caching
-
+    public boolean isEmailUnique(String email) throws ServiceException {
         try {
-            user = userDao.selectByEmail(email);
+            Optional<User> user = userDao.selectByEmail(email);
+            return user.isEmpty();
         } catch (DaoException e) {
-            logger.error("Something went wrong (UserService.isEmailUnique)", e);
-            return false;
+            throw new ServiceException(e);
         }
-
-        return user.isEmpty();
     }
 
     @Override

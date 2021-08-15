@@ -9,7 +9,21 @@ import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * {@code QueryExecutor} class provides a bunch of generic static methods to query database.
+ */
 public class QueryExecutor {
+    /**
+     * Execute SELECT query.
+     *
+     * @param <T> type of objects in the result list.
+     * @param mapper mapper for {@code T}.
+     * @param sqlQuery SQL query string which will be executed as prepared statement.
+     * @param result {@link List} instance to hold objects retrieved from database.
+     * @param params parameters that will be set to prepared statement.
+     * @throws DaoException if an error occurred while processing the query.
+     */
     public static <T> void executeSelect(ResultSetMapper<T> mapper, String sqlQuery, List<T> result, Object ... params)
                 throws DaoException {
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
@@ -29,6 +43,16 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Execute SELECT query for single result.
+     *
+     * @param <T> type of object retrieved from database.
+     * @param mapper mapper for {@code T}.
+     * @param sqlQuery SQL query string which will be executed as prepared statement.
+     * @param params parameters that will be set to prepared statement.
+     * @return {@code T} object wrapped with {@link Optional}.
+     * @throws DaoException if an error occurred while processing the query.
+     */
     public static <T> Optional<T> executeSelectForSingleResult(ResultSetMapper<T> mapper, String sqlQuery,
                 Object ... params) throws DaoException {
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
@@ -50,6 +74,14 @@ public class QueryExecutor {
         return mappedObject != null ? Optional.of(mappedObject) : Optional.empty();
     }
 
+    /**
+     * Execute INSERT long.
+     *
+     * @param sqlQuery SQL query string which will be executed as prepared statement.
+     * @param params parameters that will be set to prepared statement.
+     * @return {@code long} value that represents generated id of freshly-inserted object.
+     * @throws DaoException if an error occurred while processing the query.
+     */
     public static long executeInsert(String sqlQuery, Object ... params) throws DaoException {
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
 
@@ -66,6 +98,13 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Execute UPDATE or DELETE queries.
+     *
+     * @param sqlQuery SQL query string which will be executed as prepared statement.
+     * @param params parameters that will be set to prepared statement.
+     * @throws DaoException if an error occurred while processing the query.
+     */
     public static void executeUpdateOrDelete(String sqlQuery, Object ... params) throws DaoException {
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
 

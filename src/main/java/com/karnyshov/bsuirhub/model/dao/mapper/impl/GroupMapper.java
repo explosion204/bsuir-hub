@@ -2,6 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.mapper.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import jakarta.inject.Named;
 
@@ -10,6 +11,11 @@ import java.sql.SQLException;
 
 import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
 
+/**
+ * {@code GroupMapper} is an implementation of {@link ResultSetMapper} interface and provides mapping for
+ * {@link Group} object.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GroupMapper implements ResultSetMapper<Group> {
     @Override

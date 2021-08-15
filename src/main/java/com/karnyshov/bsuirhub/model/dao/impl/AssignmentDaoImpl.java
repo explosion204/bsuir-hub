@@ -13,10 +13,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * {@code AssignmentDaoImpl} is an implementation of {@link AssignmentDao} interfaces.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class AssignmentDaoImpl implements AssignmentDao {
-    private static final Logger logger = LogManager.getLogger();
-
     private static final String SELECT_BY_ID
             = "SELECT id, id_teacher, id_subject, id_group " +
               "FROM assignments " +
@@ -71,6 +74,12 @@ public class AssignmentDaoImpl implements AssignmentDao {
     private ResultSetMapper<Assignment> assignmentMapper;
     private ResultSetMapper<Long> longMapper;
 
+    /**
+     * Instantiate a new instance of {@code AssignmentDaoImpl}.
+     *
+     * @param assignmentMapper mapper for assignments.
+     * @param longMapper mapper for {@code long} values.
+     */
     @Inject
     public AssignmentDaoImpl(ResultSetMapper<Assignment> assignmentMapper, ResultSetMapper<Long> longMapper) {
         this.assignmentMapper = assignmentMapper;

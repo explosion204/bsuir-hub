@@ -1,5 +1,9 @@
 package com.karnyshov.bsuirhub.controller.command;
 
+/**
+ * {@code ApplicationPath} class contains absolute URLs and internal paths to JSP files.
+ * @author Dmitry Karnyshov
+ * */
 public class ApplicationPath {
     /* PURE URLS */
     public static final String INDEX_URL = "/";
@@ -46,7 +50,7 @@ public class ApplicationPath {
     public static final String AJAX_GET_SUBJECTS_URL = "/ajax/get_subjects";
     public static final String AJAX_GET_ASSIGNMENTS_URL = "/ajax/get_assignments";
     public static final String AJAX_GET_GRADES_URL = "/ajax/get_grades";
-    public static final String AJAX_GET_COMMENTS_URL = "/ajax/get_comments"; // TODO: exposed api
+    public static final String AJAX_GET_COMMENTS_URL = "/ajax/get_comments";
     public static final String AJAX_GET_AVERAGE_GRADE_URL = "/ajax/get_average_grade";
     public static final String AJAX_UPLOAD_PROFILE_IMAGE_URL = "/ajax/upload_profile_image";
     public static final String AJAX_CREATE_GRADE_URL = "/grades/ajax/create_grade";

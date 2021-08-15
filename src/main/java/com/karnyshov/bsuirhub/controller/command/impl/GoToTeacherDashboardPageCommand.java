@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.TEACHER_DASHBOARD_JSP;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
 
+/**
+ * {@code GoToTeacherDashboardPageCommand} class is an implementation of {@link Command} interface.
+ * @author Dmitry Karnyshov
+ */
 @Named
 public class GoToTeacherDashboardPageCommand implements Command {
     @Override
