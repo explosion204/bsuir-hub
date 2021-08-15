@@ -85,7 +85,7 @@
                     <label for="facultySelect"><bht:localeTag key="department.faculty" /></label>
                     <select name="facultyId" id="facultySelect" required></select>
                 </div>
-                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
+                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2 w-100" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
                 ><bht:localeTag key="admin.save" /></button>
             </form>

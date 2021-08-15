@@ -85,4 +85,23 @@ $(document).ready(function () {
             groupSelect.append(option).trigger('change');
         });
     }
+
+    $('#clearGradesButton').click(function () {
+        let btn = $(this);
+        btn.attr('disabled', true);
+
+        if (confirm(`${$('#user_confirm_clear').text()}`)) {
+            $.ajax({
+                method: 'POST',
+                url: '/admin/ajax/clear_student_grades',
+                data: {
+                    studentId: $('#targetId').val()
+                },
+                success: function () {
+                    alert(`${$('#user_clear_success').text()}`);
+                    btn.attr('disabled', false);
+                }
+            });
+        }
+    });
 })

@@ -61,6 +61,7 @@ public class ApplicationPath {
     public static final String ADMIN_AJAX_CREATE_ASSIGNMENT_URL = "/admin/ajax/create_assignment";
     public static final String ADMIN_AJAX_UPDATE_ASSIGNMENT_URL = "/admin/ajax/update_assignment";
     public static final String ADMIN_AJAX_DELETE_ASSIGNMENT_URL = "/admin/ajax/delete_assignment";
+    public static final String ADMIN_AJAX_CLEAR_STUDENT_GRADES_URL = "/admin/ajax/clear_student_grades";
 
     /* JSP for forwarding only */
     public static final String INDEX_JSP = "/WEB-INF/pages/common/index.jsp";

@@ -24,6 +24,11 @@
     <script src="/static/js/admin/users/view_user.js"></script>
 </head>
 <body>
+
+<!-- Locale -->
+<div id="user_confirm_clear" hidden><bht:localeTag key="user.confirm_clear" /></div>
+<div id="user_clear_success" hidden><bht:localeTag key="user.clear_success" /></div>
+
 <main class="d-flex flex-row h-100"
       data-locale-code="${cookie['localeCode'].value}"
       data-group-id="${targetEntity.groupId}">
@@ -161,9 +166,9 @@
                     </div>
                 </div>
                 <div class="form-group me-5 ms-5 mb-2">
-                    <label for="patornymicInput"><bht:localeTag key="user.patronymic" /></label>
+                    <label for="patronymicInput"><bht:localeTag key="user.patronymic" /></label>
                     <input type="text" name="patronymic" class="form-control" pattern="[a-zA-Zа-яА-Я]{1,50}"
-                           id="patornymicInput" value="${targetEntity.patronymic}" required>
+                           id="patronymicInput" value="${targetEntity.patronymic}" required>
                     <div class="invalid-feedback">
                         <bht:localeTag key="user.patronymic_validation" />
                     </div>
@@ -192,6 +197,12 @@
                         <c:if test="${newEntityPage}">disabled</c:if>
                 ><bht:localeTag key="admin.save" /></button>
             </form>
+
+            <c:if test="${targetEntity.role.ordinal() eq 1}">
+                <button id="clearGradesButton" class="btn btn-secondary form-control me-5 ms-5 mb-2">
+                    <bht:localeTag key="user.clear_all_grades" />
+                </button>
+            </c:if>
     </div>
 </main>
 </body>

@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.controller.command.impl.ajax;
+package com.karnyshov.bsuirhub.controller.command.impl.admin.ajax;
 
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;

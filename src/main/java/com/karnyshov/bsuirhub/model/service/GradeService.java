@@ -82,4 +82,12 @@ public interface GradeService {
      * @throws ServiceException if an error occurred executing the method.
      */
     void delete(long id) throws ServiceException;
+
+    /**
+     * Delete a {@code Grade} entities with specified {@link User Student} id from the data store.
+     *
+     * @param studentId unique id of the student.
+     * @throws ServiceException if an error occurred executing the method.
+     */
+    void deleteByStudent(long studentId) throws ServiceException;
 }

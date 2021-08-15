@@ -71,6 +71,7 @@ Deleted |
         * Add user (student or teacher)
         * Update user
         * Delete user
+        * Delete all associated grades and comments
         * Search by criteria: login, email, last name, role, group
     * Faculties
         * View faculties

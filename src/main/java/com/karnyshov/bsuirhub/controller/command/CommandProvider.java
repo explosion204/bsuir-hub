@@ -3,6 +3,10 @@ package com.karnyshov.bsuirhub.controller.command;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.karnyshov.bsuirhub.controller.command.impl.*;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.ajax.ClearStudentGradesCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.ajax.CreateAssignmentCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.ajax.DeleteAssignmentCommand;
+import com.karnyshov.bsuirhub.controller.command.impl.admin.ajax.UpdateAssignmentCommand;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.department.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.faculty.*;
 import com.karnyshov.bsuirhub.controller.command.impl.admin.group.*;
@@ -48,6 +52,7 @@ public class CommandProvider {
         urlMap.put(ADMIN_AJAX_CREATE_ASSIGNMENT_URL, POST, resolveCommand(CreateAssignmentCommand.class));
         urlMap.put(ADMIN_AJAX_UPDATE_ASSIGNMENT_URL, POST, resolveCommand(UpdateAssignmentCommand.class));
         urlMap.put(ADMIN_AJAX_DELETE_ASSIGNMENT_URL, POST, resolveCommand(DeleteAssignmentCommand.class));
+        urlMap.put(ADMIN_AJAX_CLEAR_STUDENT_GRADES_URL, POST, resolveCommand(ClearStudentGradesCommand.class));
 
         /* COMMON AREA */
         urlMap.put(INDEX_URL, GET, resolveCommand(GoToIndexPageCommand.class));

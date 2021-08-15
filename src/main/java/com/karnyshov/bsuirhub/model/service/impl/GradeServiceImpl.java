@@ -85,4 +85,13 @@ public class GradeServiceImpl implements GradeService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void deleteByStudent(long studentId) throws ServiceException {
+        try {
+            gradeDao.deleteByStudent(studentId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

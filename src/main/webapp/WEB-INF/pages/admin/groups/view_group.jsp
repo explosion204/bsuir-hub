@@ -100,7 +100,7 @@
                     <label for="curatorSelect"><bht:localeTag key="group.curator" /></label>
                     <select name="curatorId" id="curatorSelect" required></select>
                 </div>
-                <button type="submit" class="btn btn-secondary mb-2" id="saveButton"
+                <button type="submit" class="btn btn-secondary w-100" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
                 ><bht:localeTag key="admin.save" /></button>
             </form>

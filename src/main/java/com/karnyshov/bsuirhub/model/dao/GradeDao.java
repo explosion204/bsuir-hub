@@ -55,4 +55,12 @@ public interface GradeDao extends BaseDao<Grade> {
      * @throws DaoException if an error occurred while processing the query.
      */
     double selectAverageBySubject(long studentId, long subjectId) throws DaoException;
+
+    /**
+     * Delete existing (strictly not necessarily) grades by specified {@link User Student} id.
+     *
+     * @param studentId unique id of the student.
+     * @throws DaoException if an error occurred while processing the query.
+     */
+    void deleteByStudent(long studentId) throws DaoException;
 }

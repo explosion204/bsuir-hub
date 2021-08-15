@@ -1,10 +1,7 @@
 package com.karnyshov.bsuirhub.model.dao;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.entity.Assignment;
-import com.karnyshov.bsuirhub.model.entity.Comment;
-import com.karnyshov.bsuirhub.model.entity.Grade;
-import com.karnyshov.bsuirhub.model.entity.Group;
+import com.karnyshov.bsuirhub.model.entity.*;
 
 import java.util.List;
 
@@ -36,10 +33,18 @@ public interface CommentDao extends BaseDao<Comment> {
     long selectCountByGrade(long gradeId) throws DaoException;
 
     /**
-     * Delete existing (strictly not necessarily) comments by specified {@link Grade id}.
+     * Delete existing (strictly not necessarily) comments by specified {@link Grade} id.
      *
      * @param gradeId unique id of the grade.
      * @throws DaoException if an error occurred while processing the query.
      */
     void deleteByGrade(long gradeId) throws DaoException;
+
+    /**
+     * Delete existing (strictly not necessarily) comments by specified {@link User Student} id.
+     *
+     * @param studentId unique id of the student.
+     * @throws DaoException if an error occurred while processing the query.
+     */
+    void deleteByStudent(long studentId) throws DaoException;
 }

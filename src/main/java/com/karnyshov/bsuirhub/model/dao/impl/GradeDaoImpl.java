@@ -62,6 +62,10 @@ public class GradeDaoImpl implements GradeDao {
             = "DELETE FROM grades " +
               "WHERE id = ?;";
 
+    private static final String DELETE_BY_STUDENT
+            = "DELETE FROM grades " +
+              "WHERE id_student = ?;";
+
     private ResultSetMapper<Grade> gradeMapper;
     private ResultSetMapper<Long> longMapper;
     private ResultSetMapper<Double> doubleMapper;
@@ -153,5 +157,10 @@ public class GradeDaoImpl implements GradeDao {
     @Override
     public void delete(long id) throws DaoException {
         QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    }
+
+    @Override
+    public void deleteByStudent(long studentId) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
     }
 }
