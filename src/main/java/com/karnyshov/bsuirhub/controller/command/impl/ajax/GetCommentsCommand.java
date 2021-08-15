@@ -29,9 +29,12 @@ import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestTyp
 public class GetCommentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private CommentService commentsService;
 
     @Inject
-    private CommentService commentsService;
+    public GetCommentsCommand(CommentService commentsService) {
+        this.commentsService = commentsService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

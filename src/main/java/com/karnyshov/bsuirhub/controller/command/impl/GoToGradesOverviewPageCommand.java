@@ -29,12 +29,14 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT
 @Named
 public class GoToGradesOverviewPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-
-    @Inject
     private SubjectService subjectService;
+    private GradeService gradeService;
 
     @Inject
-    private GradeService gradeService;
+    public GoToGradesOverviewPageCommand(SubjectService subjectService, GradeService gradeService) {
+        this.subjectService = subjectService;
+        this.gradeService = gradeService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

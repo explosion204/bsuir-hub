@@ -27,9 +27,12 @@ import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestTyp
 public class GetAssignmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private AssignmentService assignmentService;
 
     @Inject
-    private AssignmentService assignmentService;
+    public GetAssignmentsCommand(AssignmentService assignmentService) {
+        this.assignmentService = assignmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

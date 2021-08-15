@@ -25,9 +25,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class UpdateAssignmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private AssignmentService assignmentService;
 
     @Inject
-    private AssignmentService assignmentService;
+    public UpdateAssignmentCommand(AssignmentService assignmentService) {
+        this.assignmentService = assignmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -24,9 +24,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class GetAverageGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private GradeService gradeService;
 
     @Inject
-    private GradeService gradeService;
+    public GetAverageGradeCommand(GradeService gradeService) {
+        this.gradeService = gradeService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

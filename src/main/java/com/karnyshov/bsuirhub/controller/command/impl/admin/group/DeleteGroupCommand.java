@@ -22,9 +22,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
 @Named
 public class DeleteGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private GroupService groupService;
 
     @Inject
-    private GroupService groupService;
+    public DeleteGroupCommand(GroupService groupService) {
+        this.groupService = groupService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -24,9 +24,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class DeleteAssignmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private AssignmentService assignmentService;
 
     @Inject
-    private AssignmentService assignmentService;
+    public DeleteAssignmentCommand(AssignmentService assignmentService) {
+        this.assignmentService = assignmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

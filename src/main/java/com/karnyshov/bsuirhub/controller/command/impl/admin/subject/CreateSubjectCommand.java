@@ -26,9 +26,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SHORT_N
 @Named
 public class CreateSubjectCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private SubjectService subjectService;
 
     @Inject
-    private SubjectService subjectService;
+    public CreateSubjectCommand(SubjectService subjectService) {
+        this.subjectService = subjectService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -59,8 +59,12 @@ public class UploadProfileImageCommand implements Command {
         }
     }
 
-    @Inject
     private UserService userService;
+
+    @Inject
+    public UploadProfileImageCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

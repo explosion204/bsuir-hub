@@ -26,9 +26,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 public class GetDepartmentsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private DepartmentService departmentService;
 
     @Inject
-    private DepartmentService departmentService;
+    public GetDepartmentsCommand(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

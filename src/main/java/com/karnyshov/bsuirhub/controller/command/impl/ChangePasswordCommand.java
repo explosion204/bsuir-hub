@@ -31,9 +31,12 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 @Named
 public class ChangePasswordCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public ChangePasswordCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

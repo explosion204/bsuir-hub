@@ -27,9 +27,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
 @Named
 public class GoToEditDepartmentPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private DepartmentService departmentService;
 
     @Inject
-    private DepartmentService departmentService;
+    public GoToEditDepartmentPageCommand(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -30,9 +30,12 @@ import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestTyp
 public class GetGradesCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private GradeService gradeService;
 
     @Inject
-    private GradeService gradeService;
+    public GetGradesCommand(GradeService gradeService) {
+        this.gradeService = gradeService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

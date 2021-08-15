@@ -30,9 +30,12 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.*;
 @Named
 public class GoToEditUserPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public GoToEditUserPageCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

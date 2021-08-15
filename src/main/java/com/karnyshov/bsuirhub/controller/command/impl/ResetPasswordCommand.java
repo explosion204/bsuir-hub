@@ -27,9 +27,12 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER_ID
 @Named
 public class ResetPasswordCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public ResetPasswordCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

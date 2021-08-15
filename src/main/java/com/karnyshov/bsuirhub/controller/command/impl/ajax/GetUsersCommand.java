@@ -29,9 +29,12 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public GetUsersCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

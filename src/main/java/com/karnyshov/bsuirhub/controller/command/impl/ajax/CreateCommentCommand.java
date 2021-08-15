@@ -48,17 +48,19 @@ public class CreateCommentCommand implements Command {
     private static final String SUBJECT_PROPERTY = "comment_notification.subject";
     private static final String BODY_PROPERTY = "comment_notification.body";
 
-    @Inject
     private CommentService commentService;
-
-    @Inject
     private GradeService gradeService;
-
-    @Inject
     private MailService mailService;
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public CreateCommentCommand(CommentService commentService, GradeService gradeService, MailService mailService,
+                UserService userService) {
+        this.commentService = commentService;
+        this.gradeService = gradeService;
+        this.mailService = mailService;
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

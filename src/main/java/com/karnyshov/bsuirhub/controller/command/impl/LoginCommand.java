@@ -29,9 +29,12 @@ import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.AUTH_ERRO
 @Named
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public LoginCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

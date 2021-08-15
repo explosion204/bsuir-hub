@@ -36,11 +36,14 @@ public class ConfirmEmailCommand implements Command {
     private static final String ID_CLAIM = "id";
     private static final String EMAIL_CLAIM = "email";
 
-    @Inject
     private UserService userService;
+    private TokenService tokenService;
 
     @Inject
-    private TokenService tokenService;
+    public ConfirmEmailCommand(UserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

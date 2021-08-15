@@ -31,20 +31,21 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 public class GoToStudentDashboardPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
-    @Inject
     private GradeService gradeService;
-
-    @Inject
     private GroupService groupService;
-
-    @Inject
     private FacultyService facultyService;
-
-    @Inject
     private DepartmentService departmentService;
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public GoToStudentDashboardPageCommand(GradeService gradeService, GroupService groupService,
+                FacultyService facultyService, DepartmentService departmentService, UserService userService) {
+        this.gradeService = gradeService;
+        this.groupService = groupService;
+        this.facultyService = facultyService;
+        this.departmentService = departmentService;
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

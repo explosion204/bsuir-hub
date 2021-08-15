@@ -32,9 +32,12 @@ public class CreateUserCommand implements Command {
     private static final String CONFIRMED_VALUE = "on";
     private static final String DEFAULT_PROFILE_IMAGE_PATH = "default_profile.jpg";
     private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
+    private UserService userService;
 
     @Inject
-    private UserService userService;
+    public CreateUserCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

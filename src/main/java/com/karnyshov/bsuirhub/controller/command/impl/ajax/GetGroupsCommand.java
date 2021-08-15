@@ -26,9 +26,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 public class GetGroupsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
+    private GroupService groupService;
 
     @Inject
-    private GroupService groupService;
+    public GetGroupsCommand(GroupService groupService) {
+        this.groupService = groupService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -28,9 +28,12 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOU
 @Named
 public class GoToEditGroupPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private GroupService groupService;
 
     @Inject
-    private GroupService groupService;
+    public GoToEditGroupPageCommand(GroupService groupService) {
+        this.groupService = groupService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

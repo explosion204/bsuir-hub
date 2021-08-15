@@ -37,15 +37,16 @@ public class SendResetPasswordLinkCommand implements Command {
     private static final String ID_CLAIM = "id";
     private static final String SALT_CLAIM = "salt";
 
-    @Inject
     private UserService userService;
-
-    @Inject
     private TokenService tokenService;
-
-    @Inject
     private MailService mailService;
 
+    @Inject
+    public SendResetPasswordLinkCommand(UserService userService, TokenService tokenService, MailService mailService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+        this.mailService = mailService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

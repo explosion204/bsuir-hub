@@ -33,12 +33,14 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
 @Named
 public class DeleteGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-
-    @Inject
     private GradeService gradeService;
+    private CommentService commentService;
 
     @Inject
-    private CommentService commentService;
+    public DeleteGradeCommand(GradeService gradeService, CommentService commentService) {
+        this.gradeService = gradeService;
+        this.commentService = commentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -28,9 +28,12 @@ public class SendMessageCommand implements Command {
     private static final String SUPPORT_PROPERTY = "support";
     private static final String SUBJECT_PROPERTY = "contact_request.subject";
     private static final String BODY_PROPERTY = "contact_request.body";
+    private MailService mailService;
 
     @Inject
-    private MailService mailService;
+    public SendMessageCommand(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -31,9 +31,12 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
 @Named
 public class UpdateGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private GradeService gradeService;
 
     @Inject
-    private GradeService gradeService;
+    public UpdateGradeCommand(GradeService gradeService) {
+        this.gradeService = gradeService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

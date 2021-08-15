@@ -28,9 +28,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.FACULTY
 @Named
 public class UpdateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private DepartmentService departmentService;
 
     @Inject
-    private DepartmentService departmentService;
+    public UpdateDepartmentCommand(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

@@ -25,9 +25,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class GetSubjectsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private SubjectService subjectService;
 
     @Inject
-    private SubjectService subjectService;
+    public GetSubjectsCommand(SubjectService subjectService) {
+        this.subjectService = subjectService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

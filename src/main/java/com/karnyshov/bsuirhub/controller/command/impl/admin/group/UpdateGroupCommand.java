@@ -30,9 +30,12 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOU
 public class UpdateGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
+    private GroupService groupService;
 
     @Inject
-    private GroupService groupService;
+    public UpdateGroupCommand(GroupService groupService) {
+        this.groupService = groupService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

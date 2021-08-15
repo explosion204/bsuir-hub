@@ -45,14 +45,16 @@ public class ChangeEmailCommand implements Command {
     private static final String ID_CLAIM = "id";
     private static final String EMAIL_CLAIM = "email";
 
-    @Inject
     private UserService userService;
-
-    @Inject
     private TokenService tokenService;
+    private MailService mailService;
 
     @Inject
-    private MailService mailService;
+    public ChangeEmailCommand(UserService userService, TokenService tokenService, MailService mailService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+        this.mailService = mailService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

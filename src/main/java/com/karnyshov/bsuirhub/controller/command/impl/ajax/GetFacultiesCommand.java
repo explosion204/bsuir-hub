@@ -25,9 +25,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 @Named
 public class GetFacultiesCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private FacultyService facultyService;
 
     @Inject
-    private FacultyService facultyService;
+    public GetFacultiesCommand(FacultyService facultyService) {
+        this.facultyService = facultyService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

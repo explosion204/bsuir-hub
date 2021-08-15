@@ -27,9 +27,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
 @Named
 public class GoToEditFacultyPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private FacultyService facultyService;
 
     @Inject
-    private FacultyService facultyService;
+    public GoToEditFacultyPageCommand(FacultyService facultyService) {
+        this.facultyService = facultyService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

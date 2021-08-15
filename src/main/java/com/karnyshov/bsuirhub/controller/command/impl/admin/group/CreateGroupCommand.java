@@ -28,9 +28,12 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 public class CreateGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();
+    private GroupService groupService;
 
     @Inject
-    private GroupService groupService;
+    public CreateGroupCommand(GroupService groupService) {
+        this.groupService = groupService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {

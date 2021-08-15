@@ -32,12 +32,14 @@ public class GoToResetPasswordPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String ID_CLAIM = "id";
     private static final String SALT_CLAIM = "salt";
-
-    @Inject
     private UserService userService;
+    private TokenService tokenService;
 
     @Inject
-    private TokenService tokenService;
+    public GoToResetPasswordPageCommand(UserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     @Override
     public CommandResult execute(HttpServletRequest request) {
