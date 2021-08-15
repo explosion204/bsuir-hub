@@ -7,6 +7,7 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
+import com.karnyshov.bsuirhub.model.service.CommentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -36,6 +37,9 @@ public class DeleteGradeCommand implements Command {
     @Inject
     private GradeService gradeService;
 
+    @Inject
+    private CommentService commentService;
+
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -54,6 +58,7 @@ public class DeleteGradeCommand implements Command {
                 status = optionalGrade.isPresent() && optionalGrade.get().getTeacherId() == currentUser.getEntityId();
 
                 if (status) {
+                    commentService.deleteByGrade(entityId);
                     gradeService.delete(entityId);
                 }
             }

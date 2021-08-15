@@ -66,4 +66,13 @@ public class CommentServiceImpl implements CommentService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void deleteByGrade(long gradeId) throws ServiceException {
+        try {
+            commentDao.deleteByGrade(gradeId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

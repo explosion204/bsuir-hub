@@ -34,4 +34,12 @@ public interface CommentDao extends BaseDao<Comment> {
      * @throws DaoException if an error occurred while processing the query.
      */
     long selectCountByGrade(long gradeId) throws DaoException;
+
+    /**
+     * Delete existing (strictly not necessarily) comments by specified {@link Grade id}.
+     *
+     * @param gradeId unique id of the grade.
+     * @throws DaoException if an error occurred while processing the query.
+     */
+    void deleteByGrade(long gradeId) throws DaoException;
 }

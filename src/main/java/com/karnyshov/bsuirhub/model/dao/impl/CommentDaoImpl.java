@@ -45,6 +45,10 @@ public class CommentDaoImpl implements CommentDao {
             = "DELETE FROM comments " +
               "WHERE id = ?;";
 
+    private static final String DELETE_BY_GRADE
+            = "DELETE FROM comments " +
+              "WHERE id_grade = ?";
+
 
     private ResultSetMapper<Comment> commentMapper;
     private ResultSetMapper<Long> longMapper;
@@ -106,5 +110,10 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public void delete(long id) throws DaoException {
         QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    }
+
+    @Override
+    public void deleteByGrade(long gradeId) throws DaoException {
+        QueryExecutor.executeUpdateOrDelete(DELETE_BY_GRADE, gradeId);
     }
 }
