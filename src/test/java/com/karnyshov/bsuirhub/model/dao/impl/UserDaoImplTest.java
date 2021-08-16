@@ -1,9 +1,8 @@
-package test.karnyshov.bsuirhub.model.dao;
+package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
-import com.karnyshov.bsuirhub.model.dao.impl.UserDaoImpl;
 import com.karnyshov.bsuirhub.model.dao.mapper.impl.LongMapper;
 import com.karnyshov.bsuirhub.model.dao.mapper.impl.UserMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
@@ -17,7 +16,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import test.karnyshov.bsuirhub.MockUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 
-public class UserDaoTest {
+public class UserDaoImplTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +
@@ -47,7 +45,7 @@ public class UserDaoTest {
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
-        MockUtil.mockDatabaseConnectionPool();
+        DatabaseMockUtil.mockDatabaseConnectionPool();
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.addBatch(DISABLE_FOREIGN_KEY_CHECKS);
@@ -111,7 +109,7 @@ public class UserDaoTest {
         return new Object[][] {{ groupIdSupplier.get() }, { groupIdSupplier.get() }, { groupIdSupplier.get() }};
     }
 
-    @Test
+    @Test(groups = "select")
     public void testSelectAll() throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
@@ -121,7 +119,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(groups = "select")
     public void testSelectTotalCount() throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
@@ -130,14 +128,14 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(groups = "select")
     public void testSelectById() throws DaoException {
         User expected = testSample.get(15);
         User actual = userDao.selectById(16).get();
         Assert.assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(groups = "select")
     public void testSelectByLoginSingle() throws DaoException {
         Optional<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
@@ -146,7 +144,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectByLoginMultiple(String keyword) throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLogin(), keyword)
@@ -157,7 +155,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectCountByLoginMultiple(String keyword) throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLogin(), keyword)
@@ -167,7 +165,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(groups = "select")
     public void testSelectByEmailSingle() throws DaoException {
         Optional<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
@@ -176,7 +174,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectByEmailMultiple(String keyword) throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword)
@@ -187,7 +185,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectCountByEmailMultiple(String keyword) throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword))
@@ -196,7 +194,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectByLastName(String keyword) throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLastName(), keyword)
@@ -207,7 +205,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider")
+    @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectCountByLastName(String keyword) throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLastName(), keyword)
@@ -217,7 +215,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "role-id-provider")
+    @Test(dataProvider = "role-id-provider", groups = "select")
     public void testSelectByRole(int roleId) throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED
@@ -228,7 +226,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "role-id-provider")
+    @Test(dataProvider = "role-id-provider", groups = "select")
     public void testSelectCountByRole(int roleId) throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED
@@ -238,7 +236,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "group-id-provider")
+    @Test(dataProvider = "group-id-provider", groups = "select")
     public void testSelectByGroup(long groupId) throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED && user.getRole() == UserRole.STUDENT
@@ -249,7 +247,7 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "group-id-provider")
+    @Test(dataProvider = "group-id-provider", groups = "select")
     public void testSelectCountByGroup(long groupId) throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED && user.getRole() == UserRole.STUDENT
@@ -259,11 +257,63 @@ public class UserDaoTest {
         Assert.assertEquals(actual, expected);
     }
 
+    @Test(dependsOnGroups = "select")
+    public void testInsert() throws DaoException {
+        String randomString = randomStringSupplier.get();
+        int roleId = roleIdSupplier.get();
+        long statusId = statusIdSupplier.get();
+        long entityId = testSample.size() + 1;
+
+        User expectedUser = (User) User.builder()
+                .setLogin(randomString)
+                .setEmail(randomString)
+                .setPasswordHash(randomString)
+                .setSalt(randomString)
+                .setRole(UserRole.parseRole(roleId))
+                .setStatus(UserStatus.parseStatus(statusId))
+                .setFirstName(randomString)
+                .setPatronymic(randomString)
+                .setLastName(randomString)
+                .setProfileImageName(randomString)
+                .setEntityId(entityId)
+                .build();
+        testSample.add(expectedUser);
+
+        userDao.insert(expectedUser);
+        User actualUser = userDao.selectById(entityId).get();
+        Assert.assertEquals(actualUser, expectedUser);
+    }
+
+    @Test(dependsOnMethods = "testInsert")
+    public void testUpdate() throws DaoException {
+        User user = testSample.get(testSample.size() - 1);
+        long entityId = user.getEntityId();
+        User expectedUpdatedUser = User.builder()
+                .of(user)
+                .setFirstName(randomStringSupplier.get())
+                .build();
+
+        userDao.update(expectedUpdatedUser);
+        User actualUpdatedUser = userDao.selectById(entityId).get();
+        Assert.assertEquals(actualUpdatedUser, expectedUpdatedUser);
+    }
+
+    @Test(dependsOnMethods = "testUpdate")
+    public void testDelete() throws DaoException {
+        User user = testSample.remove(testSample.size() - 1);
+        long entityId = user.getEntityId();
+
+        userDao.delete(entityId);
+        User deletedUser = userDao.selectById(entityId).get();
+        Assert.assertEquals(deletedUser.getStatus(), UserStatus.DELETED);
+    }
+
     @AfterClass
     public void tierDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
-            for (int i = 0; i < 50; i++) {
+            int sampleSize = testSample.size();
+            for (int i = 0; i < sampleSize; i++) {
                 statement.addBatch(DISABLE_FOREIGN_KEY_CHECKS);
                 statement.addBatch(TRUNCATE_TABLE);
                 statement.addBatch(ENABLE_FOREIGN_KEY_CHECKS);

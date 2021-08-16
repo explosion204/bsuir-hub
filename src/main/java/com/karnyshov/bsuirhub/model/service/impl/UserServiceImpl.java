@@ -34,18 +34,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> authenticate(String login, String password) throws ServiceException {
-        List<User> result = new LinkedList<>();
+        Optional<User> optionalUser;
 
         try {
-            int offset = 0;
-            int limit = 1;
-            userDao.selectByLogin(offset, limit, login, result);
+            optionalUser = userDao.selectByLogin(login);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
 
-        if (!result.isEmpty()) {
-            User user = result.get(0);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             String dbPasswordHash = user.getPasswordHash();
             String salt = user.getSalt();
             String passwordHash = hashPassword(password + salt);
@@ -215,14 +213,12 @@ public class UserServiceImpl implements UserService {
                 salt = RandomStringUtils.random(SALT_LENGTH, true, true);
                 passwordHash = hashPassword(password + salt);
             } else {
-                Optional<User> oldUser = userDao.selectById(user.getEntityId());
+                long userId = user.getEntityId();
+                User oldUser = userDao.selectById(userId)
+                        .orElseThrow(() -> new ServiceException("Unable to find user with id " + userId));
 
-                if (oldUser.isEmpty()) {
-                    throw new ServiceException("Unable to find user with id " + user.getEntityId());
-                }
-
-                salt = oldUser.get().getSalt();
-                passwordHash = oldUser.get().getPasswordHash();
+                salt = oldUser.getSalt();
+                passwordHash = oldUser.getPasswordHash();
             }
 
             user = User.builder()

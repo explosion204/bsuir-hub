@@ -1,4 +1,4 @@
-package test.karnyshov.bsuirhub;
+package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
@@ -14,7 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MockUtil {
+class DatabaseMockUtil {
     private static final Logger logger = LogManager.getLogger();
     private static final String TEST_DB_PROPERTIES_NAME = "test_db.properties";
     private static final String DB_DRIVER_NAME_PROPERTY = "driver";
@@ -24,7 +24,7 @@ public class MockUtil {
     private static final Properties dbProperties = new Properties();
 
     static {
-        ClassLoader classLoader = MockUtil.class.getClassLoader();
+        ClassLoader classLoader = DatabaseMockUtil.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream(TEST_DB_PROPERTIES_NAME)) {
             dbProperties.load(inputStream);
 
