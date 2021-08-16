@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 public class LocaleTag extends TagSupport {
     private static final String BUNDLE_NAME = "lang";
     private static final String LOCALE_COOKIE_NAME = "localeCode";
-    private static final String DEFAULT_LOCALE = "ru";
     private String key;
 
     public void setKey(String key) {
@@ -31,7 +30,6 @@ public class LocaleTag extends TagSupport {
     public int doStartTag() throws JspException {
         HttpServletRequest httpRequest = (HttpServletRequest) pageContext.getRequest();
         Cookie[] cookies = httpRequest.getCookies();
-        String localeCode = DEFAULT_LOCALE;
 
         if (cookies != null) {
             Optional<Cookie> localeCookie = Arrays.stream(cookies)
@@ -39,22 +37,18 @@ public class LocaleTag extends TagSupport {
                     .findFirst();
 
             if (localeCookie.isPresent()) {
-                localeCode = localeCookie.get().getValue();
-            } else {
-                // setting locale cookie in case when it does not exist
-                HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-                response.addCookie(new Cookie(LOCALE_COOKIE_NAME, DEFAULT_LOCALE));
+                String localeCode = localeCookie.get().getValue();
+
+                ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(localeCode));
+                String localizedValue = bundle.getString(key);
+
+                try {
+                    JspWriter out = pageContext.getOut();
+                    out.write(localizedValue);
+                } catch (IOException e) {
+                    throw new JspException("An error occurred processing tag: ", e);
+                }
             }
-        }
-
-        ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(localeCode));
-        String localizedValue = bundle.getString(key);
-
-        try {
-            JspWriter out = pageContext.getOut();
-            out.write(localizedValue);
-        } catch (IOException e) {
-            throw new JspException("An error occurred processing tag: ", e);
         }
 
         return SKIP_BODY;
