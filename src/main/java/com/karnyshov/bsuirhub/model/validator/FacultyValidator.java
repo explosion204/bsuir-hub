@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @author Dmitry Karnyshov
  */
 public class FacultyValidator {
-    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s,]{1,50}(?<!\\s)$";
+    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s,-.]{1,50}(?<!\\s)$";
     private static final String VALID_SHORT_NAME = "^\\p{L}{1,15}$";
 
     /**

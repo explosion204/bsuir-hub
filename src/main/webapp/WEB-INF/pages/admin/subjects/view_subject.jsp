@@ -48,7 +48,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="nameInput"><bht:localeTag key="subject.name" /></label>
                     <input type="text" name="name" class="form-control"
-                           pattern="(?=[a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я,\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
+                           pattern="(?=[a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я,\.\-\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
                            id="nameInput" value="${targetEntity.name}" required>
                     <div class="invalid-feedback">
                         <bht:localeTag key="subject.subject_name_validation" />
@@ -63,7 +63,7 @@
                         <bht:localeTag key="subject.subject_short_name_validation" />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2 w-100" id="saveButton"
+                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
                 ><bht:localeTag key="admin.save" /></button>
             </form>

@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
  * @author Dmitry Karnyshov
  */
 public class DepartmentValidator {
-    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s,]{1,50}(?<!\\s)$";
+    private static final String VALID_NAME = "^(?!\\s)[\\p{L}\\s,-.]{1,50}(?<!\\s)$";
     private static final String VALID_SHORT_NAME = "^\\p{L}{1,15}$";
-    private static final String VALID_SPECIALTY_ALIAS = "^(?!\\s)[\\p{L}\\s,]{1,100}(?<!\\s)$";
+    private static final String VALID_SPECIALTY_ALIAS = "^(?!\\s)[\\p{L}\\s,-.]{1,100}(?<!\\s)$";
 
     /**
      * Validate {@link Department} entity.

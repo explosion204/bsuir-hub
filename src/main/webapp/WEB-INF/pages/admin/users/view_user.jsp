@@ -199,7 +199,7 @@
             </form>
 
             <c:if test="${targetEntity.role.ordinal() eq 1}">
-                <button id="clearGradesButton" class="btn btn-secondary form-control me-5 ms-5 mb-2">
+                <button id="clearGradesButton" class="btn btn-secondary me-5 ms-5 mb-2">
                     <bht:localeTag key="user.clear_all_grades" />
                 </button>
             </c:if>

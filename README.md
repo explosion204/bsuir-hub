@@ -1,6 +1,10 @@
 # BSUIRHUB #
 Application that allows interaction between students and teachers through grades and trackable comments. It provides flexible tools for linking university domain models to each other (e.g. assignment assembles group, teacher and subject). Trackable comments via email notifications guarantee relatively fast response from both sides. Application does not support open registration, i.e. administrator have to create user manually and provide credentials to students or teachers. Administrator is not obliged to be experienced in computer science to use the application successfully.
 
+***Test deployment link:*** bsuirhub.com
+***Test teacher:*** user0001 (login) / 12345678q (password)
+***Test student:*** user0004 (login) / 12345678q (password)
+
 Role | Description
 --- | ---
 Guest | Unauthenticated user

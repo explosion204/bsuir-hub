@@ -57,7 +57,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="nameInput"><bht:localeTag key="department.name" /></label>
                     <input type="text" name="name" class="form-control"
-                           pattern="(?=[a-zA-Zа-яА-Я])([a-zA-Zа-яА-Я\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
+                           pattern="(?=[a-zA-Zа-яА-Я])([0-9a-zA-Zа-яА-Я,\.\-\s]{1,50})(?<=[a-zA-Zа-яА-Я])"
                            id="nameInput" value="${targetEntity.name}" required>
                     <div class="invalid-feedback">
                         <bht:localeTag key="department.department_name_validation" />
@@ -75,7 +75,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="specialtyAliasInput"><bht:localeTag key="department.specialty_alias" /></label>
                     <input type="text" name="specialtyAlias" class="form-control"
-                           pattern="(?=[a-zA-Zа-яА-Я,])([a-zA-Zа-яА-Я\s,]{1,100})(?<=[a-zA-Zа-яА-Я,])"
+                           pattern="(?=[a-zA-Zа-яА-Я,])([0-9a-zA-Zа-яА-Я,\.\-\s]{1,100})(?<=[a-zA-Zа-яА-Я,])"
                            id="specialtyAliasInput" value="${targetEntity.specialtyAlias}" required>
                     <div class="invalid-feedback">
                         <bht:localeTag key="department.department_specialty_validation" />
@@ -85,7 +85,7 @@
                     <label for="facultySelect"><bht:localeTag key="department.faculty" /></label>
                     <select name="facultyId" id="facultySelect" required></select>
                 </div>
-                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2 w-100" id="saveButton"
+                <button type="submit" class="btn btn-secondary me-5 ms-5 mb-2" id="saveButton"
                         <c:if test="${newEntityPage}">disabled</c:if>
                 ><bht:localeTag key="admin.save" /></button>
             </form>
