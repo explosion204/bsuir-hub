@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.entity.*;
 import com.karnyshov.bsuirhub.model.service.CommentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import com.karnyshov.bsuirhub.model.service.UserService;
+import com.karnyshov.bsuirhub.model.validator.PlainTextValidator;
 import com.karnyshov.bsuirhub.util.MailService;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
@@ -65,7 +66,7 @@ public class CreateCommentCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        boolean status = true;
+        boolean status;
         User currentUser = (User) request.getSession().getAttribute(USER);
 
         try {
@@ -80,13 +81,14 @@ public class CreateCommentCommand implements Command {
                     .setText(text)
                     .setCreationTime(LocalDateTime.now())
                     .build();
-            Optional<Grade> optionalGrade = gradeService.findById(gradeId);;
 
+            status = PlainTextValidator.validateText(text);
+            Optional<Grade> optionalGrade = gradeService.findById(gradeId);;
             // allow student comment all his grades
             // teachers can comment only their grades
             if (role != UserRole.STUDENT && optionalGrade.isPresent()) {
                 long teacherId = optionalGrade.get().getTeacherId();
-                status = userId == teacherId;
+                status &= userId == teacherId;
             }
 
             if (status && optionalGrade.isPresent()) {
