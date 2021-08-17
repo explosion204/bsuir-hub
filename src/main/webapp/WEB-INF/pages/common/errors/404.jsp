@@ -3,6 +3,7 @@
 
 <html>
 <head>
+    <title><bht:localeTag key="error.page_not_found_title" /></title>
     <jsp:include page="../shared/head.html" />
     <link rel="stylesheet" href="/static/css/error.css">
 </head>

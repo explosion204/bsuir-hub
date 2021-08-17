@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Disabled cookies</title>
+    <title>Cookies are disabled | Выключены куки</title>
     <link rel="stylesheet" href="/static/css/error.css">
     <!-- Font Awesome -->
     <link href="/static/lib/fontawesome/css/all.min.css" rel="stylesheet">
