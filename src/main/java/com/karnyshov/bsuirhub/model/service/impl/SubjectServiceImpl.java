@@ -37,9 +37,9 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public long filter(int start, int size, SubjectFilterCriteria criteria, String keyword, List<Subject> result)
+    public int filter(int start, int size, SubjectFilterCriteria criteria, String keyword, List<Subject> result)
             throws ServiceException {
-        long totalSubjects;
+        int totalSubjects;
 
         try {
             switch (criteria) {
@@ -66,7 +66,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public long filter(int page, int pageSize, List<Subject> result) throws ServiceException {
+    public int filter(int page, int pageSize, List<Subject> result) throws ServiceException {
         return filter(page, pageSize, NONE, null, result);
     }
 

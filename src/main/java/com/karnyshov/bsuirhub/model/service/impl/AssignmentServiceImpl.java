@@ -35,9 +35,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public long filter(int start, int size, AssignmentFilterCriteria criteria, long filterId,
+    public int filter(int start, int size, AssignmentFilterCriteria criteria, long filterId,
                        List<Assignment> result) throws ServiceException {
-        long totalAssignments;
+        int totalAssignments;
 
         try {
             switch (criteria) {

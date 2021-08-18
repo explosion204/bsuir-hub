@@ -27,10 +27,10 @@ public interface DepartmentDao extends BaseDao<Department> {
      * Select count of {@code Department} entities with specified name.
      *
      * @param keyword substring that the name of the department can contain.
-     * @return {@code long} value that represents count of stored departments with specified name.
+     * @return {@code int} value that represents count of stored departments with specified name.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByName(String keyword) throws DaoException;
+    int selectCountByName(String keyword) throws DaoException;
 
     /**
      * Select {@code Department} entities by specified short name.
@@ -47,10 +47,10 @@ public interface DepartmentDao extends BaseDao<Department> {
      * Select count of {@code Department} entities with specified short name.
      *
      * @param keyword substring that the short name of the department can contain.
-     * @return {@code long} value that represents count of stored departments with specified short name.
+     * @return {@code int} value that represents count of stored departments with specified short name.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByShortName(String keyword) throws DaoException;
+    int selectCountByShortName(String keyword) throws DaoException;
 
     /**
      * Select {@code Department} entities by specified {@link Faculty} id.
@@ -67,8 +67,8 @@ public interface DepartmentDao extends BaseDao<Department> {
      * Select count of {@code Department} entities with specified {@link Faculty} id.
      *
      * @param facultyId unique id of the faculty.
-     * @return {@code long} value that represents count of stored departments with specified faculty id.
+     * @return {@code int} value that represents count of stored departments with specified faculty id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByFaculty(long facultyId) throws DaoException;
+    int selectCountByFaculty(long facultyId) throws DaoException;
 }

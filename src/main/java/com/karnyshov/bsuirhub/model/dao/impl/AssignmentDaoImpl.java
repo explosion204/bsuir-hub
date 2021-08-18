@@ -73,18 +73,18 @@ public class AssignmentDaoImpl implements AssignmentDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<Assignment> assignmentMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code AssignmentDaoImpl}.
      *
      * @param assignmentMapper mapper for assignments.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public AssignmentDaoImpl(ResultSetMapper<Assignment> assignmentMapper, ResultSetMapper<Long> longMapper) {
+    public AssignmentDaoImpl(ResultSetMapper<Assignment> assignmentMapper, ResultSetMapper<Integer> integerMapper) {
         this.assignmentMapper = assignmentMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
+    public int selectTotalCount() throws DaoException {
         logger.error("Implementation of AssignmentDao does not support selectTotalCount operation");
         throw new UnsupportedOperationException();
 
@@ -111,8 +111,8 @@ public class AssignmentDaoImpl implements AssignmentDao {
     }
 
     @Override
-    public long selectCountByGroup(long groupId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GROUP, groupId);
+    public int selectCountByGroup(long groupId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP query"));
     }
 
@@ -123,22 +123,22 @@ public class AssignmentDaoImpl implements AssignmentDao {
     }
 
     @Override
-    public long selectCountByTeacher(long teacherId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_TEACHER,
+    public int selectCountByTeacher(long teacherId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_TEACHER,
                 teacherId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_TEACHER query"));
     }
 
     @Override
-    public long selectCountByGroupSubject(long groupId, long subjectId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GROUP_SUBJECT,
+    public int selectCountByGroupSubject(long groupId, long subjectId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_SUBJECT,
                 groupId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP_SUBJECT query"));
     }
 
     @Override
-    public long selectCountByGroupTeacherSubject(long groupId, long teacherId, long subjectId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT,
+    public int selectCountByGroupTeacherSubject(long groupId, long teacherId, long subjectId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT,
                 groupId, teacherId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT query"));
     }
@@ -154,8 +154,8 @@ public class AssignmentDaoImpl implements AssignmentDao {
     }
 
     @Override
-    public void update(Assignment relation) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
+    public int update(Assignment relation) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 relation.getTeacherId(),
                 relation.getSubjectId(),
@@ -165,7 +165,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

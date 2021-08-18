@@ -73,7 +73,7 @@ public class GetGradesCommand implements Command {
         long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
 
         List<Grade> grades = new LinkedList<>();
-        long recordsFetched = gradeService.findByStudentAndSubject(start, length, studentId, subjectId, grades);
+        int recordsFetched = gradeService.findByStudentAndSubject(start, length, studentId, subjectId, grades);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);

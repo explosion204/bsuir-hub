@@ -3,7 +3,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.SubjectDao;
-import com.karnyshov.bsuirhub.model.dao.mapper.impl.LongMapper;
+import com.karnyshov.bsuirhub.model.dao.mapper.impl.IntegerMapper;
 import com.karnyshov.bsuirhub.model.dao.mapper.impl.SubjectMapper;
 import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
@@ -31,10 +31,11 @@ public class SubjectDaoImplTest {
             = "INSERT subjects (name, short_name, is_archived) VALUES (?, ?, 0);";
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE subjects;";
 
-    private SubjectDao subjectDao = new SubjectDaoImpl(new SubjectMapper(), new LongMapper());
+    private SubjectDao subjectDao = new SubjectDaoImpl(new SubjectMapper(), new IntegerMapper());
     private List<Subject> testSample = new ArrayList<>();
 
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
+    private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
@@ -59,14 +60,6 @@ public class SubjectDaoImplTest {
 
             statement.executeBatch();
         }
-    }
-
-    @DataProvider(name = "keyword-provider")
-    public Object[][] keywordProvider() {
-        Supplier<String> supplier = () -> RandomStringUtils.random(1, true, true);
-        return new Object[][] {
-                { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() },
-        };
     }
 
     @Test(groups = "select")
@@ -96,8 +89,9 @@ public class SubjectDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectByName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByName() throws DaoException {
+        String keyword = keywordSupplier.get();
         List<Subject> expected = testSample.stream()
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getName(), keyword)
                         && !subject.isArchived())
@@ -107,8 +101,9 @@ public class SubjectDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectCountByName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByName() throws DaoException {
+        String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getName(), keyword)
                         && !subject.isArchived())
@@ -117,8 +112,9 @@ public class SubjectDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectByShortName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByShortName() throws DaoException {
+        String keyword = keywordSupplier.get();
         List<Subject> expected = testSample.stream()
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getShortName(), keyword)
                         && !subject.isArchived())
@@ -128,8 +124,9 @@ public class SubjectDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectCountShortByName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountShortByName() throws DaoException {
+        String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getShortName(), keyword)
                         && !subject.isArchived())
@@ -181,7 +178,7 @@ public class SubjectDaoImplTest {
     }
 
     @AfterClass
-    public void tierDown() throws DatabaseConnectionException, SQLException {
+    public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(TRUNCATE_TABLE);

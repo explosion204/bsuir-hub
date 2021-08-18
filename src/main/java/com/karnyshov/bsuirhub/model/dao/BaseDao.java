@@ -27,10 +27,10 @@ public interface BaseDao<T extends AbstractEntity> {
     /**
      * Select total count of all stored entities.
      *
-     * @return {@code long} value that represents total count of stored entities.
+     * @return {@code int} value that represents total count of stored entities.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectTotalCount() throws DaoException;
+    int selectTotalCount() throws DaoException;
 
     /**
      * Select a single entity with specified id.
@@ -54,15 +54,17 @@ public interface BaseDao<T extends AbstractEntity> {
      * Update existing entity.
      *
      * @param entity object with new data.
+     * @return number of affected records.
      * @throws DaoException if an error occurred while processing the query.
      */
-    void update(T entity) throws DaoException;
+    int update(T entity) throws DaoException;
 
     /**
      * Delete existing (strictly not necessarily) entity.
      *
      * @param id unique id of the entity.
+     * @return number of affected records.
      * @throws DaoException if an error occurred while processing the query.
      */
-    void delete(long id) throws DaoException;
+    int delete(long id) throws DaoException;
 }

@@ -81,7 +81,7 @@ public class GetGroupsCommand implements Command {
 
         List<Group> groups = new LinkedList<>();
 
-        long recordsFetched = searchCriteria != null
+        int recordsFetched = searchCriteria != null
                 ? groupService.filter(start, length, GroupFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, groups)
                 : groupService.filter(start, length, groups);
@@ -99,7 +99,7 @@ public class GetGroupsCommand implements Command {
         int start = pageSize * (page - 1);
 
         List<Group> groups = new LinkedList<>();
-        long recordsFetched = groupService.filter(start, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
+        int recordsFetched = groupService.filter(start, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
         response.put(RESULTS, groups);
         response.put(RECORDS_FILTERED, recordsFetched);
     }

@@ -30,10 +30,10 @@ public interface CommentService {
      * @param size size of the result collection.
      * @param gradeId unique id of the grade.
      * @param result {@link List} instance to hold retrieved entities.t
-     * @return {@code long} value that represents count of ALL entities satisfied filter criteria and filter value.
+     * @return {@code int} value that represents count of ALL entities satisfied filter criteria and filter value.
      * @throws ServiceException if an error occurred executing the method.
      */
-    long findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException;
+    int findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException;
 
     /**
      * Create a new {@code Comment} entity in the data store.

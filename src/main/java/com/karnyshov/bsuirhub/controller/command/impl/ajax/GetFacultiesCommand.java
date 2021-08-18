@@ -78,7 +78,7 @@ public class GetFacultiesCommand implements Command {
 
         List<Faculty> faculties = new LinkedList<>();
 
-        long recordsFetched = searchCriteria != null
+        int recordsFetched = searchCriteria != null
                 ? facultyService.filter(start, length, FacultyFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, faculties)
                 : facultyService.filter(start, length, faculties);
@@ -97,7 +97,7 @@ public class GetFacultiesCommand implements Command {
         int start = pageSize * (page - 1);
 
         List<Faculty> faculties = new LinkedList<>();
-        long recordsFetched = facultyService.filter(start, pageSize, FacultyFilterCriteria.NAME,
+        int recordsFetched = facultyService.filter(start, pageSize, FacultyFilterCriteria.NAME,
                 searchValue, faculties);
         response.put(RESULTS, faculties);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);

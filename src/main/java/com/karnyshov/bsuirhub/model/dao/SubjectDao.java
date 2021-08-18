@@ -26,10 +26,10 @@ public interface SubjectDao extends BaseDao<Subject> {
       * Select count of {@code Subject} entities with specified name.
       *
       * @param keyword substring that the name of the subject can contain.
-      * @return {@code long} value that represents count of stored subjects with specified name.
+      * @return {@code int} value that represents count of stored subjects with specified name.
       * @throws DaoException if an error occurred while processing the query.
       */
-     long selectCountByName(String keyword) throws DaoException;
+     int selectCountByName(String keyword) throws DaoException;
 
      /**
       * Select {@code Subject} entities by specified short name.
@@ -46,8 +46,8 @@ public interface SubjectDao extends BaseDao<Subject> {
       * Select count of {@code Subject} entities with specified short name.
       *
       * @param keyword substring that the short name of the subject can contain.
-      * @return {@code long} value that represents count of stored subjects with specified short name.
+      * @return {@code int} value that represents count of stored subjects with specified short name.
       * @throws DaoException if an error occurred while processing the query.
       */
-     long selectCountByShortName(String keyword) throws DaoException;
+     int selectCountByShortName(String keyword) throws DaoException;
 }

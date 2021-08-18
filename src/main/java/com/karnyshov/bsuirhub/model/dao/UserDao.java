@@ -38,10 +38,10 @@ public interface UserDao extends BaseDao<User> {
      * Select count of {@code User} entities with specified login.
      *
      * @param keyword substring that the login of the user can contain.
-     * @return {@code long} value that represents count of stored users with specified login.
+     * @return {@code int} value that represents count of stored users with specified login.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByLogin(String keyword) throws DaoException;
+    int selectCountByLogin(String keyword) throws DaoException;
 
     /**
      * Select a single {@code User} with specified email.
@@ -67,10 +67,10 @@ public interface UserDao extends BaseDao<User> {
      * Select count of {@code User} entities with specified email.
      *
      * @param keyword substring that the email of the user can contain.
-     * @return {@code long} value that represents count of stored users with specified email.
+     * @return {@code int} value that represents count of stored users with specified email.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByEmail(String keyword) throws DaoException;
+    int selectCountByEmail(String keyword) throws DaoException;
 
     /**
      * Select {@code User} entities by specified last name.
@@ -87,10 +87,10 @@ public interface UserDao extends BaseDao<User> {
      * Select count of {@code User} entities with specified last name.
      *
      * @param keyword substring that the last name of the user can contain.
-     * @return {@code long} value that represents count of stored users with specified last name.
+     * @return {@code int} value that represents count of stored users with specified last name.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByLastName(String keyword) throws DaoException;
+    int selectCountByLastName(String keyword) throws DaoException;
 
     /**
      * Select {@code User} entities by specified {@link UserRole} id.
@@ -107,10 +107,10 @@ public interface UserDao extends BaseDao<User> {
      * Select count of {@code User} entities with specified {@link UserRole} id.
      *
      * @param roleId unique id of the role.
-     * @return {@code long} value that represents count of stored users with specified role id.
+     * @return {@code int} value that represents count of stored users with specified role id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByRole(long roleId) throws DaoException;
+    int selectCountByRole(long roleId) throws DaoException;
 
     /**
      * Select {@code User} entities by specified {@link Group} id.
@@ -127,8 +127,8 @@ public interface UserDao extends BaseDao<User> {
      * Select count of {@code User} entities with specified {@link Group} id.
      *
      * @param groupId unique id of the group.
-     * @return {@code long} value that represents count of stored users with specified group id.
+     * @return {@code int} value that represents count of stored users with specified group id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByGroup(long groupId) throws DaoException;
+    int selectCountByGroup(long groupId) throws DaoException;
 }

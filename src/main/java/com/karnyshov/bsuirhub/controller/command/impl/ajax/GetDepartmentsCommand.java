@@ -80,7 +80,7 @@ public class GetDepartmentsCommand implements Command {
 
         List<Department> departments = new LinkedList<>();
 
-        long recordsFetched = searchCriteria != null
+        int recordsFetched = searchCriteria != null
                 ? departmentService.filter(start, length, DepartmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, departments)
                 : departmentService.filter(start, length, departments);
@@ -98,7 +98,7 @@ public class GetDepartmentsCommand implements Command {
         int start = pageSize * (page - 1);
 
         List<Department> departments = new LinkedList<>();
-        long recordsFetched = departmentService.filter(start, pageSize, DepartmentFilterCriteria.NAME,
+        int recordsFetched = departmentService.filter(start, pageSize, DepartmentFilterCriteria.NAME,
                 searchValue, departments);
         response.put(RESULTS, departments);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);

@@ -33,11 +33,11 @@ public interface AssignmentService {
      * @param criteria instance of {@link AssignmentFilterCriteria} that specifies a criteria for filtering.
      * @param filterId stored entities will be filtered by this value.
      * @param result {@link List} instance to hold retrieved entities.
-     * @return {@code long} value that represents count of ALL entities (even beyond specified bounds) satisfied
+     * @return {@code int} value that represents count of ALL entities (even beyond specified bounds) satisfied
      * filter criteria and filter value.
      * @throws ServiceException if an error occurred executing the method.
      */
-    long filter(int start, int size, AssignmentFilterCriteria criteria, long filterId, List<Assignment> result)
+    int filter(int start, int size, AssignmentFilterCriteria criteria, long filterId, List<Assignment> result)
             throws ServiceException;
 
     /**

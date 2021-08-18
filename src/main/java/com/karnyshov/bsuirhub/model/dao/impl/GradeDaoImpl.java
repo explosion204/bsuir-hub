@@ -66,21 +66,21 @@ public class GradeDaoImpl implements GradeDao {
               "WHERE id_student = ?;";
 
     private ResultSetMapper<Grade> gradeMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
     private ResultSetMapper<Double> doubleMapper;
 
     /**
      * Instantiate a new instance of {@code GradeDaoImpl}.
      *
      * @param gradeMapper mapper for grades.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      * @param doubleMapper mapper for {@code double} values.
      */
     @Inject
-    public GradeDaoImpl(ResultSetMapper<Grade> gradeMapper, ResultSetMapper<Long> longMapper,
+    public GradeDaoImpl(ResultSetMapper<Grade> gradeMapper, ResultSetMapper<Integer> integerMapper,
                 ResultSetMapper<Double> doubleMapper) {
         this.gradeMapper = gradeMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
         this.doubleMapper = doubleMapper;
     }
 
@@ -91,7 +91,7 @@ public class GradeDaoImpl implements GradeDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
+    public int selectTotalCount() throws DaoException {
         logger.error("Implementation of GradeDao does not support selectTotalCount operation");
         throw new UnsupportedOperationException();
     }
@@ -109,8 +109,8 @@ public class GradeDaoImpl implements GradeDao {
     }
 
     @Override
-    public long selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_STUDENT_AND_SUBJECT,
+    public int selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_STUDENT_AND_SUBJECT,
                 studentId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_STUDENT_AND_SUBJECT query"));
     }
@@ -142,8 +142,8 @@ public class GradeDaoImpl implements GradeDao {
     }
 
     @Override
-    public void update(Grade grade) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
+    public int update(Grade grade) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 grade.getValue(),
                 grade.getTeacherId(),
@@ -154,12 +154,12 @@ public class GradeDaoImpl implements GradeDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 
     @Override
-    public void deleteByStudent(long studentId) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
+    public int deleteByStudent(long studentId) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
     }
 }

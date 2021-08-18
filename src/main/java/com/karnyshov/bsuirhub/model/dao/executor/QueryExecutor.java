@@ -104,13 +104,13 @@ public class QueryExecutor {
      * @param params parameters that will be set to prepared statement.
      * @throws DaoException if an error occurred while processing the query.
      */
-    public static void executeUpdateOrDelete(String sqlQuery, Object ... params) throws DaoException {
+    public static int executeUpdateOrDelete(String sqlQuery, Object ... params) throws DaoException {
         DatabaseConnectionPool pool = DatabaseConnectionPool.getInstance();
 
         try (Connection connection = pool.acquireConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
             initPreparedStatement(statement, params);
-            statement.execute();
+            return statement.executeUpdate();
         } catch (DatabaseConnectionException | SQLException e) {
             throw new DaoException(e);
         }

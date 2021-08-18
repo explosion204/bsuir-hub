@@ -75,18 +75,18 @@ public class SubjectDaoImpl implements SubjectDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<Subject> subjectMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code SubjectDaoImpl}.
      *
      * @param subjectMapper mapper for subjects.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public SubjectDaoImpl(ResultSetMapper<Subject> subjectMapper, ResultSetMapper<Long> longMapper) {
+    public SubjectDaoImpl(ResultSetMapper<Subject> subjectMapper, ResultSetMapper<Integer> integerMapper) {
         this.subjectMapper = subjectMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -95,8 +95,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+    public int selectTotalCount() throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
@@ -111,8 +111,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public long selectCountByName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+    public int selectCountByName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
@@ -122,8 +122,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public long selectCountByShortName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+    public int selectCountByShortName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
 
     }
@@ -138,8 +138,8 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public void update(Subject subject) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
+    public int update(Subject subject) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 subject.getName(),
                 subject.getShortName(),
@@ -148,7 +148,7 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

@@ -37,10 +37,10 @@ public interface GroupDao extends BaseDao<Group> {
      * Select count of {@code Group} entities with specified name.
      *
      * @param keyword substring that the name of the group can contain.
-     * @return {@code long} value that represents count of stored groups with specified name.
+     * @return {@code int} value that represents count of stored groups with specified name.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByName(String keyword) throws DaoException;
+    int selectCountByName(String keyword) throws DaoException;
 
     /**
      * Select {@code Group} entities by specified {@link Department} id.
@@ -58,8 +58,8 @@ public interface GroupDao extends BaseDao<Group> {
      * Select count of {@code Group} entities with specified {@link Department} id.
      *
      * @param departmentId unique id of the department.
-     * @return {@code long} value that represents count of stored groups with specified department id.
+     * @return {@code int} value that represents count of stored groups with specified department id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByDepartment(long departmentId) throws DaoException;
+    int selectCountByDepartment(long departmentId) throws DaoException;
 }

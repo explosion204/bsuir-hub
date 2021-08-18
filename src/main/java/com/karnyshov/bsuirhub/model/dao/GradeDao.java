@@ -31,10 +31,10 @@ public interface GradeDao extends BaseDao<Grade> {
      *
      * @param studentId unique id of the student.
      * @param subjectId unique id of the subject.
-     * @return {@code long} value that represents count of stored grades with teacher id and group id.
+     * @return {@code int} value that represents count of stored grades with teacher id and group id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException;
+    int selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException;
 
     /**
      * Select average grade value by specified {@link User Student} id.
@@ -59,7 +59,8 @@ public interface GradeDao extends BaseDao<Grade> {
      * Delete existing (strictly not necessarily) grades by specified {@link User Student} id.
      *
      * @param studentId unique id of the student.
+     * @return number of affected records.
      * @throws DaoException if an error occurred while processing the query.
      */
-    void deleteByStudent(long studentId) throws DaoException;
+    int deleteByStudent(long studentId) throws DaoException;
 }

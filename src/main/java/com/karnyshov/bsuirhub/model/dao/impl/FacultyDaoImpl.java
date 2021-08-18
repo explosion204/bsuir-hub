@@ -75,18 +75,18 @@ public class FacultyDaoImpl implements FacultyDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<Faculty> facultyMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code FacultyDaoImpl}.
      *
      * @param facultyMapper mapper for faculties.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public FacultyDaoImpl(ResultSetMapper<Faculty> facultyMapper, ResultSetMapper<Long> longMapper) {
+    public FacultyDaoImpl(ResultSetMapper<Faculty> facultyMapper, ResultSetMapper<Integer> integerMapper) {
         this.facultyMapper = facultyMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -95,8 +95,8 @@ public class FacultyDaoImpl implements FacultyDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+    public int selectTotalCount() throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
@@ -111,8 +111,8 @@ public class FacultyDaoImpl implements FacultyDao {
     }
 
     @Override
-    public long selectCountByName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+    public int selectCountByName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
@@ -122,8 +122,8 @@ public class FacultyDaoImpl implements FacultyDao {
     }
 
     @Override
-    public long selectCountByShortName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+    public int selectCountByShortName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
     }
 
@@ -137,8 +137,8 @@ public class FacultyDaoImpl implements FacultyDao {
     }
 
     @Override
-    public void update(Faculty faculty) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
+    public int update(Faculty faculty) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 faculty.getName(),
                 faculty.getShortName(),
@@ -147,8 +147,8 @@ public class FacultyDaoImpl implements FacultyDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }
 

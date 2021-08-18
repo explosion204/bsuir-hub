@@ -38,9 +38,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public long filter(int start, int size, DepartmentFilterCriteria criteria, String keyword,
+    public int filter(int start, int size, DepartmentFilterCriteria criteria, String keyword,
                        List<Department> result) throws ServiceException {
-        long totalDepartments;
+        int totalDepartments;
 
         try {
             switch (criteria) {
@@ -72,7 +72,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public long filter(int start, int size, List<Department> result) throws ServiceException {
+    public int filter(int start, int size, List<Department> result) throws ServiceException {
         return filter(start, size, NONE, null, result);
     }
 

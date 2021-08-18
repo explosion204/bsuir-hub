@@ -135,18 +135,18 @@ public class UserDaoImpl implements UserDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<User> userMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code UserDaoImpl}.
      *
      * @param userMapper mapper for users.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public UserDaoImpl(ResultSetMapper<User> userMapper, ResultSetMapper<Long> longMapper) {
+    public UserDaoImpl(ResultSetMapper<User> userMapper, ResultSetMapper<Integer> integerMapper) {
         this.userMapper = userMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -155,8 +155,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+    public int selectTotalCount() throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
@@ -176,8 +176,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectCountByLogin(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_LOGIN, keyword);
+    public int selectCountByLogin(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LOGIN, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LOGIN query"));
     }
 
@@ -192,8 +192,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectCountByEmail(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_EMAIL, keyword);
+    public int selectCountByEmail(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_EMAIL, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_EMAIL query"));
     }
 
@@ -203,8 +203,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectCountByLastName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_LAST_NAME, keyword);
+    public int selectCountByLastName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LAST_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LAST_NAME query"));
     }
 
@@ -214,8 +214,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectCountByRole(long roleId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_ROLE, roleId);
+    public int selectCountByRole(long roleId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_ROLE, roleId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_ROLE query"));
     }
 
@@ -225,8 +225,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long selectCountByGroup(long groupId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GROUP, groupId);
+    public int selectCountByGroup(long groupId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP query"));
     }
 
@@ -250,9 +250,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(User user) throws DaoException {
+    public int update(User user) throws DaoException {
         long groupId = user.getGroupId();
-        QueryExecutor.executeUpdateOrDelete(
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 user.getEmail(),
                 user.getPasswordHash(),
@@ -269,7 +269,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

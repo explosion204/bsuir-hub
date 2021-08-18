@@ -37,9 +37,9 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public long filter(int start, int size, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
+    public int filter(int start, int size, FacultyFilterCriteria criteria, String keyword, List<Faculty> result)
                 throws ServiceException {
-        long totalFaculties;
+        int totalFaculties;
 
         try {
             switch (criteria) {
@@ -66,7 +66,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public long filter(int start, int size, List<Faculty> result) throws ServiceException {
+    public int filter(int start, int size, List<Faculty> result) throws ServiceException {
         return filter(start, size, NONE, null, result);
     }
 

@@ -71,7 +71,7 @@ public class GetAssignmentsCommand implements Command {
         long searchId = Long.parseLong(request.getParameter(SEARCH_VALUE));
 
         List<Assignment> assignments = new LinkedList<>();
-        long recordsFetched = 0;
+        int recordsFetched = 0;
         if (searchCriteria != null) {
             recordsFetched = assignmentService.filter(start, length,
                     AssignmentFilterCriteria.valueOf(searchCriteria.toUpperCase()), searchId, assignments);

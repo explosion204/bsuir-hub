@@ -38,8 +38,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public long filter(int start, int size, GroupFilterCriteria criteria, String keyword, List<Group> result) throws ServiceException {
-        long totalGroups;
+    public int filter(int start, int size, GroupFilterCriteria criteria, String keyword, List<Group> result) throws ServiceException {
+        int totalGroups;
 
         try {
             switch (criteria) {
@@ -67,7 +67,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public long filter(int start, int size, List<Group> result) throws ServiceException {
+    public int filter(int start, int size, List<Group> result) throws ServiceException {
         return filter(start, size, NONE, null, result);
     }
 

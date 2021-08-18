@@ -72,7 +72,7 @@ public class GetCommentsCommand implements Command {
         long gradeId = Long.parseLong(request.getParameter(GRADE_ID));
 
         List<Comment> grades = new LinkedList<>();
-        long recordsFetched = commentsService.findByGrade(start, length, gradeId, grades);
+        int recordsFetched = commentsService.findByGrade(start, length, gradeId, grades);
 
         response.put(DRAW, draw);
         response.put(RECORDS_TOTAL, recordsFetched);

@@ -75,9 +75,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
+    public int filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
                 throws ServiceException {
-        long totalUsers;
+        int totalUsers;
         
         try {
             switch (criteria) {
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long filter(int page, int pageSize, List<User> result) throws ServiceException {
+    public int filter(int page, int pageSize, List<User> result) throws ServiceException {
         return filter(page, pageSize, UserFilterCriteria.NONE, null, result);
     }
 

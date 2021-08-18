@@ -88,18 +88,18 @@ public class DepartmentDaoImpl implements DepartmentDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<Department> departmentMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code DepartmentDaoImpl}.
      *
      * @param departmentMapper mapper for departments.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public DepartmentDaoImpl(ResultSetMapper<Department> departmentMapper, ResultSetMapper<Long> longMapper) {
+    public DepartmentDaoImpl(ResultSetMapper<Department> departmentMapper, ResultSetMapper<Integer> integerMapper) {
         this.departmentMapper = departmentMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -108,8 +108,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+    public int selectTotalCount() throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
@@ -124,8 +124,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public long selectCountByName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+    public int selectCountByName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
@@ -135,8 +135,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public long selectCountByShortName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+    public int selectCountByShortName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
     }
 
@@ -146,8 +146,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public long selectCountByFaculty(long facultyId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_FACULTY, facultyId);
+    public int selectCountByFaculty(long facultyId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_FACULTY, facultyId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY query"));
     }
 
@@ -163,8 +163,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public void update(Department department) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(
+    public int update(Department department) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 department.getName(),
                 department.getShortName(),
@@ -175,7 +175,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

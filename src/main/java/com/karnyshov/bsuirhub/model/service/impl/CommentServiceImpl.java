@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public long findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException {
+    public int findByGrade(int start, int size, long gradeId, List<Comment> result) throws ServiceException {
         try {
             commentDao.selectByGrade(start, size, gradeId, result);
             return commentDao.selectCountByGrade(gradeId);

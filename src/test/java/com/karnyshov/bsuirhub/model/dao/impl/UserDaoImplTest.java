@@ -3,7 +3,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
-import com.karnyshov.bsuirhub.model.dao.mapper.impl.LongMapper;
+import com.karnyshov.bsuirhub.model.dao.mapper.impl.IntegerMapper;
 import com.karnyshov.bsuirhub.model.dao.mapper.impl.UserMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -33,13 +33,14 @@ public class UserDaoImplTest {
             "last_name, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE users;";
 
-    private UserDao userDao = new UserDaoImpl(new UserMapper(), new LongMapper());
+    private UserDao userDao = new UserDaoImpl(new UserMapper(), new IntegerMapper());
     private List<User> testSample = new ArrayList<>();
 
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
+    private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
     private Supplier<Integer> roleIdSupplier = () -> ThreadLocalRandom.current().nextInt(1, 4);
-    private Supplier<Integer> statusIdSupplier = roleIdSupplier;
-    private Supplier<Integer> groupIdSupplier = () -> ThreadLocalRandom.current().nextInt(1, 10);
+    private Supplier<Long> statusIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 4);
+    private Supplier<Long> groupIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
@@ -86,24 +87,6 @@ public class UserDaoImplTest {
         }
     }
 
-    @DataProvider(name = "keyword-provider")
-    public Object[][] keywordProvider() {
-        Supplier<String> supplier = () -> RandomStringUtils.random(1, true, true);
-        return new Object[][] {
-                { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() },
-        };
-    }
-
-    @DataProvider(name = "role-id-provider")
-    public Object[][] roleIdProvider() {
-        return new Object[][] {{ roleIdSupplier.get() }, { roleIdSupplier.get() }, { roleIdSupplier.get() }};
-    }
-
-    @DataProvider(name = "group-id-provider")
-    public Object[][] groupIdProvider() {
-        return new Object[][] {{ groupIdSupplier.get() }, { groupIdSupplier.get() }, { groupIdSupplier.get() }};
-    }
-
     @Test(groups = "select")
     public void testSelectAll() throws DaoException {
         List<User> expected = testSample.stream()
@@ -140,8 +123,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectByLoginMultiple(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByLoginMultiple() throws DaoException {
+        String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLogin(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -151,8 +135,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectCountByLoginMultiple(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByLoginMultiple() throws DaoException {
+        String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLogin(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -170,8 +155,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectByEmailMultiple(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByEmailMultiple() throws DaoException {
+        String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -181,8 +167,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectCountByEmailMultiple(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByEmailMultiple() throws DaoException {
+        String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -191,8 +178,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectByLastName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByLastName() throws DaoException {
+        String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLastName(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -202,8 +190,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "keyword-provider", groups = "select")
-    public void testSelectCountByLastName(String keyword) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByLastName() throws DaoException {
+        String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLastName(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
@@ -212,8 +201,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "role-id-provider", groups = "select")
-    public void testSelectByRole(int roleId) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByRole() throws DaoException {
+        int roleId = roleIdSupplier.get();
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED
                         && user.getRole() == UserRole.parseRole(roleId))
@@ -223,8 +213,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "role-id-provider", groups = "select")
-    public void testSelectCountByRole(int roleId) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByRole() throws DaoException {
+        int roleId = roleIdSupplier.get();
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED
                         && user.getRole() == UserRole.parseRole(roleId))
@@ -233,8 +224,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "group-id-provider", groups = "select")
-    public void testSelectByGroup(long groupId) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectByGroup() throws DaoException {
+        long groupId = groupIdSupplier.get();
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED && user.getRole() == UserRole.STUDENT
                         && user.getGroupId() == groupId)
@@ -244,8 +236,9 @@ public class UserDaoImplTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(dataProvider = "group-id-provider", groups = "select")
-    public void testSelectCountByGroup(long groupId) throws DaoException {
+    @Test(groups = "select")
+    public void testSelectCountByGroup() throws DaoException {
+        long groupId = groupIdSupplier.get();
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED && user.getRole() == UserRole.STUDENT
                         && user.getGroupId() == groupId)
@@ -306,7 +299,7 @@ public class UserDaoImplTest {
     }
 
     @AfterClass
-    public void tierDown() throws DatabaseConnectionException, SQLException {
+    public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(TRUNCATE_TABLE);

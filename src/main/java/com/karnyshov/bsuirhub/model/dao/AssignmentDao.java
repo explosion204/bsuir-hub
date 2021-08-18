@@ -29,10 +29,10 @@ public interface AssignmentDao extends BaseDao<Assignment> {
      * Select count of {@code Assignment} entities with specified {@link Group} id.
      *
      * @param groupId unique id of the group.
-     * @return {@code long} value that represents count of stored assignments with specified group id.
+     * @return {@code int} value that represents count of stored assignments with specified group id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByGroup(long groupId) throws DaoException;
+    int selectCountByGroup(long groupId) throws DaoException;
 
     /**
      * Select {@code Assignment} entities by {@link User Teacher} id.
@@ -49,20 +49,20 @@ public interface AssignmentDao extends BaseDao<Assignment> {
      * Select count of {@code Assignment} entities with specified {@link User Teacher} id.
      *
      * @param teacherId unique id of the teacher
-     * @return {@code long} value that represents count of stored assignments with specified teacher id.
+     * @return {@code int} value that represents count of stored assignments with specified teacher id.
      * @throws DaoException if an error occurred while processing the query.n
      */
-    long selectCountByTeacher(long teacherId) throws DaoException;
+    int selectCountByTeacher(long teacherId) throws DaoException;
 
     /**
      * Select count of {@code Assignment} entities with {@link Group} id and {@link Subject} id.
      *
      * @param groupId unique id of the group.
      * @param subjectId unique id of the subjects/
-     * @return {@code long} value that represents count of stored assignments with specified group id and subject id.
+     * @return {@code int} value that represents count of stored assignments with specified group id and subject id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByGroupSubject(long groupId, long subjectId) throws DaoException;
+    int selectCountByGroupSubject(long groupId, long subjectId) throws DaoException;
 
     /**
      * Select count of {@code Assignment} entities with {@link Group} id, {@link User Teacher} id
@@ -71,9 +71,9 @@ public interface AssignmentDao extends BaseDao<Assignment> {
      * @param groupId unique id of the group.
      * @param teacherId unique id of the teacher.
      * @param subjectId unique id of the subject.
-     * @return {@code long} value that represents count of stored assignments with specified group id, teacher id
+     * @return {@code int} value that represents count of stored assignments with specified group id, teacher id
      * and subject id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByGroupTeacherSubject(long groupId, long teacherId, long subjectId) throws DaoException;
+    int selectCountByGroupTeacherSubject(long groupId, long teacherId, long subjectId) throws DaoException;
 }

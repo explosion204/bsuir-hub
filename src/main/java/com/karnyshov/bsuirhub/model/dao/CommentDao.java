@@ -26,24 +26,26 @@ public interface CommentDao extends BaseDao<Comment> {
      * Select count of {@code Comment} entities with specified {@link Grade} id.
      *
      * @param gradeId unique id of the grade.
-     * @return {@code long} value that represents count of stored comments with specified grade id.
+     * @return {@code int} value that represents count of stored comments with specified grade id.
      * @throws DaoException if an error occurred while processing the query.
      */
-    long selectCountByGrade(long gradeId) throws DaoException;
+    int selectCountByGrade(long gradeId) throws DaoException;
 
     /**
      * Delete existing (strictly not necessarily) comments by specified {@link Grade} id.
      *
      * @param gradeId unique id of the grade.
+     * @return number of affected records.
      * @throws DaoException if an error occurred while processing the query.
      */
-    void deleteByGrade(long gradeId) throws DaoException;
+    int deleteByGrade(long gradeId) throws DaoException;
 
     /**
      * Delete existing (strictly not necessarily) comments by specified {@link User Student} id.
      *
      * @param studentId unique id of the student.
+     * @return number of affected records.
      * @throws DaoException if an error occurred while processing the query.
      */
-    void deleteByStudent(long studentId) throws DaoException;
+    int deleteByStudent(long studentId) throws DaoException;
 }

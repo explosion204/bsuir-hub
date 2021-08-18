@@ -34,7 +34,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public long findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
+    public int findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
             throws ServiceException {
         try {
             gradeDao.selectByStudentAndSubject(start, size, studentId, subjectId, result);

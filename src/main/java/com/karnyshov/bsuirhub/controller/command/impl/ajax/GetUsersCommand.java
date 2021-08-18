@@ -84,7 +84,7 @@ public class GetUsersCommand implements Command {
 
         List<User> users = new LinkedList<>();
 
-        long recordsFetched = searchCriteria != null
+        int recordsFetched = searchCriteria != null
                 ? userService.filter(start, length, UserFilterCriteria.valueOf(searchCriteria.toUpperCase()),
                         searchValue, users)
                 : userService.filter(start, length, users);
@@ -105,7 +105,7 @@ public class GetUsersCommand implements Command {
         String groupIdString = request.getParameter(GROUP_ID);
 
         List<User> users;
-        long recordsFetched;
+        int recordsFetched;
 
         if (fetchStudents) {
             // get all students for requested group

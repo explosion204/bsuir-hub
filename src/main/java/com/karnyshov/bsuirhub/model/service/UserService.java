@@ -50,11 +50,11 @@ public interface UserService {
      * @param criteria instance of {@link UserFilterCriteria} that specifies a criteria for filtering.
      * @param keyword stored entities will be filtered by this value.
      * @param result {@link List} instance to hold retrieved entities.
-     * @return {@code long} value that represents count of ALL entities (even beyond specified bounds) satisfied
+     * @return {@code int} value that represents count of ALL entities (even beyond specified bounds) satisfied
      * filter criteria and filter value.
      * @throws ServiceException if an error occurred executing the method.
      */
-    long filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
+    int filter(int start, int size, UserFilterCriteria criteria, String keyword, List<User> result)
             throws ServiceException;
 
     /**
@@ -63,10 +63,10 @@ public interface UserService {
      * @param start lower bound index from which the result collection will start.
      * @param size size of the result collection.
      * @param result {@link List} instance to hold retrieved entities.
-     * @return {@code long} value that represents count of ALL entities (even beyond specified bounds).
+     * @return {@code int} value that represents count of ALL entities (even beyond specified bounds).
      * @throws ServiceException if an error occurred executing the method.
      */
-    long filter(int start, int size, List<User> result) throws ServiceException;
+    int filter(int start, int size, List<User> result) throws ServiceException;
 
     /**
      * Hash password.

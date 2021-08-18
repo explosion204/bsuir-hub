@@ -80,18 +80,18 @@ public class GroupDaoImpl implements GroupDao {
               "WHERE id = ?;";
 
     private ResultSetMapper<Group> groupMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code GroupDaoImpl}.
      *
      * @param groupMapper mapper for groups.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public GroupDaoImpl(ResultSetMapper<Group> groupMapper, ResultSetMapper<Long> longMapper) {
+    public GroupDaoImpl(ResultSetMapper<Group> groupMapper, ResultSetMapper<Integer> integerMapper) {
         this.groupMapper = groupMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -100,8 +100,8 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_TOTAL_COUNT);
+    public int selectTotalCount() throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
@@ -121,8 +121,8 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public long selectCountByName(String keyword) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_NAME, keyword);
+    public int selectCountByName(String keyword) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
@@ -134,8 +134,8 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public long selectCountByDepartment(long departmentId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_DEPARTMENT,
+    public int selectCountByDepartment(long departmentId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_DEPARTMENT,
                 departmentId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT query"));
     }
@@ -153,9 +153,9 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public void update(Group group) throws DaoException {
+    public int update(Group group) throws DaoException {
         long headmanId = group.getHeadmanId();
-        QueryExecutor.executeUpdateOrDelete(
+        return QueryExecutor.executeUpdateOrDelete(
                 UPDATE,
                 group.getName(),
                 group.getDepartmentId(),
@@ -166,7 +166,7 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 }

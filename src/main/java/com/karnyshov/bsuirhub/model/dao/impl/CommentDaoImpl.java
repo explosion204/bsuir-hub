@@ -55,18 +55,18 @@ public class CommentDaoImpl implements CommentDao {
 
 
     private ResultSetMapper<Comment> commentMapper;
-    private ResultSetMapper<Long> longMapper;
+    private ResultSetMapper<Integer> integerMapper;
 
     /**
      * Instantiate a new instance of {@code CommentDaoImpl}.
      *
      * @param commentMapper mapper for comments.
-     * @param longMapper mapper for {@code long} values.
+     * @param integerMapper mapper for {@code int} values.
      */
     @Inject
-    public CommentDaoImpl(ResultSetMapper<Comment> commentMapper, ResultSetMapper<Long> longMapper) {
+    public CommentDaoImpl(ResultSetMapper<Comment> commentMapper, ResultSetMapper<Integer> integerMapper) {
         this.commentMapper = commentMapper;
-        this.longMapper = longMapper;
+        this.integerMapper = integerMapper;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public long selectTotalCount() throws DaoException {
+    public int selectTotalCount() throws DaoException {
         logger.error("Implementation of CommentDao does not support selectTotalCount operation");
         throw new UnsupportedOperationException();
     }
@@ -92,8 +92,8 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public long selectCountByGrade(long gradeId) throws DaoException {
-        Optional<Long> result = QueryExecutor.executeSelectForSingleResult(longMapper, SELECT_COUNT_BY_GRADE, gradeId);
+    public int selectCountByGrade(long gradeId) throws DaoException {
+        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GRADE, gradeId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GRADE query"));
     }
 
@@ -109,23 +109,23 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void update(Comment comment) throws DaoException {
+    public int update(Comment comment) throws DaoException {
         logger.error("Implementation of CommentDao does not support update operation");
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(long id) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE, id);
+    public int delete(long id) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
     }
 
     @Override
-    public void deleteByGrade(long gradeId) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE_BY_GRADE, gradeId);
+    public int deleteByGrade(long gradeId) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_GRADE, gradeId);
     }
 
     @Override
-    public void deleteByStudent(long studentId) throws DaoException {
-        QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
+    public int deleteByStudent(long studentId) throws DaoException {
+        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
     }
 }

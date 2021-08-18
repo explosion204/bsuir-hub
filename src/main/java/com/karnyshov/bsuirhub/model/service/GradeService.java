@@ -31,11 +31,11 @@ public interface GradeService {
      * @param studentId unique id of the student.
      * @param subjectId unique id of the subject.
      * @param result {@link List} instance to hold retrieved entities.
-     * @return {@code long} value that represents count of ALL entities (even beyond specified bounds) with specified
+     * @return {@code int} value that represents count of ALL entities (even beyond specified bounds) with specified
      * student id and subject id.
      * @throws ServiceException if an error occurred executing the method.
      */
-    long findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
+    int findByStudentAndSubject(int start, int size, long studentId, long subjectId, List<Grade> result)
             throws ServiceException;
 
     /**

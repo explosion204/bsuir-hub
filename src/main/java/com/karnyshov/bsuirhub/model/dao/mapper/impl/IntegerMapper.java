@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * {@code LongMapper} is an implementation of {@link ResultSetMapper} interface and provides mapping for
- * {@link Long} object.
+ * {@code IntegerMapper} is an implementation of {@link ResultSetMapper} interface and provides mapping for
+ * {@link Integer} object.
  * @author Dmitry Karnyshov
  */
 @Named
-public class LongMapper implements ResultSetMapper<Long> {
+public class IntegerMapper implements ResultSetMapper<Integer> {
     @Override
-    public Long map(ResultSet resultSet) throws DaoException {
+    public Integer map(ResultSet resultSet) throws DaoException {
         try {
-            return resultSet.getLong(1);
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
