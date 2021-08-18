@@ -23,7 +23,7 @@ import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINA
  * @author Dmitry Karnyshov
  */
 @WebServlet(
-        urlPatterns = { "/controller" }, loadOnStartup = 1
+        urlPatterns = { "/controller" }, loadOnStartup = 0
 )
 @MultipartConfig(
         fileSizeThreshold = 1024, // 1 kb

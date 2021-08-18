@@ -41,7 +41,7 @@ public class UserDaoImplTest {
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
     private Supplier<Integer> roleIdSupplier = () -> ThreadLocalRandom.current().nextInt(1, 4);
     private Supplier<Integer> statusIdSupplier = roleIdSupplier;
-    private Supplier<Long> groupIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
+    private Supplier<Integer> groupIdSupplier = () -> ThreadLocalRandom.current().nextInt(1, 10);
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
@@ -93,7 +93,7 @@ public class UserDaoImplTest {
 
     @DataProvider(name = "keyword-provider")
     public Object[][] keywordProvider() {
-        Supplier<String> supplier = () -> RandomStringUtils.random(3, true, true);
+        Supplier<String> supplier = () -> RandomStringUtils.random(1, true, true);
         return new Object[][] {
                 { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() }, { supplier.get() },
         };
@@ -130,8 +130,9 @@ public class UserDaoImplTest {
 
     @Test(groups = "select")
     public void testSelectById() throws DaoException {
-        User expected = testSample.get(15);
-        User actual = userDao.selectById(16).get();
+        int userId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
+        User expected = testSample.get(userId - 1);
+        User actual = userDao.selectById(userId).get();
         Assert.assertEquals(actual, expected);
     }
 
@@ -188,7 +189,8 @@ public class UserDaoImplTest {
     @Test(dataProvider = "keyword-provider", groups = "select")
     public void testSelectCountByEmailMultiple(String keyword) throws DaoException {
         long expected = testSample.stream()
-                .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword))
+                .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword)
+                        && user.getStatus() != UserStatus.DELETED)
                 .count();
         long actual = userDao.selectCountByLogin(keyword);
         Assert.assertEquals(actual, expected);
