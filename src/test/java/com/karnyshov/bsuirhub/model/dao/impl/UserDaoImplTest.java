@@ -31,9 +31,7 @@ public class UserDaoImplTest {
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +
             "last_name, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String DISABLE_FOREIGN_KEY_CHECKS = "SET foreign_key_checks = 0;";
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE users;";
-    private static final String ENABLE_FOREIGN_KEY_CHECKS = "SET foreign_key_checks = 1;";
 
     private UserDao userDao = new UserDaoImpl(new UserMapper(), new LongMapper());
     private List<User> testSample = new ArrayList<>();
@@ -48,8 +46,6 @@ public class UserDaoImplTest {
         DatabaseMockUtil.mockDatabaseConnectionPool();
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
-            statement.addBatch(DISABLE_FOREIGN_KEY_CHECKS);
-
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 String randomString = randomStringSupplier.get();
                 int roleId = roleIdSupplier.get();
@@ -86,7 +82,6 @@ public class UserDaoImplTest {
                 statement.addBatch();
             }
 
-            statement.addBatch(ENABLE_FOREIGN_KEY_CHECKS);
             statement.executeBatch();
         }
     }
@@ -314,13 +309,7 @@ public class UserDaoImplTest {
     public void tierDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
-            int sampleSize = testSample.size();
-            for (int i = 0; i < sampleSize; i++) {
-                statement.addBatch(DISABLE_FOREIGN_KEY_CHECKS);
-                statement.addBatch(TRUNCATE_TABLE);
-                statement.addBatch(ENABLE_FOREIGN_KEY_CHECKS);
-                statement.executeBatch();
-            }
+            statement.execute(TRUNCATE_TABLE);
         }
     }
 }
