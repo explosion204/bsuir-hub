@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.GroupDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -96,46 +95,54 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Group> result) throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_ALL, result, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(groupMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<Group> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(groupMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(groupMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public Optional<Group> selectByName(String name) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(groupMapper, SELECT_BY_NAME, name);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(groupMapper, SELECT_BY_NAME, name);
     }
 
     @Override
     public void selectByName(int offset, int limit, String keyword, List<Group> result) throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_MULTIPLE_BY_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(groupMapper, SELECT_MULTIPLE_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
     @Override
     public void selectByDepartment(int offset, int limit, long departmentId, List<Group> result)
                 throws DaoException {
-        QueryExecutor.executeSelect(groupMapper, SELECT_BY_DEPARTMENT, result, departmentId,
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(groupMapper, SELECT_BY_DEPARTMENT, result, departmentId,
                 limit, offset);
     }
 
     @Override
     public int selectCountByDepartment(long departmentId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_DEPARTMENT,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_DEPARTMENT,
                 departmentId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY_AND_DEPARTMENT query"));
     }
@@ -143,7 +150,8 @@ public class GroupDaoImpl implements GroupDao {
     @Override
     public long insert(Group group) throws DaoException {
         long headmanId = group.getHeadmanId();
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 group.getName(),
                 group.getDepartmentId(),
@@ -155,7 +163,8 @@ public class GroupDaoImpl implements GroupDao {
     @Override
     public int update(Group group) throws DaoException {
         long headmanId = group.getHeadmanId();
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 group.getName(),
                 group.getDepartmentId(),
@@ -167,6 +176,7 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }

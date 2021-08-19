@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.CommentDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -45,14 +44,6 @@ public class CommentDaoImpl implements CommentDao {
             = "DELETE FROM comments " +
               "WHERE id = ?;";
 
-    private static final String DELETE_BY_GRADE
-            = "DELETE FROM comments " +
-              "WHERE id_grade = ?";
-
-    private static final String DELETE_BY_STUDENT
-            = "DELETE FROM comments " +
-              "WHERE id_grade IN (SELECT id FROM grades WHERE id_student = ?);";
-
 
     private ResultSetMapper<Comment> commentMapper;
     private ResultSetMapper<Integer> integerMapper;
@@ -83,23 +74,27 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public Optional<Comment> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(commentMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(commentMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByGrade(int offset, int limit, long gradeId, List<Comment> result) throws DaoException {
-        QueryExecutor.executeSelect(commentMapper, SELECT_BY_GRADE, result, gradeId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(commentMapper, SELECT_BY_GRADE, result, gradeId, limit, offset);
     }
 
     @Override
     public int selectCountByGrade(long gradeId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GRADE, gradeId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GRADE, gradeId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GRADE query"));
     }
 
     @Override
     public long insert(Comment comment) throws DaoException {
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 comment.getGradeId(),
                 comment.getUserId(),
@@ -116,16 +111,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
-    }
-
-    @Override
-    public int deleteByGrade(long gradeId) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_GRADE, gradeId);
-    }
-
-    @Override
-    public int deleteByStudent(long studentId) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }

@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.tag;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.tagext.TagSupport;
@@ -38,7 +37,6 @@ public class LocaleTag extends TagSupport {
 
             if (localeCookie.isPresent()) {
                 String localeCode = localeCookie.get().getValue();
-
                 ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, new Locale(localeCode));
                 String localizedValue = bundle.getString(key);
 

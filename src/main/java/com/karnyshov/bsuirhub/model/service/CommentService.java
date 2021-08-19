@@ -59,21 +59,4 @@ public interface CommentService {
      * @throws ServiceException if an error occurred executing the method.
      */
     void delete(long id) throws ServiceException;
-
-    /**
-     * Delete all {@code Comment} entities with specified {@link Grade} id from the data store.
-     *
-     * @param gradeId unique id of the grade.
-     * @throws ServiceException if an error occurred executing the method.
-     */
-    void deleteByGrade(long gradeId) throws ServiceException;
-
-    /**
-     * Delete all {@code Comment} entities (including comments of teachers) by {@link Grade} ids
-     * that are associated with {@link User Student}.
-     *
-     * @param studentId unique id of the student.
-     * @throws ServiceException if an error occurred executing the method.
-     */
-    void deleteByStudent(long studentId) throws ServiceException;
 }

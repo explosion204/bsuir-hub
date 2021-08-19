@@ -3,7 +3,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.ajax;
 import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.listener.SessionAttributeListener;
+import com.karnyshov.bsuirhub.controller.listener.HttpSessionAttributeListenerImpl;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -123,7 +123,7 @@ public class UploadProfileImageCommand implements Command {
                     // update target user session if exists
                     // this command can be executed by administrator, so we have to update session as
                     // if it belongs to another user
-                    SessionAttributeListener.findSession(targetId).ifPresent(
+                    HttpSessionAttributeListenerImpl.findSession(targetId).ifPresent(
                             httpSession -> httpSession.setAttribute(USER, updatedTarget)
                     );
                 } else {

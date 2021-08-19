@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.AssignmentDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Assignment;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -102,50 +101,58 @@ public class AssignmentDaoImpl implements AssignmentDao {
 
     @Override
     public Optional<Assignment> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(assignmentMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(assignmentMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByGroup(int offset, int limit, long groupId, List<Assignment> result) throws DaoException {
-        QueryExecutor.executeSelect(assignmentMapper, SELECT_BY_GROUP, result, groupId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(assignmentMapper, SELECT_BY_GROUP, result, groupId, limit, offset);
     }
 
     @Override
     public int selectCountByGroup(long groupId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP query"));
     }
 
     @Override
     public void selectByTeacher(int offset, int limit, long teacherId, List<Assignment> result)
             throws DaoException {
-        QueryExecutor.executeSelect(assignmentMapper, SELECT_BY_TEACHER, result, teacherId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(assignmentMapper, SELECT_BY_TEACHER, result, teacherId, limit, offset);
     }
 
     @Override
     public int selectCountByTeacher(long teacherId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_TEACHER,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_TEACHER,
                 teacherId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_TEACHER query"));
     }
 
     @Override
     public int selectCountByGroupSubject(long groupId, long subjectId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_SUBJECT,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_SUBJECT,
                 groupId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP_SUBJECT query"));
     }
 
     @Override
     public int selectCountByGroupTeacherSubject(long groupId, long teacherId, long subjectId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT,
                 groupId, teacherId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP_TEACHER_SUBJECT query"));
     }
 
     @Override
     public long insert(Assignment relation) throws DaoException {
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 relation.getTeacherId(),
                 relation.getSubjectId(),
@@ -155,7 +162,8 @@ public class AssignmentDaoImpl implements AssignmentDao {
 
     @Override
     public int update(Assignment relation) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 relation.getTeacherId(),
                 relation.getSubjectId(),
@@ -166,6 +174,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }

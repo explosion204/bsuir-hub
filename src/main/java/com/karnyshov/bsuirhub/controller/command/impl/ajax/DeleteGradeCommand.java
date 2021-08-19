@@ -34,12 +34,10 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
 public class DeleteGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private GradeService gradeService;
-    private CommentService commentService;
 
     @Inject
-    public DeleteGradeCommand(GradeService gradeService, CommentService commentService) {
+    public DeleteGradeCommand(GradeService gradeService) {
         this.gradeService = gradeService;
-        this.commentService = commentService;
     }
 
     @Override
@@ -60,7 +58,6 @@ public class DeleteGradeCommand implements Command {
                 status = optionalGrade.isPresent() && optionalGrade.get().getTeacherId() == currentUser.getEntityId();
 
                 if (status) {
-                    commentService.deleteByGrade(entityId);
                     gradeService.delete(entityId);
                 }
             }

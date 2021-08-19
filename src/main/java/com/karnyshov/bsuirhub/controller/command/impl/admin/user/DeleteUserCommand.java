@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.user;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.listener.SessionAttributeListener;
+import com.karnyshov.bsuirhub.controller.listener.HttpSessionAttributeListenerImpl;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -50,7 +50,7 @@ public class DeleteUserCommand implements Command {
 
                 userService.delete(entityId);
                 // force deleted user logout
-                SessionAttributeListener.findSession(entityId).ifPresent(
+                HttpSessionAttributeListenerImpl.findSession(entityId).ifPresent(
                         targetSession -> targetSession.removeAttribute(USER));
 
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);

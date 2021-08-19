@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 
 /**
- * {@code SessionAttributeListener} class is an implementation of {@link HttpSessionAttributeListener} interface.
+ * {@code HttpSessionAttributeListenerImpl} class is an implementation of {@link HttpSessionAttributeListener} interface.
  * It collects all authenticated sessions.
  * @author Dmitry Karnyshov
  */
 @WebListener
-public class SessionAttributeListener implements HttpSessionAttributeListener {
+public class HttpSessionAttributeListenerImpl implements HttpSessionAttributeListener {
     private static final Map<Long, HttpSession> allSessions = new ConcurrentHashMap<>();
 
     @Override

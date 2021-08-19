@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.FacultyDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -91,45 +90,53 @@ public class FacultyDaoImpl implements FacultyDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Faculty> result) throws DaoException {
-        QueryExecutor.executeSelect(facultyMapper, SELECT_ALL, result, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(facultyMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<Faculty> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(facultyMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(facultyMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByName(int offset, int limit, String keyword, List<Faculty> result) throws DaoException {
-        QueryExecutor.executeSelect(facultyMapper, SELECT_BY_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(facultyMapper, SELECT_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
     @Override
     public void selectByShortName(int offset, int limit, String keyword, List<Faculty> result) throws DaoException {
-        QueryExecutor.executeSelect(facultyMapper, SELECT_BY_SHORT_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(facultyMapper, SELECT_BY_SHORT_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByShortName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
     }
 
     @Override
     public long insert(Faculty faculty) throws DaoException {
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 faculty.getName(),
                 faculty.getShortName()
@@ -138,7 +145,8 @@ public class FacultyDaoImpl implements FacultyDao {
 
     @Override
     public int update(Faculty faculty) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 faculty.getName(),
                 faculty.getShortName(),
@@ -148,7 +156,8 @@ public class FacultyDaoImpl implements FacultyDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }
 

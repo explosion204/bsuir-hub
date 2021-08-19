@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.GradeDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -65,6 +64,14 @@ public class GradeDaoImpl implements GradeDao {
             = "DELETE FROM grades " +
               "WHERE id_student = ?;";
 
+    private static final String DELETE_COMMENTS_BY_GRADE
+            = "DELETE FROM comments " +
+            "WHERE id_grade = ?";
+
+    private static final String DELETE_COMMENTS_BY_STUDENT
+            = "DELETE FROM comments " +
+              "WHERE id_grade IN (SELECT id FROM grades WHERE id_student = ?);";
+
     private ResultSetMapper<Grade> gradeMapper;
     private ResultSetMapper<Integer> integerMapper;
     private ResultSetMapper<Double> doubleMapper;
@@ -98,40 +105,46 @@ public class GradeDaoImpl implements GradeDao {
 
     @Override
     public Optional<Grade> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(gradeMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(gradeMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByStudentAndSubject(int offset, int limit, long studentId, long subjectId, List<Grade> result)
                 throws DaoException {
-        QueryExecutor.executeSelect(gradeMapper, SELECT_BY_STUDENT_AND_SUBJECT, result, studentId, subjectId, limit,
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(gradeMapper, SELECT_BY_STUDENT_AND_SUBJECT, result, studentId, subjectId, limit,
                 offset);
     }
 
     @Override
     public int selectCountByStudentAndSubject(long studentId, long subjectId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_STUDENT_AND_SUBJECT,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_STUDENT_AND_SUBJECT,
                 studentId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_STUDENT_AND_SUBJECT query"));
     }
 
     @Override
     public double selectAverage(long studentId) throws DaoException {
-        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Double> result = queryContext.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE,
                 studentId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_AVERAGE_NOT_EXAM query"));
     }
 
     @Override
     public double selectAverageBySubject(long studentId, long subjectId) throws DaoException {
-        Optional<Double> result = QueryExecutor.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE_BY_SUBJECT,
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Double> result = queryContext.executeSelectForSingleResult(doubleMapper, SELECT_AVERAGE_BY_SUBJECT,
                 studentId, subjectId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_AVERAGE_NOT_EXAM_BY_SUBJECT query"));
     }
 
     @Override
     public long insert(Grade grade) throws DaoException {
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 grade.getValue(),
                 grade.getTeacherId(),
@@ -143,7 +156,8 @@ public class GradeDaoImpl implements GradeDao {
 
     @Override
     public int update(Grade grade) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 grade.getValue(),
                 grade.getTeacherId(),
@@ -155,11 +169,20 @@ public class GradeDaoImpl implements GradeDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(true);
+        int recordsAffected = queryContext.executeUpdateOrDelete(DELETE_COMMENTS_BY_GRADE, id);
+        recordsAffected += queryContext.executeUpdateOrDelete(DELETE, id);
+        queryContext.commit();
+        return recordsAffected;
     }
 
     @Override
     public int deleteByStudent(long studentId) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
+        QueryContext queryContext = QueryContext.createContext(true);
+        // delete all comments associated with user (including comments of teachers)
+        int recordsAffected = queryContext.executeUpdateOrDelete(DELETE_COMMENTS_BY_STUDENT, studentId);
+        recordsAffected +=  queryContext.executeUpdateOrDelete(DELETE_BY_STUDENT, studentId);
+        queryContext.commit();
+        return recordsAffected;
     }
 }

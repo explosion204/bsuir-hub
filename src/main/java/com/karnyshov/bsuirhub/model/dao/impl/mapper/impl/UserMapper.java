@@ -1,7 +1,7 @@
-package com.karnyshov.bsuirhub.model.dao.mapper.impl;
+package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;

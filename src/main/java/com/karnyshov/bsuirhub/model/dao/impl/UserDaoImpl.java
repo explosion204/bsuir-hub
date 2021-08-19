@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.UserDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -151,89 +150,105 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void selectAll(int offset, int limit, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_ALL, result, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<User> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(userMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public Optional<User> selectByLogin(String login) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_LOGIN, login);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(userMapper, SELECT_BY_LOGIN, login);
     }
 
     @Override
     public void selectByLogin(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_LOGIN, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_MULTIPLE_BY_LOGIN, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByLogin(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LOGIN, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LOGIN, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LOGIN query"));
     }
 
     @Override
     public Optional<User> selectByEmail(String email) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(userMapper, SELECT_BY_EMAIL, email);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(userMapper, SELECT_BY_EMAIL, email);
     }
 
     @Override
     public void selectByEmail(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_EMAIL, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_MULTIPLE_BY_EMAIL, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByEmail(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_EMAIL, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_EMAIL, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_EMAIL query"));
     }
 
     @Override
     public void selectByLastName(int offset, int limit, String keyword, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_LAST_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_MULTIPLE_BY_LAST_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByLastName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LAST_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_LAST_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_LAST_NAME query"));
     }
 
     @Override
     public void selectByRole(int offset, int limit, long roleId, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_ROLE, result, roleId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_MULTIPLE_BY_ROLE, result, roleId, limit, offset);
     }
 
     @Override
     public int selectCountByRole(long roleId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_ROLE, roleId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_ROLE, roleId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_ROLE query"));
     }
 
     @Override
     public void selectByGroup(int offset, int limit, long groupId, List<User> result) throws DaoException {
-        QueryExecutor.executeSelect(userMapper, SELECT_MULTIPLE_BY_GROUP, result, groupId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(userMapper, SELECT_MULTIPLE_BY_GROUP, result, groupId, limit, offset);
     }
 
     @Override
     public int selectCountByGroup(long groupId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_GROUP, groupId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_GROUP query"));
     }
 
     @Override
     public long insert(User user) throws DaoException {
         long groupId = user.getGroupId();
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 user.getLogin(),
                 user.getEmail(),
@@ -252,7 +267,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int update(User user) throws DaoException {
         long groupId = user.getGroupId();
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 user.getEmail(),
                 user.getPasswordHash(),
@@ -270,6 +286,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }

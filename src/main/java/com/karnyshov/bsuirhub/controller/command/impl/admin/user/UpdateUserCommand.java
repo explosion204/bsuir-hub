@@ -2,7 +2,7 @@ package com.karnyshov.bsuirhub.controller.command.impl.admin.user;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import com.karnyshov.bsuirhub.controller.listener.SessionAttributeListener;
+import com.karnyshov.bsuirhub.controller.listener.HttpSessionAttributeListenerImpl;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -108,7 +108,7 @@ public class UpdateUserCommand implements Command {
                 // update target user session if exists
                 // this command can be executed only by administrator, so we have to update session this way
                 // because it belongs to another user
-                SessionAttributeListener.findSession(entityId).ifPresent(
+                HttpSessionAttributeListenerImpl.findSession(entityId).ifPresent(
                         targetSession -> targetSession.setAttribute(USER, updatedUser));
 
                 session.setAttribute(ENTITY_UPDATE_SUCCESS, true);

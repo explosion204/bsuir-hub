@@ -1,4 +1,4 @@
-package com.karnyshov.bsuirhub.model.dao.mapper;
+package com.karnyshov.bsuirhub.model.dao.impl.mapper;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 

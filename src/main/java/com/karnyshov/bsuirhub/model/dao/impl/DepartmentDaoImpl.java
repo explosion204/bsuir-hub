@@ -2,8 +2,7 @@ package com.karnyshov.bsuirhub.model.dao.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.DepartmentDao;
-import com.karnyshov.bsuirhub.model.dao.executor.QueryExecutor;
-import com.karnyshov.bsuirhub.model.dao.mapper.ResultSetMapper;
+import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -104,56 +103,66 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public void selectAll(int offset, int limit, List<Department> result) throws DaoException {
-        QueryExecutor.executeSelect(departmentMapper, SELECT_ALL, result, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(departmentMapper, SELECT_ALL, result, limit, offset);
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_TOTAL_COUNT);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_TOTAL_COUNT query"));
     }
 
     @Override
     public Optional<Department> selectById(long id) throws DaoException {
-        return QueryExecutor.executeSelectForSingleResult(departmentMapper, SELECT_BY_ID, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeSelectForSingleResult(departmentMapper, SELECT_BY_ID, id);
     }
 
     @Override
     public void selectByName(int offset, int limit, String keyword, List<Department> result) throws DaoException {
-        QueryExecutor.executeSelect(departmentMapper, SELECT_BY_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(departmentMapper, SELECT_BY_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_NAME query"));
     }
 
     @Override
     public void selectByShortName(int offset, int limit, String keyword, List<Department> result) throws DaoException {
-        QueryExecutor.executeSelect(departmentMapper, SELECT_BY_SHORT_NAME, result, keyword, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(departmentMapper, SELECT_BY_SHORT_NAME, result, keyword, limit, offset);
     }
 
     @Override
     public int selectCountByShortName(String keyword) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_SHORT_NAME, keyword);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_SHORT_NAME query"));
     }
 
     @Override
     public void selectByFaculty(int offset, int limit, long facultyId, List<Department> result) throws DaoException {
-        QueryExecutor.executeSelect(departmentMapper, SELECT_BY_FACULTY, result, facultyId, limit, offset);
+        QueryContext queryContext = QueryContext.createContext(false);
+        queryContext.executeSelect(departmentMapper, SELECT_BY_FACULTY, result, facultyId, limit, offset);
     }
 
     @Override
     public int selectCountByFaculty(long facultyId) throws DaoException {
-        Optional<Integer> result = QueryExecutor.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_FACULTY, facultyId);
+        QueryContext queryContext = QueryContext.createContext(false);
+        Optional<Integer> result = queryContext.executeSelectForSingleResult(integerMapper, SELECT_COUNT_BY_FACULTY, facultyId);
         return result.orElseThrow(() -> new DaoException("Error while executing SELECT_COUNT_BY_FACULTY query"));
     }
 
     @Override
     public long insert(Department department) throws DaoException {
-        return QueryExecutor.executeInsert(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeInsert(
                 INSERT,
                 department.getName(),
                 department.getShortName(),
@@ -164,7 +173,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public int update(Department department) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(
                 UPDATE,
                 department.getName(),
                 department.getShortName(),
@@ -176,6 +186,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public int delete(long id) throws DaoException {
-        return QueryExecutor.executeUpdateOrDelete(DELETE, id);
+        QueryContext queryContext = QueryContext.createContext(false);
+        return queryContext.executeUpdateOrDelete(DELETE, id);
     }
 }

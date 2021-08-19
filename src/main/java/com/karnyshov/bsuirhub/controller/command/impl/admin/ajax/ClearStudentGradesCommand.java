@@ -26,12 +26,10 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 public class ClearStudentGradesCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private GradeService gradeService;
-    private CommentService commentService;
 
     @Inject
-    public ClearStudentGradesCommand(GradeService gradeService, CommentService commentService) {
+    public ClearStudentGradesCommand(GradeService gradeService) {
         this.gradeService = gradeService;
-        this.commentService = commentService;
     }
 
     @Override
@@ -41,9 +39,6 @@ public class ClearStudentGradesCommand implements Command {
 
         try {
             long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
-            // delete all comments associated with user (including comments of teachers)
-            commentService.deleteByStudent(studentId);
-            // delete all grades
             gradeService.deleteByStudent(studentId);
         } catch (NumberFormatException | ServiceException e) {
             logger.error("An error occurred executing 'clear student grades' command", e);
