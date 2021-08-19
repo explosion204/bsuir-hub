@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -92,7 +93,7 @@ public class UserServiceImplTest {
         Mockito.when(userDao.selectById(userId))
                 .thenReturn(Optional.of(expectedUser));
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        Mockito.doNothing().when(userDao).update(userCaptor.capture());
+        Mockito.when(userDao.update(userCaptor.capture())).thenReturn(0);
 
         UserService userService = new UserServiceImpl(userDao);
         userService.changePassword(userId, newPassword);
@@ -111,7 +112,7 @@ public class UserServiceImplTest {
         Mockito.when(userDao.selectById(userId))
                 .thenReturn(Optional.of(expectedUser));
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        Mockito.doNothing().when(userDao).update(userCaptor.capture());
+        Mockito.when(userDao.update(userCaptor.capture())).thenReturn(0);
 
         UserService userService = new UserServiceImpl(userDao);
         userService.changeEmail(userId, newEmail);
@@ -135,7 +136,7 @@ public class UserServiceImplTest {
         Mockito.when(userDao.selectById(userId))
                 .thenReturn(Optional.of(user));
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        Mockito.doNothing().when(userDao).update(userCaptor.capture());
+        Mockito.when(userDao.update(userCaptor.capture())).thenReturn(0);
 
         UserService userService = new UserServiceImpl(userDao);
         userService.update(expectedUpdatedUser, StringUtils.EMPTY);
@@ -160,7 +161,7 @@ public class UserServiceImplTest {
         Mockito.when(userDao.selectById(userId))
                 .thenReturn(Optional.of(user));
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        Mockito.doNothing().when(userDao).update(userCaptor.capture());
+        Mockito.when(userDao.update(userCaptor.capture())).thenReturn(0);
 
         UserService userService = new UserServiceImpl(userDao);
         userService.update(expectedUpdatedUser, newPassword);

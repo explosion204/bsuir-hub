@@ -9,6 +9,7 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.MockedStatic;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -25,7 +26,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class SubjectDaoImplTest {
+@Test(suiteName = "dao-tests")
+public class SubjectDaoImplTest extends AbstractDaoTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT subjects (name, short_name, is_archived) VALUES (?, ?, 0);";
@@ -39,7 +41,6 @@ public class SubjectDaoImplTest {
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
-        DatabaseMockUtil.mockDatabaseConnectionPool();
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             for (int i = 0; i < SAMPLE_SIZE; i++) {

@@ -8,6 +8,7 @@ import com.karnyshov.bsuirhub.model.dao.mapper.impl.GradeMapper;
 import com.karnyshov.bsuirhub.model.dao.mapper.impl.IntegerMapper;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
+import org.mockito.MockedStatic;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -24,7 +25,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class GradeDaoImplTest {
+@Test(suiteName = "dao-tests")
+public class GradeDaoImplTest extends AbstractDaoTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT grades (value, id_teacher, id_student, id_subject, date) VALUES (?, ?, ?, ?, ?);";
@@ -38,7 +40,6 @@ public class GradeDaoImplTest {
 
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
-        DatabaseMockUtil.mockDatabaseConnectionPool();
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             for (int i = 0; i < SAMPLE_SIZE; i++) {
