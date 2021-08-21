@@ -9,10 +9,8 @@ import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.IntegerMapper;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.math.RoundingMode;
 import java.sql.*;
@@ -26,8 +24,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Test(suiteName = "dao-tests")
-public class GradeDaoImplTest extends AbstractDaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(PoolMockExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class GradeDaoImplTest {
     private static final int GRADES_SAMPLE_SIZE = 100;
     private static final int COMMENTS_SAMPLE_SIZE = 50;
     private static final String INSERT_GRADE
@@ -44,7 +46,7 @@ public class GradeDaoImplTest extends AbstractDaoTest {
     private Supplier<Long> foreignKeyIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
     private Supplier<Byte> gradeValueSupplier = () -> (byte) ThreadLocalRandom.current().nextInt(1, 11);
 
-    @BeforeClass
+    @BeforeAll
     public void setUp() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement gradeStatement = connection.prepareStatement(INSERT_GRADE);
@@ -103,15 +105,17 @@ public class GradeDaoImplTest extends AbstractDaoTest {
         }
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(1)
     public void testSelectById() throws DaoException {
         int gradeId = ThreadLocalRandom.current().nextInt(1, gradesTestSample.size() + 1);
         Grade expected = gradesTestSample.get(gradeId - 1);
         Grade actual = gradeDao.selectById(gradeId).get();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(2)
     public void testSelectByStudentAndSubject() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         long subjectId = foreignKeyIdSupplier.get();
@@ -120,10 +124,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Grade> actual = new LinkedList<>();
         gradeDao.selectByStudentAndSubject(0, GRADES_SAMPLE_SIZE, studentId, subjectId, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(3)
     public void testSelectCountByStudentAndSubject() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         long subjectId = foreignKeyIdSupplier.get();
@@ -131,10 +136,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .filter(grade -> grade.getStudentId() == studentId && grade.getSubjectId() == subjectId)
                 .count();
         int actual = gradeDao.selectCountByStudentAndSubject(studentId, subjectId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(4)
     public void testSelectAverage() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -146,10 +152,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .orElse(0);
         expected = Double.parseDouble(decimalFormat.format(expected));
         double actual = gradeDao.selectAverage(studentId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(5)
     public void testSelectAverageBySubject() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         long subjectId = foreignKeyIdSupplier.get();
@@ -163,10 +170,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .orElse(0);
         expected = Double.parseDouble(decimalFormat.format(expected));
         double actual = gradeDao.selectAverageBySubject(studentId, subjectId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(dependsOnGroups = "select")
+    @Test
+    @Order(6)
     public void testInsert() throws DaoException {
         long subjectId = foreignKeyIdSupplier.get();
         long teacherId = foreignKeyIdSupplier.get();
@@ -186,10 +194,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
         gradesTestSample.add(grade);
 
         long actualId = gradeDao.insert(grade);
-        Assert.assertEquals(actualId, expectedId);
+        assertEquals(actualId, expectedId);
     }
 
-    @Test(dependsOnMethods = "testInsert")
+    @Test
+    @Order(7)
     public void testUpdate() throws DaoException {
         Grade grade = gradesTestSample.get(gradesTestSample.size() - 1);
         Grade updatedGrade = Grade.builder()
@@ -199,10 +208,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = gradeDao.update(updatedGrade);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @Test(dependsOnMethods = "testUpdate")
+    @Test
+    @Order(8)
     public void testDelete() throws DaoException {
         Grade grade = gradesTestSample.remove(0);
         long entityId = grade.getEntityId();
@@ -210,10 +220,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .filter(comment -> comment.getGradeId() == entityId)
                 .count() + 1;
         int actualRowsAffected = gradeDao.delete(entityId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @Test(dependsOnMethods = "testDelete")
+    @Test
+    @Order(9)
     public void testDeleteByStudent() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         List<Long> gradeIdsToDelete = new LinkedList<>();
@@ -226,10 +237,10 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                 .count();
         long expectedRowsAffected = expectedGradesCount + expectedCommentsCount;
         int actualRowsAffected = gradeDao.deleteByStudent(studentId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @AfterClass
+    @AfterAll
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {

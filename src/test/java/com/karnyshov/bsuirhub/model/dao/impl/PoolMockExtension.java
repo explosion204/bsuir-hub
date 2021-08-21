@@ -1,32 +1,33 @@
 package com.karnyshov.bsuirhub.model.dao.impl;
 
-import com.karnyshov.bsuirhub.exception.DatabaseConnectionException;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public abstract class AbstractDaoTest {
+public class PoolMockExtension implements BeforeAllCallback, AfterAllCallback {
+    private static final Logger logger = LogManager.getLogger();
     private static final String TEST_DB_PROPERTIES_NAME = "test_db.properties";
     private static final String DB_DRIVER_NAME_PROPERTY = "driver";
     private static final String DB_URL_PROPERTY = "url";
-
     private MockedStatic<DatabaseConnectionPool> mockedPool;
 
-    @BeforeSuite(alwaysRun = true)
-    public final void registerConnectionPoolMock() throws IOException, ClassNotFoundException, DatabaseConnectionException {
+    @Override
+    public void beforeAll(ExtensionContext context) throws Exception {
         String dbUrl;
         Properties dbProperties;
 
-        ClassLoader classLoader = AbstractDaoTest.class.getClassLoader();
+        ClassLoader classLoader = PoolMockExtension.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream(TEST_DB_PROPERTIES_NAME)) {
             dbProperties = new Properties();
             dbProperties.load(inputStream);
@@ -45,7 +46,7 @@ public abstract class AbstractDaoTest {
             try {
                 connection = DriverManager.getConnection(dbUrl, dbProperties);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
 
             return connection;
@@ -55,8 +56,8 @@ public abstract class AbstractDaoTest {
         mockedPool.when(DatabaseConnectionPool::getInstance).thenReturn(poolInstance);
     }
 
-    @AfterSuite(alwaysRun = true)
-    public final void deregisterConnectionPoolMock() {
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
         mockedPool.close();
     }
 }

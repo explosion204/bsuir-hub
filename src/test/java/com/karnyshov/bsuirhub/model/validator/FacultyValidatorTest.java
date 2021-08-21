@@ -1,13 +1,25 @@
 package com.karnyshov.bsuirhub.model.validator;
 
 import com.karnyshov.bsuirhub.model.entity.Faculty;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FacultyValidatorTest {
-    @DataProvider(name = "faculty-provider")
-    public Object[][] facultyProvider() {
+    @ParameterizedTest
+    @MethodSource("provideFaculty")
+    public void testValidateFaculty(boolean expectedResult, Faculty faculty) {
+        boolean actualResult = FacultyValidator.validateFaculty(faculty);
+        assertEquals(actualResult, expectedResult);
+    }
+
+    public Stream<Arguments> provideFaculty() {
         Faculty firstInvalidFaculty = Faculty.builder()
                 .setName(" aaaaa ")
                 .setShortName("ff2@dfrfijjfrjejfieroifjir4oifoi a")
@@ -23,16 +35,10 @@ public class FacultyValidatorTest {
                 .setShortName("NAME")
                 .build();
 
-        return new Object[][] {
-                { false, firstInvalidFaculty },
-                { false, secondInvalidFaculty },
-                { true, validFaculty }
-        };
-    }
-
-    @Test(dataProvider = "faculty-provider")
-    public void testValidateFaculty(boolean expectedResult, Faculty faculty) {
-        boolean actualResult = FacultyValidator.validateFaculty(faculty);
-        Assert.assertEquals(actualResult, expectedResult);
+        return Stream.of(
+                Arguments.of(false, firstInvalidFaculty),
+                Arguments.of(false, secondInvalidFaculty),
+                Arguments.of(true, validFaculty)
+        );
     }
 }

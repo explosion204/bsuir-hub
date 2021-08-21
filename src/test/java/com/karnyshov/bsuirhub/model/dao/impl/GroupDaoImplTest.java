@@ -9,10 +9,8 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +23,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Test(suiteName = "dao-tests")
-public class GroupDaoImplTest extends AbstractDaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(PoolMockExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class GroupDaoImplTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT `groups` (name, id_department, id_headman, id_curator, is_archived) VALUES (?, ?, ?, ?, 0);";
@@ -39,7 +41,7 @@ public class GroupDaoImplTest extends AbstractDaoTest {
     private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
     private Supplier<Long> foreignKeyIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
 
-    @BeforeClass
+    @BeforeAll
     public void setUp() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
@@ -70,34 +72,38 @@ public class GroupDaoImplTest extends AbstractDaoTest {
         }
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(1)
     public void testSelectAll() throws DaoException {
         List<Group> expected = testSample.stream()
                 .filter(subject -> !subject.isArchived())
                 .collect(Collectors.toList());
         List<Group> actual = new LinkedList<>();
         groupDao.selectAll(0, SAMPLE_SIZE, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(2)
     public void testSelectTotalCount() throws DaoException {
         long expected = testSample.stream()
                 .filter(subject -> !subject.isArchived())
                 .count();
         long actual = groupDao.selectTotalCount();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(3)
     public void testSelectById() throws DaoException {
         int groupId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
         Group expected = testSample.get(groupId - 1);
         Group actual = groupDao.selectById(groupId).get();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(4)
     public void testSelectByName() throws DaoException {
         String keyword = keywordSupplier.get();
         List<Group> expected = testSample.stream()
@@ -106,10 +112,11 @@ public class GroupDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Group> actual = new LinkedList<>();
         groupDao.selectByName(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(5)
     public void testSelectCountByName() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -117,10 +124,11 @@ public class GroupDaoImplTest extends AbstractDaoTest {
                         && !subject.isArchived())
                 .count();
         long actual = groupDao.selectCountByName(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(6)
     public void testSelectByDepartment() throws DaoException {
         long departmentId = foreignKeyIdSupplier.get();
         List<Group> expected = testSample.stream()
@@ -129,10 +137,11 @@ public class GroupDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Group> actual = new LinkedList<>();
         groupDao.selectByDepartment(0, SAMPLE_SIZE, departmentId, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(7)
     public void testSelectCountByDepartment() throws DaoException {
         long departmentId = foreignKeyIdSupplier.get();
         long expected = testSample.stream()
@@ -140,10 +149,11 @@ public class GroupDaoImplTest extends AbstractDaoTest {
                         && !group.isArchived())
                 .count();
         long actual = groupDao.selectCountByDepartment(departmentId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(dependsOnGroups = "select")
+    @Test
+    @Order(8)
     public void testInsert() throws DaoException {
         String randomString = randomStringSupplier.get();
         long departmentId = foreignKeyIdSupplier.get();
@@ -160,10 +170,11 @@ public class GroupDaoImplTest extends AbstractDaoTest {
         testSample.add(group);
 
         long actualId = groupDao.insert(group);
-        Assert.assertEquals(actualId, expectedId);
+        assertEquals(actualId, expectedId);
     }
 
-    @Test(dependsOnMethods = "testInsert")
+    @Test
+    @Order(9)
     public void testUpdate() throws DaoException {
         Group group = testSample.get(testSample.size() - 1);
         Group updatedGroup = Group.builder()
@@ -173,20 +184,21 @@ public class GroupDaoImplTest extends AbstractDaoTest {
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = groupDao.update(updatedGroup);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @Test(dependsOnMethods = "testUpdate")
+    @Test
+    @Order(10)
     public void testDelete() throws DaoException {
         Group group = testSample.remove(testSample.size() - 1);
         long entityId = group.getEntityId();
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = groupDao.delete(entityId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @AfterClass
+    @AfterAll
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {

@@ -9,10 +9,8 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +23,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Test(suiteName = "dao-tests")
-public class SubjectDaoImplTest extends AbstractDaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(PoolMockExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class SubjectDaoImplTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT subjects (name, short_name, is_archived) VALUES (?, ?, 0);";
@@ -38,7 +40,7 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
     private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
 
-    @BeforeClass
+    @BeforeAll
     public void setUp() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
@@ -62,34 +64,38 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
         }
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(1)
     public void testSelectAll() throws DaoException {
         List<Subject> expected = testSample.stream()
                 .filter(subject -> !subject.isArchived())
                 .collect(Collectors.toList());
         List<Subject> actual = new LinkedList<>();
         subjectDao.selectAll(0, SAMPLE_SIZE, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(2)
     public void testSelectTotalCount() throws DaoException {
         long expected = testSample.stream()
                 .filter(subject -> !subject.isArchived())
                 .count();
         long actual = subjectDao.selectTotalCount();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(3)
     public void testSelectById() throws DaoException {
         int subjectId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
         Subject expected = testSample.get(subjectId - 1);
         Subject actual = subjectDao.selectById(subjectId).get();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(4)
     public void testSelectByName() throws DaoException {
         String keyword = keywordSupplier.get();
         List<Subject> expected = testSample.stream()
@@ -98,10 +104,11 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Subject> actual = new LinkedList<>();
         subjectDao.selectByName(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(5)
     public void testSelectCountByName() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -109,10 +116,11 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                         && !subject.isArchived())
                 .count();
         long actual = subjectDao.selectCountByName(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(6)
     public void testSelectByShortName() throws DaoException {
         String keyword = keywordSupplier.get();
         List<Subject> expected = testSample.stream()
@@ -121,10 +129,11 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Subject> actual = new LinkedList<>();
         subjectDao.selectByShortName(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(7)
     public void testSelectCountByShortName() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -132,10 +141,11 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                         && !subject.isArchived())
                 .count();
         long actual = subjectDao.selectCountByShortName(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(dependsOnGroups = "select")
+    @Test
+    @Order(8)
     public void testInsert() throws DaoException {
         String randomString = randomStringSupplier.get();
         long expectedId = testSample.size() + 1;
@@ -149,10 +159,11 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
         testSample.add(subject);
 
         long actualId = subjectDao.insert(subject);
-        Assert.assertEquals(actualId, expectedId);
+        assertEquals(actualId, expectedId);
     }
 
-    @Test(dependsOnMethods = "testInsert")
+    @Test
+    @Order(9)
     public void testUpdate() throws DaoException {
         Subject subject = testSample.get(testSample.size() - 1);
         Subject updatedSubject = Subject.builder()
@@ -162,20 +173,21 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = subjectDao.update(updatedSubject);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @Test(dependsOnMethods = "testUpdate")
+    @Test
+    @Order(10)
     public void testDelete() throws DaoException {
         Subject subject = testSample.remove(testSample.size() - 1);
         long entityId = subject.getEntityId();
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = subjectDao.delete(entityId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @AfterClass
+    @AfterAll
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {

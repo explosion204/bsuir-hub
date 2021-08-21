@@ -11,10 +11,8 @@ import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,8 +23,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Test(suiteName = "dao-tests")
-public class UserDaoImplTest extends AbstractDaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(PoolMockExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class UserDaoImplTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT users (login, email, password_hash, salt, id_role, id_status, id_group, first_name, patronymic, " +
@@ -42,7 +44,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
     private Supplier<Long> statusIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 4);
     private Supplier<Long> groupIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
 
-    @BeforeClass
+    @BeforeAll
     public void setUp() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
@@ -86,43 +88,48 @@ public class UserDaoImplTest extends AbstractDaoTest {
         }
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(1)
     public void testSelectAll() throws DaoException {
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectAll(0, SAMPLE_SIZE, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(2)
     public void testSelectTotalCount() throws DaoException {
         long expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
                 .count();
         long actual = userDao.selectTotalCount();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(3)
     public void testSelectById() throws DaoException {
         int userId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
         User expected = testSample.get(userId - 1);
         User actual = userDao.selectById(userId).get();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(4)
     public void testSelectByLoginSingle() throws DaoException {
         Optional<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
                 .findAny();
         Optional<User> actual = userDao.selectByLogin(expected.get().getLogin());
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(5)
     public void testSelectByLoginMultiple() throws DaoException {
         String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
@@ -131,10 +138,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectByLogin(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(6)
     public void testSelectCountByLoginMultiple() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -142,19 +150,21 @@ public class UserDaoImplTest extends AbstractDaoTest {
                         && user.getStatus() != UserStatus.DELETED)
                 .count();
         long actual = userDao.selectCountByLogin(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(7)
     public void testSelectByEmailSingle() throws DaoException {
         Optional<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
                 .findAny();
         Optional<User> actual = userDao.selectByEmail(expected.get().getEmail());
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(8)
     public void testSelectByEmailMultiple() throws DaoException {
         String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
@@ -163,10 +173,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectByEmail(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(9)
     public void testSelectCountByEmailMultiple() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -174,10 +185,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                         && user.getStatus() != UserStatus.DELETED)
                 .count();
         long actual = userDao.selectCountByLogin(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(10)
     public void testSelectByLastName() throws DaoException {
         String keyword = keywordSupplier.get();
         List<User> expected = testSample.stream()
@@ -186,10 +198,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectByLastName(0, SAMPLE_SIZE, keyword, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(11)
     public void testSelectCountByLastName() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
@@ -197,10 +210,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                         && user.getStatus() != UserStatus.DELETED)
                 .count();
         long actual = userDao.selectCountByLastName(keyword);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(12)
     public void testSelectByRole() throws DaoException {
         int roleId = roleIdSupplier.get();
         List<User> expected = testSample.stream()
@@ -209,10 +223,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectByRole(0, SAMPLE_SIZE, roleId, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(13)
     public void testSelectCountByRole() throws DaoException {
         int roleId = roleIdSupplier.get();
         long expected = testSample.stream()
@@ -220,10 +235,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                         && user.getRole() == UserRole.parseRole(roleId))
                 .count();
         long actual = userDao.selectCountByRole(roleId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(14)
     public void testSelectByGroup() throws DaoException {
         long groupId = groupIdSupplier.get();
         List<User> expected = testSample.stream()
@@ -232,10 +248,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<User> actual = new LinkedList<>();
         userDao.selectByGroup(0, SAMPLE_SIZE, groupId, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(15)
     public void testSelectCountByGroup() throws DaoException {
         long groupId = groupIdSupplier.get();
         long expected = testSample.stream()
@@ -243,10 +260,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
                         && user.getGroupId() == groupId)
                 .count();
         long actual = userDao.selectCountByGroup(groupId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(dependsOnGroups = "select")
+    @Test
+    @Order(16)
     public void testInsert() throws DaoException {
         String randomString = randomStringSupplier.get();
         int roleId = roleIdSupplier.get();
@@ -269,10 +287,11 @@ public class UserDaoImplTest extends AbstractDaoTest {
         testSample.add(user);
 
         long actualId = userDao.insert(user);
-        Assert.assertEquals(actualId, expectedId);
+        assertEquals(actualId, expectedId);
     }
 
-    @Test(dependsOnMethods = "testInsert")
+    @Test
+    @Order(17)
     public void testUpdate() throws DaoException {
         User user = testSample.get(testSample.size() - 1);
         User updatedUser = User.builder()
@@ -282,20 +301,21 @@ public class UserDaoImplTest extends AbstractDaoTest {
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = userDao.update(updatedUser);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @Test(dependsOnMethods = "testUpdate")
+    @Test
+    @Order(18)
     public void testDelete() throws DaoException {
         User user = testSample.remove(testSample.size() - 1);
         long entityId = user.getEntityId();
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = userDao.delete(entityId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @AfterClass
+    @AfterAll
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {

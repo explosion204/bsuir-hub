@@ -4,14 +4,16 @@ plugins {
 }
 
 group 'com.karnyshov'
-version 'dev'
+version '1.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation group: 'org.testng', name: 'testng', version: '7.4.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.2'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.11.2'
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.11.2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
@@ -39,5 +41,5 @@ jar {
 }
 
 test {
-    useTestNG() 
+    useJUnitPlatform()
 }

@@ -3,13 +3,34 @@ package com.karnyshov.bsuirhub.model.validator;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserValidatorTest {
-    @DataProvider(name = "user-data-provider")
-    public Object[][] userDataProvider() {
+    @ParameterizedTest
+    @MethodSource("provideUserData")
+    public void testValidateUser(boolean expectedResult, User user, String password, String confirmPassword,
+                boolean skipRoleValidation, boolean skipEmailValidation, boolean skipPasswordValidation) {
+        boolean actualResult = UserValidator.validateUser(user, password, confirmPassword, skipRoleValidation,
+                skipEmailValidation, skipPasswordValidation);
+        assertEquals(actualResult, expectedResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideImagePath")
+    public void validateImage(boolean expectedResult, String imagePath) {
+        boolean actualResult = UserValidator.validateProfileImage(imagePath);
+        assertEquals(actualResult, expectedResult);
+    }
+
+    private Stream<Arguments> provideUserData() {
         User baseUser = User.builder()
                 .setLogin("explosion204")
                 .setEmail("test@email.com")
@@ -48,49 +69,35 @@ public class UserValidatorTest {
                 .setFirstName("Ivanov@")
                 .build();
 
-        return new Object[][] {
+        return Stream.of(
                 // expectedResult, user, password, confirmPassword, skipRoleValidation, skipEmailValidation, skipPasswordValidation
-                { false, adminUser, StringUtils.EMPTY, StringUtils.EMPTY, false, true, true },
-                { true, adminUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true },
-                { false, invalidLoginUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true },
-                { false, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, false, true },
-                { true, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true },
-                { false, baseUser, "password", "password", true, true, false },
-                { false, baseUser, "password1", "password", true, true, false },
-                { true, baseUser, "password1", "password1", true, true, false },
-                { false, invalidFirstNameUser, "password1", "password1", true, true, false },
-                { false, invalidPatronymicUser, "password1", "password1", true, true, false },
-                { false, invalidLastNameUser, "password1", "password1", true, true, false },
-                { true, baseUser, "password1", "password1", false, false, false }
-        };
+                Arguments.of(false, adminUser, StringUtils.EMPTY, StringUtils.EMPTY, false, true, true),
+                Arguments.of(true, adminUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true),
+                Arguments.of(false, invalidLoginUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true),
+                Arguments.of(false, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, false, true),
+                Arguments.of(true, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true),
+                Arguments.of(false, baseUser, "password", "password", true, true, false),
+                Arguments.of(false, baseUser, "password1", "password", true, true, false),
+                Arguments.of(true, baseUser, "password1", "password1", true, true, false),
+                Arguments.of(false, invalidFirstNameUser, "password1", "password1", true, true, false),
+                Arguments.of(false, invalidPatronymicUser, "password1", "password1", true, true, false),
+                Arguments.of(false, invalidLastNameUser, "password1", "password1", true, true, false),
+                Arguments.of(true, baseUser, "password1", "password1", false, false, false)
+        );
     }
 
-    @DataProvider(name = "image-path-provider")
-    public Object[][] imagePathProvider() {
-        return new Object[][] {
-                { true, getResourcePath("data/valid_1.jpg") },
-                { true, getResourcePath("data/valid_2.jpg") },
-                { true, getResourcePath("data/valid_3.png") },
-                { false, getResourcePath("data/invalid.png") }
-        };
-    }
-
-    @Test(dataProvider = "user-data-provider")
-    public void testValidateUser(boolean expectedResult, User user, String password, String confirmPassword,
-                boolean skipRoleValidation, boolean skipEmailValidation, boolean skipPasswordValidation) {
-        boolean actualResult = UserValidator.validateUser(user, password, confirmPassword, skipRoleValidation,
-                skipEmailValidation, skipPasswordValidation);
-        Assert.assertEquals(actualResult, expectedResult);
-    }
-
-    @Test(dataProvider = "image-path-provider")
-    public void validateImage(boolean expectedResult, String imagePath) {
-        boolean actualResult = UserValidator.validateProfileImage(imagePath);
-        Assert.assertEquals(actualResult, expectedResult);
+    private Stream<Arguments> provideImagePath() {
+        return Stream.of(
+                Arguments.of(true, getResourcePath("data/valid_1.jpg")),
+                Arguments.of(true, getResourcePath("data/valid_2.jpg")),
+                Arguments.of(true, getResourcePath("data/valid_3.png")),
+                Arguments.of(false, getResourcePath("data/invalid.png"))
+        );
     }
 
     private String getResourcePath(String resourceName) {
         ClassLoader loader = UserValidatorTest.class.getClassLoader();
         return loader.getResource(resourceName).getFile();
     }
+
 }

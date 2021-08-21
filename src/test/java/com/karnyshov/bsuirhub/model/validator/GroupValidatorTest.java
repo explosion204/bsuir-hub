@@ -1,13 +1,25 @@
 package com.karnyshov.bsuirhub.model.validator;
 
 import com.karnyshov.bsuirhub.model.entity.Group;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GroupValidatorTest {
-    @DataProvider(name = "group-provider")
-    public Object[][] groupProvider() {
+    @ParameterizedTest
+    @MethodSource("provideGroup")
+    public void testValidateGroup(boolean expectedResult, Group group) {
+        boolean actualResult = GroupValidator.validateGroup(group);
+        assertEquals(actualResult, expectedResult);
+    }
+
+    private Stream<Arguments> provideGroup() {
         Group firstInvalidGroup = Group.builder()
                 .setName("")
                 .build();
@@ -20,16 +32,10 @@ public class GroupValidatorTest {
                 .setName("groupname123")
                 .build();
 
-        return new Object[][] {
-                { false, firstInvalidGroup },
-                { false, secondInvalidGroup },
-                { true, validGroup }
-        };
-    }
-
-    @Test(dataProvider = "group-provider")
-    public void testValidateGroup(boolean expectedResult, Group group) {
-        boolean actualResult = GroupValidator.validateGroup(group);
-        Assert.assertEquals(actualResult, expectedResult);
+        return Stream.of(
+                Arguments.of(false, firstInvalidGroup),
+                Arguments.of(false, secondInvalidGroup),
+                Arguments.of(true, validGroup)
+        );
     }
 }

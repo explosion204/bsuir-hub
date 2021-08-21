@@ -10,37 +10,26 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceImplTest {
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
 
-    @DataProvider(name = "user-provider")
-    public Object[][] userProvider() {
-        String login = randomStringSupplier.get();
-        String password = randomStringSupplier.get();
-        String salt = randomStringSupplier.get();
-        String passwordHash = DigestUtils.sha256Hex(password + salt);
-        User user = User.builder()
-                .setLogin(login)
-                .setPasswordHash(passwordHash)
-                .setSalt(salt)
-                .build();
-
-        return new Object[][] {
-                { Pair.of(user, password) }
-        };
-    }
-
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testAuthenticateSuccess(Pair<User, String> userWithPassword)
             throws DaoException, ServiceException {
         User expectedUser = userWithPassword.getLeft();
@@ -53,7 +42,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(userDao);
         User actualUser = userService.authenticate(login, password).get();
 
-        Assert.assertEquals(actualUser, expectedUser);
+        assertEquals(actualUser, expectedUser);
     }
 
     @Test
@@ -65,10 +54,11 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(userDao);
         Optional<User> actualUser = userService.authenticate(StringUtils.EMPTY, StringUtils.EMPTY);
 
-        Assert.assertTrue(actualUser.isEmpty());
+        assertTrue(actualUser.isEmpty());
     }
 
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testAuthenticateInvalidPassword(Pair<User, String> userWithPassword)
             throws DaoException, ServiceException {
         User expectedUser = userWithPassword.getLeft();
@@ -80,10 +70,11 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(userDao);
 
         Optional<User> actualUser = userService.authenticate(login, StringUtils.EMPTY);
-        Assert.assertTrue(actualUser.isEmpty());
+        assertTrue(actualUser.isEmpty());
     }
 
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testChangePassword(Pair<User, String> userWithPassword) throws DaoException, ServiceException {
         User expectedUser = userWithPassword.getLeft();
         long userId = expectedUser.getEntityId();
@@ -99,10 +90,11 @@ public class UserServiceImplTest {
         userService.changePassword(userId, newPassword);
         User actualUser = userCaptor.getValue();
 
-        Assert.assertNotEquals(actualUser, expectedUser);
+        assertNotEquals(actualUser, expectedUser);
     }
 
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testChangeEmail(Pair<User, String> userWithPassword) throws DaoException, ServiceException {
         User expectedUser = userWithPassword.getLeft();
         long userId = expectedUser.getEntityId();
@@ -118,11 +110,12 @@ public class UserServiceImplTest {
         userService.changeEmail(userId, newEmail);
         User actualUser = userCaptor.getValue();
 
-        Assert.assertTrue(!actualUser.equals(expectedUser)
+        assertTrue(!actualUser.equals(expectedUser)
                 && actualUser.getStatus() == UserStatus.NOT_CONFIRMED);
     }
 
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testUpdateUserWithoutPassword(Pair<User, String> userWithPassword)
             throws DaoException, ServiceException {
         User user = userWithPassword.getLeft();
@@ -142,10 +135,11 @@ public class UserServiceImplTest {
         userService.update(expectedUpdatedUser, StringUtils.EMPTY);
         User actualUpdatedUser = userCaptor.getValue();
 
-        Assert.assertEquals(actualUpdatedUser, expectedUpdatedUser);
+        assertEquals(actualUpdatedUser, expectedUpdatedUser);
     }
 
-    @Test(dataProvider = "user-provider")
+    @ParameterizedTest
+    @MethodSource("provideUser")
     public void testUpdateUserWithPassword(Pair<User, String> userWithPassword)
             throws DaoException, ServiceException {
         User user = userWithPassword.getLeft();
@@ -167,6 +161,22 @@ public class UserServiceImplTest {
         userService.update(expectedUpdatedUser, newPassword);
         User actualUpdatedUser = userCaptor.getValue();
 
-        Assert.assertNotEquals(actualUpdatedUser, expectedUpdatedUser);
+        assertNotEquals(actualUpdatedUser, expectedUpdatedUser);
+    }
+
+    private Stream<Arguments> provideUser() {
+        String login = randomStringSupplier.get();
+        String password = randomStringSupplier.get();
+        String salt = randomStringSupplier.get();
+        String passwordHash = DigestUtils.sha256Hex(password + salt);
+        User user = User.builder()
+                .setLogin(login)
+                .setPasswordHash(passwordHash)
+                .setSalt(salt)
+                .build();
+
+        return Stream.of(
+                Arguments.of(Pair.of(user, password))
+        );
     }
 }

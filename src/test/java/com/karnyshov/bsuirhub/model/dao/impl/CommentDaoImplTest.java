@@ -6,17 +6,11 @@ import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.CommentMapper;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.IntegerMapper;
 import com.karnyshov.bsuirhub.model.entity.Comment;
-import com.karnyshov.bsuirhub.model.entity.Department;
-import com.karnyshov.bsuirhub.model.entity.Grade;
-import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,8 +19,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Test(suiteName = "dao-tests")
-public class CommentDaoImplTest extends AbstractDaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(PoolMockExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class CommentDaoImplTest {
     private static final int SAMPLE_SIZE = 100;
     private static final String INSERT
             = "INSERT comments (id_grade, id_user, text, creation_time) VALUES (?, ?, ?, ?);";
@@ -37,7 +35,7 @@ public class CommentDaoImplTest extends AbstractDaoTest {
 
     private Supplier<Long> foreignKeyIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
 
-    @BeforeClass
+    @BeforeAll
     public void setUp() throws SQLException, DatabaseConnectionException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
@@ -68,15 +66,17 @@ public class CommentDaoImplTest extends AbstractDaoTest {
         }
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(1)
     public void testSelectById() throws DaoException {
         int commentId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
         Comment expected = testSample.get(commentId - 1);
         Comment actual = commentDao.selectById(commentId).get();
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(2)
     public void testSelectByGrade() throws DaoException {
         long gradeId = foreignKeyIdSupplier.get();
         List<Comment> expected = testSample.stream()
@@ -84,20 +84,22 @@ public class CommentDaoImplTest extends AbstractDaoTest {
                 .collect(Collectors.toList());
         List<Comment> actual = new LinkedList<>();
         commentDao.selectByGrade(0, SAMPLE_SIZE, gradeId, actual);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(groups = "select")
+    @Test
+    @Order(3)
     public void testSelectCountByGrade() throws DaoException {
         long gradeId = foreignKeyIdSupplier.get();
         long expected = testSample.stream()
                 .filter(department -> department.getGradeId() == gradeId)
                 .count();
         long actual = commentDao.selectCountByGrade(gradeId);
-        Assert.assertEquals(actual, expected);
+        assertEquals(actual, expected);
     }
 
-    @Test(dependsOnGroups = "select")
+    @Test
+    @Order(4)
     public void testInsert() throws DaoException {
         LocalDateTime creationTime = LocalDateTime.now();
         long gradeId = foreignKeyIdSupplier.get();
@@ -115,20 +117,21 @@ public class CommentDaoImplTest extends AbstractDaoTest {
         testSample.add(comment);
 
         long actualId = commentDao.insert(comment);
-        Assert.assertEquals(actualId, expectedId);
+        assertEquals(actualId, expectedId);
     }
 
-    @Test(dependsOnMethods = "testInsert")
+    @Test
+    @Order(5)
     public void testDelete() throws DaoException {
         Comment comment = testSample.remove(testSample.size() - 1);
         long entityId = comment.getEntityId();
 
         int expectedRowsAffected = 1;
         int actualRowsAffected = commentDao.delete(entityId);
-        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
+        assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
-    @AfterClass
+    @AfterAll
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
