@@ -3,10 +3,50 @@ $(document).ready(function () {
     configureValidation([['userForm', 'saveButton']]);
 
     let form = $('#userForm');
-
     form.submit(function () {
         $('#saveButton').attr('disabled', true);
+        sessionStorage.setItem('login', this.login.value);
+        sessionStorage.setItem('email', this.email.value);
+        sessionStorage.setItem('role', this.role.value);
+        sessionStorage.setItem('firstName', this.firstName.value);
+        sessionStorage.setItem('patronymic', this.patronymic.value);
+        sessionStorage.setItem('lastName', this.lastName.value);
+        sessionStorage.setItem('confirmed', this.confirmed.checked);
     });
+
+    let notUniqueLogin = $('body').data('not-unique-login');
+    let notUniqueEmail = $('body').data('not-unique-email');
+
+    if (notUniqueLogin === true || notUniqueEmail === true) {
+        let role = sessionStorage.getItem('role');
+        let firstName = sessionStorage.getItem('firstName');
+        let patronymic = sessionStorage.getItem('patronymic');
+        let lastName = sessionStorage.getItem('lastName');
+        let confirmed = sessionStorage.getItem('confirmed');
+        form.find('input[name="role"]').val(role);
+        form.find('input[name="firstName"]').val(firstName);
+        form.find('input[name="patronymic"]').val(patronymic);
+        form.find('input[name="lastName"]').val(lastName);
+        form.find('input[name="confirmed"]').prop('checked', confirmed);
+
+        if (!(!!notUniqueLogin)) {
+            let login = sessionStorage.getItem('login');
+            form.find('input[name="login"]').val(login);
+        }
+
+        if (!(!!notUniqueEmail)) {
+            let email = sessionStorage.getItem('email');
+            form.find('input[name="email"]').val(email);
+        }
+    }
+
+    sessionStorage.removeItem('login');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('firstName');
+    sessionStorage.removeItem('patronymic');
+    sessionStorage.removeItem('lastName');
+    sessionStorage.removeItem('confirmed');
 
     form.on('input', function () {
         let passwordInput = $('#passwordInput')[0];

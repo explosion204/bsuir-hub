@@ -23,7 +23,7 @@
     <script src="/static/js/util/upload.js"></script>
     <script src="/static/js/admin/users/view_user.js"></script>
 </head>
-<body>
+<body data-not-unique-login="${notUniqueLogin}" data-not-unique-email="${notUniqueEmail}">
 
 <!-- Locale -->
 <div id="user_confirm_clear" hidden><bht:localeTag key="user.confirm_clear" /></div>

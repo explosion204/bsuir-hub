@@ -3,15 +3,28 @@ $(document).ready(function () {
     invalidateCache();
     configureValidation([['groupForm', 'saveButton']]);
 
-    $('#groupForm').submit(function () {
-        $('#saveButton').attr('disabled', true);
-    });
-
     let mainBlock = $('main');
     let departmentId = mainBlock.data('department-id');
     let headmanId = mainBlock.data('headman-id');
     let curatorId = mainBlock.data('curator-id');
     let localeCode = mainBlock.data('locale-code');
+
+    $('#groupForm').submit(function () {
+        sessionStorage.setItem('departmentId', this.departmentId.value);
+        sessionStorage.setItem('curatorId', this.curatorId.value);
+        $('#saveButton').attr('disabled', true);
+    });
+
+    if (!(!!departmentId)) {
+        departmentId = sessionStorage.getItem('departmentId');
+    }
+
+    if (!(!!curatorId)) {
+        curatorId = sessionStorage.getItem('curatorId');
+    }
+
+    sessionStorage.removeItem('departmentId');
+    sessionStorage.removeItem('curatorId');
 
     initializeDepartmentSelect($('#departmentSelect'), '100%', departmentId);
     initializeStudentSelect($('#headmanSelect'), '100%', headmanId);

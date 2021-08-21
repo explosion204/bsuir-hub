@@ -14,7 +14,7 @@
     <script src="/static/js/common/account/login.js"></script>
     <link href="/static/css/common/login.css" rel="stylesheet">
 </head>
-<body>
+<body data-auth-error="${authError}">
     <jsp:include page="shared/header.jsp" />
 
     <div class="container login-container mt-auto mb-auto">
@@ -41,6 +41,7 @@
                         <div class="invalid-feedback"><bht:localeTag key="login.field_required" /></div>
                     </div>
                     <div class="form-group mb-3">
+                        <input hidden name="returnUrl" value="${returnUrl}">
                         <input id="loginButton" type="submit" class="btn-submit" value="${login}" disabled />
                     </div>
                     <c:if test="${not empty authError}">
@@ -49,7 +50,6 @@
                         </div>
                     </c:if>
                     <div class="form-group">
-                        <input hidden name="returnUrl" value="${returnUrl}">
                         <a href="/login/forgot_password" class="forget-pwd"><bht:localeTag key="login.forgot_password" /></a>
                     </div>
                 </form>
