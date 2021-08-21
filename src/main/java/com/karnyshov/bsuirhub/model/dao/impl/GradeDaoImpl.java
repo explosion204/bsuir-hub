@@ -94,13 +94,13 @@ public class GradeDaoImpl implements GradeDao {
     @Override
     public void selectAll(int offset, int limit, List<Grade> result) throws DaoException {
         logger.error("Implementation of GradeDao does not support selectAll operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectAll operation");
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
         logger.error("Implementation of GradeDao does not support selectTotalCount operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of GradeDao does not support selectTotalCount operation");
     }
 
     @Override

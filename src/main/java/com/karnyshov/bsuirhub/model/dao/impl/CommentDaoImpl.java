@@ -63,13 +63,13 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public void selectAll(int offset, int limit, List<Comment> result) throws DaoException {
         logger.error("Implementation of CommentDao does not support selectAll operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectAll operation");
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
         logger.error("Implementation of CommentDao does not support selectTotalCount operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support selectTotalCount operation");
     }
 
     @Override
@@ -106,7 +106,7 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public int update(Comment comment) throws DaoException {
         logger.error("Implementation of CommentDao does not support update operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of CommentDao does not support update operation");
     }
 
     @Override

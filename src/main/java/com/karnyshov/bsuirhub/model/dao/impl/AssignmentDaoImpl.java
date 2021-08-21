@@ -89,13 +89,13 @@ public class AssignmentDaoImpl implements AssignmentDao {
     @Override
     public void selectAll(int offset, int limit, List<Assignment> result) throws DaoException {
         logger.error("Implementation of AssignmentDao does not support selectAll operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of AssignmentDao does not support selectAll operation");
     }
 
     @Override
     public int selectTotalCount() throws DaoException {
         logger.error("Implementation of AssignmentDao does not support selectTotalCount operation");
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Implementation of AssignmentDao does not support selectTotalCount operation");
 
     }
 

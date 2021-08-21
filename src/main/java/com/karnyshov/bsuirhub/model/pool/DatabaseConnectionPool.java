@@ -58,7 +58,7 @@ public class DatabaseConnectionPool {
 
             if (poolMinSize > poolMaxSize) {
                 logger.fatal("Min size of pool is greater than max size");
-                throw new RuntimeException("Min size of pool is greater than max size ");
+                throw new RuntimeException("Min size of pool is greater than max size");
             }
 
             // configure pool validation parameters

@@ -38,10 +38,10 @@ class ConnectionFactory {
             dbUrl = dbProperties.getProperty(DB_URL_PROPERTY);
         } catch (IOException e) {
             logger.fatal("Unable to read database properties", e);
-            throw new RuntimeException();
+            throw new RuntimeException("Unable to read database properties", e);
         } catch (ClassNotFoundException e) {
             logger.fatal("Cannot load specified database driver", e);
-            throw new RuntimeException();
+            throw new RuntimeException("Cannot load specified database driver", e);
         }
     }
 
