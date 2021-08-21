@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
@@ -32,7 +33,7 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE subjects;";
 
     private SubjectDao subjectDao = new SubjectDaoImpl(new SubjectMapper(), new IntegerMapper());
-    private List<Subject> testSample = new ArrayList<>();
+    private List<Subject> testSample = new ArrayList<>(SAMPLE_SIZE);
 
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
     private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
@@ -66,7 +67,7 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
         List<Subject> expected = testSample.stream()
                 .filter(subject -> !subject.isArchived())
                 .collect(Collectors.toList());
-        List<Subject> actual = new ArrayList<>();
+        List<Subject> actual = new LinkedList<>();
         subjectDao.selectAll(0, SAMPLE_SIZE, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -95,7 +96,7 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getName(), keyword)
                         && !subject.isArchived())
                 .collect(Collectors.toList());
-        List<Subject> actual = new ArrayList<>();
+        List<Subject> actual = new LinkedList<>();
         subjectDao.selectByName(0, SAMPLE_SIZE, keyword, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -118,13 +119,13 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getShortName(), keyword)
                         && !subject.isArchived())
                 .collect(Collectors.toList());
-        List<Subject> actual = new ArrayList<>();
+        List<Subject> actual = new LinkedList<>();
         subjectDao.selectByShortName(0, SAMPLE_SIZE, keyword, actual);
         Assert.assertEquals(actual, expected);
     }
 
     @Test(groups = "select")
-    public void testSelectCountShortByName() throws DaoException {
+    public void testSelectCountByShortName() throws DaoException {
         String keyword = keywordSupplier.get();
         long expected = testSample.stream()
                 .filter(subject -> StringUtils.containsIgnoreCase(subject.getShortName(), keyword)
@@ -137,33 +138,31 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
     @Test(dependsOnGroups = "select")
     public void testInsert() throws DaoException {
         String randomString = randomStringSupplier.get();
-        long entityId = testSample.size() + 1;
+        long expectedId = testSample.size() + 1;
 
-        Subject expectedSubject = (Subject) Subject.builder()
+        Subject subject = (Subject) Subject.builder()
                 .setName(randomString)
                 .setShortName(randomString)
                 .setArchived(false)
-                .setEntityId(entityId)
+                .setEntityId(expectedId)
                 .build();
-        testSample.add(expectedSubject);
+        testSample.add(subject);
 
-        subjectDao.insert(expectedSubject);
-        Subject actualSubject = subjectDao.selectById(entityId).get();
-        Assert.assertEquals(actualSubject, expectedSubject);
+        long actualId = subjectDao.insert(subject);
+        Assert.assertEquals(actualId, expectedId);
     }
 
     @Test(dependsOnMethods = "testInsert")
     public void testUpdate() throws DaoException {
         Subject subject = testSample.get(testSample.size() - 1);
-        long entityId = subject.getEntityId();
-        Subject expectedUpdatedSubject = Subject.builder()
+        Subject updatedSubject = Subject.builder()
                 .of(subject)
                 .setName(randomStringSupplier.get())
                 .build();
 
-        subjectDao.update(expectedUpdatedSubject);
-        Subject actualUpdatedSubject = subjectDao.selectById(entityId).get();
-        Assert.assertEquals(actualUpdatedSubject, expectedUpdatedSubject);
+        int expectedRowsAffected = 1;
+        int actualRowsAffected = subjectDao.update(updatedSubject);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @Test(dependsOnMethods = "testUpdate")
@@ -171,9 +170,9 @@ public class SubjectDaoImplTest extends AbstractDaoTest {
         Subject subject = testSample.remove(testSample.size() - 1);
         long entityId = subject.getEntityId();
 
-        subjectDao.delete(entityId);
-        Subject deletedSubject = subjectDao.selectById(entityId).get();
-        Assert.assertTrue(deletedSubject.isArchived());
+        int expectedRowsAffected = 1;
+        int actualRowsAffected = subjectDao.delete(entityId);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @AfterClass

@@ -6,6 +6,7 @@ import com.karnyshov.bsuirhub.model.dao.GradeDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.DoubleMapper;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.GradeMapper;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.impl.IntegerMapper;
+import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.pool.DatabaseConnectionPool;
 import org.testng.Assert;
@@ -17,22 +18,28 @@ import java.math.RoundingMode;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Test(suiteName = "dao-tests")
 public class GradeDaoImplTest extends AbstractDaoTest {
-    private static final int SAMPLE_SIZE = 100;
-    private static final String INSERT
+    private static final int GRADES_SAMPLE_SIZE = 100;
+    private static final int COMMENTS_SAMPLE_SIZE = 50;
+    private static final String INSERT_GRADE
             = "INSERT grades (value, id_teacher, id_student, id_subject, date) VALUES (?, ?, ?, ?, ?);";
-    private static final String TRUNCATE_TABLE = "TRUNCATE TABLE grades;";
+    private static final String INSERT_COMMENT
+            = "INSERT comments (id_grade, id_user, text, creation_time) VALUES (?, ?, ?, ?);";
+    private static final String TRUNCATE_GRADES_TABLE = "TRUNCATE TABLE grades;";
+    private static final String TRUNCATE_COMMENTS_TABLE = "TRUNCATE TABLE comments;";
 
     private GradeDao gradeDao = new GradeDaoImpl(new GradeMapper(), new IntegerMapper(), new DoubleMapper());
-    private List<Grade> testSample = new ArrayList<>();
+    private List<Grade> gradesTestSample = new ArrayList<>(GRADES_SAMPLE_SIZE);
+    private List<Comment> commentsTestSample = new ArrayList<>(COMMENTS_SAMPLE_SIZE);
 
     private Supplier<Long> foreignKeyIdSupplier = () -> ThreadLocalRandom.current().nextLong(1, 10);
     private Supplier<Byte> gradeValueSupplier = () -> (byte) ThreadLocalRandom.current().nextInt(1, 11);
@@ -40,8 +47,9 @@ public class GradeDaoImplTest extends AbstractDaoTest {
     @BeforeClass
     public void setUp() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT)) {
-            for (int i = 0; i < SAMPLE_SIZE; i++) {
+             PreparedStatement gradeStatement = connection.prepareStatement(INSERT_GRADE);
+             PreparedStatement commentStatement = connection.prepareStatement(INSERT_COMMENT)) {
+            for (int i = 0; i < GRADES_SAMPLE_SIZE; i++) {
                 long subjectId = foreignKeyIdSupplier.get();
                 long teacherId = foreignKeyIdSupplier.get();
                 long studentId = foreignKeyIdSupplier.get();
@@ -56,25 +64,49 @@ public class GradeDaoImplTest extends AbstractDaoTest {
                         .setDate(date)
                         .setEntityId(i + 1)
                         .build();
-                testSample.add(grade);
+                gradesTestSample.add(grade);
 
-                statement.setByte(1, value);
-                statement.setLong(2, teacherId);
-                statement.setLong(3, studentId);
-                statement.setLong(4, subjectId);
-                statement.setDate(5, Date.valueOf(date));
+                gradeStatement.setByte(1, value);
+                gradeStatement.setLong(2, teacherId);
+                gradeStatement.setLong(3, studentId);
+                gradeStatement.setLong(4, subjectId);
+                gradeStatement.setDate(5, Date.valueOf(date));
 
-                statement.addBatch();
+                gradeStatement.addBatch();
             }
 
-            statement.executeBatch();
+            for (int i = 0; i < COMMENTS_SAMPLE_SIZE; i++) {
+                LocalDateTime creationTime = LocalDateTime.now();
+                long gradeId = foreignKeyIdSupplier.get();
+                long userId = foreignKeyIdSupplier.get();
+                String text = "text";
+
+                Comment comment = (Comment) Comment.builder()
+                        .setCreationTime(creationTime)
+                        .setGradeId(gradeId)
+                        .setUserId(userId)
+                        .setText(text)
+                        .setEntityId(i + 1)
+                        .build();
+                commentsTestSample.add(comment);
+
+                commentStatement.setLong(1, gradeId);
+                commentStatement.setLong(2, userId);
+                commentStatement.setString(3, text);
+                commentStatement.setTimestamp(4, Timestamp.valueOf(creationTime));
+
+                commentStatement.addBatch();
+            }
+
+            gradeStatement.executeBatch();
+            commentStatement.executeBatch();
         }
     }
 
     @Test(groups = "select")
     public void testSelectById() throws DaoException {
-        int gradeId = ThreadLocalRandom.current().nextInt(1, testSample.size() + 1);
-        Grade expected = testSample.get(gradeId - 1);
+        int gradeId = ThreadLocalRandom.current().nextInt(1, gradesTestSample.size() + 1);
+        Grade expected = gradesTestSample.get(gradeId - 1);
         Grade actual = gradeDao.selectById(gradeId).get();
         Assert.assertEquals(actual, expected);
     }
@@ -83,11 +115,11 @@ public class GradeDaoImplTest extends AbstractDaoTest {
     public void testSelectByStudentAndSubject() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         long subjectId = foreignKeyIdSupplier.get();
-        List<Grade> expected = testSample.stream()
+        List<Grade> expected = gradesTestSample.stream()
                 .filter(grade -> grade.getStudentId() == studentId && grade.getSubjectId() == subjectId)
                 .collect(Collectors.toList());
-        List<Grade> actual = new ArrayList<>();
-        gradeDao.selectByStudentAndSubject(0, SAMPLE_SIZE, studentId, subjectId, actual);
+        List<Grade> actual = new LinkedList<>();
+        gradeDao.selectByStudentAndSubject(0, GRADES_SAMPLE_SIZE, studentId, subjectId, actual);
         Assert.assertEquals(actual, expected);
     }
 
@@ -95,7 +127,7 @@ public class GradeDaoImplTest extends AbstractDaoTest {
     public void testSelectCountByStudentAndSubject() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
         long subjectId = foreignKeyIdSupplier.get();
-        long expected = testSample.stream()
+        long expected = gradesTestSample.stream()
                 .filter(grade -> grade.getStudentId() == studentId && grade.getSubjectId() == subjectId)
                 .count();
         int actual = gradeDao.selectCountByStudentAndSubject(studentId, subjectId);
@@ -107,7 +139,7 @@ public class GradeDaoImplTest extends AbstractDaoTest {
         long studentId = foreignKeyIdSupplier.get();
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        double expected = testSample.stream()
+        double expected = gradesTestSample.stream()
                 .filter(grade -> grade.getStudentId() == studentId)
                 .mapToDouble(Grade::getValue)
                 .average()
@@ -124,7 +156,7 @@ public class GradeDaoImplTest extends AbstractDaoTest {
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        double expected = testSample.stream()
+        double expected = gradesTestSample.stream()
                 .filter(grade -> grade.getStudentId() == studentId && grade.getSubjectId() == subjectId)
                 .mapToDouble(Grade::getValue)
                 .average()
@@ -141,64 +173,68 @@ public class GradeDaoImplTest extends AbstractDaoTest {
         long studentId = foreignKeyIdSupplier.get();
         byte value = gradeValueSupplier.get();
         LocalDate date = LocalDate.now();
-        long entityId = testSample.size() + 1;
+        long expectedId = gradesTestSample.size() + 1;
 
-        Grade expectedGrade = (Grade) Grade.builder()
+        Grade grade = (Grade) Grade.builder()
                 .setSubjectId(subjectId)
                 .setTeacherId(teacherId)
                 .setStudentId(studentId)
                 .setValue(value)
                 .setDate(date)
-                .setEntityId(entityId)
+                .setEntityId(expectedId)
                 .build();
-        testSample.add(expectedGrade);
+        gradesTestSample.add(grade);
 
-        gradeDao.insert(expectedGrade);
-        Grade actualGrade = gradeDao.selectById(entityId).get();
-        Assert.assertEquals(actualGrade, expectedGrade);
+        long actualId = gradeDao.insert(grade);
+        Assert.assertEquals(actualId, expectedId);
     }
 
     @Test(dependsOnMethods = "testInsert")
     public void testUpdate() throws DaoException {
-        Grade grade = testSample.get(testSample.size() - 1);
-        long entityId = grade.getEntityId();
-        Grade expectedUpdatedGrade = Grade.builder()
+        Grade grade = gradesTestSample.get(gradesTestSample.size() - 1);
+        Grade updatedGrade = Grade.builder()
                 .of(grade)
                 .setValue(gradeValueSupplier.get())
                 .build();
 
-        gradeDao.update(expectedUpdatedGrade);
-        Grade actualUpdatedGrade = gradeDao.selectById(entityId).get();
-        Assert.assertEquals(actualUpdatedGrade, expectedUpdatedGrade);
+        int expectedRowsAffected = 1;
+        int actualRowsAffected = gradeDao.update(updatedGrade);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @Test(dependsOnMethods = "testUpdate")
     public void testDelete() throws DaoException {
-        Grade grade = testSample.remove(testSample.size() - 1);
+        Grade grade = gradesTestSample.remove(0);
         long entityId = grade.getEntityId();
-
-        gradeDao.delete(entityId);
-        Optional<Grade> deletedGrade = gradeDao.selectById(entityId);
-        Assert.assertTrue(deletedGrade.isEmpty());
+        long expectedRowsAffected = commentsTestSample.stream()
+                .filter(comment -> comment.getGradeId() == entityId)
+                .count() + 1;
+        int actualRowsAffected = gradeDao.delete(entityId);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @Test(dependsOnMethods = "testDelete")
     public void testDeleteByStudent() throws DaoException {
         long studentId = foreignKeyIdSupplier.get();
-        long expectedCount = testSample.stream()
+        List<Long> gradeIdsToDelete = new LinkedList<>();
+        long expectedGradesCount = gradesTestSample.stream()
                 .filter(grade -> grade.getStudentId() == studentId)
+                .peek(grade -> gradeIdsToDelete.add(grade.getEntityId()))
                 .count();
-        testSample.removeIf(grade -> grade.getStudentId() == studentId);
-
-        int actualCount = gradeDao.deleteByStudent(studentId);
-        Assert.assertEquals(actualCount, expectedCount);
+        long expectedCommentsCount = commentsTestSample.stream()
+                .filter(comment -> gradeIdsToDelete.contains(comment.getGradeId()))
+                .count();
+        long expectedRowsAffected = expectedGradesCount + expectedCommentsCount;
+        int actualRowsAffected = gradeDao.deleteByStudent(studentId);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @AfterClass
     public void tearDown() throws DatabaseConnectionException, SQLException {
         try (Connection connection = DatabaseConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
-            statement.execute(TRUNCATE_TABLE);
+            statement.execute(TRUNCATE_GRADES_TABLE);
+            statement.execute(TRUNCATE_COMMENTS_TABLE);
         }
     }
 }

@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,7 +34,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE users;";
 
     private UserDao userDao = new UserDaoImpl(new UserMapper(), new IntegerMapper());
-    private List<User> testSample = new ArrayList<>();
+    private List<User> testSample = new ArrayList<>(SAMPLE_SIZE);
 
     private Supplier<String> randomStringSupplier = () -> RandomStringUtils.random(10, true, true);
     private Supplier<String> keywordSupplier = () -> RandomStringUtils.random(1, true, true);
@@ -90,7 +91,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
         List<User> expected = testSample.stream()
                 .filter(user -> user.getStatus() != UserStatus.DELETED)
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectAll(0, SAMPLE_SIZE, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -128,7 +129,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLogin(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectByLogin(0, SAMPLE_SIZE, keyword, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -160,7 +161,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .filter(user -> StringUtils.containsIgnoreCase(user.getEmail(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectByEmail(0, SAMPLE_SIZE, keyword, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -183,7 +184,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .filter(user -> StringUtils.containsIgnoreCase(user.getLastName(), keyword)
                         && user.getStatus() != UserStatus.DELETED)
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectByLastName(0, SAMPLE_SIZE, keyword, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -206,7 +207,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .filter(user -> user.getStatus() != UserStatus.DELETED
                         && user.getRole() == UserRole.parseRole(roleId))
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectByRole(0, SAMPLE_SIZE, roleId, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -229,7 +230,7 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .filter(user -> user.getStatus() != UserStatus.DELETED && user.getRole() == UserRole.STUDENT
                         && user.getGroupId() == groupId)
                 .collect(Collectors.toList());
-        List<User> actual = new ArrayList<>();
+        List<User> actual = new LinkedList<>();
         userDao.selectByGroup(0, SAMPLE_SIZE, groupId, actual);
         Assert.assertEquals(actual, expected);
     }
@@ -250,9 +251,9 @@ public class UserDaoImplTest extends AbstractDaoTest {
         String randomString = randomStringSupplier.get();
         int roleId = roleIdSupplier.get();
         long statusId = statusIdSupplier.get();
-        long entityId = testSample.size() + 1;
+        long expectedId = testSample.size() + 1;
 
-        User expectedUser = (User) User.builder()
+        User user = (User) User.builder()
                 .setLogin(randomString)
                 .setEmail(randomString)
                 .setPasswordHash(randomString)
@@ -263,27 +264,25 @@ public class UserDaoImplTest extends AbstractDaoTest {
                 .setPatronymic(randomString)
                 .setLastName(randomString)
                 .setProfileImageName(randomString)
-                .setEntityId(entityId)
+                .setEntityId(expectedId)
                 .build();
-        testSample.add(expectedUser);
+        testSample.add(user);
 
-        userDao.insert(expectedUser);
-        User actualUser = userDao.selectById(entityId).get();
-        Assert.assertEquals(actualUser, expectedUser);
+        long actualId = userDao.insert(user);
+        Assert.assertEquals(actualId, expectedId);
     }
 
     @Test(dependsOnMethods = "testInsert")
     public void testUpdate() throws DaoException {
         User user = testSample.get(testSample.size() - 1);
-        long entityId = user.getEntityId();
-        User expectedUpdatedUser = User.builder()
+        User updatedUser = User.builder()
                 .of(user)
                 .setFirstName(randomStringSupplier.get())
                 .build();
 
-        userDao.update(expectedUpdatedUser);
-        User actualUpdatedUser = userDao.selectById(entityId).get();
-        Assert.assertEquals(actualUpdatedUser, expectedUpdatedUser);
+        int expectedRowsAffected = 1;
+        int actualRowsAffected = userDao.update(updatedUser);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @Test(dependsOnMethods = "testUpdate")
@@ -291,9 +290,9 @@ public class UserDaoImplTest extends AbstractDaoTest {
         User user = testSample.remove(testSample.size() - 1);
         long entityId = user.getEntityId();
 
-        userDao.delete(entityId);
-        User deletedUser = userDao.selectById(entityId).get();
-        Assert.assertEquals(deletedUser.getStatus(), UserStatus.DELETED);
+        int expectedRowsAffected = 1;
+        int actualRowsAffected = userDao.delete(entityId);
+        Assert.assertEquals(actualRowsAffected, expectedRowsAffected);
     }
 
     @AfterClass
