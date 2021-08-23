@@ -21,8 +21,8 @@ public class UserValidator {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String VALID_LOGIN_REGEX = "^\\p{Alnum}{8,20}$";
-    private static final String VALID_EMAIL_REGEX = "^[\\p{Alnum}._]+@[\\p{Alnum}._]+$";
-    private static final String VALID_PASSWORD_REGEX = "^(?=.*\\w)(?=.*\\d)[\\p{Alnum}]{8,32}$";
+    private static final String VALID_EMAIL_REGEX = "^[\\w.]+@[\\w.]+$";
+    private static final String VALID_PASSWORD_REGEX = "^(?=.*\\p{Alpha})(?=.*\\d)[\\p{Alnum}]{8,32}$";
     private static final String VALID_NAME = "^\\p{L}{1,50}$";
 
     private enum AcceptedImageType {

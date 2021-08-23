@@ -32,7 +32,7 @@
         <div class="form-group mb-2 mt-2">
             <label for="confirmPasswordInput"><bht:localeTag key="reset.confirm_password" /></label>
             <input type="password" name="confirmPassword" class="bg-light form-control" maxlength="50" id="confirmPasswordInput"
-                   pattern="(?=.*\w)(?=.*\d)[0-9a-zA-Z]{8,32}" required>
+                   pattern="(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{8,32}" required>
             <div class="invalid-feedback">
                 <bht:localeTag key="reset.passwords_do_not_match" />
             </div>

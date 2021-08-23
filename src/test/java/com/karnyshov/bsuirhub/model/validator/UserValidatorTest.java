@@ -77,6 +77,7 @@ public class UserValidatorTest {
                 Arguments.of(false, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, false, true),
                 Arguments.of(true, invalidEmailUser, StringUtils.EMPTY, StringUtils.EMPTY, true, true, true),
                 Arguments.of(false, baseUser, "password", "password", true, true, false),
+                Arguments.of(false, baseUser, "123456789", "123456789", true, true, false),
                 Arguments.of(false, baseUser, "password1", "password", true, true, false),
                 Arguments.of(true, baseUser, "password1", "password1", true, true, false),
                 Arguments.of(false, invalidFirstNameUser, "password1", "password1", true, true, false),

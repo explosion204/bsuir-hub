@@ -113,7 +113,7 @@
                 <div class="form-group me-5 ms-5 mb-2">
                     <label for="passwordInput"><bht:localeTag key="user.password" /></label>
                     <input type="password" name="password" class="form-control"
-                           pattern="(?=.*\w)(?=.*\d)[0-9a-zA-Z]{8,32}" id="passwordInput"
+                           pattern="(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{8,32}" id="passwordInput"
                            <c:if test="${newEntityPage}">required</c:if>
                            placeholder=<c:if test="${not newEntityPage}">"${password_placeholder}"</c:if>
                     >

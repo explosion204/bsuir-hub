@@ -95,7 +95,7 @@
             <div class="form-group mb-2 mt-2">
                 <label for="passwordInput"><bht:localeTag key="settings.new_password" /></label>
                 <input type="password" name="password" class="bg-light form-control" maxlength="50" id="passwordInput"
-                       pattern="(?=.*\w)(?=.*\d)[0-9a-zA-Z]{8,32}" required>
+                       pattern="(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{8,32}" required>
                 <div class="invalid-feedback">
                     <bht:localeTag key="settings.password_validation" />
                 </div>
