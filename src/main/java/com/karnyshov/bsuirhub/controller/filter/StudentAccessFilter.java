@@ -30,7 +30,7 @@ public class StudentAccessFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         User user = (User) session.getAttribute(USER);
 
-        if (user == null || user.getRole() == GUEST || user.getRole() == TEACHER) {
+        if (user == null || user.getRole() != STUDENT) {
             String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI()).build();
             session.setAttribute(RETURN_URL, returnUrl);
             httpResponse.sendRedirect(LOGIN_URL);

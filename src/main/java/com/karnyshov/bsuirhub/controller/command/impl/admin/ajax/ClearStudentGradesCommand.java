@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
-import com.karnyshov.bsuirhub.model.service.CommentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
