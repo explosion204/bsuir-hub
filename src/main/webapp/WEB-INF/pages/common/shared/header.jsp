@@ -42,7 +42,7 @@
                                 <a href="#" class="nav-link dropdown-toggle dropdown-plus d-flex align-items-center"
                                    id="accountDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <p class="mt-auto mb-auto ms-1 me-3"><b>
-                                        <jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text>
+                                        ${sessionScope.user.lastName} ${sessionScope.user.firstName} ${sessionScope.user.patronymic}
                                     </b></p>
                                     <p class="profile-image-holder ms-auto mt-auto mb-auto">
                                         <img id="profileImage" class="profile-image" src="/static/images/profile/${sessionScope.user.profileImageName}">

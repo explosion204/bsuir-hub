@@ -43,7 +43,7 @@
            id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="/static/images/profile/${sessionScope.user.profileImageName}" width="32" height="32"
                  class="rounded-circle me-2">
-            <strong><jsp:text>${sessionScope.user.lastName} ${sessionScope.user.firstName}</jsp:text></strong>
+            <strong>${sessionScope.user.lastName} ${sessionScope.user.firstName} ${sessionScope.user.patronymic}</strong>
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
             <li><a class="dropdown-item" href="/settings"><bht:localeTag key="admin.settings" /></a></li>
