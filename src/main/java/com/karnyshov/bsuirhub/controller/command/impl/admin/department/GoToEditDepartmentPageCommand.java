@@ -6,12 +6,10 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
@@ -24,7 +22,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
  * {@code GoToEditDepartmentPageCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GoToEditDepartmentPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private DepartmentService departmentService;
@@ -51,7 +48,7 @@ public class GoToEditDepartmentPageCommand implements Command {
             }
         } catch (NumberFormatException e) {
             result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
-        } catch (ServiceException | NoSuchElementException e) {
+        } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to edit department page' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }

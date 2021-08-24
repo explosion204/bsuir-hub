@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.validator.FacultyValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +23,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code UpdateFacultyCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UpdateFacultyCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private FacultyService facultyService;
@@ -62,7 +60,6 @@ public class UpdateFacultyCommand implements Command {
                         .build();
 
                 facultyService.update(updatedFaculty);
-
                 // success
                 request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
             }
@@ -70,9 +67,8 @@ public class UpdateFacultyCommand implements Command {
             String url = new UrlStringBuilder(ADMIN_EDIT_FACULTY_URL)
                     .addParam(ENTITY_ID, idString)
                     .build();
-
             result = new CommandResult(url, REDIRECT);
-        }  catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'update faculty' command", e);
             result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
         }

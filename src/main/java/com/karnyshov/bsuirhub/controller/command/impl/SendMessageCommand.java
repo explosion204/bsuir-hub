@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import com.karnyshov.bsuirhub.model.validator.PlainTextValidator;
 import com.karnyshov.bsuirhub.util.MailService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +21,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code SendMessageCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class SendMessageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String SUPPORT_PROPERTY = "support";

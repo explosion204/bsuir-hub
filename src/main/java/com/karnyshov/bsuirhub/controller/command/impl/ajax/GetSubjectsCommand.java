@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
 import com.karnyshov.bsuirhub.model.service.criteria.SubjectFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +21,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code GetSubjectsCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GetSubjectsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private SubjectService subjectService;
@@ -68,8 +66,7 @@ public class GetSubjectsCommand implements Command {
     }
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
-            throws ServiceException, NumberFormatException {
-
+            throws ServiceException {
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 

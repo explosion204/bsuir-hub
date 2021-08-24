@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import static com.karnyshov.bsuirhub.model.service.criteria.DepartmentFilterCrit
  * {@code DepartmentServiceImpl} class is an implementation of {@link DepartmentService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDao departmentDao;
 

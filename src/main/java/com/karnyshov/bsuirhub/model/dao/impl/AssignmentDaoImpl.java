@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.AssignmentDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Assignment;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
  * {@code AssignmentDaoImpl} is an implementation of {@link AssignmentDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class AssignmentDaoImpl implements AssignmentDao {
     private static final Logger logger = LogManager.getLogger();
 

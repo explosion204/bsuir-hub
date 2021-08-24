@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.sql.SQLException;
  * {@link Integer} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class IntegerMapper implements ResultSetMapper<Integer> {
     @Override
     public Integer map(ResultSet resultSet) throws DaoException {

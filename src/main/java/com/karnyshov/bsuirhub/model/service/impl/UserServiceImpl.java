@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,6 @@ import java.util.*;
  * {@code UserServiceImpl} class is an implementation of {@link UserService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UserServiceImpl implements UserService {
     private static final int SALT_LENGTH = 16;
     private static final String EMPTY_PASSWORD = "";

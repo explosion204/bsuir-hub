@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Department;
 import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.validator.DepartmentValidator;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +21,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code CreateDepartmentCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class CreateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private DepartmentService departmentService;

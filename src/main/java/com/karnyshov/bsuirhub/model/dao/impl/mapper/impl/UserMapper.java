@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.entity.UserStatus;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +17,6 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.USER_ID;
  * {@link User} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UserMapper implements ResultSetMapper<User> {
     @Override
     public User map(ResultSet resultSet) throws DaoException {

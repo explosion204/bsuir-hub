@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.WebListener;
  * @author Dmitry Karnyshov
  */
 @WebListener
-public class ServletContextListenerImpl implements jakarta.servlet.ServletContextListener {
+public class ServletContextListenerImpl implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         // initialize pool

@@ -10,7 +10,6 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import com.karnyshov.bsuirhub.model.validator.GradeValidator;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +27,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
  * {@code UpdateGradeCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UpdateGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private GradeService gradeService;

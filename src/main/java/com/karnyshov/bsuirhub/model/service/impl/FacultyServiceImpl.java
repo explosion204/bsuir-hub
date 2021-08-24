@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Faculty;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import static com.karnyshov.bsuirhub.model.service.criteria.FacultyFilterCriteri
  * {@code FacultyServiceImpl} class is an implementation of {@link FacultyService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class FacultyServiceImpl implements FacultyService {
     private FacultyDao facultyDao;
 

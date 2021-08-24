@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +21,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code GetGroupsCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GetGroupsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
@@ -70,8 +68,7 @@ public class GetGroupsCommand implements Command {
     }
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
-            throws ServiceException, NumberFormatException {
-
+            throws ServiceException {
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 
@@ -92,7 +89,8 @@ public class GetGroupsCommand implements Command {
         response.put(DATA, groups);
     }
 
-    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) throws ServiceException {
+    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response)
+            throws ServiceException {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));

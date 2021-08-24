@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.util.impl;
 
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.util.MailService;
-import jakarta.inject.Named;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +19,6 @@ import java.util.concurrent.Executors;
  * Pool size is defined in configuration .properties file.
  * @author Dmitry Karnyshov
  */
-@Named
 public class MailServiceImpl implements MailService {
     private static final Logger logger = LogManager.getLogger();
     private static final String MAIL_PROPERTIES_NAME = "mail.properties";

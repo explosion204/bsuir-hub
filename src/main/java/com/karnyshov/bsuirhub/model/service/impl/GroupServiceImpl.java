@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.service.GroupService;
 import com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import static com.karnyshov.bsuirhub.model.service.criteria.GroupFilterCriteria.
  * {@code GroupServiceImpl} class is an implementation of {@link GroupService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GroupServiceImpl implements GroupService {
     private GroupDao groupDao;
 

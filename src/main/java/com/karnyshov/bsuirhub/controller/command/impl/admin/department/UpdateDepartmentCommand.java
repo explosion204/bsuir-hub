@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.service.DepartmentService;
 import com.karnyshov.bsuirhub.model.validator.DepartmentValidator;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.FACULTY
  * {@code UpdateDepartmentCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UpdateDepartmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private DepartmentService departmentService;
@@ -67,7 +65,7 @@ public class UpdateDepartmentCommand implements Command {
                         .build();
 
                 departmentService.update(updatedDepartment);
-                request.getSession().setAttribute(ENTITY_UPDATE_SUCCESS, true);
+                session.setAttribute(ENTITY_UPDATE_SUCCESS, true);
             }
 
             String url = new UrlStringBuilder(ADMIN_EDIT_DEPARTMENT_URL)

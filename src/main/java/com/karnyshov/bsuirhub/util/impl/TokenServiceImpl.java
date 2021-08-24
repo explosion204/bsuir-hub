@@ -6,7 +6,6 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +26,6 @@ import java.util.*;
  * JSON Web Tokens.
  * @author Dmitry Karnyshov
  */
-@Named
 public class TokenServiceImpl implements TokenService {
     private static final Logger logger = LogManager.getLogger();
     private static final String JWT_PROPERTIES_NAME = "jwt.properties";

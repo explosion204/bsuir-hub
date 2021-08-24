@@ -2,7 +2,6 @@ package com.karnyshov.bsuirhub.controller.command.impl;
 
 import com.karnyshov.bsuirhub.controller.command.Command;
 import com.karnyshov.bsuirhub.controller.command.CommandResult;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;
@@ -13,7 +12,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
  * {@code LogoutCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class LogoutCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {

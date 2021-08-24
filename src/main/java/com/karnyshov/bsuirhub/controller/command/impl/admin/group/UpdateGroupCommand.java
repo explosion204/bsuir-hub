@@ -9,7 +9,6 @@ import com.karnyshov.bsuirhub.model.validator.GroupValidator;
 import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +25,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOU
  * {@code UpdateGroupCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UpdateGroupCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();

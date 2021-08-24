@@ -3,7 +3,6 @@ package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Grade;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,6 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
  * {@link Grade} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GradeMapper implements ResultSetMapper<Grade> {
     @Override
     public Grade map(ResultSet resultSet) throws DaoException {

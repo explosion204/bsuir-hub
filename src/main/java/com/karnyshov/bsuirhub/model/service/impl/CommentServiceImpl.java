@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.service.CommentService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import java.util.Optional;
  * {@code CommentServiceImpl} class is an implementation of {@link CommentService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class CommentServiceImpl implements CommentService {
     private CommentDao commentDao;
 

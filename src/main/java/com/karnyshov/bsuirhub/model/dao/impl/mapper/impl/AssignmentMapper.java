@@ -3,7 +3,6 @@ package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Assignment;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
  * {@link Assignment} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class AssignmentMapper implements ResultSetMapper<Assignment> {
     @Override
     public Assignment map(ResultSet resultSet) throws DaoException {

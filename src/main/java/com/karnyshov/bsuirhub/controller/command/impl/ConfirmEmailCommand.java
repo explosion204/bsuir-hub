@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.util.TokenService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +27,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
  * {@code ConfirmEmailCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class ConfirmEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String ID_CLAIM = "id";

@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +25,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT
  * {@code GoToGradesOverviewPageCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GoToGradesOverviewPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private SubjectService subjectService;

@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.service.criteria.UserFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.*;
  * {@code GetUsersCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
@@ -63,7 +61,6 @@ public class GetUsersCommand implements Command {
                 logger.error("An error occurred executing 'get users' command", e);
                 status = false;
             }
-
         } else {
             status = false;
         }
@@ -73,8 +70,7 @@ public class GetUsersCommand implements Command {
     }
     
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response) 
-                throws ServiceException, NumberFormatException {
-        
+            throws ServiceException {
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 
@@ -95,7 +91,8 @@ public class GetUsersCommand implements Command {
         response.put(DATA, users);
     }
 
-    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response) throws ServiceException {
+    private void processSelectRequest(HttpServletRequest request, Map<String, Object> response)
+            throws ServiceException {
         String searchValue = request.getParameter(TERM);
         int page = Integer.parseInt(request.getParameter(PAGE));
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));

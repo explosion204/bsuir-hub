@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.model.validator.UserValidator;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +23,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER_ID
  * {@code ResetPasswordCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class ResetPasswordCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private UserService userService;

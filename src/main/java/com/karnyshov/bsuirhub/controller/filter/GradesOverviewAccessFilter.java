@@ -3,6 +3,7 @@ package com.karnyshov.bsuirhub.controller.filter;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
+import com.karnyshov.bsuirhub.model.entity.UserStatus;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
@@ -23,6 +24,7 @@ import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUN
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.STUDENT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
 
 /**
  * {@code GradesOverviewAccessFilter} class is an implementation of {@link Filter} interface.
@@ -54,16 +56,17 @@ public class GradesOverviewAccessFilter implements Filter {
 
             User currentUser = (User) session.getAttribute(USER);
             role = currentUser.getRole();
+            UserStatus status = currentUser.getStatus();
 
             // user whose overview we want to access
             User student = null;
 
-            if (role == UserRole.STUDENT && currentUser.getEntityId() == studentId) {
+            if (status == CONFIRMED && role == UserRole.STUDENT && currentUser.getEntityId() == studentId) {
                 // let user in if he is a STUDENT, and he is trying to access HIS overview page
                 student = currentUser;
                 long groupId = currentUser.getGroupId();
                 canAccess = assignmentService.assignmentExists(groupId, subjectId);
-            } else if (role == UserRole.TEACHER || role == UserRole.ADMIN) {
+            } else if (status == CONFIRMED && (role == UserRole.TEACHER || role == UserRole.ADMIN)) {
                 // if user is TEACHER or ADMIN, we need to check if he has appropriate assignment
                 Optional<User> optionalStudent = userService.findById(studentId);
 

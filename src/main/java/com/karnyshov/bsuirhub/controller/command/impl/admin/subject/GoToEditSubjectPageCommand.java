@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +23,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
  * {@code GoToEditSubjectPageCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GoToEditSubjectPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private SubjectService subjectService;

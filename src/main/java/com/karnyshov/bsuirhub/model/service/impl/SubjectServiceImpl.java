@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Subject;
 import com.karnyshov.bsuirhub.model.service.SubjectService;
 import com.karnyshov.bsuirhub.model.service.criteria.SubjectFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import static com.karnyshov.bsuirhub.model.service.criteria.SubjectFilterCriteri
  * {@code SubjectServiceImpl} class is an implementation of {@link SubjectService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class SubjectServiceImpl implements SubjectService {
     private SubjectDao subjectDao;
 

@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.model.entity.Assignment;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import com.karnyshov.bsuirhub.model.service.criteria.AssignmentFilterCriteria;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import java.util.Optional;
  * {@code AssignmentServiceImpl} class is an implementation of {@link AssignmentService} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class AssignmentServiceImpl implements AssignmentService {
     private AssignmentDao assignmentDao;
 

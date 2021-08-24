@@ -11,7 +11,6 @@ import com.karnyshov.bsuirhub.util.MailService;
 import com.karnyshov.bsuirhub.util.UniqueValuesCache;
 import com.karnyshov.bsuirhub.util.UrlStringBuilder;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +32,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserStatus.NOT_CONFIRMED;
  * {@code ChangeEmailCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class ChangeEmailCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final UniqueValuesCache uniqueValues = UniqueValuesCache.getInstance();

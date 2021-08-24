@@ -7,7 +7,6 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +24,6 @@ import static com.karnyshov.bsuirhub.controller.command.impl.ajax.AjaxRequestTyp
  * {@code GetGradesCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GetGradesCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final Gson gson = new Gson();
@@ -64,7 +62,7 @@ public class GetGradesCommand implements Command {
     }
 
     private void processDatatableRequest(HttpServletRequest request, Map<String, Object> response)
-            throws ServiceException, NumberFormatException {
+            throws ServiceException {
         int start = Integer.parseInt(request.getParameter(PAGINATION_START));
         int length = Integer.parseInt(request.getParameter(PAGINATION_LENGTH));
 

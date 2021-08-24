@@ -3,7 +3,6 @@ package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Subject;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
  * {@link Subject} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class SubjectMapper implements ResultSetMapper<Subject> {
     @Override
     public Subject map(ResultSet resultSet) throws DaoException {

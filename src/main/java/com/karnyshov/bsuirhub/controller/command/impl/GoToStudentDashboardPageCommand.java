@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.Group;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.*;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +25,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
  * {@code GoToStudentDashboardPageCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GoToStudentDashboardPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

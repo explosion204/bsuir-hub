@@ -3,7 +3,6 @@ package com.karnyshov.bsuirhub.model.dao.impl.mapper.impl;
 import com.karnyshov.bsuirhub.exception.DaoException;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Group;
-import jakarta.inject.Named;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import static com.karnyshov.bsuirhub.model.dao.TableColumn.*;
  * {@link Group} object.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GroupMapper implements ResultSetMapper<Group> {
     @Override
     public Group map(ResultSet resultSet) throws DaoException {

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.DISABLED_COOKIES_JSP;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INDEX_URL;

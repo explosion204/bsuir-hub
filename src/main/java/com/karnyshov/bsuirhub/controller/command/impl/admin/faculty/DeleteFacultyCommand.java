@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.service.FacultyService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_
  * {@code DeleteFacultyCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DeleteFacultyCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private FacultyService facultyService;

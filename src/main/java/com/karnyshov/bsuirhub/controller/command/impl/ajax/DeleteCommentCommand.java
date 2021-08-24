@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.Comment;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.service.CommentService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +25,6 @@ import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
  * {@code DeleteCommentCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DeleteCommentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private CommentService commentService;

@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.DepartmentDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Department;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.Optional;
  * {@code DepartmentDaoImpl} is an implementation of {@link DepartmentDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DepartmentDaoImpl implements DepartmentDao {
     private static final String SELECT_ALL
             = "SELECT id, name, short_name, id_faculty, specialty_alias, is_archived " +

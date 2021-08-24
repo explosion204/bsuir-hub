@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.GroupDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Group;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.Optional;
  * {@code GroupDaoImpl} is an implementation of {@link GroupDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_ALL
             = "SELECT id, name, id_department, id_headman, id_curator, is_archived " +

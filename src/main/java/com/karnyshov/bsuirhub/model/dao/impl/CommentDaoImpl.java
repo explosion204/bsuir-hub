@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.CommentDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Comment;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
  * {@code CommentDaoImpl} is an implementation of {@link CommentDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class CommentDaoImpl implements CommentDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_ID

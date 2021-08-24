@@ -10,7 +10,6 @@ import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import com.karnyshov.bsuirhub.model.validator.GradeValidator;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +29,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
  * {@code CreateGradeCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class CreateGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private GradeService gradeService;
@@ -43,7 +41,7 @@ public class CreateGradeCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        boolean status;
+        boolean status = false;
 
         User currentUser = (User) request.getSession().getAttribute(USER);
         UserRole role = currentUser.getRole();
@@ -73,8 +71,6 @@ public class CreateGradeCommand implements Command {
                 logger.error("An error occurred executing 'create grade' command", e);
                 status = false;
             }
-        } else {
-            status = false;
         }
 
         response.put(STATUS, status);

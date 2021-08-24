@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.UserDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.User;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.Optional;
  * {@code UserDaoImpl} is an implementation of {@link UserDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL
             = "SELECT id, login, email, password_hash, salt, id_role, id_status, " +

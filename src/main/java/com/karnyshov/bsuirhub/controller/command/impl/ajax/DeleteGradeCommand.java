@@ -7,10 +7,8 @@ import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.entity.Grade;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
-import com.karnyshov.bsuirhub.model.service.CommentService;
 import com.karnyshov.bsuirhub.model.service.GradeService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +28,6 @@ import static com.karnyshov.bsuirhub.model.entity.UserRole.TEACHER;
  * {@code DeleteGradeCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DeleteGradeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private GradeService gradeService;

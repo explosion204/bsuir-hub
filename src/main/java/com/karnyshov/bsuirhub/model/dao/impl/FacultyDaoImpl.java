@@ -5,7 +5,6 @@ import com.karnyshov.bsuirhub.model.dao.FacultyDao;
 import com.karnyshov.bsuirhub.model.dao.impl.mapper.ResultSetMapper;
 import com.karnyshov.bsuirhub.model.entity.Faculty;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.Optional;
  * {@code FacultyDaoImpl} is an implementation of {@link FacultyDao} interfaces.
  * @author Dmitry Karnyshov
  */
-@Named
 public class FacultyDaoImpl implements FacultyDao {
     private static final String SELECT_ALL
             = "SELECT id, name, short_name, is_archived " +

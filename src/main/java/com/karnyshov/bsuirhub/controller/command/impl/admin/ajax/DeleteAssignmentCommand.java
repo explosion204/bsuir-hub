@@ -6,7 +6,6 @@ import com.karnyshov.bsuirhub.controller.command.CommandResult;
 import com.karnyshov.bsuirhub.exception.ServiceException;
 import com.karnyshov.bsuirhub.model.service.AssignmentService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +20,6 @@ import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
  * {@code DeleteAssignmentCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class DeleteAssignmentCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private AssignmentService assignmentService;

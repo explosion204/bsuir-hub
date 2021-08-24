@@ -8,7 +8,6 @@ import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
 import com.karnyshov.bsuirhub.model.service.UserService;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +25,6 @@ import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.AUTH_ERRO
  * {@code LoginCommand} class is an implementation of {@link Command} interface.
  * @author Dmitry Karnyshov
  */
-@Named
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private UserService userService;
