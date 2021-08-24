@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -50,10 +55,10 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String generateToken(Map<String, Object> claims) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR, validityTime);
-        Date expirationTime = calendar.getTime();
+        Instant expirationInstant = LocalDateTime.now(Clock.systemUTC())
+                .plus(validityTime, ChronoUnit.HOURS)
+                .toInstant(ZoneOffset.UTC);
+        Date expirationTime = Date.from(expirationInstant);
 
         JwtBuilder builder = Jwts.builder()
                 .setExpiration(expirationTime)
