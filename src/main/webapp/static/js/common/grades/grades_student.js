@@ -80,7 +80,10 @@ function onDataLoaded(table, userId, studentId, subjectId) {
         // date
         let date = value.date;
         let dateCell = table.cell(index, 2).node();
-        $(dateCell).text(`${date.day}.${date.month}.${date.year}`);
+        let timeString = `${date.month}.${date.day}.${date.year} UTC`;
+        let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let time = new Date(timeString).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit', timeZone: timeZone});
+        $(dateCell).text(time);
 
         // grade
         let gradeCell = table.cell(index, 3).node();

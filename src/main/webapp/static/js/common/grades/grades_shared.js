@@ -98,7 +98,14 @@ function onCommentsLoaded(commentsTable, subjectId, studentId) {
         let minute = Intl.NumberFormat('en-US', {
             minimumIntegerDigits: 2
         }).format(timeObject.minute);
-        let time = `${day}.${month}.${year} ${hour}:${minute}`;
+        let second = Intl.NumberFormat('en-US', {
+            minimumIntegerDigits: 2
+        }).format(timeObject.second);
+
+        let timeString = `${month}.${day}.${year} ${hour}:${minute}:${second} UTC`;
+        let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let time = new Date(timeString).toLocaleString('ru-RU', {timeZone: timeZone});
+
         let timeDiv = $(`<div>${time}</div>`);
         headerDiv.append(image, nameDiv, timeDiv);
 

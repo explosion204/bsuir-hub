@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class CreateGradeCommand implements Command {
                             .setTeacherId(teacherId)
                             .setSubjectId(subjectId)
                             .setValue(gradeValue)
-                            .setDate(LocalDate.now())
+                            .setDate(LocalDate.now(Clock.systemUTC()))
                             .build();
 
                     gradeService.create(grade);

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class CreateCommentCommand implements Command {
                     .setGradeId(gradeId)
                     .setUserId(userId)
                     .setText(text)
-                    .setCreationTime(LocalDateTime.now())
+                    .setCreationTime(LocalDateTime.now(Clock.systemUTC()))
                     .build();
 
             status = PlainTextValidator.validateText(text);
