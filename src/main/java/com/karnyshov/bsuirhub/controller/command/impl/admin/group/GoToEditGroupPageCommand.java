@@ -41,7 +41,7 @@ public class GoToEditGroupPageCommand implements Command {
             long entityId = Long.parseLong(request.getParameter(ENTITY_ID));
             Optional<Group> group = groupService.findById(entityId);
 
-            if (group.isPresent()) {
+            if (group.isPresent() && !group.get().isArchived()) {
                 request.setAttribute(TARGET_ENTITY, group.get());
                 request.getSession().setAttribute(PREVIOUS_NAME, group.get().getName());
                 request.setAttribute(NEW_ENTITY_PAGE, false);
