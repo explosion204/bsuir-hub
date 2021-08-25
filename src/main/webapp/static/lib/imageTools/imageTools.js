@@ -65,7 +65,6 @@ var ImageTools = (function () {
             if (file.type.match(/image\/gif/)) {
                 // Not attempting, could be an animated gif
                 callback(file, false);
-                // TODO: use https://github.com/antimatter15/whammy to convert gif to webm
                 return false;
             }
 

@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -69,7 +66,7 @@ public class GetCommentsCommand implements Command {
         int draw = Integer.parseInt(request.getParameter(DRAW));
         long gradeId = Long.parseLong(request.getParameter(GRADE_ID));
 
-        List<Comment> grades = new LinkedList<>();
+        List<Comment> grades = new ArrayList<>(length);
         int recordsFetched = commentsService.findByGrade(start, length, gradeId, grades);
 
         response.put(DRAW, draw);

@@ -76,7 +76,7 @@ public class GetGroupsCommand implements Command {
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
         String searchValue = request.getParameter(SEARCH_VALUE);
 
-        List<Group> groups = new LinkedList<>();
+        List<Group> groups = new ArrayList<>(length);
 
         int recordsFetched = searchCriteria != null
                 ? groupService.filter(start, length, GroupFilterCriteria.valueOf(searchCriteria.toUpperCase()),
@@ -96,7 +96,7 @@ public class GetGroupsCommand implements Command {
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
         int start = pageSize * (page - 1);
 
-        List<Group> groups = new LinkedList<>();
+        List<Group> groups = new ArrayList<>(pageSize);
         int recordsFetched = groupService.filter(start, pageSize, GroupFilterCriteria.NAME, searchValue, groups);
         response.put(RESULTS, groups);
         response.put(RECORDS_FILTERED, recordsFetched);

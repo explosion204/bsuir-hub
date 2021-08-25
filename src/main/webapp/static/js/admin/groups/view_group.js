@@ -136,8 +136,6 @@ function onAssignmentCreate(assignmentsTable, subjectSelect, teacherSelect) {
             if (data && data.status) {
                 $('#createToast').toast('show');
                 assignmentsTable.draw();
-            } else {
-                // TODO: failure notifications
             }
 
             $(saveButton).attr('disabled', false);

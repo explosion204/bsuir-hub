@@ -74,7 +74,7 @@ public class GetSubjectsCommand implements Command {
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
         String searchValue = request.getParameter(SEARCH_VALUE);
 
-        List<Subject> subjects = new LinkedList<>();
+        List<Subject> subjects = new ArrayList<>(length);
 
         int recordsFetched = searchCriteria != null
                 ? subjectService.filter(start, length, SubjectFilterCriteria.valueOf(searchCriteria.toUpperCase()),
@@ -94,7 +94,7 @@ public class GetSubjectsCommand implements Command {
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
         int start = pageSize * (page - 1);
 
-        List<Subject> subjects = new LinkedList<>();
+        List<Subject> subjects = new ArrayList<>(pageSize);
         int recordsFetched = subjectService.filter(start, pageSize, SubjectFilterCriteria.NAME, searchValue, subjects);
         response.put(RESULTS, subjects);
         response.put(PAGINATION_MORE, (long) page * pageSize < recordsFetched);

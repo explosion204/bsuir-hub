@@ -174,7 +174,6 @@ function onGradeCreate(gradesTable, studentId, subjectId, gradeValue) {
             if (data && data.status) {
                 gradesTable.draw();
                 updateAverageGrade(studentId, subjectId);
-                // TODO: success notifications
             }
         }
     })

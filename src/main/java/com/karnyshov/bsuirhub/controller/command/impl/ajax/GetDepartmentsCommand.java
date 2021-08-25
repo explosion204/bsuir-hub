@@ -75,7 +75,7 @@ public class GetDepartmentsCommand implements Command {
         String searchCriteria = request.getParameter(FILTER_CRITERIA);
         String searchValue = request.getParameter(SEARCH_VALUE);
 
-        List<Department> departments = new LinkedList<>();
+        List<Department> departments = new ArrayList<>(length);
 
         int recordsFetched = searchCriteria != null
                 ? departmentService.filter(start, length, DepartmentFilterCriteria.valueOf(searchCriteria.toUpperCase()),
@@ -94,7 +94,7 @@ public class GetDepartmentsCommand implements Command {
         int pageSize = Integer.parseInt(request.getParameter(PAGE_SIZE));
         int start = pageSize * (page - 1);
 
-        List<Department> departments = new LinkedList<>();
+        List<Department> departments = new ArrayList<>(pageSize);
         int recordsFetched = departmentService.filter(start, pageSize, DepartmentFilterCriteria.NAME,
                 searchValue, departments);
         response.put(RESULTS, departments);

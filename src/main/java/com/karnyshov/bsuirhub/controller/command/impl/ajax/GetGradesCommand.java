@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.JSON;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
@@ -70,7 +67,7 @@ public class GetGradesCommand implements Command {
         long studentId = Long.parseLong(request.getParameter(STUDENT_ID));
         long subjectId = Long.parseLong(request.getParameter(SUBJECT_ID));
 
-        List<Grade> grades = new LinkedList<>();
+        List<Grade> grades = new ArrayList<>(length);
         int recordsFetched = gradeService.findByStudentAndSubject(start, length, studentId, subjectId, grades);
 
         response.put(DRAW, draw);
