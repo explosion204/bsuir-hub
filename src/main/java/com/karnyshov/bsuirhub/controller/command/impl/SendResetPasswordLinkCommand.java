@@ -19,9 +19,11 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.PASSWORD_RESET_LINK_SENT;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code SendResetPasswordLinkCommand} class is an implementation of {@link Command} interface.
@@ -76,7 +78,7 @@ public class SendResetPasswordLinkCommand implements Command {
             result = new CommandResult(FORGOT_PASSWORD_URL, REDIRECT);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'send password reset link' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

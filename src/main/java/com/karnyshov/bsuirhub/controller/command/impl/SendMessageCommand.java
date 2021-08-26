@@ -14,8 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code SendMessageCommand} class is an implementation of {@link Command} interface.
@@ -56,7 +58,7 @@ public class SendMessageCommand implements Command {
             result = new CommandResult(CONTACT_US_URL, REDIRECT);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'send message' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

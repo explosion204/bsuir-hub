@@ -17,11 +17,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL_SERVER_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.SETTINGS_URL;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code ChangePasswordCommand} class is an implementation of {@link Command} interface.
@@ -71,7 +72,7 @@ public class ChangePasswordCommand implements Command {
             result = new CommandResult(SETTINGS_URL, REDIRECT);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'change password' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

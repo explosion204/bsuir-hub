@@ -72,8 +72,6 @@ public class CommandProvider {
         urlMap.put(TEACHER_DASHBOARD_URL, GET, resolveCommand(GoToTeacherDashboardPageCommand.class));
         urlMap.put(STUDENT_DASHBOARD_URL, GET, resolveCommand(GoToStudentDashboardPageCommand.class));
         urlMap.put(GRADES_OVERVIEW_URL, GET, resolveCommand(GoToGradesOverviewPageCommand.class));
-        urlMap.put(NOT_FOUND_ERROR_URL, GET, resolveCommand(GoToNotFoundPageCommand.class));
-        urlMap.put(INTERNAL_SERVER_ERROR_URL, GET, resolveCommand(GoToInternalErrorPageCommand.class));
 
         /* ADMIN AREA */
         urlMap.put(ADMIN_USERS_URL, GET, resolveCommand(GoToUsersPageCommand.class));

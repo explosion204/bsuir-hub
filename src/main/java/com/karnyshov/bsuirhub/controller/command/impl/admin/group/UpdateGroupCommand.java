@@ -17,9 +17,11 @@ import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.PREVIOUS_NAME;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code UpdateGroupCommand} class is an implementation of {@link Command} interface.
@@ -85,7 +87,7 @@ public class UpdateGroupCommand implements Command {
             result = new CommandResult(url, REDIRECT);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'update group' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         } finally {
             uniqueValues.remove(name);
         }

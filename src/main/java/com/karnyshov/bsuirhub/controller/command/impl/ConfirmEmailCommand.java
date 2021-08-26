@@ -18,10 +18,13 @@ import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.EMAIL_CONFIRMATION_SUCCESS;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.TOKEN;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code ConfirmEmailCommand} class is an implementation of {@link Command} interface.
@@ -77,11 +80,11 @@ public class ConfirmEmailCommand implements Command {
 
             result = success
                     ? new CommandResult(INDEX_URL, REDIRECT)
-                    : new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+                    : new CommandResult(SC_NOT_FOUND, ERROR);
 
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'confirm email' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

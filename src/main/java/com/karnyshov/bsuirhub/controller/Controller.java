@@ -14,8 +14,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUND_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.ORIGINAL_URL;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code Controller} class is a subclass of {@link HttpServlet} class.
@@ -46,7 +47,7 @@ public class Controller extends HttpServlet {
             processRequest(request, response);
         } catch (MultiPartParserDefinition.FileTooLargeException e) {
             logger.error("Trying to upload too large file");
-            response.sendRedirect(ApplicationPath.INTERNAL_SERVER_ERROR_URL);
+            response.sendError(SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,25 +60,32 @@ public class Controller extends HttpServlet {
         if (command.isPresent()) {
             CommandResult commandResult = command.get().execute(request);
 
-            String resultDetail = commandResult.getDetail();
+            Object resultDetail = commandResult.getDetail();
             CommandResult.RouteType routeType = commandResult.getRouteType();
 
             switch (routeType) {
                 case FORWARD:
-                    request.getRequestDispatcher(resultDetail).forward(request, response);
+                    String jspPath = (String) resultDetail;
+                    request.getRequestDispatcher(jspPath).forward(request, response);
                     break;
                 case REDIRECT:
-                    response.sendRedirect(resultDetail);
+                    String redirectUrl = (String) resultDetail;
+                    response.sendRedirect(redirectUrl);
                     break;
                 case JSON:
-                    response.getWriter().write(resultDetail);
+                    String jsonResponse = (String) resultDetail;
+                    response.getWriter().write(jsonResponse);
+                    break;
+                case ERROR:
+                    int errorCode = (Integer) resultDetail;
+                    response.sendError(errorCode);
                     break;
                 default:
                     logger.error("Invalid route type: " + routeType.name());
-                    response.sendRedirect(ApplicationPath.INTERNAL_SERVER_ERROR_URL);
+                    response.sendError(SC_INTERNAL_SERVER_ERROR);
             }
         } else {
-            response.sendRedirect(NOT_FOUND_ERROR_URL);
+            response.sendError(SC_NOT_FOUND);
         }
     }
 }

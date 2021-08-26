@@ -16,10 +16,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.TOKEN;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER_ID;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code GoToResetPasswordPageCommand} class is an implementation of {@link Command} interface.
@@ -64,11 +65,11 @@ public class GoToResetPasswordPageCommand implements Command {
 
             result = success
                     ? new CommandResult(RESET_PASSWORD_JSP, FORWARD)
-                    : new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+                    : new CommandResult(SC_NOT_FOUND, ERROR);
 
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'confirm email' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

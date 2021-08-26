@@ -18,26 +18,30 @@ public class CommandResult {
          */
         REDIRECT,
         /**
+         * Send error.
+         * */
+        ERROR,
+        /**
          * JSON response for ajax requests.
          */
         JSON
     }
 
-    private String detail;
+    private Object detail;
     private RouteType routeType;
 
     /**
      * Instantiates a new {@code CommandResult}.
      *
-     * @param detail it can be URL or local path to JSP page.
+     * @param detail it can be URL, local path to JSP page or error code.
      * @param routeType {@code RouteType} enum constant.
      */
-    public CommandResult(String detail, RouteType routeType) {
+    public CommandResult(Object detail, RouteType routeType) {
         this.detail = detail;
         this.routeType = routeType;
     }
 
-    public String getDetail() {
+    public Object getDetail() {
         return detail;
     }
     public RouteType getRouteType() {

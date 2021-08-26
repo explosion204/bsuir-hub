@@ -41,8 +41,6 @@ public final class ApplicationPath {
     public static final String ADMIN_NEW_SUBJECT_URL = "/admin/subjects/new";
     public static final String ADMIN_EDIT_SUBJECT_URL = "/admin/subjects/edit";
     public static final String ADMIN_DELETE_SUBJECT_URL = "/admin/subjects/delete";
-    public static final String NOT_FOUND_ERROR_URL = "/error/404";
-    public static final String INTERNAL_SERVER_ERROR_URL = "/error/500";
     public static final String AJAX_GET_USERS_URL = "/ajax/get_users";
     public static final String AJAX_GET_FACULTIES_URL = "/ajax/get_faculties";
     public static final String AJAX_GET_DEPARTMENTS_URL = "/ajax/get_departments";
@@ -73,8 +71,6 @@ public final class ApplicationPath {
     public static final String STUDENT_DASHBOARD_JSP = "/WEB-INF/pages/common/student_dashboard.jsp";
     public static final String GRADES_OVERVIEW_JSP = "/WEB-INF/pages/common/grades_overview.jsp";
     public static final String CONTACT_US_JSP = "/WEB-INF/pages/common/contact_us.jsp";
-    public static final String ERROR_NOT_FOUND_JSP = "/WEB-INF/pages/common/errors/404.jsp";
-    public static final String ERROR_INTERNAL_SERVER_JSP = "/WEB-INF/pages/common/errors/500.jsp";
     public static final String DISABLED_COOKIES_JSP = "/WEB-INF/pages/common/errors/disabled_cookies.jsp";
     public static final String ADMIN_USERS_JSP = "/WEB-INF/pages/admin/users/users.jsp";
     public static final String ADMIN_VIEW_USER_JSP = "/WEB-INF/pages/admin/users/view_user.jsp";

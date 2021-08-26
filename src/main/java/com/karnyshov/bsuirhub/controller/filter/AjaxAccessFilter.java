@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.STATUS;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 /**
  * {@code AjaxAccessFilter} class is an implementation of {@link Filter} interface.
@@ -34,6 +35,7 @@ public class AjaxAccessFilter implements Filter {
             Map<String, Object> ajaxResponse = new HashMap<>();
             ajaxResponse.put(STATUS, false);
             String jsonResponse = new Gson().toJson(ajaxResponse);
+            httpResponse.setStatus(SC_FORBIDDEN);
             httpResponse.getWriter().write(jsonResponse);
         } else {
             chain.doFilter(request, response);

@@ -15,9 +15,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code DeleteUserCommand} class is an implementation of {@link Command} interface.
@@ -53,13 +56,13 @@ public class DeleteUserCommand implements Command {
 
                 result = new CommandResult(ADMIN_USERS_URL, REDIRECT);
             } else {
-                result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+                result = new CommandResult(SC_NOT_FOUND, ERROR);
             }
         } catch (NumberFormatException e) {
-            result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_NOT_FOUND, ERROR);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'delete user' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

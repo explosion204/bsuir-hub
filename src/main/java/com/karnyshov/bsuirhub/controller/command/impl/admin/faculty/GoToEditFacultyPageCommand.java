@@ -13,11 +13,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.NEW_ENTITY_PAGE;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.TARGET_ENTITY;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.ENTITY_ID;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code GoToEditFacultyPageCommand} class is an implementation of {@link Command} interface.
@@ -46,13 +47,13 @@ public class GoToEditFacultyPageCommand implements Command {
                 request.setAttribute(NEW_ENTITY_PAGE, false);
                 result = new CommandResult(ADMIN_VIEW_FACULTY_JSP, FORWARD);
             } else {
-                result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+                result = new CommandResult(SC_NOT_FOUND, ERROR);
             }
         } catch (NumberFormatException e) {
-            result = new CommandResult(NOT_FOUND_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_NOT_FOUND, ERROR);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to edit faculty page' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

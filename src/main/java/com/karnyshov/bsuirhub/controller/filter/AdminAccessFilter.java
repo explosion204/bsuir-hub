@@ -1,6 +1,5 @@
 package com.karnyshov.bsuirhub.controller.filter;
 
-import com.karnyshov.bsuirhub.controller.command.ApplicationPath;
 import com.karnyshov.bsuirhub.controller.command.SessionAttribute;
 import com.karnyshov.bsuirhub.model.entity.User;
 import com.karnyshov.bsuirhub.model.entity.UserRole;
@@ -12,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code AdminAccessFilter} class is an implementation of {@link Filter} interface.
@@ -28,7 +29,7 @@ public class AdminAccessFilter implements Filter {
         User user = (User) session.getAttribute(SessionAttribute.USER);
 
         if (user == null || user.getRole() != UserRole.ADMIN) {
-            httpResponse.sendRedirect(ApplicationPath.NOT_FOUND_ERROR_URL);
+            httpResponse.sendError(SC_NOT_FOUND);
         } else {
             chain.doFilter(request, response);
         }

@@ -14,8 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import static com.karnyshov.bsuirhub.controller.command.AlertAttribute.VALIDATION_ERROR;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.*;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.ERROR;
 import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code CreateDepartmentCommand} class is an implementation of {@link Command} interface.
@@ -62,7 +64,7 @@ public class CreateDepartmentCommand implements Command {
             }
         } catch (ServiceException | NumberFormatException e) {
             logger.error("An error occurred executing 'create department' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.LOGIN_URL;
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.NOT_FOUND_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.STUDENT;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
 import static com.karnyshov.bsuirhub.model.entity.UserStatus.CONFIRMED;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 /**
  * {@code GradesOverviewAccessFilter} class is an implementation of {@link Filter} interface.
@@ -88,18 +88,14 @@ public class GradesOverviewAccessFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             // guest will be redirected to login page or to not found page otherwise
-            String redirectUrl;
-
             if (role == UserRole.GUEST) {
                 String returnUrl = new UrlStringBuilder(httpRequest.getRequestURI())
                         .build(httpRequest.getQueryString());
                 session.setAttribute(RETURN_URL, returnUrl);
-                redirectUrl = LOGIN_URL;
+                httpResponse.sendRedirect(LOGIN_URL);
             } else {
-                redirectUrl = NOT_FOUND_ERROR_URL;
+                httpResponse.sendError(SC_NOT_FOUND);
             }
-
-            httpResponse.sendRedirect(redirectUrl);
         }
     }
 }

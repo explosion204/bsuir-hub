@@ -14,12 +14,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL_SERVER_ERROR_URL;
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.STUDENT_DASHBOARD_JSP;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.SessionAttribute.USER;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code GoToStudentDashboardPageCommand} class is an implementation of {@link Command} interface.
@@ -79,7 +78,7 @@ public class GoToStudentDashboardPageCommand implements Command {
             result = new CommandResult(STUDENT_DASHBOARD_JSP, FORWARD);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to student dashboard page' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

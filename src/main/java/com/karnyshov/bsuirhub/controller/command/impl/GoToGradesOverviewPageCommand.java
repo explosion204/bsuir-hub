@@ -14,12 +14,11 @@ import org.apache.logging.log4j.Logger;
 
 
 import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.GRADES_OVERVIEW_JSP;
-import static com.karnyshov.bsuirhub.controller.command.ApplicationPath.INTERNAL_SERVER_ERROR_URL;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.FORWARD;
-import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.REDIRECT;
+import static com.karnyshov.bsuirhub.controller.command.CommandResult.RouteType.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestAttribute.*;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.GRADE_ID;
 import static com.karnyshov.bsuirhub.controller.command.RequestParameter.SUBJECT_ID;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * {@code GoToGradesOverviewPageCommand} class is an implementation of {@link Command} interface.
@@ -59,7 +58,7 @@ public class GoToGradesOverviewPageCommand implements Command {
             result = new CommandResult(GRADES_OVERVIEW_JSP, FORWARD);
         } catch (ServiceException e) {
             logger.error("An error occurred executing 'go to grades overview page' command", e);
-            result = new CommandResult(INTERNAL_SERVER_ERROR_URL, REDIRECT);
+            result = new CommandResult(SC_INTERNAL_SERVER_ERROR, ERROR);
         }
 
         return result;

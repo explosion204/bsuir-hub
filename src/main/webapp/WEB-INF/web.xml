@@ -64,7 +64,7 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/pages/common/errors/500.jsp</location>
+        <location>/WEB-INF/pages/common/errors/404.jsp</location>
     </error-page>
 
     <session-config>
