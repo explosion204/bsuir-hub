@@ -1,5 +1,6 @@
 /.idea/
-/gradle/
 /build/
 /.gradle/
 /logs/
+/out/
+/test-output/
