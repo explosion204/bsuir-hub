@@ -4,7 +4,6 @@ plugins {
 }
 
 group 'com.karnyshov'
-version '1.0'
 
 repositories {
     mavenCentral()
@@ -38,6 +37,10 @@ jar {
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+}
+
+war {
+    war.rootSpec.exclude("**/static")
 }
 
 test {

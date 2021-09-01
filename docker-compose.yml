@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: db
+    image: 'mysql/mysql-server:latest'
+    volumes:
+      - './schema/schema.sql:/docker-entrypoint-initdb.d/schema.sql'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bsuirhub
+      MYSQL_USER: jdbc
+      MYSQL_PASSWORD: dwf465af74fvfg
+
+  bsuirhub:
+    image: 'bsuirhub'
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - 'db'
