@@ -1,4 +1,4 @@
-FROM bsuirhub-server
+FROM explosion204/bsuirhub-server
 WORKDIR /opt/jboss/wildfly/
 
 ADD build/libs/bsuirhub.war standalone/deployments/
