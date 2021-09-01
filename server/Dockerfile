@@ -2,6 +2,7 @@ FROM jboss/base-jdk:11
 
 ENV WILDFLY_VERSION 24.0.1.Final
 ENV JBOSS_HOME /opt/jboss/wildfly
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
 USER root
 
 RUN cd $HOME \
@@ -12,7 +13,6 @@ RUN cd $HOME \
     && chown -R jboss:0 ${JBOSS_HOME} \
     && chmod -R g+rw ${JBOSS_HOME}
 
-ENV LAUNCH_JBOSS_IN_BACKGROUND true
 USER jboss
 
 ENTRYPOINT ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]

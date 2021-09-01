@@ -8,11 +8,8 @@ services:
       - './schema/schema.sql:/docker-entrypoint-initdb.d/schema.sql'
     ports:
       - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bsuirhub
-      MYSQL_USER: jdbc
-      MYSQL_PASSWORD: dwf465af74fvfg
+    env_file:
+      - '.env'
 
   bsuirhub:
     image: 'bsuirhub'
