@@ -105,4 +105,4 @@ Deleted |
         * Update assignment
         * Delete assignment
 
-![Database scheme](https://raw.githubusercontent.com/explosion204/bsuir-hub/master/db/scheme.png)
+![Database scheme](https://raw.githubusercontent.com/explosion204/bsuir-hub/master/schema/scheme.png)
