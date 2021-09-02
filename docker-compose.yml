@@ -1,13 +1,15 @@
 version: '3.3'
 
+volumes:
+  db_data:
+
 services:
   db:
     container_name: db
-    image: 'mysql/mysql-server:latest'
+    image: 'mariadb:latest'
     volumes:
       - './schema/schema.sql:/docker-entrypoint-initdb.d/schema.sql'
-    ports:
-      - '3306:3306'
+      - 'db_data:/var/lib/mysql'
     env_file:
       - '.env'
 
