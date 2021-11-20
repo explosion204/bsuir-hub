@@ -16,6 +16,11 @@
     </filter-mapping>
 
     <filter-mapping>
+        <filter-name>AuditFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
         <filter-name>LoginAccessFilter</filter-name>
         <url-pattern>/login/*</url-pattern>
     </filter-mapping>
